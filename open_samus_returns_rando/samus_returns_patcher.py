@@ -64,8 +64,8 @@ class PatcherEditor(FileTreeEditor):
             self.memory_files[path] = self.get_parsed_asset(path, type_hint=type_hint)
         return self.memory_files[path]
 
-    def get_scenario(self, name: str) -> Brfld:
-        return self.get_file(path_for_level(name) + ".brfld", Brfld)
+    def get_scenario(self, name: str) -> Bmsld:
+        return self.get_file(path_for_level(name) + ".bmsld", Bmsld)
 
     def flush_modified_assets(self):
         for name, resource in self.memory_files.items():
