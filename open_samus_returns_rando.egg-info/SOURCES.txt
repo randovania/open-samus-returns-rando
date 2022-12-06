@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+open_samus_returns_rando/__init__.py
+open_samus_returns_rando/__main__.py
+open_samus_returns_rando/cli.py
+open_samus_returns_rando/custom_init.lua
+open_samus_returns_rando/samus_returns_patcher.py
+open_samus_returns_rando/schema.json
+open_samus_returns_rando/version.py
+open_samus_returns_rando.egg-info/PKG-INFO
+open_samus_returns_rando.egg-info/SOURCES.txt
+open_samus_returns_rando.egg-info/dependency_links.txt
+open_samus_returns_rando.egg-info/top_level.txt

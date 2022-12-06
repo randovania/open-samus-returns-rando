@@ -4,13 +4,14 @@ import typing
 from pathlib import Path
 
 import jsonschema
-from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
+from mercury_engine_data_structures.file_tree_editor import FileTreeEditor, OutputFormat
 from mercury_engine_data_structures.formats import Bmsld, BaseResource
+from mercury_engine_data_structures.game_check import Game
 # from mercury_engine_data_structures.formats.samus_returns_types import EBreakableTileType
 
 T = typing.TypeVar("T")
 LOG = logging.getLogger("samus_returns_patcher")
-
+game = Game.SAMUS_RETURNS
 
 def _read_schema():
     with Path(__file__).parent.joinpath("schema.json").open() as f:
@@ -56,7 +57,7 @@ class PatcherEditor(FileTreeEditor):
     memory_files: dict[str, BaseResource]
 
     def __init__(self, root: Path):
-        super().__init__(root)
+        super().__init__(root, game)
         self.memory_files = {}
 
     def get_file(self, path: str, type_hint: typing.Type[T] = BaseResource) -> T:
@@ -73,16 +74,16 @@ class PatcherEditor(FileTreeEditor):
         self.memory_files = {}
 
 
-def patch_elevators(editor: PatcherEditor, elevators_config: list[dict]):
-    for elevator in elevators_config:
-        level = editor.get_scenario(elevator["teleporter"]["scenario"])
-        actor = level.actors_for_layer(elevator["teleporter"]["layer"])[elevator["teleporter"]["actor"]]
-        try:
-            usable = actor.pComponents.USABLE
-        except AttributeError:
-            raise ValueError(f'Actor {elevator["teleporter"]} is not a teleporter')
-        usable.sScenarioName = elevator["destination"]["scenario"]
-        usable.sTargetSpawnPoint = elevator["destination"]["actor"]
+# def patch_elevators(editor: PatcherEditor, elevators_config: list[dict]):
+#     for elevator in elevators_config:
+#         level = editor.get_scenario(elevator["teleporter"]["scenario"])
+#         actor = level.actors_for_layer(elevator["teleporter"]["layer"])[elevator["teleporter"]["actor"]]
+#         try:
+#             usable = actor.pComponents.USABLE
+#         except AttributeError:
+#             raise ValueError(f'Actor {elevator["teleporter"]} is not a teleporter')
+#         usable.sScenarioName = elevator["destination"]["scenario"]
+#         usable.sTargetSpawnPoint = elevator["destination"]["actor"]
 
 
 def patch(input_path: Path, output_path: Path, configuration: dict):
@@ -92,7 +93,6 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
 
     out_romfs = output_path.joinpath("romfs")
     editor = PatcherEditor(input_path)
-
     create_init_copy(editor)
 
     editor.replace_asset(
@@ -109,9 +109,9 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
     #     ))
     # actor.pComponents["STARTPOINT"]["sOnTeleport"] = "Game.HUDIdleScreenLeave"
 
-    if "elevators" in configuration:
-        patch_elevators(editor, configuration["elevators"])
+    # if "elevators" in configuration:
+    #     patch_elevators(editor, configuration["elevators"])
 
     editor.flush_modified_assets()
-    editor.save_modified_pkgs(out_romfs)
+    editor.save_modifications(out_romfs, OutputFormat.PKG)
     logging.info("Done")

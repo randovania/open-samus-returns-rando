@@ -28,8 +28,8 @@
         }
     },
     "required": [
-        "starting_location",
-        "starting_items"
+        "starting_items",
+        "starting_location"
     ],
     "$defs": {
         "actor_reference_with_layer": {
@@ -47,8 +47,6 @@
                 }
             },
             "required": [
-                "scenario",
-                "actor"
             ]
         },
         "actor_reference": {
@@ -62,8 +60,6 @@
                 }
             },
             "required": [
-                "scenario",
-                "actor"
             ]
         },
         "scenario_name": {
