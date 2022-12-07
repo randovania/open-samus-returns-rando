@@ -11,10 +11,6 @@ end
 
 local buff = {}
 
-function Init.InitGameBlackboard()
-    Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "ScenarioID", "s", TEMPLATE("starting_scenario"))
-    Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "StartPoint", "s", TEMPLATE("starting_actor"))
-end
 
 function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
     Game.LogWarn(0, string.format("Will start Game - %s / %s / %s / %s", tostring(arg1), tostring(arg2), tostring(arg3), tostring(arg4)))
