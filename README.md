@@ -3,7 +3,7 @@ Open Source randomizer patcher for Metroid: Samus Returns. Intended for use in [
 Currently supports patching starting items.
 
 ## Installation
-`pip install open-samus_returns-rando`
+`pip install open-samus-returns-rando`
 
 ## Usage
 You will need to provide JSON data matching the [JSON schema](https://github.com/randovania/open-samus-returns-rando/blob/main/open_samus_returns_rando/files/schema.json) in order to successfully patch the game. 
