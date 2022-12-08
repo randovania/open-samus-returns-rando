@@ -134,20 +134,20 @@ function s000_surface.OnEndSpecialEnergyCutscene()
   guicallbacks.OnScanningPulsePickedUp()
 end
 function s000_surface.LaunchIntroTeleporterCutscene()
-  Game.AddEntityToUpdateInCutscene("LE_Teleporter_00_01")
-  Game.AddEntityToUpdateInCutscene("morphball")
-  Game.AddEntityToUpdateInCutscene("Samus")
-  Game.LaunchCutscene("cutscenes/introteleporter/takes/01/introteleporter01.bmscu")
+  -- Game.AddEntityToUpdateInCutscene("LE_Teleporter_00_01")
+  -- Game.AddEntityToUpdateInCutscene("morphball")
+  -- Game.AddEntityToUpdateInCutscene("Samus")
+  -- Game.LaunchCutscene("cutscenes/introteleporter/takes/01/introteleporter01.bmscu")
 end
 function s000_surface.OnStartIntroTeleporterCutscene()
 end
 function s000_surface.OnEndIntroTeleporterCutscene()
-  if Game.GetEntity("Samus") ~= nil then
-    Game.GetEntity("Samus"):SetVisible(true)
-  end
-  Game.RemoveEntityToUpdateInCutscene("LE_Teleporter_00_01")
-  Game.RemoveEntityToUpdateInCutscene("morphball")
-  Game.RemoveEntityToUpdateInCutscene("Samus")
+  -- if Game.GetEntity("Samus") ~= nil then
+  --   Game.GetEntity("Samus"):SetVisible(true)
+  -- end
+  -- Game.RemoveEntityToUpdateInCutscene("LE_Teleporter_00_01")
+  -- Game.RemoveEntityToUpdateInCutscene("morphball")
+  -- Game.RemoveEntityToUpdateInCutscene("Samus")
 end
 function s000_surface.LaunchIntroMetroidLarvaSurfacePresentation()
   Scenario.WriteToBlackboard("IntroMetroidLarvaSurfacePlayed", "b", true)

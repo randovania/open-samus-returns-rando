@@ -641,28 +641,30 @@ function s010_area1.PreSpawn11Event()
     Scenario.WriteToBlackboard("Alpha_PreSpawn11Event", "b", true)
   end
 end
-function s010_area1.LaunchIntroTeleporter01Cutscene()
-  bArea2Discovered = Blackboard.GetProp("s020_area2|s025_area2b|s028_area2c", "s020_area2_discovered")
-  if bArea2Discovered ~= nil then
-    if bArea2Discovered ~= true then
-     -- Game.AddEntityToUpdateInCutscene("LE_Teleporter_01_01")
-    --  Game.AddEntityToUpdateInCutscene("LE_Platform_Teleporter_01_01")
-     -- Game.LaunchCutscene("cutscenes/introteleporterarea01/takes/01/introteleporterarea0101.bmscu")
-    else
-      Game.OnTeleportApproached("LE_Teleporter_01_01")
-    end
-  else
-    --Game.AddEntityToUpdateInCutscene("LE_Teleporter_01_01")
-    --Game.AddEntityToUpdateInCutscene("LE_Platform_Teleporter_01_01")
-   -- Game.LaunchCutscene("cutscenes/introteleporterarea01/takes/01/introteleporterarea0101.bmscu")
-  end
-  if Game.GetPlayer() ~= nil then
-    --Game.GetPlayer().MOVEMENT:StopForcedAnalogInput()
-  end
-end
-function s010_area1.OnEndIntroTeleporter01Cutscene()
-  Game.RemoveEntityToUpdateInCutscene("LE_Teleporter_01_01")
-  Game.RemoveEntityToUpdateInCutscene("LE_Platform_Teleporter_01_01")
+-- function s010_area1.LaunchIntroTeleporter01Cutscene()
+--   bArea2Discovered = Blackboard.GetProp("s020_area2|s025_area2b|s028_area2c", "s020_area2_discovered")
+--   if bArea2Discovered ~= nil then
+--     if bArea2Discovered ~= true then
+--      Game.AddEntityToUpdateInCutscene("LE_Teleporter_01_01")
+--      Game.AddEntityToUpdateInCutscene("LE_Platform_Teleporter_01_01")
+--      Game.LaunchCutscene("cutscenes/introteleporterarea01/takes/01/introteleporterarea0101.bmscu")
+--     else
+--       Game.OnTeleportApproached("LE_Teleporter_01_01")
+--     end
+--   else
+--     Game.AddEntityToUpdateInCutscene("LE_Teleporter_01_01")
+--     Game.AddEntityToUpdateInCutscene("LE_Platform_Teleporter_01_01")
+--    Game.LaunchCutscene("cutscenes/introteleporterarea01/takes/01/introteleporterarea0101.bmscu")
+--   end
+--   if Game.GetPlayer() ~= nil then
+--     Game.GetPlayer().MOVEMENT:StopForcedAnalogInput()
+--   end
+-- end
+-- function s010_area1.OnEndIntroTeleporter01Cutscene()
+--   Game.RemoveEntityToUpdateInCutscene("LE_Teleporter_01_01")
+--   Game.RemoveEntityToUpdateInCutscene("LE_Platform_Teleporter_01_01")
+function s010_area1.OnEnter_ActivationTeleport_01_01()
+  Game.OnTeleportApproached("LE_Teleporter_01_01")
   Game.UpdateCurrentMinimapCellIconState()
 end
 function s010_area1.LaunchSpecialEvent01()
