@@ -11,7 +11,7 @@ You will need to provide JSON data matching the [JSON schema](https://github.com
 The patcher expects a path to an extracted romfs directory of Metroid: Samus Returns as well as the desired output directory.
 
 With a JSON file:
-`python -m open-samus-returns-rando --input-path ~/samus_returns/romfs --output-path ~/your-ryujinx-mod-folder/rando --input-json ~/samus_returnsrando/patcher.json`
+`python -m open-samus-returns-rando --input-path ~/samus_returns/romfs --output-path ~/your-citra-mod-folder/rando --input-json ~/samus_returnsrando/patcher.json`
 
 From stdin:
-`python -m open-samus-returns-rando --input-path ~/samus_returns/romfs --output-path ~/your-ryujinx-mod-folder/rando`
+`python -m open-samus-returns-rando --input-path ~/samus_returns/romfs --output-path ~/your-citra-mod-folder/rando`
