@@ -1,4 +1,4 @@
-# open-samus-returns-rando
+# Open Samus Returns Rando
 Open Source randomizer patcher for Metroid: Samus Returns. Intended for use in [Randovania](https://github.com/randovania).
 Currently supports patching starting items.
 
