@@ -7,6 +7,7 @@ import jsonschema
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor, OutputFormat
 from mercury_engine_data_structures.formats import Bmsld, BaseResource
 from mercury_engine_data_structures.game_check import Game
+from open_samus_returns_rando import lua_util
 # from mercury_engine_data_structures.formats.samus_returns_types import EBreakableTileType
 
 T = typing.TypeVar("T")
@@ -32,6 +33,17 @@ def create_init_copy(editor: FileTreeEditor):
             editor.find_pkgs("system/scripts/init.lc")
         )
 
+def create_scenario_copy(editor: FileTreeEditor):
+    original_scenario = "system/scripts/original_scenario.lc"
+    if not editor.does_asset_exists(original_scenario):
+        original_lc = editor.get_raw_asset("system/scripts/scenario.lc")
+        editor.add_new_asset(
+            original_scenario,
+            original_lc,
+            editor.find_pkgs("system/scripts/scenario.lc")
+        )
+
+
 
 def create_custom_init(inventory: dict[str, int], starting_location: dict):
     def _wrap(v: str):
@@ -50,6 +62,13 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
     for key, content in replacement.items():
         code = code.replace(f'TEMPLATE("{key}")', content)
 
+    return code
+
+def create_custom_scenario():
+    def _wrap(v: str):
+        return f'"{v}"'
+
+    code = Path(__file__).parent.joinpath("custom_scenario.lua").read_text()
     return code
 
 
@@ -94,12 +113,47 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
     out_romfs = output_path.joinpath("romfs")
     editor = PatcherEditor(input_path)
     create_init_copy(editor)
+    create_scenario_copy(editor)
 
     editor.replace_asset(
         "system/scripts/init.lc",
         create_custom_init(configuration["starting_items"],
                            configuration["starting_location"]
                            ).encode("ascii"))
+    
+    editor.replace_asset(
+        "system/scripts/scenario.lc",
+        create_custom_scenario().encode("ascii")
+    )
+    
+    
+    areas = [
+                "s000_surface",
+                "s010_area1",
+                "s020_area2",
+                "s025_area2b",
+                "s028_area2c",
+                "s030_area3",
+                "s033_area3b",
+                "s036_area3c",
+                "s040_area4",
+                "s050_area5",
+                "s060_area6",
+                "s065_area6b",
+                "s067_area6c",
+                "s070_area7",
+                "s090_area9",
+                "s100_area10",
+                "s110_surfaceb"
+            ]
+
+    for x in areas:
+        lua_util.replace_script(
+            editor,
+            f"maps/levels/c10_samus/{x}/{x}",
+            f"levels/{x}.lc.lua"
+            )
+
 
     # actor = level.actors_for_layer("default")[configuration["starting_location"]["actor"]]
     # old_on_teleport = actor.pComponents["STARTPOINT"]["sOnTeleport"]

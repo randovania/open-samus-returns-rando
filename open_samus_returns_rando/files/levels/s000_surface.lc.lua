@@ -69,6 +69,7 @@ function s000_surface.OnShipStartPointTeleport(_ARG_0_, _ARG_1_)
   end
 end
 function s000_surface.InitFromBlackboard()
+
   if Scenario.ReadFromBlackboard("LarvaPresentationPlayed", false) then
     Game.DisableTrigger("TG_Intro_MetroidSurface")
   else
@@ -87,6 +88,7 @@ function s000_surface.InitFromBlackboard()
     Game.DisableTrigger("TG_StartMeleeReminderTuto")
     Game.DisableTrigger("TG_EndMeleeReminderTuto")
   end
+  Game.WriteToGameBlackboardSection("PlayedCutscenes", "cutscenes/planetarrival/takes/10/planetarrival10.bmscu", true)
   if not Game.GetFromGameBlackboardSection("PlayedCutscenes", "cutscenes/planetarrival/takes/10/planetarrival10.bmscu") then
     Game.AddEntityToUpdateInCutscene("LE_SamusShip")
     Game.SetPlayerInputEnabled(false, false)
@@ -184,10 +186,10 @@ function s000_surface.IntroMetroidLarvaSurfacePresentationOnEnd()
   Game.SaveGame("checkpoint", "AmiiboUnlocked", "ST_Checkpoint_AmiiboUnlocked", false)
 end
 function s000_surface.LaunchFirstTimeAlphaPresentation()
-  Game.AddEntityToUpdateInCutscene("morphball")
-  Game.AddEntityToUpdateInCutscene("Samus")
-  Game.LaunchCutscene("cutscenes/introalpha/takes/01/introalpha01.bmscu")
-  Game.SetPlayerInputEnabled(false, false)
+  --Game.AddEntityToUpdateInCutscene("morphball")
+  --Game.AddEntityToUpdateInCutscene("Samus")
+  --Game.LaunchCutscene("cutscenes/introalpha/takes/01/introalpha01.bmscu")
+  --Game.SetPlayerInputEnabled(false, false)
 end
 function s000_surface.OnAlphaPresentationCutsceneLaunch()
   Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
@@ -452,15 +454,15 @@ function s000_surface.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4
     Game.DelSF("s000_surface.ScheduledStartMeleeReminderTutorial")
     Game.DelSF("GUI.StartMeleeReminderTutorial")
   end
-  if _ARG_0_ == "collision_camera_002" and _ARG_2_ == "collision_camera_003" and not Scenario.ReadFromBlackboard("FirstTimeChozoStatuePlayed", false) then
-    s000_surface.LaunchFirstTimeChozoStatuePresentation()
-  elseif _ARG_0_ == "collision_camera_016" and _ARG_2_ == "collision_camera_002" and not Scenario.ReadFromBlackboard("MeleeTutoPlayed", false) then
-    s000_surface.LaunchMeleeTutoCutscene()
-  elseif _ARG_0_ == "collision_camera_003" and _ARG_2_ == "collision_camera_004" and not Scenario.ReadFromBlackboard("FirstTimeDNAStatuePlayed", false) then
-    s000_surface.LaunchFirstTimeDNAStatuePresentation()
-  elseif _ARG_0_ == "collision_camera_014" and _ARG_2_ == "collision_camera_023" and not Scenario.ReadFromBlackboard("IntroMetroidLarvaSurfacePlayed", false) then
-    s000_surface.LaunchIntroMetroidLarvaSurfacePresentation()
-  end
+  --if _ARG_0_ == "collision_camera_002" and _ARG_2_ == "collision_camera_003" and not Scenario.ReadFromBlackboard("FirstTimeChozoStatuePlayed", false) then
+  --  s000_surface.LaunchFirstTimeChozoStatuePresentation()
+  --elseif _ARG_0_ == "collision_camera_016" and _ARG_2_ == "collision_camera_002" and not Scenario.ReadFromBlackboard("MeleeTutoPlayed", false) then
+  --  s000_surface.LaunchMeleeTutoCutscene()
+  --elseif _ARG_0_ == "collision_camera_003" and _ARG_2_ == "collision_camera_004" and not Scenario.ReadFromBlackboard("FirstTimeDNAStatuePlayed", false) then
+  --  s000_surface.LaunchFirstTimeDNAStatuePresentation()
+  --elseif _ARG_0_ == "collision_camera_014" and _ARG_2_ == "collision_camera_023" and not Scenario.ReadFromBlackboard("IntroMetroidLarvaSurfacePlayed", false) then
+  --  s000_surface.LaunchIntroMetroidLarvaSurfacePresentation()
+  --end
 end
 function s000_surface.LaunchFirstTimeChozoStatuePresentation()
   Scenario.WriteToBlackboard("FirstTimeChozoStatuePlayed", "b", true)
@@ -478,7 +480,7 @@ function s000_surface.OnEnter_RestoreHazardousSetup()
   Game.SetSubAreaCurrentSetup("collision_camera_005", "Default", true)
 end
 function s000_surface.LaunchFirstTimeBestowalStatuePresentation()
-  Game.LaunchCutscene("cutscenes/introspenergystatue/takes/01/introspenergystatue01.bmscu")
+  --Game.LaunchCutscene("cutscenes/introspenergystatue/takes/01/introspenergystatue01.bmscu")
 end
 function s000_surface.OnStartIntroSpecialEnergyStatue01()
   Game.AddEntityToUpdateInCutscene("TG_SpecialEnergyCloud")
