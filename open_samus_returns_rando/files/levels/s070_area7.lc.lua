@@ -801,7 +801,7 @@ function s070_area7.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s070_area7.LaunchManicMinerBotStealOrb()
   Scenario.WriteToBlackboard("ManicMinerBotStealOrbPlayed", "b", true)
-  Game.LaunchCutscene("cutscenes/manicminerbotstealorb/takes/01/manicminerbotstealorb01.bmscu")
+  -- Game.LaunchCutscene("cutscenes/manicminerbotstealorb/takes/01/manicminerbotstealorb01.bmscu")
 end
 function s070_area7.OnManicMinerBotStealOrbCutsceneEnd()
   Game.UpdateSpecifiedMinimapCellIcon(23, 26)
