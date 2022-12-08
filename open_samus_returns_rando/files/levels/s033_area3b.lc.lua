@@ -50,10 +50,10 @@ function s033_area3b.LaunchMinerBotDemolishCutscene()
     Game.GetEntity("LE_ManicMinerDemolish"):Disable()
   end
   if Game.GetPlayer() ~= nil then
-    Game.GetPlayer().ANIMATION:SetAction("manicminerbotarea3", true)
+    -- Game.GetPlayer().ANIMATION:SetAction("manicminerbotarea3", true)
     Game.GetPlayer().MOVEMENT:ForceDetachGrapple(true)
   end
-  Game.LaunchCutscene("cutscenes/intromanicminerbotarea3/takes/01/intromanicminerbotarea301.bmscu")
+  -- Game.LaunchCutscene("cutscenes/intromanicminerbotarea3/takes/01/intromanicminerbotarea301.bmscu")
   Scenario.WriteToBlackboard("MinerBotDemolishCutsceneLaunched", "b", true)
   Game.SetSubAreaEnvironmentLocked(false, false, true)
   Game.SetSubAreaCurrentSetup("collision_camera_031", "PostManicMiner", true)
