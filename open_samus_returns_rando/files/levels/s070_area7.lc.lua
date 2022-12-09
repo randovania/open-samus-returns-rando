@@ -747,7 +747,8 @@ function s070_area7.OnGlowfly_LS_Generated(_ARG_0_, _ARG_1_)
 end
 function s070_area7.LaunchFirstTimeOmegaPresentation()
   Scenario.WriteToBlackboard("OmegaIntroCutscenePlayed", "b", true)
-  Game.LaunchCutscene("cutscenes/introomega/takes/10/introomega10.bmscu")
+  --Game.LaunchCutscene("cutscenes/introomega/takes/10/introomega10.bmscu")
+  s070_area7.OnOmegaPresentationCutsceneStart()
   Game.SetCameraEnemy("omega")
   Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
 end
