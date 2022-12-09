@@ -69,7 +69,7 @@ function s000_surface.OnShipStartPointTeleport(_ARG_0_, _ARG_1_)
   end
 end
 function s000_surface.InitFromBlackboard()
-
+  
   if Scenario.ReadFromBlackboard("LarvaPresentationPlayed", false) then
     Game.DisableTrigger("TG_Intro_MetroidSurface")
   else
@@ -186,10 +186,11 @@ function s000_surface.IntroMetroidLarvaSurfacePresentationOnEnd()
   Game.SaveGame("checkpoint", "AmiiboUnlocked", "ST_Checkpoint_AmiiboUnlocked", false)
 end
 function s000_surface.LaunchFirstTimeAlphaPresentation()
-  Game.AddEntityToUpdateInCutscene("morphball")
-  Game.AddEntityToUpdateInCutscene("Samus")
-  Game.LaunchCutscene("cutscenes/introalpha/takes/01/introalpha01.bmscu")
-  Game.SetPlayerInputEnabled(false, false)
+  s000_surface.OnAlphaPresentationCutsceneLaunch()
+  --Game.AddEntityToUpdateInCutscene("morphball")
+  --Game.AddEntityToUpdateInCutscene("Samus")
+  --Game.LaunchCutscene("cutscenes/introalpha/takes/01/introalpha01.bmscu")
+  --Game.SetPlayerInputEnabled(false, false)
 end
 function s000_surface.OnAlphaPresentationCutsceneLaunch()
   Game.MetroidRadarForceStateOnBegin(2, -1, true, true)

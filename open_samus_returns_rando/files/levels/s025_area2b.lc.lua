@@ -297,8 +297,9 @@ function s025_area2b.OnParabite_001_Generated(_ARG_0_, _ARG_1_)
 end
 function s025_area2b.LaunchFirstTimeGammaPresentation()
   Scenario.WriteToBlackboard("GammaIntroCutscenePlayed", "b", true)
-  Game.LaunchCutscene("cutscenes/introgamma/takes/01/introgamma01.bmscu")
-  Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
+  s025_area2b.OnGammaPresentationCutsceneStart()
+  --Game.LaunchCutscene("cutscenes/introgamma/takes/01/introgamma01.bmscu")
+  --Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
 end
 function s025_area2b.OnGammaPresentationCutsceneStart()
   if Game.GetEntity("SG_Gamma_001") ~= nil then

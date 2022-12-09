@@ -598,7 +598,8 @@ function s050_area5.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s050_area5.LaunchFirstTimeZetaPresentation()
   Scenario.WriteToBlackboard("FirstTimeZetaPresentationPlayed", "b", true)
-  Game.LaunchCutscene("cutscenes/introzeta/takes/01/introzeta01.bmscu")
+  s050_area5.OnZetaPresentationCutsceneStart()
+  --Game.LaunchCutscene("cutscenes/introzeta/takes/01/introzeta01.bmscu")
   Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
 end
 function s050_area5.OnZetaPresentationCutsceneStart()
@@ -613,7 +614,7 @@ end
 function s050_area5.LaunchFirstTimeBrokenChozoStatuePresentation()
   Scenario.WriteToBlackboard("firstTimeBrokenChozoStatuePlayed", "b", true)
   Game.SetSceneGroupEnabledByName("sg_disablecs5", false)
-  Game.LaunchCutscene("cutscenes/brokenchozostatue/takes/01/brokenchozostatue01.bmscu")
+  --Game.LaunchCutscene("cutscenes/brokenchozostatue/takes/01/brokenchozostatue01.bmscu")
   if Game.GetEntity("TG_Intro_BrokenChozoStatue") ~= nil then
     Game.GetEntity("TG_Intro_BrokenChozoStatue").TRIGGER:DisableTrigger()
   end
