@@ -75,6 +75,11 @@ class PatcherEditor(FileTreeEditor):
 #         usable.sScenarioName = elevator["destination"]["scenario"]
 #         usable.sTargetSpawnPoint = elevator["destination"]["actor"]
 
+ALL_PICKUPS = [
+    "powerup_gravitysuit",
+    "powerup_variasuit"
+]
+
 ALL_AREAS = [
     "s000_surface",
     "s010_area1",
@@ -111,8 +116,15 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
                            configuration["starting_location"]
                            ).encode("ascii"))
 
-    lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")    
+    lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
     
+    for x in ALL_PICKUPS:
+        lua_util.replace_script(
+            editor,
+            f"actors/items/{x}/scripts/{x}",
+            f"pickups/{x}.lc.lua"
+            )
+
     for x in ALL_AREAS:
         lua_util.replace_script(
             editor,
