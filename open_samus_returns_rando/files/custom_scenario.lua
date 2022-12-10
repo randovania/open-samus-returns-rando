@@ -1,6 +1,4 @@
-
-
-Game.ImportLibrary("system/scripts/original_scenario.lua")
+Game.ImportLibrary("system/scripts/scenario_original.lua")
 
 Scenario = Scenario or {}
 setmetatable(Scenario, {__index = _G})
