@@ -8,7 +8,7 @@ from mercury_engine_data_structures.file_tree_editor import FileTreeEditor, Outp
 from mercury_engine_data_structures.formats import Bmsld, BaseResource
 from mercury_engine_data_structures.game_check import Game
 from open_samus_returns_rando import lua_util
-# from mercury_engine_data_structures.formats.samus_returns_types import EBreakableTileType
+
 
 T = typing.TypeVar("T")
 LOG = logging.getLogger("samus_returns_patcher")
@@ -120,6 +120,21 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
             f"levels/{x}.lc.lua"
             )
 
+    for pickup in configuration["pickups"]:
+        actor_reference = pickup["actor"]
+        scenario = editor.get_scenario(actor_reference["scenario"])
+        actor_name = actor_reference["actor"]
+
+        found_actor = False
+        for actors in scenario.raw.actors:
+            if actor_name in actors:
+                actor = actors[actor_name]
+                actor["type"] = pickup["type"]
+                found_actor = True
+                break
+    
+        if not found_actor:
+            raise KeyError("Actor named '{}' found in ".format(actor_name, actor_reference["scenario"]))
 
     # actor = level.actors_for_layer("default")[configuration["starting_location"]["actor"]]
     # old_on_teleport = actor.pComponents["STARTPOINT"]["sOnTeleport"]
