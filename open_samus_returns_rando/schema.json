@@ -46,7 +46,8 @@
     },
     "required": [
         "starting_items",
-        "starting_location"
+        "starting_location",
+        "pickups"
     ],
     "$defs": {
         "actor_reference_with_layer": {
