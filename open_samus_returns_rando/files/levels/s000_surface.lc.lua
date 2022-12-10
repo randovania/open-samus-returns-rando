@@ -94,6 +94,7 @@ function s000_surface.InitFromBlackboard()
     Game.SetPlayerInputEnabled(false, false)
     s000_surface.LaunchPlanetArrival()
   end
+  Game.GetEntity("LE_HazarousPool").HAZAROUSPOOL:Activate(false)
 end
 function s000_surface.OnReloaded()
 end
