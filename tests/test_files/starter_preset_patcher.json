@@ -7,5 +7,11 @@
         "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": 1,
         "ITEM_MAX_SPECIAL_ENERGY": 1000,
         "ITEM_WEAPON_MISSILE_MAX": 24
-    }
+    },
+    "pickups": [
+        {
+            "actor": {"scenario": "s028_area2c", "actor": "LE_Item_002"}, 
+            "type": "item_senergytank"
+        }
+    ]
 }
