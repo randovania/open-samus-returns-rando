@@ -81,6 +81,7 @@ function s028_area2c.ElevatorSetTarget(_ARG_0_)
   end
 end
 function s028_area2c.InitFromBlackboard()
+  Game.GetEntity("LE_HazarousPool").HAZAROUSPOOL:Activate(false)
 end
 function s028_area2c.OnReloaded()
 end

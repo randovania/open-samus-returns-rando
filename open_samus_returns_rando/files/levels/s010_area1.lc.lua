@@ -45,6 +45,7 @@ function s010_area1.InitFromBlackboard()
   end
   Game.SetCollisionCameraTransitionOverride("collision_camera_008", "collision_camera_037", 2.5, 0.1)
   Game.SetCollisionCameraTransitionOverride("collision_camera_030", "collision_camera_038", 2.5, 0.1)
+  Game.GetEntity("LE_HazarousPool").HAZAROUSPOOL:Activate(false)
 end
 function s010_area1.OnReloaded()
 end

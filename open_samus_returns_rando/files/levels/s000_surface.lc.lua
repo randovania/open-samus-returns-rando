@@ -69,7 +69,7 @@ function s000_surface.OnShipStartPointTeleport(_ARG_0_, _ARG_1_)
   end
 end
 function s000_surface.InitFromBlackboard()
-  
+  Scenario.WriteToBlackboard("LarvaPresentationPlayed", "b", true)
   if Scenario.ReadFromBlackboard("LarvaPresentationPlayed", false) then
     Game.DisableTrigger("TG_Intro_MetroidSurface")
   else
@@ -194,13 +194,15 @@ function s000_surface.LaunchFirstTimeAlphaPresentation()
   --Game.SetPlayerInputEnabled(false, false)
 end
 function s000_surface.OnAlphaPresentationCutsceneLaunch()
-  Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
-  Game.SetSceneGroupEnabledByName("sg_BrokenEggCinematic", false)
-  if Game.GetEntity("SG_Alpha_001") ~= nil then
-    Game.GetEntity("SG_Alpha_001").SPAWNGROUP:EnableSpawnGroup()
-    if Game.GetEntityFromSpawnPoint("SP_Alpha_001") ~= nil then
-      Game.GetEntityFromSpawnPoint("SP_Alpha_001").AI:SetBossCamera(true)
-      Game.StopEntitySound(Game.GetEntityFromSpawnPoint("SP_Alpha_001").sName, "actors/alpha/alpha_loop.wav", 0)
+  if not Scenario.ReadFromBlackboard("alpha_dead",false) then
+    Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
+    Game.SetSceneGroupEnabledByName("sg_BrokenEggCinematic", false)
+    if Game.GetEntity("SG_Alpha_001") ~= nil then
+      Game.GetEntity("SG_Alpha_001").SPAWNGROUP:EnableSpawnGroup()
+      if Game.GetEntityFromSpawnPoint("SP_Alpha_001") ~= nil then
+        --Game.GetEntityFromSpawnPoint("SP_Alpha_001").AI:SetBossCamera(true)
+        Game.StopEntitySound(Game.GetEntityFromSpawnPoint("SP_Alpha_001").sName, "actors/alpha/alpha_loop.wav", 0)
+      end
     end
   end
 end
@@ -455,7 +457,10 @@ function s000_surface.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4
     GUI.EndMeleeReminderTutorial()
     Game.DelSF("s000_surface.ScheduledStartMeleeReminderTutorial")
     Game.DelSF("GUI.StartMeleeReminderTutorial")
+  elseif _ARG_0_ == "collision_camera_024" then
+    s000_surface.LaunchFirstTimeAlphaPresentation()  
   end
+  
   --if _ARG_0_ == "collision_camera_002" and _ARG_2_ == "collision_camera_003" and not Scenario.ReadFromBlackboard("FirstTimeChozoStatuePlayed", false) then
   --  s000_surface.LaunchFirstTimeChozoStatuePresentation()
   --elseif _ARG_0_ == "collision_camera_016" and _ARG_2_ == "collision_camera_002" and not Scenario.ReadFromBlackboard("MeleeTutoPlayed", false) then
@@ -516,6 +521,7 @@ function s000_surface.LaunchMeleeTutoCutscene()
 end
 function s000_surface.OnDnaAbsorbAnimation()
   Game.SetInGameMusicState("DEATH")
+  Scenario.WriteToBlackboard("alpha_killed", "b", true)
 end
 function s000_surface.OnMeleeTutoButtonPressed()
   Game.ChangeCutscene("cutscenes/meleetuto/takes/03/meleetuto03.bmscu")

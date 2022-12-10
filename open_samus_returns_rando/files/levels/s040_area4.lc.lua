@@ -339,16 +339,16 @@ function s040_area4.InitFromBlackboard()
   Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_001", true)
   Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", true)
   if Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_001_enabled") == nil then
-    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(true)
-    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_001", false)
+    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(false)
+    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_001", true)
     Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(false)
-    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", false)
+    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", true)
   elseif Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_002_enabled") == nil then
-    Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(true)
-    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", false)
+    Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(false)
+    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", true)
   else
-    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate((Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_001_enabled")))
-    Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate((Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_002_enabled")))
+    --Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate((Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_001_enabled")))
+    --Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate((Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_002_enabled")))
   end
   s040_area4.OnFansInit()
   Game.SetArenaDefaultSpawnGroup("Gamma_001", "SG_Gamma_001_A")
@@ -367,19 +367,25 @@ function s040_area4.OnEnter_ActivationTeleport_04_01()
   Game.OnTeleportApproached("LE_Teleporter_04_01")
 end
 function s040_area4.OnHazarousPoolDrain(_ARG_0_)
-  if _ARG_0_ == "LE_HazarousPool_001" then
-    Game.SetSubAreaCurrentSetup("collision_camera_006", "Hazarous_empty_001", true)
-    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_001", true)
-  elseif _ARG_0_ == "LE_HazarousPool_002" then
-    Game.SetSubAreaCurrentSetup("collision_camera_006", "Hazarous_empty_002", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_022", "Hazarous_empty_002", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_023", "Hazarous_empty_002", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_010", "Hazarous_empty_002", true)
-    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", true)
-  end
-  if _ARG_0_ == "LE_HazarousPool_001" then
-    Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(true)
-  end
+  --if _ARG_0_ == "LE_HazarousPool_001" then
+  --  Game.SetSubAreaCurrentSetup("collision_camera_006", "Hazarous_empty_001", true)
+  --  Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_001", true)
+  --elseif _ARG_0_ == "LE_HazarousPool_002" then
+   -- Game.SetSubAreaCurrentSetup("collision_camera_006", "Hazarous_empty_002", true)
+   -- Game.SetSubAreaCurrentSetup("collision_camera_022", "Hazarous_empty_002", true)
+   -- Game.SetSubAreaCurrentSetup("collision_camera_023", "Hazarous_empty_002", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_010", "Hazarous_empty_002", true)
+  --  Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", true)
+ -- end
+  --if _ARG_0_ == "LE_HazarousPool_001" then
+  --  Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(true)
+  --end
+  -- Set all camera's
+  Game.SetSubAreaCurrentSetup("collision_camera_006", "Hazarous_empty_001", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_006", "Hazarous_empty_002", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_022", "Hazarous_empty_002", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_023", "Hazarous_empty_002", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_010", "Hazarous_empty_002", true)
 end
 function s040_area4.OnEnterHazardous_001()
   PoisonZone.OnEnter()

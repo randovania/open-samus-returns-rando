@@ -91,7 +91,7 @@ s070_area7.tDNAScanLandmarks = {
 }
 function s070_area7.InitFromBlackboard()
   if Blackboard.GetProp("s070_area7", "entity_LE_HazarousPool_001_enabled") == nil then
-    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(true)
+    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(false)
     Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(false)
   end
   s070_area7.OnFansInit()
@@ -118,27 +118,39 @@ function s070_area7.OnEnter_ActivationTeleport_07_02()
   Game.OnTeleportApproached("LE_Teleporter_07_02")
 end
 function s070_area7.OnHazarousPoolDrain(_ARG_0_)
-  if _ARG_0_ == "LE_HazarousPool_001" then
-    Game.SetSubAreaCurrentSetup("collision_camera_037", "Omega_Enabled", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_A", "Hazardous_Phase_02", true)
-    Scenario.WriteToBlackboard("OmegaDiscovered", "b", true)
-    Game.SetSceneGroupEnabledByName("sg_SubArea_ValveOmega", false)
-    Game.SetSubAreaCurrentSetup("collision_camera_051", "Hazardous_Phase_02", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_060", "Hazardous_Phase_02", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_042", "Hazardous_Phase_02", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_B", "Hazardous_Phase_02", true)
-  elseif _ARG_0_ == "LE_HazarousPool_002" then
-    Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_A", "Hazardous_Phase_03", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_051", "Hazardous_Phase_03", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_060", "Hazardous_Phase_03", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_B", "Hazardous_Phase_03", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_034", "Hazardous_Phase_03", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_035", "Hazardous_Phase_03", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_043", "Hazardous_Phase_03", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_045", "Hazardous_Phase_03", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_044", "Hazardous_Phase_03", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_042", "Hazardous_Phase_03", true)
-  end
+  --if _ARG_0_ == "LE_HazarousPool_001" then
+  --  Game.SetSubAreaCurrentSetup("collision_camera_037", "Omega_Enabled", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_A", "Hazardous_Phase_02", true)
+  --  Scenario.WriteToBlackboard("OmegaDiscovered", "b", true)
+  --  Game.SetSceneGroupEnabledByName("sg_SubArea_ValveOmega", false)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_051", "Hazardous_Phase_02", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_060", "Hazardous_Phase_02", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_042", "Hazardous_Phase_02", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_B", "Hazardous_Phase_02", true)
+  --elseif _ARG_0_ == "LE_HazarousPool_002" then
+  --  Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_A", "Hazardous_Phase_03", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_051", "Hazardous_Phase_03", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_060", "Hazardous_Phase_03", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_B", "Hazardous_Phase_03", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_034", "Hazardous_Phase_03", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_035", "Hazardous_Phase_03", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_043", "Hazardous_Phase_03", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_045", "Hazardous_Phase_03", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_044", "Hazardous_Phase_03", true)
+  --  Game.SetSubAreaCurrentSetup("collision_camera_042", "Hazardous_Phase_03", true)
+  --end
+  Game.SetSubAreaCurrentSetup("collision_camera_037", "Omega_Enabled", true)
+  Scenario.WriteToBlackboard("OmegaDiscovered", "b", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_A", "Hazardous_Phase_03", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_051", "Hazardous_Phase_03", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_060", "Hazardous_Phase_03", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_B", "Hazardous_Phase_03", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_034", "Hazardous_Phase_03", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_035", "Hazardous_Phase_03", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_043", "Hazardous_Phase_03", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_045", "Hazardous_Phase_03", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_044", "Hazardous_Phase_03", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_042", "Hazardous_Phase_03", true)
 end
 function s070_area7.OnEnterHazardous_001()
   PoisonZone.OnEnter()
@@ -791,7 +803,7 @@ function s070_area7.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
       Game.SetCameraEnemy("manicminerbot")
       s070_area7.LaunchManicMinerBotIntroCutscene()
     end
-  elseif _ARG_0_ == "collision_camera_047" and _ARG_2_ == "collision_camera_037" and _ARG_3_ == "Omega_Enabled" and not Scenario.ReadFromBlackboard("OmegaIntroCutscenePlayed", false) then
+  elseif (_ARG_0_ == "collision_camera_047" or _ARG_2_ == "collision_camera_046") and (_ARG_2_ == "collision_camera_037" or _ARG_2_ == "collision_camera_046") and _ARG_3_ == "Omega_Enabled" and not Scenario.ReadFromBlackboard("OmegaIntroCutscenePlayed", false) then
     s070_area7.LaunchFirstTimeOmegaPresentation()
   end
   if _ARG_2_ == "collision_camera_037" and _ARG_3_ == "Omega_Enabled" and not Scenario.ReadFromBlackboard("entity_SG_Omega_001_deaths", false) then
