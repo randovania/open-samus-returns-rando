@@ -93,6 +93,7 @@ function s060_area6.SetupDebugGameBlackboard()
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT", "f", 0)
 end
 function s060_area6.InitFromBlackboard()
+  Game.GetEntity("LE_HazarousPool").HAZAROUSPOOL:Activate(false)
 end
 function s060_area6.OnReloaded()
 end

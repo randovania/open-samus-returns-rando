@@ -115,6 +115,7 @@ function s090_area9.InitFromBlackboard()
   s090_area9.bAfterOmegasKilledMusicChange = false
   s090_area9.AllOmegasDeadCallback()
   s090_area9.OnFansInit()
+  Game.GetEntity("LE_HazarousPool").HAZAROUSPOOL:Activate(false)
 end
 function s090_area9.OnReloaded()
 end
