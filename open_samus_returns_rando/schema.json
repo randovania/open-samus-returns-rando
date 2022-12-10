@@ -25,6 +25,23 @@
         },
         "starting_items": {
             "type": "object"
+        },
+        "pickups": {
+            "description": "Changes pickup actors to have a different type",
+            "type": "array",
+            "default": [],
+            "items": {
+                "type": "object",
+                "properties": {
+                    "actor": {
+                        "$ref": "#/$defs/actor_reference"
+                    },
+                    "type": {
+                        "type": "string"
+                    }
+                },
+                "additionalProperties": false
+            }
         }
     },
     "required": [

@@ -55,7 +55,6 @@ def create_script_copy(editor: FileTreeEditor, path: str):
             editor.find_pkgs(path + ".lc")
         )
 
-
 def replace_script(editor: FileTreeEditor, path: str, replacement_path: str):
     create_script_copy(editor, path)
     editor.replace_asset(path + ".lc", _files().joinpath(replacement_path).read_bytes())
