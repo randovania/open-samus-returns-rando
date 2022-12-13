@@ -29,7 +29,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
     ),
 
     "powerup_wavebeam": ModelData(
-        bcmdl_path="actors/items/powerup_widebeam/models/powerup_wavebeam.bcmdl",
+        bcmdl_path="actors/items/powerup_wavebeam/models/powerup_wavebeam.bcmdl",
         dependencies=(
             "actors/items/powerup_wavebeam/charclasses/powerup_wavebeam.bmsad",
             "actors/items/powerup_wavebeam/models/powerup_wavebeam.bcmdl",
@@ -39,7 +39,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
     ),
     
     "powerup_spazerbeam": ModelData(
-        bcmdl_path="actors/items/powerup_widebeam/models/powerup_spazerbeam.bcmdl",
+        bcmdl_path="actors/items/powerup_spazerbeam/models/powerup_spazerbeam.bcmdl",
         dependencies=(
             "actors/items/powerup_spazerbeam/charclasses/powerup_spazerbeam.bmsad",
             "actors/items/powerup_spazerbeam/models/powerup_spazerbeam.bcmdl",
@@ -49,7 +49,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
     ),
 
     "powerup_plasmabeam": ModelData(
-        bcmdl_path="actors/items/powerup_widebeam/models/powerup_plasmabeam.bcmdl",
+        bcmdl_path="actors/items/powerup_plasmabeam/models/powerup_plasmabeam.bcmdl",
         dependencies=(
             "actors/items/powerup_plasmabeam/charclasses/powerup_plasmabeam.bmsad",
             "actors/items/powerup_plasmabeam/models/powerup_plasmabeam.bcmdl",
@@ -59,7 +59,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
     ),
 
     "powerup_chargebeam": ModelData(
-        bcmdl_path="actors/items/powerup_widebeam/models/powerup_chargebeam.bcmdl",
+        bcmdl_path="actors/items/powerup_chargebeam/models/powerup_chargebeam.bcmdl",
         dependencies=(
             "actors/items/powerup_chargebeam/charclasses/powerup_chargebeam.bmsad",
             "actors/items/powerup_chargebeam/models/powerup_chargebeam.bcmdl",
@@ -69,7 +69,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
     ),
 
     "powerup_icebeam": ModelData(
-        bcmdl_path="actors/items/powerup_widebeam/models/powerup_icebeam.bcmdl",
+        bcmdl_path="actors/items/powerup_icebeam/models/powerup_icebeam.bcmdl",
         dependencies=(
             "actors/items/powerup_icebeam/charclasses/powerup_icebeam.bmsad",
             "actors/items/powerup_icebeam/models/powerup_icebeam.bcmdl",
@@ -79,7 +79,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
     ),
 
     "powerup_grapplebeam": ModelData(
-        bcmdl_path="actors/items/powerup_widebeam/models/powerup_grapplebeam.bcmdl",
+        bcmdl_path="actors/items/powerup_grapplebeam/models/powerup_grapplebeam.bcmdl",
         dependencies=(
             "actors/items/powerup_grapplebeam/charclasses/powerup_grapplebeam.bmsad",
             "actors/items/powerup_grapplebeam/models/powerup_grapplebeam.bcmdl",
@@ -89,7 +89,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
     ),
 
     "powerup_supermissile": ModelData(
-        bcmdl_path="actors/items/powerup_widebeam/models/powerup_supermissile.bcmdl",
+        bcmdl_path="actors/items/powerup_supermissile/models/powerup_supermissile.bcmdl",
         dependencies=(
             "actors/items/powerup_supermissile/charclasses/powerup_supermissile.bmsad",
             "actors/items/powerup_supermissile/models/powerup_supermissile.bcmdl",
