@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 import typing
@@ -5,9 +6,11 @@ from pathlib import Path
 
 import jsonschema
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor, OutputFormat
-from mercury_engine_data_structures.formats import Bmsld, BaseResource
+from mercury_engine_data_structures.formats import Bmsld, Bmsad, BaseResource
 from mercury_engine_data_structures.game_check import Game
 from open_samus_returns_rando import lua_util
+
+from open_samus_returns_rando.model_data import get_data
 
 
 T = typing.TypeVar("T")
@@ -55,6 +58,13 @@ class PatcherEditor(FileTreeEditor):
             self.memory_files[path] = self.get_parsed_asset(path, type_hint=type_hint)
         return self.memory_files[path]
 
+    def get_level_pkgs(self, name: str) -> set[str]:
+        return set(self.find_pkgs(path_for_level(name) + ".bmsld"))
+
+    def ensure_present_in_scenario(self, scenario: str, asset):
+        for pkg in self.get_level_pkgs(scenario):
+            self.ensure_present(pkg, asset)
+
     def get_scenario(self, name: str) -> Bmsld:
         return self.get_file(path_for_level(name) + ".bmsld", Bmsld)
 
@@ -98,8 +108,33 @@ ALL_AREAS = [
     "s090_area9",
     "s100_area10",
     "s110_surfaceb",
-]
+] 
 
+def patch_pickups(editor: PatcherEditor, pickups: list):
+    for pickup in pickups:
+        actor_reference = pickup["actor"]
+        scenario = editor.get_scenario(actor_reference["scenario"])
+        actor_name = actor_reference["actor"]
+
+        model_name: str = pickup["type"]
+        pickup_type = get_data(model_name)
+
+        found_actor = False
+        for actors in scenario.raw.actors:
+            if actor_name in actors:
+                actor = actors[actor_name]
+                actor["type"] = pickup["type"]
+                found_actor = True
+                break
+    
+        if not found_actor:
+            raise KeyError("Actor named '{}' found in ".format(actor_name, actor_reference["scenario"]))
+
+        # Dependencies
+        for level_pkg in editor.get_level_pkgs(actor_reference["scenario"]):
+            editor.ensure_present(level_pkg, "system/animtrees/base.bmsat")
+            for dep in pickup_type.dependencies:
+                editor.ensure_present(level_pkg, dep)
 
 def patch(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
@@ -132,22 +167,6 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
             f"levels/{x}.lc.lua"
             )
 
-    for pickup in configuration["pickups"]:
-        actor_reference = pickup["actor"]
-        scenario = editor.get_scenario(actor_reference["scenario"])
-        actor_name = actor_reference["actor"]
-
-        found_actor = False
-        for actors in scenario.raw.actors:
-            if actor_name in actors:
-                actor = actors[actor_name]
-                actor["type"] = pickup["type"]
-                found_actor = True
-                break
-    
-        if not found_actor:
-            raise KeyError("Actor named '{}' found in ".format(actor_name, actor_reference["scenario"]))
-
     # actor = level.actors_for_layer("default")[configuration["starting_location"]["actor"]]
     # old_on_teleport = actor.pComponents["STARTPOINT"]["sOnTeleport"]
     # if old_on_teleport not in ("", "Game.HUDIdleScreenLeave"):
@@ -158,6 +177,8 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
 
     # if "elevators" in configuration:
     #     patch_elevators(editor, configuration["elevators"])
+
+    patch_pickups(editor, configuration["pickups"])
 
     editor.flush_modified_assets()
     editor.save_modifications(out_romfs, OutputFormat.PKG)
