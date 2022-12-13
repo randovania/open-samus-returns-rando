@@ -53,7 +53,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_plasmabeam/charclasses/powerup_plasmabeam.bmsad",
             "actors/items/powerup_plasmabeam/models/powerup_plasmabeam.bcmdl",
-            "actors/items/powerup_plasmabeam/models/textures/itemsphereplasmabeam_d.bctex",
+            "actors/items/powerup_plasmabeam/models/textures/itemplasmabeam_d.bctex",
             "actors/items/powerup_plasmabeam/scripts/powerup_plasmabeam.lc",
         ),
     ),
@@ -83,7 +83,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_grapplebeam/charclasses/powerup_grapplebeam.bmsad",
             "actors/items/powerup_grapplebeam/models/powerup_grapplebeam.bcmdl",
-            "actors/items/powerup_grapplebeam/models/textures/itemspheregrapplebeam_d.bctex",
+            "actors/items/powerup_grapplebeam/models/textures/itemgrapplebeam_d.bctex",
             "actors/items/powerup_grapplebeam/scripts/powerup_grapplebeam.lc",
         ),
     ),
