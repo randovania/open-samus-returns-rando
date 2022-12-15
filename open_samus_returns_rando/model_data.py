@@ -20,11 +20,22 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
     "itemsphere": ModelData(
         bcmdl_path="actors/items/itemsphere/models/itemsphere.bcmdl",
         dependencies=(
+            "actors/items/itemsphere/models/itemsphere.bcmdl",
             "actors/items/itemsphere/animations/droparachnus.bcskla",
             "actors/items/itemsphere/animations/relax.bcskla",
             "actors/items/itemsphere/fx/itemsphereexplode.bcptl",
             "actors/items/itemsphere/fx/itemsphereparts.bcptl",
-            "actors/items/itemsphere/models/itemsphere.bcmdl",
+        ),
+    ),
+
+    "adn": ModelData(
+        bcmdl_path="actors/items/adn/models/adn.bcmdl",
+        dependencies=(
+            "actors/items/adn/charclasses/adn.bmsad",
+            "actors/items/adn/fx/adnleak.bcptl",
+            "actors/items/adn/models/adn.bcmdl",
+            "actors/items/adn/models/textures/adn_d.bctex",
+            "actors/items/adn/scripts/adn.lc",
         ),
     ),
 
@@ -33,6 +44,8 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_wavebeam/charclasses/powerup_wavebeam.bmsad",
             "actors/items/powerup_wavebeam/models/powerup_wavebeam.bcmdl",
+            "actors/items/itemsphere/models/itemsphere.bcmdl",
+            "actors/items/powerup_wavebeam/models/textures/itemspherecoat.bctex",
             "actors/items/powerup_wavebeam/models/textures/itemspherewavebeam_d.bctex",
             "actors/items/powerup_wavebeam/scripts/powerup_wavebeam.lc",
         ),
@@ -43,7 +56,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_spazerbeam/charclasses/powerup_spazerbeam.bmsad",
             "actors/items/powerup_spazerbeam/models/powerup_spazerbeam.bcmdl",
-            "actors/items/powerup_spazerbeam/models/textures/itemspherespazerbeam_d.bctex",
+            "actors/items/powerup_spazerbeam/models/textures/itemspazerbeam_d.bctex",
             "actors/items/powerup_spazerbeam/scripts/powerup_spazerbeam.lc",
         ),
     ),
@@ -102,7 +115,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_scanningpulse/charclasses/powerup_scanningpulse.bmsad",
             "actors/items/powerup_scanningpulse/fx/orb.bcptl",
-            "actors/items/powerup_scanningpulse/fx/scanpulseloop.bcptl",
             "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl",
             "actors/items/powerup_scanningpulse/scripts/powerup_scanningpulse.lc",
         ),
@@ -143,7 +155,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         bcmdl_path="actors/items/powerup_phasedisplacement/models/powerup_phasedisplacement.bcmdl",
         dependencies=(
             "actors/items/powerup_phasedisplacement/charclasses/powerup_phasedisplacement.bmsad",
-            "actors/items/powerup_phasedisplacement/fx/prupleorb.bcptl",
+            "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl",
             "actors/items/powerup_phasedisplacement/fx/phasedisplacementloop.bcptl",
             "actors/items/powerup_phasedisplacement/models/powerup_phasedisplacement.bcmdl",
             "actors/items/powerup_phasedisplacement/scripts/powerup_phasedisplacement.lc",
@@ -158,8 +170,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_variasuit/charclasses/powerup_variasuit.bmsad",
             "actors/items/powerup_variasuit/models/powerup_variasuit.bcmdl",
+            "actors/items/powerup_variasuit/models/textures/itemspherecoat.bctex",
             "actors/items/powerup_variasuit/models/textures/itemvariasuit_d.bctex",
             "actors/items/powerup_variasuit/scripts/powerup_variasuit.lc",
+            "actors/items/itemsphere/animations/relax.bcskla",
         ),
     ),
 
@@ -171,6 +185,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_gravitysuit/models/textures/cubemetroids.bctex",
             "actors/items/powerup_gravitysuit/models/textures/itemgravitysuit_d.bctex",
             "actors/items/powerup_gravitysuit/scripts/powerup_gravitysuit.lc",
+            "actors/items/itemsphere/animations/relax.bcskla",
         ),
     ),
 
@@ -190,7 +205,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_bomb/charclasses/powerup_bomb.bmsad",
             "actors/items/powerup_bomb/models/powerup_bomb.bcmdl",
             "actors/items/powerup_bomb/models/textures/powerup_bomb.bctex",
-            "actors/items/powerup_bomb/models/textures/powerup_bomb_inner.bctex",
             "actors/items/powerup_bomb/scripts/powerup_bomb.lc",
         ),
     ),
@@ -200,6 +214,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_springball/charclasses/powerup_springball.bmsad",
             "actors/items/powerup_springball/models/powerup_springball.bcmdl",
+            "actors/items/itemsphere/models/itemsphere.bcmdl",
             "actors/items/powerup_springball/models/textures/itemspringball_d.bctex",
             "actors/items/powerup_springball/scripts/powerup_springball.lc",
         ),
