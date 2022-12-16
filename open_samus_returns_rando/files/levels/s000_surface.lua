@@ -75,14 +75,14 @@ function s000_surface.InitFromBlackboard()
   else
     Game.SaturateSpawnGroup("SpawnGroup008")
   end
-  if Scenario.ReadFromBlackboard("AlphaIntroPlayed", false) then
+  if Scenario.ReadFromBlackboard("AlphaIntroPlayed", true) then
     Game.DisableEntity("TG_Intro_Alpha")
   end
   if not Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") or not (Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") > 0) then
     Game.DisableEntity("LE_Queen_Door")
-  else
-    Game.SetSubAreaCurrentSetup("collision_camera_016", "PostQueen", true)
-    Game.EnableEntity("LE_Queen_Door")
+  -- else
+  --   Game.SetSubAreaCurrentSetup("collision_camera_016", "PostQueen", true)
+  --   Game.EnableEntity("LE_Queen_Door")
   end
   if Scenario.ReadFromBlackboard("MeleeReminderTutoPlayed", false) then
     Game.DisableTrigger("TG_StartMeleeReminderTuto")
@@ -194,15 +194,14 @@ function s000_surface.LaunchFirstTimeAlphaPresentation()
   --Game.SetPlayerInputEnabled(false, false)
 end
 function s000_surface.OnAlphaPresentationCutsceneLaunch()
-  if not Scenario.ReadFromBlackboard("alpha_dead",false) then
-    Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
-    Game.SetSceneGroupEnabledByName("sg_BrokenEggCinematic", false)
-    if Game.GetEntity("SG_Alpha_001") ~= nil then
-      Game.GetEntity("SG_Alpha_001").SPAWNGROUP:EnableSpawnGroup()
-      if Game.GetEntityFromSpawnPoint("SP_Alpha_001") ~= nil then
-        --Game.GetEntityFromSpawnPoint("SP_Alpha_001").AI:SetBossCamera(true)
-        Game.StopEntitySound(Game.GetEntityFromSpawnPoint("SP_Alpha_001").sName, "actors/alpha/alpha_loop.wav", 0)
-      end
+  -- Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
+  Scenario.WriteToBlackboard("AlphaIntroPlayed", "b", true)
+  Game.SetSceneGroupEnabledByName("sg_BrokenEggCinematic", false)
+  if Game.GetEntity("SG_Alpha_001") ~= nil then
+    Game.GetEntity("SG_Alpha_001").SPAWNGROUP:EnableSpawnGroup()
+    if Game.GetEntityFromSpawnPoint("SP_Alpha_001") ~= nil then
+      -- Game.GetEntityFromSpawnPoint("SP_Alpha_001").AI:SetBossCamera(true)
+      Game.StopEntitySound(Game.GetEntityFromSpawnPoint("SP_Alpha_001").sName, "actors/alpha/alpha_loop.wav", 0)
     end
   end
 end
@@ -220,7 +219,6 @@ function s000_surface.OnAlphaPresentationCutsceneEnd()
   Game.SetPlayerInputEnabled(true, false)
   Game.RemoveEntityToUpdateInCutscene("morphball")
   Game.RemoveEntityToUpdateInCutscene("Samus")
-  Scenario.WriteToBlackboard("AlphaIntroPlayed", "b", true)
   Game.AddSF(0.5, "Game.MetroidRadarForceStateOnEnd", "")
   if Game.GetEntityFromSpawnPoint("SP_Alpha_001") ~= nil then
     Game.PlayEntityLoop("actors/alpha/alpha_loop.wav", Game.GetEntityFromSpawnPoint("SP_Alpha_001").sName, 0.5, 300, 1800, 1, false)
@@ -457,8 +455,8 @@ function s000_surface.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4
     GUI.EndMeleeReminderTutorial()
     Game.DelSF("s000_surface.ScheduledStartMeleeReminderTutorial")
     Game.DelSF("GUI.StartMeleeReminderTutorial")
-  elseif _ARG_0_ == "collision_camera_024" then
-    s000_surface.LaunchFirstTimeAlphaPresentation()  
+  elseif (_ARG_0_ == "collision_camera_024" and not Scenario.ReadFromBlackboard("alpha_killed", false)) then
+    s000_surface.LaunchFirstTimeAlphaPresentation()
   end
   
   --if _ARG_0_ == "collision_camera_002" and _ARG_2_ == "collision_camera_003" and not Scenario.ReadFromBlackboard("FirstTimeChozoStatuePlayed", false) then
