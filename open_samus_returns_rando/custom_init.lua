@@ -27,15 +27,13 @@ function Init.InitGameBlackboard()
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_SIZE", "f", Init.tReserveTanksInitialConfiguration.ITEM_RESERVE_TANK_SPECIAL_ENERGY_SIZE)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_SIZE", "f", Init.tReserveTanksInitialConfiguration.ITEM_RESERVE_TANK_MISSILE_SIZE)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SUPER_MISSILE_SIZE", "f", Init.tReserveTanksInitialConfiguration.ITEM_RESERVE_TANK_SUPER_MISSILE_SIZE)
-    if ProfileBlackboard.GetProp("SETTINGS", "AMIIBO_MENU_UNLOCKED") ~= nil then
-      Blackboard.SetProp("GAME", "AMIIBO_MENU_UNLOCKED", "b", (ProfileBlackboard.GetProp("SETTINGS", "AMIIBO_MENU_UNLOCKED")))
-    end
     Blackboard.SetProp("GAME", "Version", "i", SaveGame.Version)
     Blackboard.SetProp("GAME", "HUD", "b", true)
     Blackboard.SetProp("GAME", "Player", "s", "samus")
     Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "LevelID", "s", "c10_samus")
     Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "ScenarioID", "s", TEMPLATE("starting_scenario"))
     Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "StartPoint", "s", TEMPLATE("starting_actor"))
+    Game.UnlockAmiiboMenu()
   end
 
 function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
