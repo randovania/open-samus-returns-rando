@@ -75,7 +75,7 @@ function s000_surface.InitFromBlackboard()
   else
     Game.SaturateSpawnGroup("SpawnGroup008")
   end
-  if Scenario.ReadFromBlackboard("AlphaIntroPlayed", true) then
+  if Scenario.ReadFromBlackboard("AlphaIntroPlayed", false) then
     Game.DisableEntity("TG_Intro_Alpha")
   end
   if not Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") or not (Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") > 0) then
@@ -195,7 +195,6 @@ function s000_surface.LaunchFirstTimeAlphaPresentation()
 end
 function s000_surface.OnAlphaPresentationCutsceneLaunch()
   -- Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
-  Scenario.WriteToBlackboard("AlphaIntroPlayed", "b", true)
   Game.SetSceneGroupEnabledByName("sg_BrokenEggCinematic", false)
   if Game.GetEntity("SG_Alpha_001") ~= nil then
     Game.GetEntity("SG_Alpha_001").SPAWNGROUP:EnableSpawnGroup()
@@ -519,6 +518,7 @@ function s000_surface.LaunchMeleeTutoCutscene()
 end
 function s000_surface.OnDnaAbsorbAnimation()
   Game.SetInGameMusicState("DEATH")
+  Game.DisableEntity("TG_Intro_Alpha")
   Scenario.WriteToBlackboard("alpha_killed", "b", true)
 end
 function s000_surface.OnMeleeTutoButtonPressed()
