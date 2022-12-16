@@ -87,7 +87,7 @@ function s025_area2b.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_
   end
 end
 function s025_area2b.OnStartVariaSuitCutscene()
-  Game.SetSubAreaEnvironmentLocked(false, false, true)
+  Game.SetSubAreaEnvironmentLocked(false, false, false)
   Game.OnSuitCutsceneLaunched()
 end
 function s025_area2b.OnEndVariaSuitCutscene()
