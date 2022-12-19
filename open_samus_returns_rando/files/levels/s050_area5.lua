@@ -599,17 +599,17 @@ end
 function s050_area5.LaunchFirstTimeZetaPresentation()
   Scenario.WriteToBlackboard("FirstTimeZetaPresentationPlayed", "b", true)
   s050_area5.OnZetaPresentationCutsceneStart()
-  --Game.LaunchCutscene("cutscenes/introzeta/takes/01/introzeta01.bmscu")
+  -- Game.LaunchCutscene("cutscenes/introzeta/takes/01/introzeta01.bmscu")
   Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
 end
 function s050_area5.OnZetaPresentationCutsceneStart()
   Game.SetCameraEnemy("zeta")
   if Game.GetEntity("SG_Zeta_001") ~= nil then
     Game.GetEntity("SG_Zeta_001").SPAWNGROUP:EnableSpawnGroup()
+    Game.AddSF(0.5, "Game.MetroidRadarForceStateOnEnd", "")
   end
 end
 function s050_area5.OnZetaPresentationCutsceneEnd()
-  Game.AddSF(0.5, "Game.MetroidRadarForceStateOnEnd", "")
 end
 function s050_area5.LaunchFirstTimeBrokenChozoStatuePresentation()
   Scenario.WriteToBlackboard("firstTimeBrokenChozoStatuePlayed", "b", true)

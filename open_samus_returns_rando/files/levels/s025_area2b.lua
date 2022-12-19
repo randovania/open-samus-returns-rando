@@ -298,19 +298,19 @@ end
 function s025_area2b.LaunchFirstTimeGammaPresentation()
   Scenario.WriteToBlackboard("GammaIntroCutscenePlayed", "b", true)
   s025_area2b.OnGammaPresentationCutsceneStart()
-  --Game.LaunchCutscene("cutscenes/introgamma/takes/01/introgamma01.bmscu")
+  -- Game.LaunchCutscene("cutscenes/introgamma/takes/01/introgamma01.bmscu")
   Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
 end
 function s025_area2b.OnGammaPresentationCutsceneStart()
   if Game.GetEntity("SG_Gamma_001") ~= nil then
     Game.GetEntity("SG_Gamma_001").SPAWNGROUP:EnableSpawnGroup()
+    Game.AddSF(0.5, "Game.MetroidRadarForceStateOnEnd", "")
     if Game.GetEntityFromSpawnPoint("SP_Gamma_001") ~= nil then
       Game.GetEntityFromSpawnPoint("SP_Gamma_001").AI:SetBossCamera(true)
     end
   end
 end
 function s025_area2b.OnGammaPresentationCutsceneEnd()
-  Game.AddSF(0.5, "Game.MetroidRadarForceStateOnEnd", "")
 end
 function s025_area2b.LaunchSpecialEvent02b1()
   if Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_HIGH_JUMP_BOOTS") > 0 then

@@ -759,7 +759,7 @@ function s070_area7.OnGlowfly_LS_Generated(_ARG_0_, _ARG_1_)
 end
 function s070_area7.LaunchFirstTimeOmegaPresentation()
   Scenario.WriteToBlackboard("OmegaIntroCutscenePlayed", "b", true)
-  --Game.LaunchCutscene("cutscenes/introomega/takes/10/introomega10.bmscu")
+  -- Game.LaunchCutscene("cutscenes/introomega/takes/10/introomega10.bmscu")
   s070_area7.OnOmegaPresentationCutsceneStart()
   Game.SetCameraEnemy("omega")
   Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
@@ -767,13 +767,13 @@ end
 function s070_area7.OnOmegaPresentationCutsceneStart()
   if Game.GetEntity("SG_Omega_001") ~= nil then
     Game.GetEntity("SG_Omega_001").SPAWNGROUP:EnableSpawnGroup()
+    Game.AddSF(0.5, "Game.MetroidRadarForceStateOnEnd", "")
     if Game.GetEntityFromSpawnPoint("Omega_001") ~= nil then
       Game.GetEntityFromSpawnPoint("Omega_001").AI:SetBossCamera(true)
     end
   end
 end
 function s070_area7.OnOmegaPresentationCutsceneEnd()
-  Game.AddSF(0.5, "Game.MetroidRadarForceStateOnEnd", "")
 end
 function s070_area7.OnGrapplePullFinished(_ARG_0_, _ARG_1_)
   if _ARG_0_ ~= nil and _ARG_0_.sName == "LE_GrappleMov_003" and _ARG_1_ and Game.GetEntity("LE_Fan_003") ~= nil then

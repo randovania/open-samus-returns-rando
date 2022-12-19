@@ -188,16 +188,17 @@ function s000_surface.IntroMetroidLarvaSurfacePresentationOnEnd()
 end
 function s000_surface.LaunchFirstTimeAlphaPresentation()
   s000_surface.OnAlphaPresentationCutsceneLaunch()
-  --Game.AddEntityToUpdateInCutscene("morphball")
-  --Game.AddEntityToUpdateInCutscene("Samus")
-  --Game.LaunchCutscene("cutscenes/introalpha/takes/01/introalpha01.bmscu")
-  --Game.SetPlayerInputEnabled(false, false)
+  -- Game.AddEntityToUpdateInCutscene("morphball")
+  -- Game.AddEntityToUpdateInCutscene("Samus")
+  -- Game.LaunchCutscene("cutscenes/introalpha/takes/01/introalpha01.bmscu")
+  -- Game.SetPlayerInputEnabled(false, false)
 end
 function s000_surface.OnAlphaPresentationCutsceneLaunch()
-  -- Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
+  Game.MetroidRadarForceStateOnBegin(2, -1, true, true)
   Game.SetSceneGroupEnabledByName("sg_BrokenEggCinematic", false)
   if Game.GetEntity("SG_Alpha_001") ~= nil then
     Game.GetEntity("SG_Alpha_001").SPAWNGROUP:EnableSpawnGroup()
+    Game.AddSF(0.5, "Game.MetroidRadarForceStateOnEnd", "")
     if Game.GetEntityFromSpawnPoint("SP_Alpha_001") ~= nil then
       -- Game.GetEntityFromSpawnPoint("SP_Alpha_001").AI:SetBossCamera(true)
       Game.StopEntitySound(Game.GetEntityFromSpawnPoint("SP_Alpha_001").sName, "actors/alpha/alpha_loop.wav", 0)
@@ -218,7 +219,6 @@ function s000_surface.OnAlphaPresentationCutsceneEnd()
   Game.SetPlayerInputEnabled(true, false)
   Game.RemoveEntityToUpdateInCutscene("morphball")
   Game.RemoveEntityToUpdateInCutscene("Samus")
-  Game.AddSF(0.5, "Game.MetroidRadarForceStateOnEnd", "")
   if Game.GetEntityFromSpawnPoint("SP_Alpha_001") ~= nil then
     Game.PlayEntityLoop("actors/alpha/alpha_loop.wav", Game.GetEntityFromSpawnPoint("SP_Alpha_001").sName, 0.5, 300, 1800, 1, false)
   end
