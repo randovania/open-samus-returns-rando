@@ -8,8 +8,8 @@ function PowerUpGravitySuit.OnPickedUp(_ARG_0_)
 --   Game.AddGUISF(0.5, Game.LaunchCutscene, "s", "cutscenes/gravitysuit/takes/01/gravitysuit01.bmscu")
 --   Game.SetGameModeStartButtonForbidden("INGAME", true)
 --   Game.HUDIdleScreenGo()
-  guicallbacks.OnPickableItemPickedUp("#GUI_ITEM_ACQUIRED_GRAVITY_SUIT", false)
   Game.GetPlayer().MODELUPDATER.sModelAlias = "Gravity"
+  guicallbacks.OnPickableItemPickedUp("#GUI_ITEM_ACQUIRED_GRAVITY_SUIT", false)
 end
 function PowerUpGravitySuit.OnItemEnd(_ARG_0_)
   _ARG_0_.PICKABLE:OnItemEnd()
