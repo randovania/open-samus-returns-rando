@@ -42,6 +42,11 @@
                 },
                 "additionalProperties": false
             }
+        },
+        "energy_per_tank": {
+            "description": "How much energy collecting an Energy Tank gives.",
+            "type": "number",
+            "default": 100.0
         }
     },
     "required": [
@@ -55,10 +60,6 @@
             "properties": {
                 "scenario": {
                     "$ref": "#/$defs/scenario_name"
-                },
-                "layer": {
-                    "type": "string",
-                    "default": "default"
                 },
                 "actor": {
                     "type": "string"
