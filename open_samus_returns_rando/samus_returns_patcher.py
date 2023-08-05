@@ -1,89 +1,64 @@
-import copy
 import json
 import logging
 import typing
 from pathlib import Path
 
 import jsonschema
-from mercury_engine_data_structures.file_tree_editor import FileTreeEditor, OutputFormat
-from mercury_engine_data_structures.formats import Bmsld, Bmsad, BaseResource
-from mercury_engine_data_structures.game_check import Game
+from mercury_engine_data_structures.file_tree_editor import OutputFormat
 from open_samus_returns_rando import lua_util
+from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 from open_samus_returns_rando.model_data import get_data
 
-
 T = typing.TypeVar("T")
 LOG = logging.getLogger("samus_returns_patcher")
-game = Game.SAMUS_RETURNS
+
 
 def _read_schema():
-    with Path(__file__).parent.joinpath("schema.json").open() as f:
+    with Path(__file__).parent.joinpath("files", "schema.json").open() as f:
         return json.load(f)
 
 
-def path_for_level(level_name: str) -> str:
-    return f"maps/levels/c10_samus/{level_name}/{level_name}"
+def create_custom_init(editor: PatcherEditor, configuration: dict) -> str:
+    inventory: dict[str, int] = configuration["starting_items"]
+    starting_location: dict = configuration["starting_location"]
 
+    energy_per_tank = configuration["energy_per_tank"],
 
-def create_custom_init(inventory: dict[str, int], starting_location: dict):
-    def _wrap(v: str):
-        return f'"{v}"'
+    max_life = energy_per_tank - 1
+
+    # increase starting HP if starting with etanks
+    if "ITEM_ENERGY_TANKS" in inventory:
+        etanks = inventory.pop("ITEM_ENERGY_TANKS")
+        max_life += etanks * energy_per_tank
+
+    # Game doesn't like to start if some fields are missing, like ITEM_WEAPON_POWER_BOMB_MAX
+    final_inventory = {
+        "ITEM_MAX_LIFE": max_life,
+        "ITEM_CURRENT_SPECIAL_ENERGY": 1000,
+        "ITEM_MAX_SPECIAL_ENERGY": 1000,
+        "ITEM_METROID_COUNT": 0,
+        "ITEM_METROID_TOTAL_COUNT": 40,
+        "ITEM_WEAPON_MISSILE_MAX": 0,
+        "ITEM_WEAPON_POWER_BOMB_MAX": 0,
+    }
+    final_inventory.update(inventory)
 
     replacement = {
-        "new_game_inventory": "\n".join(
-            "{} = {},".format(key, value)
-            for key, value in inventory.items()
-        ),
-        "starting_scenario": _wrap(starting_location["scenario"]),
-        "starting_actor": _wrap(starting_location["actor"]),
+        "new_game_inventory": final_inventory,
+        "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
+        "starting_actor": lua_util.wrap_string(starting_location["actor"]),
+        "energy_per_tank": energy_per_tank
     }
 
-    code = Path(__file__).parent.joinpath("custom_init.lua").read_text()
-    for key, content in replacement.items():
-        code = code.replace(f'TEMPLATE("{key}")', content)
-
-    return code
+    return lua_util.replace_lua_template("custom_init.lua", replacement)
 
 
-class PatcherEditor(FileTreeEditor):
-    memory_files: dict[str, BaseResource]
+def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
+    LOG.info("Will patch files from %s", input_path)
 
-    def __init__(self, root: Path):
-        super().__init__(root, game)
-        self.memory_files = {}
+    editor = PatcherEditor(input_path)
 
-    def get_file(self, path: str, type_hint: typing.Type[T] = BaseResource) -> T:
-        if path not in self.memory_files:
-            self.memory_files[path] = self.get_parsed_asset(path, type_hint=type_hint)
-        return self.memory_files[path]
-
-    def get_level_pkgs(self, name: str) -> set[str]:
-        return set(self.find_pkgs(path_for_level(name) + ".bmsld"))
-
-    def ensure_present_in_scenario(self, scenario: str, asset):
-        for pkg in self.get_level_pkgs(scenario):
-            self.ensure_present(pkg, asset)
-
-    def get_scenario(self, name: str) -> Bmsld:
-        return self.get_file(path_for_level(name) + ".bmsld", Bmsld)
-
-    def flush_modified_assets(self):
-        for name, resource in self.memory_files.items():
-            self.replace_asset(name, resource)
-        self.memory_files = {}
-
-
-# def patch_elevators(editor: PatcherEditor, elevators_config: list[dict]):
-#     for elevator in elevators_config:
-#         level = editor.get_scenario(elevator["teleporter"]["scenario"])
-#         actor = level.actors_for_layer(elevator["teleporter"]["layer"])[elevator["teleporter"]["actor"]]
-#         try:
-#             usable = actor.pComponents.USABLE
-#         except AttributeError:
-#             raise ValueError(f'Actor {elevator["teleporter"]} is not a teleporter')
-#         usable.sScenarioName = elevator["destination"]["scenario"]
-#         usable.sTargetSpawnPoint = elevator["destination"]["actor"]
 
 ALL_PICKUPS = [
     "powerup_variasuit",
@@ -148,14 +123,17 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
     out_romfs = output_path.joinpath("romfs")
     editor = PatcherEditor(input_path)
 
+    # Update init.lc
     lua_util.create_script_copy(editor, "system/scripts/init")
     editor.replace_asset(
         "system/scripts/init.lc",
-        create_custom_init(configuration["starting_items"],
-                           configuration["starting_location"]
-                           ).encode("ascii"))
+        create_custom_init(editor, configuration).encode("ascii"),
+    )
 
+    # Update scenario.lc
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
+
+    # Update player.lc
     lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
     
     for x in ALL_PICKUPS:
@@ -171,17 +149,6 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
             f"maps/levels/c10_samus/{x}/{x}",
             f"levels/{x}.lua"
             )
-
-    # actor = level.actors_for_layer("default")[configuration["starting_location"]["actor"]]
-    # old_on_teleport = actor.pComponents["STARTPOINT"]["sOnTeleport"]
-    # if old_on_teleport not in ("", "Game.HUDIdleScreenLeave"):
-    #     raise ValueError("Starting actor at {} with unexpected sOnTeleport: {}".format(
-    #         configuration["starting_location"], old_on_teleport,
-    #     ))
-    # actor.pComponents["STARTPOINT"]["sOnTeleport"] = "Game.HUDIdleScreenLeave"
-
-    # if "elevators" in configuration:
-    #     patch_elevators(editor, configuration["elevators"])
 
     patch_pickups(editor, configuration["pickups"])
 
