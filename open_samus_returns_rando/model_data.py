@@ -44,7 +44,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_wavebeam/charclasses/powerup_wavebeam.bmsad",
             "actors/items/powerup_wavebeam/models/powerup_wavebeam.bcmdl",
-            "actors/items/itemsphere/models/itemsphere.bcmdl",
             "actors/items/powerup_wavebeam/models/textures/itemspherecoat.bctex",
             "actors/items/powerup_wavebeam/models/textures/itemspherewavebeam_d.bctex",
             "actors/items/powerup_wavebeam/scripts/powerup_wavebeam.lc",
@@ -118,9 +117,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl",
             "actors/items/powerup_scanningpulse/scripts/powerup_scanningpulse.lc",
         ),
-        transform=Transform(
-            position=(0.0, 30.0, 0.0),
-        )
     ),
 
     "powerup_energyshield": ModelData(
@@ -132,9 +128,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_energyshield/models/powerup_energyshield.bcmdl",
             "actors/items/powerup_energyshield/scripts/powerup_energyshield.lc",
         ),
-        transform=Transform(
-            position=(0.0, 30.0, 0.0),
-        )
     ),
 
     "powerup_energywave": ModelData(
@@ -146,9 +139,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_energywave/models/powerup_energywave.bcmdl",
             "actors/items/powerup_energywave/scripts/powerup_energywave.lc",
         ),
-        transform=Transform(
-            position=(0.0, 30.0, 0.0),
-        )
     ),
 
     "powerup_phasedisplacement": ModelData(
@@ -160,9 +150,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_phasedisplacement/models/powerup_phasedisplacement.bcmdl",
             "actors/items/powerup_phasedisplacement/scripts/powerup_phasedisplacement.lc",
         ),
-        transform=Transform(
-            position=(0.0, 30.0, 0.0),
-        )
     ),
 
     "powerup_variasuit": ModelData(
@@ -173,7 +160,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_variasuit/models/textures/itemspherecoat.bctex",
             "actors/items/powerup_variasuit/models/textures/itemvariasuit_d.bctex",
             "actors/items/powerup_variasuit/scripts/powerup_variasuit.lc",
-            "actors/items/itemsphere/animations/relax.bcskla",
         ),
     ),
 
@@ -185,7 +171,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_gravitysuit/models/textures/cubemetroids.bctex",
             "actors/items/powerup_gravitysuit/models/textures/itemgravitysuit_d.bctex",
             "actors/items/powerup_gravitysuit/scripts/powerup_gravitysuit.lc",
-            "actors/items/itemsphere/animations/relax.bcskla",
         ),
     ),
 
@@ -214,7 +199,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_springball/charclasses/powerup_springball.bmsad",
             "actors/items/powerup_springball/models/powerup_springball.bcmdl",
-            "actors/items/itemsphere/models/itemsphere.bcmdl",
             "actors/items/powerup_springball/models/textures/itemspringball_d.bctex",
             "actors/items/powerup_springball/scripts/powerup_springball.lc",
         ),
@@ -228,9 +212,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_spiderball/models/textures/powerup_morphball_d.bctex",
             "actors/items/powerup_spiderball/scripts/powerup_spiderball.lc",
         ),
-        transform=Transform(
-            position=(0.0, 30.0, 0.0),
-        )
     ),
 
     "powerup_highjumpboots": ModelData(
