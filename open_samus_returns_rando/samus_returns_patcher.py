@@ -5,13 +5,13 @@ from pathlib import Path
 
 import jsonschema
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
+from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 from open_samus_returns_rando.model_data import get_data
 
 T = typing.TypeVar("T")
-LOG = logging.getLogger("samus_returns_patcher")
 
 
 def _read_schema():
@@ -58,7 +58,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
 
     editor = PatcherEditor(input_path)
-
 
 ALL_PICKUPS = [
     "powerup_variasuit",
@@ -152,6 +151,10 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
 
     patch_pickups(editor, configuration["pickups"])
 
+    LOG.info("Flush modified assets")
     editor.flush_modified_assets()
+
+    LOG.info("Saving modified pkgs to %s", out_romfs)
     editor.save_modifications(out_romfs, OutputFormat.PKG)
+    
     logging.info("Done")
