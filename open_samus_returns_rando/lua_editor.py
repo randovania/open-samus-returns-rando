@@ -11,7 +11,7 @@ def _read_powerup_lua() -> bytes:
 
 
 def _read_level_lua(level_id: str) -> str:
-    return Path(__file__).parent.joinpath("files", "levels", f",{level_id}.lc.lua").read_text()
+    return Path(__file__).parent.joinpath("files", "levels", f"{level_id}.lua").read_text()
 
 
 SPECIFIC_CLASSES = {

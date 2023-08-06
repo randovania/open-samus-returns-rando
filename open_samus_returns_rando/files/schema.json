@@ -24,7 +24,10 @@
             }
         },
         "starting_items": {
-            "type": "object"
+            "type": "object",
+            "propertyNames": {
+                "$ref": "#/$defs/item_id"
+            }
         },
         "pickups": {
             "description": "Changes pickup actors to have a different type",
@@ -33,20 +36,71 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "actor": {
-                        "$ref": "#/$defs/actor_reference"
+                    "pickup_type": {
+                        "type": "string",
+                        "enum": [
+                            "actor"
+                        ]
                     },
-                    "type": {
-                        "type": "string"
+                    "caption": {
+                        "type": "string",
+                        "description": "The message displayed when this pickup is collected"
+                    },
+                    "resources": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/item"
+                            },
+                            "minItems": 1,
+                            "description": "An array of all resources that will be gained from a particular stage of progression."
+                        },
+                        "minItems": 1,
+                        "description": "An array of arrays representing progressive item stages and resource gains for each stage.",
+                        "examples": [
+                            [
+                                [
+                                    { "item_id": "ITEM_WEAPON_WAVE_BEAM", "quantity": 1 }
+                                ],
+                                [
+                                    { "item_id": "ITEM_WEAPON_SPAZER_BEAM", "quantity": 1 }
+                                ],
+                                [
+                                    { "item_id": "ITEM_WEAPON_PLASMA_BEAM", "quantity": 1 }
+                                ]
+                            ],
+                            [
+                                [
+                                    { "item_id": "ITEM_WEAPON_SUPER_MISSILE", "quantity": 1 },
+                                    { "item_id": "ITEM_WEAPON_SUPER_MISSILE_MAX", "quantity": 5 }
+                                ]
+                            ],
+                            [
+                                [
+                                    { "item_id": "ITEM_WEAPON_POWER_BOMB", "quantity": 1 },
+                                    { "item_id": "ITEM_WEAPON_POWER_BOMB_MAX", "quantity": 5 }
+                                ]
+                            ]
+                        ]
                     }
                 },
-                "additionalProperties": false
+                "required": [
+                    "pickup_type",
+                    "caption",
+                    "resources"
+                ]
             }
         },
         "energy_per_tank": {
             "description": "How much energy collecting an Energy Tank gives.",
             "type": "number",
             "default": 100.0
+        },
+        "aeion_per_tank": {
+            "description": "How much aeion collecting an aeion Tank gives.",
+            "type": "number",
+            "default": 50.0
         }
     },
     "required": [
@@ -54,6 +108,12 @@
         "starting_location",
         "pickups"
     ],
+    "text_patches": {
+        "type": "object",
+        "additionalProperties": {
+            "type": "string"
+        }
+    },
     "$defs": {
         "actor_reference_with_layer": {
             "type": "object",
@@ -66,6 +126,8 @@
                 }
             },
             "required": [
+                "scenario",
+                "actor"
             ]
         },
         "actor_reference": {
@@ -79,6 +141,8 @@
                 }
             },
             "required": [
+                "scenario",
+                "actor"
             ]
         },
         "scenario_name": {
@@ -102,6 +166,65 @@
                 "s100_area10",
                 "s110_surfaceb"
             ]
+        },
+        "item_id": {
+            "type": "string",
+            "enum": [
+                "ITEM_NONE",
+                "ITEM_WEAPON_CHARGE_BEAM",
+                "ITEM_WEAPON_ICE_BEAM",
+                "ITEM_WEAPON_WAVE_BEAM",
+                "ITEM_WEAPON_SPAZER_BEAM",
+                "ITEM_WEAPON_PLASMA_BEAM",
+                "ITEM_WEAPON_GRAPPLE_BEAM",
+                "ITEM_WEAPON_SUPER_MISSILE",
+                "ITEM_SPECIAL_ENERGY_SCANNING_PULSE",
+                "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD",
+                "ITEM_SPECIAL_ENERGY_ENERGY_WAVE",
+                "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT",
+                "ITEM_VARIA_SUIT",
+                "ITEM_GRAVITY_SUIT",
+                "ITEM_MORPH_BALL",
+                "ITEM_WEAPON_BOMB",
+                "ITEM_WEAPON_POWER_BOMB",
+                "ITEM_SPIDER_BALL",
+                "ITEM_SPRING_BALL",
+                "ITEM_HIGH_JUMP",
+                "ITEM_SPACE_JUMP",
+                "ITEM_SCREW_ATTACK",
+                "ITEM_ENERGY_TANKS",
+                "ITEM_SENERGY_TANKS",
+                "ITEM_MAX_LIFE",
+                "ITEM_CURRENT_LIFE",
+                "ITEM_MAX_SPECIAL_ENERGY",
+                "ITEM_CURRENT_SPECIAL_ENERGY",
+                "ITEM_WEAPON_MISSILE_CURRENT",
+                "ITEM_WEAPON_MISSILE_MAX",
+                "ITEM_WEAPON_SUPER_MISSILE_CURRENT",
+                "ITEM_WEAPON_SUPER_MISSILE_MAX",
+                "ITEM_WEAPON_POWER_BOMB_CURRENT",
+                "ITEM_WEAPON_POWER_BOMB_MAX",
+                "ITEM_METROID_COUNT",
+                "ITEM_METROID_TOTAL_COUNT",
+                "ITEM_ADN",
+                "ITEM_BABY_HATCHLING"
+            ]
+        },
+        "item": {
+            "type": "object",
+            "properties": {
+                "item_id": {
+                    "$ref": "#/$defs/item_id"
+                },
+                "quantity": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "item_id",
+                "quantity"
+            ],
+            "additionalProperties": false
         }
     }
 }

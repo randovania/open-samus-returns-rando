@@ -2,6 +2,7 @@ import argparse
 import json
 import logging
 import logging.config
+import time
 from pathlib import Path
 
 from open_samus_returns_rando import samus_returns_patcher
@@ -53,13 +54,15 @@ def main():
     setup_logging()
     parser = create_parser()
     args = parser.parse_args()
-    print(args)
 
     with args.input_json.open() as f:
         configuration = json.load(f)
 
-    samus_returns_patcher.patch(
+    start = time.time()
+    samus_returns_patcher.patch_extracted(
         args.input_path,
         args.output_path,
         configuration,
     )
+    end = time.time()
+    print(f"Patcher took {end - start:.03f} seconds")
