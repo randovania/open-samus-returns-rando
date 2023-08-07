@@ -5,6 +5,34 @@
         "starting_location": {
             "$ref": "#/$defs/actor_reference"
         },
+        "pickups": {
+            "type": "array",
+            "items": {
+                "properties": {
+                    "pickup_actor": {
+                        "$ref": "#/$defs/actor_reference_with_layer"
+                    },
+                    "caption": {
+                        "type": "string"
+                    },
+                    "model": {
+                        "type": "string"
+                    },
+                    "item_id": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "pickup_actor",
+                    "model",
+                    "item_id",
+                    "quantity"
+                ]
+            }
+        },
         "elevators": {
             "type": "array",
             "items": {
@@ -27,69 +55,6 @@
             "type": "object",
             "propertyNames": {
                 "$ref": "#/$defs/item_id"
-            }
-        },
-        "pickups": {
-            "description": "Changes pickup actors to have a different type",
-            "type": "array",
-            "default": [],
-            "items": {
-                "type": "object",
-                "properties": {
-                    "pickup_type": {
-                        "type": "string",
-                        "enum": [
-                            "actor"
-                        ]
-                    },
-                    "caption": {
-                        "type": "string",
-                        "description": "The message displayed when this pickup is collected"
-                    },
-                    "resources": {
-                        "type": "array",
-                        "items": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/$defs/item"
-                            },
-                            "minItems": 1,
-                            "description": "An array of all resources that will be gained from a particular stage of progression."
-                        },
-                        "minItems": 1,
-                        "description": "An array of arrays representing progressive item stages and resource gains for each stage.",
-                        "examples": [
-                            [
-                                [
-                                    { "item_id": "ITEM_WEAPON_WAVE_BEAM", "quantity": 1 }
-                                ],
-                                [
-                                    { "item_id": "ITEM_WEAPON_SPAZER_BEAM", "quantity": 1 }
-                                ],
-                                [
-                                    { "item_id": "ITEM_WEAPON_PLASMA_BEAM", "quantity": 1 }
-                                ]
-                            ],
-                            [
-                                [
-                                    { "item_id": "ITEM_WEAPON_SUPER_MISSILE", "quantity": 1 },
-                                    { "item_id": "ITEM_WEAPON_SUPER_MISSILE_MAX", "quantity": 5 }
-                                ]
-                            ],
-                            [
-                                [
-                                    { "item_id": "ITEM_WEAPON_POWER_BOMB", "quantity": 1 },
-                                    { "item_id": "ITEM_WEAPON_POWER_BOMB_MAX", "quantity": 5 }
-                                ]
-                            ]
-                        ]
-                    }
-                },
-                "required": [
-                    "pickup_type",
-                    "caption",
-                    "resources"
-                ]
             }
         },
         "energy_per_tank": {
