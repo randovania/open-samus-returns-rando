@@ -24,7 +24,16 @@
             }
         },
         "starting_items": {
-            "type": "object"
+            "type": "object",
+            "propertyNames": {
+                "$ref": "#/$defs/item_id"
+            },
+            "required": [
+                "ITEM_MAX_LIFE",
+                "ITEM_WEAPON_MISSILE_MAX",
+                "ITEM_WEAPON_SUPER_MISSILE_MAX",
+                "ITEM_WEAPON_POWER_BOMB_MAX"
+            ]
         },
         "pickups": {
             "description": "Changes pickup actors to have a different type",
@@ -100,6 +109,40 @@
                 "s090_area9",
                 "s100_area10",
                 "s110_surfaceb"
+            ]
+        },
+        "item_id": {
+            "type": "string",
+            "enum": [
+                "ITEM_NONE",
+                "ITEM_MAX_LIFE",
+                "ITEM_WEAPON_ICE_BEAM",
+                "ITEM_WEAPON_WAVE_BEAM",
+                "ITEM_WEAPON_SPAZER_BEAM",
+                "ITEM_WEAPON_PLASMA_BEAM",
+                "ITEM_WEAPON_CHARGE_BEAM",
+                "ITEM_WEAPON_GRAPPLE_BEAM",
+                "ITEM_WEAPON_SUPER_MISSILE",
+                "ITEM_SPECIAL_ENERGY_SCANNING_PULSE",
+                "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD",
+                "ITEM_SPECIAL_ENERGY_ENERGY_WAVE",
+                "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT",
+                "ITEM_VARIA_SUIT",
+                "ITEM_GRAVITY_SUIT",
+                "ITEM_MORPH_BALL",
+                "ITEM_WEAPON_BOMB",
+                "ITEM_SPIDER_BALL",
+                "ITEM_SPRING_BALL",
+                "ITEM_WEAPON_POWER_BOMB",
+                "ITEM_HIGH_JUMP_BOOTS",
+                "ITEM_SPACE_JUMP",
+                "ITEM_SCREW_ATTACK",
+                "ITEM_BABY_HATCHLING",
+                "ITEM_ENERGY_TANKS",
+                "ITEM_WEAPON_MISSILE_MAX",
+                "ITEM_WEAPON_SUPER_MISSILE_MAX",
+                "ITEM_WEAPON_POWER_BOMB_MAX",
+                "ITEM_MAX_SPECIAL_ENERGY"
             ]
         }
     }
