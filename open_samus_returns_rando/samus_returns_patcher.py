@@ -5,11 +5,12 @@ import typing
 from pathlib import Path
 
 import jsonschema
+
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor, OutputFormat
 from mercury_engine_data_structures.formats import Bmsld, Bmsad, BaseResource
 from mercury_engine_data_structures.game_check import Game
-from open_samus_returns_rando import lua_util
 
+from open_samus_returns_rando import lua_util
 from open_samus_returns_rando.model_data import get_data
 
 
@@ -18,7 +19,7 @@ LOG = logging.getLogger("samus_returns_patcher")
 game = Game.SAMUS_RETURNS
 
 def _read_schema():
-    with Path(__file__).parent.joinpath("schema.json").open() as f:
+    with Path(__file__).parent.joinpath("files", "schema.json").open() as f:
         return json.load(f)
 
 
@@ -37,6 +38,7 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
         "ITEM_METROID_COUNT": 0,
         "ITEM_METROID_TOTAL_COUNT": 40,
         "ITEM_WEAPON_MISSILE_MAX": 0,
+        "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
         "ITEM_WEAPON_POWER_BOMB_MAX": 0,
     }
     final_inventory.update(inventory)
@@ -50,11 +52,8 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
         "starting_actor": _wrap(starting_location["actor"]),
     }
 
-    code = Path(__file__).parent.joinpath("custom_init.lua").read_text()
-    for key, content in replacement.items():
-        code = code.replace(f'TEMPLATE("{key}")', content)
 
-    return code
+    return lua_util.replace_lua_template("custom_init.lua", replacement)
 
 
 class PatcherEditor(FileTreeEditor):
@@ -119,12 +118,15 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
     out_romfs = output_path.joinpath("romfs")
     editor = PatcherEditor(input_path)
 
+    # Update init.lc
     lua_util.create_script_copy(editor, "system/scripts/init")
     editor.replace_asset(
         "system/scripts/init.lc",
-        create_custom_init(configuration["starting_items"],
-                           configuration["starting_location"]
-                           ).encode("ascii"))
+        create_custom_init(
+            configuration["starting_items"],
+            configuration["starting_location"]
+        ).encode("ascii"),
+    )
 
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
     lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
