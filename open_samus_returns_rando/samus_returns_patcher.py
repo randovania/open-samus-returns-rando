@@ -1,4 +1,3 @@
-import copy
 import json
 import logging
 import typing
@@ -6,17 +5,16 @@ from pathlib import Path
 
 import jsonschema
 
-from mercury_engine_data_structures.file_tree_editor import FileTreeEditor, OutputFormat
-from mercury_engine_data_structures.formats import Bmsld, Bmsad, BaseResource
-from mercury_engine_data_structures.game_check import Game
+from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
+from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando import lua_util
 from open_samus_returns_rando.model_data import get_data
 
 
 T = typing.TypeVar("T")
 LOG = logging.getLogger("samus_returns_patcher")
-game = Game.SAMUS_RETURNS
+
 
 def _read_schema():
     with Path(__file__).parent.joinpath("files", "schema.json").open() as f:
@@ -30,10 +28,6 @@ def _read_template_powerup():
 
 def _read_powerup_lua() -> bytes:
     return Path(__file__).parent.joinpath("files", "randomizer_powerup.lua").read_bytes()
-
-
-def path_for_level(level_name: str) -> str:
-    return f"maps/levels/c10_samus/{level_name}/{level_name}"
 
 
 def create_custom_init(inventory: dict[str, int], starting_location: dict):
@@ -63,34 +57,6 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
 
 
     return lua_util.replace_lua_template("custom_init.lua", replacement)
-
-
-class PatcherEditor(FileTreeEditor):
-    memory_files: dict[str, BaseResource]
-
-    def __init__(self, root: Path):
-        super().__init__(root, game)
-        self.memory_files = {}
-
-    def get_file(self, path: str, type_hint: typing.Type[T] = BaseResource) -> T:
-        if path not in self.memory_files:
-            self.memory_files[path] = self.get_parsed_asset(path, type_hint=type_hint)
-        return self.memory_files[path]
-
-    def get_level_pkgs(self, name: str) -> set[str]:
-        return set(self.find_pkgs(path_for_level(name) + ".bmsld"))
-
-    def ensure_present_in_scenario(self, scenario: str, asset):
-        for pkg in self.get_level_pkgs(scenario):
-            self.ensure_present(pkg, asset)
-
-    def get_scenario(self, name: str) -> Bmsld:
-        return self.get_file(path_for_level(name) + ".bmsld", Bmsld)
-
-    def flush_modified_assets(self):
-        for name, resource in self.memory_files.items():
-            self.replace_asset(name, resource)
-        self.memory_files = {}
 
 
 def patch_pickups(editor: PatcherEditor, pickups: list):
@@ -156,4 +122,5 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
 
     editor.flush_modified_assets()
     editor.save_modifications(out_romfs, OutputFormat.PKG)
+
     logging.info("Done")
