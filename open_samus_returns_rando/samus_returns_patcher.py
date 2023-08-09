@@ -30,10 +30,21 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
     def _wrap(v: str):
         return f'"{v}"'
 
+    # Game doesn't like to start if some fields are missing, like ITEM_WEAPON_POWER_BOMB_MAX
+    final_inventory = {
+        "ITEM_MAX_LIFE": 99,
+        "ITEM_MAX_SPECIAL_ENERGY": 1000,
+        "ITEM_METROID_COUNT": 0,
+        "ITEM_METROID_TOTAL_COUNT": 40,
+        "ITEM_WEAPON_MISSILE_MAX": 0,
+        "ITEM_WEAPON_POWER_BOMB_MAX": 0,
+    }
+    final_inventory.update(inventory)
+
     replacement = {
         "new_game_inventory": "\n".join(
             "{} = {},".format(key, value)
-            for key, value in inventory.items()
+            for key, value in final_inventory.items()
         ),
         "starting_scenario": _wrap(starting_location["scenario"]),
         "starting_actor": _wrap(starting_location["actor"]),
@@ -73,43 +84,6 @@ class PatcherEditor(FileTreeEditor):
             self.replace_asset(name, resource)
         self.memory_files = {}
 
-
-# def patch_elevators(editor: PatcherEditor, elevators_config: list[dict]):
-#     for elevator in elevators_config:
-#         level = editor.get_scenario(elevator["teleporter"]["scenario"])
-#         actor = level.actors_for_layer(elevator["teleporter"]["layer"])[elevator["teleporter"]["actor"]]
-#         try:
-#             usable = actor.pComponents.USABLE
-#         except AttributeError:
-#             raise ValueError(f'Actor {elevator["teleporter"]} is not a teleporter')
-#         usable.sScenarioName = elevator["destination"]["scenario"]
-#         usable.sTargetSpawnPoint = elevator["destination"]["actor"]
-
-ALL_PICKUPS = [
-    "powerup_gravitysuit",
-    "powerup_variasuit",
-    "powerup_scanningpulse",
-]
-
-ALL_AREAS = [
-    "s000_surface",
-    "s010_area1",
-    "s020_area2",
-    "s025_area2b",
-    "s028_area2c",
-    "s030_area3",
-    "s033_area3b",
-    "s036_area3c",
-    "s040_area4",
-    "s050_area5",
-    "s060_area6",
-    "s065_area6b",
-    "s067_area6c",
-    "s070_area7",
-    "s090_area9",
-    "s100_area10",
-    "s110_surfaceb",
-] 
 
 def patch_pickups(editor: PatcherEditor, pickups: list):
     for pickup in pickups:
@@ -153,33 +127,12 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
                            ).encode("ascii"))
 
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
-    # lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
-    
-    for x in ALL_PICKUPS:
-        lua_util.replace_script(
-            editor,
-            f"actors/items/{x}/scripts/{x}",
-            f"pickups/{x}.lua"
-            )
+    lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
 
-    for x in ALL_AREAS:
-        lua_util.replace_script(
-            editor,
-            f"maps/levels/c10_samus/{x}/{x}",
-            f"levels/{x}.lua"
-            )
+    # Replaces the original area lua files with modified ones
+    lua_util.replace_area_lua(editor)
 
-    # actor = level.actors_for_layer("default")[configuration["starting_location"]["actor"]]
-    # old_on_teleport = actor.pComponents["STARTPOINT"]["sOnTeleport"]
-    # if old_on_teleport not in ("", "Game.HUDIdleScreenLeave"):
-    #     raise ValueError("Starting actor at {} with unexpected sOnTeleport: {}".format(
-    #         configuration["starting_location"], old_on_teleport,
-    #     ))
-    # actor.pComponents["STARTPOINT"]["sOnTeleport"] = "Game.HUDIdleScreenLeave"
-
-    # if "elevators" in configuration:
-    #     patch_elevators(editor, configuration["elevators"])
-
+    # Patches pikcups
     patch_pickups(editor, configuration["pickups"])
 
     editor.flush_modified_assets()
