@@ -1,0 +1,191 @@
+{
+    "magic": "MSAD",
+    "version": 2883585,
+    "name": "randomizer_powerup",
+    "property": {
+        "model_name": "actors/items/itemsphere/models/itemsphere.bcmdl",
+        "unk_1": 0,
+        "unk_2": [
+            1.0,
+            50.0,
+            0.0,
+            1.0,
+            0.0,
+            100.0,
+            100.0,
+            100.0,
+            50.0
+        ],
+        "unk_3": 0,
+        "unk_4": 8,
+        "other_magic": 4294967295,
+        "unk_5": 0,
+        "unk_6": [],
+        "unk_7": 0,
+        "sub_actors": [],
+        "unk_8": 0,
+        "components": {
+            "PICKABLE": {
+                "type": "CPickableItemComponent",
+                "unk_1": [ 
+                    3000,
+                    0
+                ],
+                "functions": [
+                    {
+                        "name": "SetCustomParams",
+                        "unk": 1,
+                        "params": {
+                            "Param1": {
+                                "type": "s",
+                                "value": "ITEM_SCREW_ATTACK"
+                            },
+                            "Param2": {
+                                "type": "f",
+                                "value": 3.0
+                            },
+                            "Param3": { 
+                                "type": "f",
+                                "value": -1.0
+                            },
+                            "Param4": { 
+                                "type": "s",
+                                "value": "null"
+                            },
+                            "Param5": { 
+                                "type": "s",
+                                "value": ""
+                            },
+                            "Param6": { 
+                                "type": "s",
+                                "value": ""
+                            },
+                            "Param7": { 
+                                "type": "s",
+                                "value": ""
+                            },
+                            "Param8": { 
+                                "type": "s",
+                                "value": ""
+                            },
+                            "Param9": { 
+                                "type": "b",
+                                "value": false
+                            },
+                            "Param10": { 
+                                "type": "b",
+                                "value": true
+                            },
+                            "Param11": { 
+                                "type": "b",
+                                "value": false
+                            },
+                            "Param12": { 
+                                "type": "s",
+                                "value": "NumTanksPickedUp"
+                            },
+                            "Param13": { 
+                                "type": "f",
+                                "value": 3.0
+                            }
+                        }
+                    }
+                ],
+                "extra_fields": {},
+                "dependencies": null
+            },
+            "SCRIPT": {
+                "type": "CScriptComponent",
+                "unk_1": [
+                    0,
+                    3212836864
+                ],
+                "functions": [
+                    {
+                        "name": "SetParams",
+                        "unk": 1,
+                        "params": {
+                            "Param1": {
+                                "type": "s",
+                                "value": "actors/items/randomizer_powerup/scripts/randomizer_powerup.lua"
+                            },
+                            "Param2": {
+                                "type": "s",
+                                "value": "RandomizerPowerup"
+                            }
+                        }
+                    }
+                ],
+                "extra_fields": {},
+                "dependencies": null
+            },
+            "MODELUPDATER": {
+                "type": "CModelUpdaterComponent",
+                "unk_1": [
+                    2500,
+                    0
+                ],
+                "functions": [
+                    {
+                        "name": "LoadModel",
+                        "unk": 1,
+                        "params": {
+                            "Param1": {
+                                "type": "s",
+                                "value": "actors/items/itemsphere/models/itemsphere.bcmdl"
+                            },
+                            "Param2": {
+                                "type": "s",
+                                "value": "actors/items/itemsphere/models/itemsphere.bcmdl"
+                            }
+                        }
+                    }
+                ],
+                "extra_fields": {},
+                "dependencies": null
+            },
+            "ANIMATION": {
+                "type": "CAnimationComponent",
+                "unk_1": [
+                    3000,
+                    0
+                ],
+                "functions": [
+                    {
+                        "name": "LoadAnimTree",
+                        "unk": 1,
+                        "params": {
+                            "Param1": {
+                                "type": "s",
+                                "value": "system/animtrees/base.bmsat"
+                            }
+                        }
+                    },
+                    {
+                        "name": "SetInitialAction",
+                        "unk": 0,
+                        "params": {
+                            "Param1": {
+                                "type": "s",
+                                "value": "relax"
+                            }
+                        }
+                    }
+                ],
+                "extra_fields": {},
+                "dependencies": []
+            },
+            "AUDIO": {
+                "type": "CAudioComponent",
+                "unk_1": [
+                    3000,
+                    0
+                ],
+                "functions": [],
+                "extra_fields": {},
+                "dependencies": null
+        },
+        "binaries": []
+        }
+    }
+}

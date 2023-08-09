@@ -23,6 +23,15 @@ def _read_schema():
         return json.load(f)
 
 
+def _read_template_powerup():
+    with Path(__file__).parent.joinpath("templates", "template_powerup_bmsad.json").open() as f:
+        return json.load(f)
+
+
+def _read_powerup_lua() -> bytes:
+    return Path(__file__).parent.joinpath("files", "randomizer_powerup.lua").read_bytes()
+
+
 def path_for_level(level_name: str) -> str:
     return f"maps/levels/c10_samus/{level_name}/{level_name}"
 
@@ -85,6 +94,10 @@ class PatcherEditor(FileTreeEditor):
 
 
 def patch_pickups(editor: PatcherEditor, pickups: list):
+    template_bmsad = _read_template_powerup()
+
+    pkgs_for_lua = set()
+
     for pickup in pickups:
         actor_reference = pickup["actor"]
         scenario = editor.get_scenario(actor_reference["scenario"])
@@ -109,6 +122,10 @@ def patch_pickups(editor: PatcherEditor, pickups: list):
             editor.ensure_present(level_pkg, "system/animtrees/base.bmsat")
             for dep in pickup_type.dependencies:
                 editor.ensure_present(level_pkg, dep)
+
+    editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc",
+                         _read_powerup_lua(),
+                         in_pkgs=pkgs_for_lua)
 
 def patch(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
