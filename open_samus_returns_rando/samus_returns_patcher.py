@@ -1,11 +1,13 @@
 import json
 import logging
+import shutil
 import typing
 from pathlib import Path
 
 import jsonschema
 
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
+from open_samus_returns_rando.misc_patches.exefs import DSPatch
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando import lua_util
@@ -93,12 +95,21 @@ def patch_pickups(editor: PatcherEditor, pickups: list):
                          _read_powerup_lua(),
                          in_pkgs=pkgs_for_lua)
 
+def patch_exefs(exefs_patches: Path, configuration: dict):
+    exefs_patches.mkdir(parents=True, exist_ok=True)
+    patch = DSPatch()
+    # file needs to be named code.ips for Citra
+    exefs_patches.joinpath("code.ips").write_bytes(bytes(patch))
+
 def patch(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
 
     jsonschema.validate(instance=configuration, schema=_read_schema())
 
     out_romfs = output_path.joinpath("romfs")
+    out_exefs= output_path.joinpath("exefs")
+    shutil.rmtree(out_romfs, ignore_errors=True)
+    shutil.rmtree(out_exefs, ignore_errors=True)
     editor = PatcherEditor(input_path)
 
     # Update init.lc
@@ -119,6 +130,10 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
 
     # Patches pikcups
     patch_pickups(editor, configuration["pickups"])
+
+    # Exefs
+    LOG.info("Creating exefs patches")
+    patch_exefs(out_exefs, configuration)
 
     editor.flush_modified_assets()
     editor.save_modifications(out_romfs, OutputFormat.PKG)
