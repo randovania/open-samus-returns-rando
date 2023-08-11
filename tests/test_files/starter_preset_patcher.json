@@ -1,5 +1,5 @@
 {
-    "$schema": "../../open_samus_returns_rando/schema.json",
+    "$schema": "../../open_samus_returns_rando/files/schema.json",
     "starting_location": {
         "scenario": "s000_surface",
         "actor": "StartPoint0"
