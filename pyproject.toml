@@ -1,6 +1,33 @@
 [build-system]
-requires = ["setuptools>=44.0.0", "setuptools_scm[toml]>=3.4.3", "ips.py>=0.1.2",]
+requires = [
+    "setuptools>=61.2",
+    "setuptools_scm[toml]>=3.4.3"
+]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "open_samus_returns_rando"
+description = "An open source randomizer patcher for Metroid: Samus Returns."
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.9",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "mercury-engine-data-structures>=0.23.2",
+    "jsonschema>=4.0.0",
+    "ips.py>=0.1.2",
+]
+dynamic = ["version"]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/randovania/open-samus-returns-rando"
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
