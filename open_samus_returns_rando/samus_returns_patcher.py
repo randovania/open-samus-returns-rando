@@ -63,7 +63,7 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
     return lua_util.replace_lua_template("custom_init.lua", replacement)
 
 def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
-    template_bmsad = editor.get_parsed_asset("actors/items/item_missiletank/charclasses/item_missiletank.bmsad").raw
+    template_bmsad = editor.get_parsed_asset("actors/items/powerup_chargebeam/charclasses/powerup_chargebeam.bmsad").raw
 
     pkgs_for_lua = set()
 
@@ -123,9 +123,10 @@ def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
         set_custom_params["Param1"]["value"] = item_id
         set_custom_params["Param2"]["value"] = quantity
 
-        new_path = f"actors/items/randomizer_powerup/charclasses/randomizer_powerup_{i}.bmsad"
+        actordef_id = new_template["name"]
+        new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
         editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
-        actor.type = f"actordef:{new_path}"
+        actor.type = actordef_id
 
         # Powerup is in plain sight (except for the part we're using the sphere model)
         # actor.components.pop("LIFE", None)

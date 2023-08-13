@@ -2,7 +2,7 @@
     "$schema": "./open_samus_returns_rando/files/schema.json",
     "starting_location": {
         "scenario": "s000_surface",
-        "actor": "ST_SaveStation_001"
+        "actor": "StartPoint0"
     },
     "elevators": [
         {
@@ -27,8 +27,18 @@
                 "actor": "LE_PowerUP_Morphball"
             },
             "caption": "Plasma Beam acquired.",
-            "model": "powerup_plasmabeam",
-            "item_id": "ITEM_WEAPON_PLASMA_BEAM",
+            "model": "item_missiletank",
+            "item_id": "ITEM_WEAPON_MISSILE_MAX",
+            "quantity": 1
+        },
+        {
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "LE_Item_006"
+            },
+            "caption": "Spider Ball acquired.",
+            "model": "powerup_spiderball",
+            "item_id": "ITEM_SPIDER_BALL",
             "quantity": 1
         }
     ]
