@@ -13,7 +13,7 @@ from mercury_engine_data_structures.formats import Bmsad
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando import lua_util
-from open_samus_returns_rando.model_data import ALL_MODEL_DATA
+from open_samus_returns_rando.model_data import get_data
 
 
 T = typing.TypeVar("T")
@@ -63,7 +63,7 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
     return lua_util.replace_lua_template("custom_init.lua", replacement)
 
 def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
-    template_bmsad = _read_template_powerup()
+    template_bmsad = editor.get_parsed_asset("actors/items/item_missiletank/charclasses/item_missiletank.bmsad").raw
 
     pkgs_for_lua = set()
 
@@ -72,37 +72,34 @@ def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
         pkgs_for_level = set(editor.find_pkgs(path_for_level(pickup["pickup_actor"]["scenario"]) + ".bmsld"))
         pkgs_for_lua.update(pkgs_for_level)
 
-        for pickup in pickups_config:
-            actor_reference = pickup["pickup_actor"]
-            scenario = editor.get_scenario(actor_reference["scenario"])
-            actor_name = actor_reference["actor"]
+        actor_reference = pickup["pickup_actor"]
+        scenario = editor.get_scenario(actor_reference["scenario"])
+        actor_name = actor_reference["actor"]
 
-            found_actor = False
-            for actors in scenario.raw.actors:
-                if actor_name in actors:
-                    actor = actors[actor_name]
-                    actor["model"] = pickup["model"]
-                    found_actor = True
-                    break
-        
-            if not found_actor:
-                raise KeyError("Actor named '{}' found in ".format(actor_name, actor_reference["scenario"]))
-            
-            return actor
+        found_actor = False
+        for actors in scenario.raw.actors:
+            if actor_name in actors:
+                actor = actors[actor_name]
+                actor["model"] = pickup["model"]
+                found_actor = True
+                break
+    
+        if not found_actor:
+            raise KeyError("Actor named '{}' found in ".format(actor_name, actor_reference["scenario"]))      
 
         model_name: str = pickup["model"]
-        model_data = ALL_MODEL_DATA.get(model_name, ALL_MODEL_DATA["itemsphere"])
+        model_data = get_data(model_name)
 
         new_template = copy.deepcopy(template_bmsad)
         new_template["name"] = f"randomizer_powerup_{i}"
 
         # Update used model
-        new_template["property"]["model_name"] = model_data.bcmdl_path
-        MODELUPDATER = new_template["property"]["components"]["MODELUPDATER"]
+        new_template["model_name"] = model_data.bcmdl_path
+        MODELUPDATER = new_template["components"]["MODELUPDATER"]
         MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
 
         # Update caption
-        PICKABLE = new_template["property"]["components"]["PICKABLE"]
+        PICKABLE = new_template["components"]["PICKABLE"]
 
         # Update given item
         set_custom_params: dict = PICKABLE["functions"][0]["params"]
@@ -128,10 +125,10 @@ def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
 
         new_path = f"actors/items/randomizer_powerup/charclasses/randomizer_powerup_{i}.bmsad"
         editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
-        actor.oActorDefLink = f"actordef:{new_path}"
+        actor.type = f"actordef:{new_path}"
 
         # Powerup is in plain sight (except for the part we're using the sphere model)
-        actor.pComponents.pop("LIFE", None)
+        # actor.components.pop("LIFE", None)
 
         # Dependencies
         for level_pkg in pkgs_for_level:
