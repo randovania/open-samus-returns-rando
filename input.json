@@ -28,7 +28,7 @@
             },
             "caption": "Plasma Beam acquired.",
             "model": "powerup_plasmabeam",
-            "item_id": "powerup_plasmabeam",
+            "item_id": "ITEM_WEAPON_PLASMA_BEAM",
             "quantity": 1
         }
     ]
