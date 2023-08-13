@@ -1,8 +1,8 @@
 {
-    "$schema": "./open_samus_returns_rando/schema.json",
+    "$schema": "./open_samus_returns_rando/files/schema.json",
     "starting_location": {
-        "scenario": "s010_area1",
-        "actor": "ST_DEBUG_CutsceneTeleport"
+        "scenario": "s000_surface",
+        "actor": "ST_SaveStation_001"
     },
     "elevators": [
         {
@@ -11,70 +11,25 @@
         }
     ],
     "starting_items": {
-        "ITEM_MAX_LIFE": 599,
-        "ITEM_WEAPON_ICE_BEAM": 0,
+        "ITEM_MAX_LIFE": 999,
         "ITEM_WEAPON_MISSILE_MAX": 24,
         "ITEM_WEAPON_SUPER_MISSILE_MAX": 5,
         "ITEM_WEAPON_POWER_BOMB_MAX": 5,
-        "ITEM_METROID_COUNT": 0,
-        "ITEM_METROID_TOTAL_COUNT": 40,
-        "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": 0,
         "ITEM_MORPH_BALL": 1,
-        "ITEM_SPACE_JUMP": 1,
-        "ITEM_WEAPON_CHARGE_BEAM": 1,
-        "ITEM_WEAPON_GRAPPLE_BEAM": 1,
-        "ITEM_SPIDER_BALL": 1,
         "ITEM_WEAPON_BOMB": 1,
-        "ITEM_ADN": 0
+        "ITEM_WEAPON_CHARGE_BEAM": 1,
+        "ITEM_SPACE_JUMP": 1
     },
     "pickups": [
         {
-            "actor": {"scenario": "s000_surface", "actor": "LE_PowerUP_Morphball"}, 
-            "type": "powerup_gravitysuit"
-        },
-        {
-            "actor": {"scenario": "s000_surface", "actor": "LE_Item_006"}, 
-            "type": "powerup_wavebeam"
-        },
-        {
-            "actor": {"scenario": "s010_area1", "actor": "LE_Item_001"}, 
-            "type": "powerup_variasuit"
-        },
-        {
-            "actor": {"scenario": "s010_area1", "actor": "LE_PowerUp_Bomb"}, 
-            "type": "powerup_energywave"
-        },
-        {
-            "actor": {"scenario": "s020_area2", "actor": "LE_PowerUp_Springball"}, 
-            "type": "powerup_gravitysuit"
-        },
-        {
-            "actor": {"scenario": "s020_area2", "actor": "LE_Item_005"}, 
-            "type": "powerup_variasuit"
-        },
-        {
-            "actor": {"scenario": "s025_area2b", "actor": "LE_PowerUp_WaveBeam"}, 
-            "type": "powerup_scanningpulse"
-        },
-        {
-            "actor": {"scenario": "s028_area2c", "actor": "LE_Item_002"}, 
-            "type": "powerup_variasuit"
-        },
-        {
-            "actor": {"scenario": "s033_area3b", "actor": "HiddenPowerup001"}, 
-            "type": "powerup_gravitysuit"
-        },
-        {
-            "actor": {"scenario": "s033_area3b", "actor": "LE_Item_004"}, 
-            "type": "powerup_gravitysuit"
-        },
-        {
-            "actor": {"scenario": "s028_area2c", "actor": "LE_SpecialAbility_EnergyShield"}, 
-            "type": "powerup_gravitysuit"
-        },
-        {
-            "actor": {"scenario": "s067_area6c", "actor": "LE_PowerUp_PlasmaBeam"}, 
-            "type": "powerup_gravitysuit"
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "LE_PowerUP_Morphball"
+            },
+            "caption": "Plasma Beam acquired.",
+            "model": "powerup_plasmabeam",
+            "item_id": "powerup_plasmabeam",
+            "quantity": 1
         }
     ]
 }

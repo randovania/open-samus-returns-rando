@@ -83,11 +83,11 @@ def replace_area_lua(editor: FileTreeEditor):
         "s110_surfaceb",
     ] 
     
-    ALL_PICKUPS = [
-        "powerup_gravitysuit",
-        "powerup_variasuit",
-        "powerup_scanningpulse",
-    ]
+    # ALL_PICKUPS = [
+    #     "powerup_gravitysuit",
+    #     "powerup_variasuit",
+    #     "powerup_scanningpulse",
+    # ]
 
     for x in ALL_AREAS:
         replace_script(
@@ -96,9 +96,9 @@ def replace_area_lua(editor: FileTreeEditor):
             f"levels/{x}.lua"
             )
         
-    for x in ALL_PICKUPS:
-        replace_script(
-            editor,
-            f"actors/items/{x}/scripts/{x}",
-            f"pickups/{x}.lua"
-            )
+    # for x in ALL_PICKUPS:
+    #     replace_script(
+    #         editor,
+    #         f"actors/items/{x}/scripts/{x}",
+    #         f"pickups/{x}.lua"
+    #         )
