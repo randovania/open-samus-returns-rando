@@ -22,13 +22,7 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "pickup_actor": {
-                        "$ref": "#/$defs/actor_reference_with_layer"
-                    },
                     "caption": {
-                        "type": "string"
-                    },
-                    "model": {
                         "type": "string"
                     },
                     "item_id": {
@@ -36,6 +30,12 @@
                     },
                     "quantity": {
                         "type": "number"
+                    },
+                    "pickup_actor": {
+                        "$ref": "#/$defs/actor_reference_with_layer"
+                    },
+                    "model": {
+                        "type": "string"
                     }
                 },
                 "required": [
