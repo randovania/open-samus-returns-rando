@@ -44,7 +44,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_wavebeam/charclasses/powerup_wavebeam.bmsad",
             "actors/items/powerup_wavebeam/models/powerup_wavebeam.bcmdl",
-            "actors/items/itemsphere/models/itemsphere.bcmdl",
             "actors/items/powerup_wavebeam/models/textures/itemspherecoat.bctex",
             "actors/items/powerup_wavebeam/models/textures/itemspherewavebeam_d.bctex",
             "actors/items/powerup_wavebeam/scripts/powerup_wavebeam.lc",
@@ -214,7 +213,6 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_springball/charclasses/powerup_springball.bmsad",
             "actors/items/powerup_springball/models/powerup_springball.bcmdl",
-            "actors/items/itemsphere/models/itemsphere.bcmdl",
             "actors/items/powerup_springball/models/textures/itemspringball_d.bctex",
             "actors/items/powerup_springball/scripts/powerup_springball.lc",
         ),
