@@ -1,3 +1,4 @@
+import copy
 import json
 import logging
 import shutil
@@ -7,9 +8,10 @@ from pathlib import Path
 import jsonschema
 
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
-from open_samus_returns_rando.misc_patches.exefs import DSPatch
+from mercury_engine_data_structures.formats import Bmsad
 
-from open_samus_returns_rando.patcher_editor import PatcherEditor
+from open_samus_returns_rando.misc_patches.exefs import DSPatch
+from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando import lua_util
 from open_samus_returns_rando.model_data import get_data
 
@@ -60,36 +62,79 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
 
     return lua_util.replace_lua_template("custom_init.lua", replacement)
 
-
-def patch_pickups(editor: PatcherEditor, pickups: list):
-    template_bmsad = _read_template_powerup()
+def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
+    template_bmsad = editor.get_parsed_asset("actors/items/powerup_chargebeam/charclasses/powerup_chargebeam.bmsad").raw
 
     pkgs_for_lua = set()
 
-    for pickup in pickups:
-        actor_reference = pickup["actor"]
+    for i, pickup in enumerate(pickups_config):
+        LOG.info("Writing pickup %d: %s", i, pickup["item_id"])
+        pkgs_for_level = set(editor.find_pkgs(path_for_level(pickup["pickup_actor"]["scenario"]) + ".bmsld"))
+        pkgs_for_lua.update(pkgs_for_level)
+
+        actor_reference = pickup["pickup_actor"]
         scenario = editor.get_scenario(actor_reference["scenario"])
         actor_name = actor_reference["actor"]
 
-        model_name: str = pickup["type"]
-        pickup_type = get_data(model_name)
+        actor = next((layer[actor_name] for layer in scenario.raw.actors if actor_name in layer), None)
+        if actor is None:
+            raise KeyError(f"No actor named '{actor_name}' found in {actor_reference['scenario']}")
 
-        found_actor = False
-        for actors in scenario.raw.actors:
-            if actor_name in actors:
-                actor = actors[actor_name]
-                actor["type"] = pickup["type"]
-                found_actor = True
-                break
-    
-        if not found_actor:
-            raise KeyError("Actor named '{}' found in ".format(actor_name, actor_reference["scenario"]))
+        model_name: str = pickup["model"]
+        model_data = get_data(model_name)
+
+        new_template = copy.deepcopy(template_bmsad)
+
+        # Update used model
+        new_template["model_name"] = model_data.bcmdl_path
+        MODELUPDATER = new_template["components"]["MODELUPDATER"]
+        MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
+
+        # Update caption
+        PICKABLE = new_template["components"]["PICKABLE"]
+
+        # Update given item
+        set_custom_params: dict = PICKABLE["functions"][0]["params"]
+        item_id: str = pickup["item_id"]
+        quantity: float = pickup["quantity"]
+
+        if item_id == "ITEM_ENERGY_TANKS":
+            item_id = "fMaxLife"
+            quantity *= 100.0
+            set_custom_params["Param4"]["value"] = "Full"
+            set_custom_params["Param5"]["value"] = "fCurrentLife"
+            set_custom_params["Param6"]["value"] = "LIFE"
+
+        elif item_id == "ITEM_SENERGY_TANKS":
+            item_id = "fMaxEnergy"
+            quantity *= 50.0
+            set_custom_params["Param4"]["value"] = "Full"
+            set_custom_params["Param5"]["value"] = "fEnergy"
+            set_custom_params["Param6"]["value"] = "SPECIALENERGY"
+
+        set_custom_params["Param1"]["value"] = item_id
+        set_custom_params["Param2"]["value"] = quantity
+
+        actordef_id = f"randomizer_powerup_{i}"
+        new_template["name"] = actordef_id
+        new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
+        
+        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
+        actor.type = actordef_id
+
+        # Powerup is in plain sight (except for the part we're using the sphere model)
+        # actor.components.pop("LIFE", None)
 
         # Dependencies
-        for level_pkg in editor.get_level_pkgs(actor_reference["scenario"]):
+        for level_pkg in pkgs_for_level:
             editor.ensure_present(level_pkg, "system/animtrees/base.bmsat")
-            for dep in pickup_type.dependencies:
+            for dep in model_data.dependencies:
                 editor.ensure_present(level_pkg, dep)
+
+        # For debugging, write the bmsad we just created
+        # Path("custom_bmsad", f"randomizer_powerup_{i}.bmsad.json").write_text(
+        #     json.dumps(new_template, indent=4)
+        # )
 
     editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc",
                          _read_powerup_lua(),
@@ -128,7 +173,7 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
     # Replaces the original area lua files with modified ones
     lua_util.replace_area_lua(editor)
 
-    # Patches pikcups
+    # Pickups
     patch_pickups(editor, configuration["pickups"])
 
     # Exefs
@@ -136,6 +181,8 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
     patch_exefs(out_exefs, configuration)
 
     editor.flush_modified_assets()
+
+    # shutil.rmtree(out_romfs)
     editor.save_modifications(out_romfs, OutputFormat.PKG)
 
     logging.info("Done")

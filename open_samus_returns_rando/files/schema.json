@@ -5,6 +5,47 @@
         "starting_location": {
             "$ref": "#/$defs/actor_reference"
         },
+        "starting_items": {
+            "type": "object",
+            "propertyNames": {
+                "$ref": "#/$defs/item_id"
+            },
+            "required": [
+                "ITEM_MAX_LIFE",
+                "ITEM_WEAPON_MISSILE_MAX",
+                "ITEM_WEAPON_SUPER_MISSILE_MAX",
+                "ITEM_WEAPON_POWER_BOMB_MAX"
+            ]
+        },
+        "pickups": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "caption": {
+                        "type": "string"
+                    },
+                    "item_id": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    },
+                    "pickup_actor": {
+                        "$ref": "#/$defs/actor_reference_with_layer"
+                    },
+                    "model": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "pickup_actor",
+                    "model",
+                    "item_id",
+                    "quantity"
+                ]
+            }
+        },
         "elevators": {
             "type": "array",
             "items": {
@@ -21,35 +62,6 @@
                     "teleporter",
                     "destination"
                 ]
-            }
-        },
-        "starting_items": {
-            "type": "object",
-            "propertyNames": {
-                "$ref": "#/$defs/item_id"
-            },
-            "required": [
-                "ITEM_MAX_LIFE",
-                "ITEM_WEAPON_MISSILE_MAX",
-                "ITEM_WEAPON_SUPER_MISSILE_MAX",
-                "ITEM_WEAPON_POWER_BOMB_MAX"
-            ]
-        },
-        "pickups": {
-            "description": "Changes pickup actors to have a different type",
-            "type": "array",
-            "default": [],
-            "items": {
-                "type": "object",
-                "properties": {
-                    "actor": {
-                        "$ref": "#/$defs/actor_reference"
-                    },
-                    "type": {
-                        "type": "string"
-                    }
-                },
-                "additionalProperties": false
             }
         }
     },
