@@ -80,18 +80,16 @@ def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
         for actors in scenario.raw.actors:
             if actor_name in actors:
                 actor = actors[actor_name]
-                actor["model"] = pickup["model"]
                 found_actor = True
                 break
     
         if not found_actor:
-            raise KeyError("Actor named '{}' found in ".format(actor_name, actor_reference["scenario"]))      
+            raise KeyError(f"No actor named '{actor_name}' found in {actor_reference['scenario']}")
 
         model_name: str = pickup["model"]
         model_data = get_data(model_name)
 
         new_template = copy.deepcopy(template_bmsad)
-        new_template["name"] = f"randomizer_powerup_{i}"
 
         # Update used model
         new_template["model_name"] = model_data.bcmdl_path
@@ -123,8 +121,10 @@ def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
         set_custom_params["Param1"]["value"] = item_id
         set_custom_params["Param2"]["value"] = quantity
 
-        actordef_id = new_template["name"]
+        actordef_id = f"randomizer_powerup_{i}"
+        new_template["name"] = actordef_id
         new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
+        
         editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
         actor.type = actordef_id
 
