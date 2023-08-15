@@ -76,14 +76,8 @@ def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
         scenario = editor.get_scenario(actor_reference["scenario"])
         actor_name = actor_reference["actor"]
 
-        found_actor = False
-        for actors in scenario.raw.actors:
-            if actor_name in actors:
-                actor = actors[actor_name]
-                found_actor = True
-                break
-    
-        if not found_actor:
+        actor = next((layer[actor_name] for layer in scenario.raw.actors if actor_name in layer), None)
+        if actor is None:
             raise KeyError(f"No actor named '{actor_name}' found in {actor_reference['scenario']}")
 
         model_name: str = pickup["model"]
