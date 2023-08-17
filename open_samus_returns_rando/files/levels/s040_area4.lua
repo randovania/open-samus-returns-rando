@@ -12,7 +12,7 @@ function s040_area4.OnEnter_SetCheckpoint_Alpha_001()
 end
 function s040_area4.OnAlpha_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door012")
+    -- _ARG_1_.AI:AddBossDoor("Door012")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Alpha001_001")
@@ -55,8 +55,8 @@ function s040_area4.OnGamma_001_Intro_A_Generated(_ARG_0_, _ARG_1_)
 end
 function s040_area4.OnGamma_001_A_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door011")
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door004")
+    -- _ARG_1_.AI:AddBossDoor("Door011")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door004")
     Game.DisableTrigger("TG_SetCheckpoint_Gamma_001")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
@@ -107,7 +107,7 @@ function s040_area4.OnGamma_001_Intro_B_Generated(_ARG_0_, _ARG_1_)
 end
 function s040_area4.OnGamma_001_B_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door004")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door004")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma001_B_001")
@@ -157,8 +157,8 @@ function s040_area4.OnGamma_001_Intro_C_Generated(_ARG_0_, _ARG_1_)
 end
 function s040_area4.OnGamma_001_C_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door010")
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door004")
+    -- _ARG_1_.AI:AddBossDoor("Door010")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door004")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddBossCameraFloorLandmark("LM_Gamma_001_C")

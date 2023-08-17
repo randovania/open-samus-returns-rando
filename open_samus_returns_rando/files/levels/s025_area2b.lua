@@ -114,8 +114,8 @@ function s025_area2b.OnEnter_SetCheckpoint_001_Gamma_001()
 end
 function s025_area2b.OnGamma_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door010")
-    _ARG_1_.AI:AddBossDoor("Door018")
+    -- _ARG_1_.AI:AddBossDoor("Door010")
+    -- _ARG_1_.AI:AddBossDoor("Door018")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma001_001")

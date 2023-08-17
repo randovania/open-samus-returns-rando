@@ -178,8 +178,8 @@ function s070_area7.OnEnter_SetCheckpoint_001_Zeta_001()
 end
 function s070_area7.OnZeta_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door021")
-    _ARG_1_.AI:AddBossDoor("Door022")
+    -- _ARG_1_.AI:AddBossDoor("Door021")
+    -- _ARG_1_.AI:AddBossDoor("Door022")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI.sNavigableAreaID = "SHAPE_Zeta001"
     _ARG_1_.AI:AddBossCamera("CAM_Zeta")
@@ -198,8 +198,8 @@ function s070_area7.OnEnter_SetCheckpoint_001_Omega_001()
 end
 function s070_area7.OnOmega_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door015")
-    _ARG_1_.AI:AddBossDoor("Door023")
+    -- _ARG_1_.AI:AddBossDoor("Door015")
+    -- _ARG_1_.AI:AddBossDoor("Door023")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Omega")
     _ARG_1_.AI:AddLandmark("LM_CrushingJumpLeft", "LM_CrushingJumpLeft_001")

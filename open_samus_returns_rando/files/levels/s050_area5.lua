@@ -143,7 +143,7 @@ function s050_area5.OnGamma_002_Intro_A_Generated(_ARG_0_, _ARG_1_)
 end
 function s050_area5.OnGamma_002_A_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door014")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door014")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddBossCameraFloorLandmark("LM_Gamma_002_A")
@@ -194,7 +194,7 @@ function s050_area5.OnGamma_002_Intro_B_Generated(_ARG_0_, _ARG_1_)
 end
 function s050_area5.OnGamma_002_B_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door014")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door014")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddBossCameraFloorLandmark("LM_Gamma_002_B")
@@ -245,7 +245,7 @@ function s050_area5.OnGamma_002_Intro_C_Generated(_ARG_0_, _ARG_1_)
 end
 function s050_area5.OnGamma_002_C_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door014")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door014")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma002_C_001")
@@ -311,7 +311,7 @@ function s050_area5.OnEnter_SetCheckpoint_Zeta_001()
 end
 function s050_area5.OnZeta_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door009")
+    -- _ARG_1_.AI:AddBossDoor("Door009")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI.sNavigableAreaID = "SHAPE_Zeta001"
     _ARG_1_.AI:AddBossCamera("CAM_Zeta")

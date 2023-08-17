@@ -136,7 +136,7 @@ function s028_area2c.OnEnter_SetCheckpoint_002_Alpha_002()
 end
 function s028_area2c.OnAlpha_002_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door008")
+    -- _ARG_1_.AI:AddBossDoor("Door008")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Alpha002_001")

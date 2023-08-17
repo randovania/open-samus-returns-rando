@@ -524,7 +524,7 @@ function s010_area1.OnEnter_SetCheckpoint_001_Alpha_002()
 end
 function s010_area1.OnAlpha_002_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door014")
+    -- _ARG_1_.AI:AddBossDoor("Door014")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI:AddBossCameraFloorLandmark("LM_Alpha_002")
@@ -545,7 +545,7 @@ function s010_area1.OnEnter_SetCheckpoint_001_Alpha_003()
 end
 function s010_area1.OnAlpha_003_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door015")
+    -- _ARG_1_.AI:AddBossDoor("Door015")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI:AddBossCameraFloorLandmark("LM_Alpha_003")
@@ -584,7 +584,7 @@ function s010_area1.OnEnter_SetCheckpoint_002_Alpha_004()
 end
 function s010_area1.OnAlpha_004_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door016")
+    -- _ARG_1_.AI:AddBossDoor("Door016")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Alpha004_001")

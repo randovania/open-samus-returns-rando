@@ -146,7 +146,7 @@ function s090_area9.OnEnter_SetCheckpoint_001_Omega_001()
 end
 function s090_area9.OnOmega_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door016")
+    -- _ARG_1_.AI:AddBossDoor("Door016")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Omega")
     _ARG_1_.AI:AddLandmark("LM_CrushingJumpLeft", "LM_CrushingJumpLeft_001")
@@ -196,7 +196,7 @@ function s090_area9.OnEnter_SetCheckpoint_001_Omega_002()
 end
 function s090_area9.OnOmega_002_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door006")
+    -- _ARG_1_.AI:AddBossDoor("Door006")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Omega")
     _ARG_1_.AI:AddLandmark("LM_CrushingJumpLeft", "LM_CrushingJumpLeft_002")
@@ -244,7 +244,7 @@ function s090_area9.OnEnter_SetCheckpoint_001_Omega_003()
 end
 function s090_area9.OnOmega_003_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door015")
+    -- _ARG_1_.AI:AddBossDoor("Door015")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Omega")
     _ARG_1_.AI:AddLandmark("LM_CrushingJumpLeft", "LM_CrushingJumpLeft_003")
