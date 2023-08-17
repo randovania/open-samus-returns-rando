@@ -201,7 +201,7 @@ function s067_area6c.OnEnter_SetCheckpoint_001_Zeta_002()
 end
 function s067_area6c.OnZeta_002_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door022")
+    -- _ARG_1_.AI:AddBossDoor("Door022")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI.sNavigableAreaID = "SHAPE_Zeta002"
     _ARG_1_.AI:AddBossCamera("CAM_Zeta")

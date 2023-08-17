@@ -229,7 +229,7 @@ function s000_surface.OnEnter_SetCheckpoint_001_Alpha_001()
 end
 function s000_surface.OnAlpha_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door013")
+    -- _ARG_1_.AI:AddBossDoor("Door013")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Alpha001_001")

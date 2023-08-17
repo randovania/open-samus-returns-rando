@@ -123,7 +123,7 @@ function s065_area6b.OnEnter_SetCheckpoint_001_Gamma_002()
 end
 function s065_area6b.OnGamma_002_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door011")
+    -- _ARG_1_.AI:AddBossDoor("Door011")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddBossCameraFloorLandmark("LM_Gamma_002")
@@ -215,7 +215,7 @@ function s065_area6b.OnEnter_SetCheckpoint_001_Zeta_001()
 end
 function s065_area6b.OnZeta_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door012")
+    -- _ARG_1_.AI:AddBossDoor("Door012")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI.sNavigableAreaID = "SHAPE_Zeta001"
     _ARG_1_.AI:AddBossCamera("CAM_Zeta")

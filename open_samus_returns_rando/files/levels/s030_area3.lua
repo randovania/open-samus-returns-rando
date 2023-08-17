@@ -22,7 +22,7 @@ function s030_area3.OnGamma_005_Intro_A_Generated(_ARG_0_, _ARG_1_)
 end
 function s030_area3.OnGamma_005_A_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door015")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door015")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma005_A_001")
@@ -75,7 +75,7 @@ function s030_area3.OnGamma_005_Intro_B_Generated(_ARG_0_, _ARG_1_)
 end
 function s030_area3.OnGamma_005_B_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door015")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door015")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma005_B_001")
@@ -125,7 +125,7 @@ function s030_area3.OnGamma_005_Intro_C_Generated(_ARG_0_, _ARG_1_)
 end
 function s030_area3.OnGamma_005_C_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door015")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door015")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma005_C_001")

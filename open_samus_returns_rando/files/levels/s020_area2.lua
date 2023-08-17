@@ -230,7 +230,7 @@ function s020_area2.OnEnter_SetCheckpoint_001_Alpha_001()
 end
 function s020_area2.OnAlpha_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door020")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door020")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI.bUseSpawnGroupEdges = false
@@ -270,8 +270,8 @@ function s020_area2.OnEnter_SetCheckpoint_001_Alpha_003()
 end
 function s020_area2.OnAlpha_003_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door021")
-    _ARG_1_.AI:AddBossDoor("Door009")
+    -- _ARG_1_.AI:AddBossDoor("Door021")
+    -- _ARG_1_.AI:AddBossDoor("Door009")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Alpha003_001")
@@ -297,7 +297,7 @@ function s020_area2.OnEnter_SetCheckpoint_001_Alpha_004()
 end
 function s020_area2.OnAlpha_004_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door010")
+    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door010")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI.bUseSpawnGroupEdges = false
@@ -340,7 +340,7 @@ function s020_area2.OnEnter_SetCheckpoint_001_Alpha_005()
 end
 function s020_area2.OnAlpha_005_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door022")
+    -- _ARG_1_.AI:AddBossDoor("Door022")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI:AddBossCameraFloorLandmark("LM_Alpha_005")
@@ -364,7 +364,7 @@ function s020_area2.OnEnter_SetCheckpoint_001_Alpha_006()
 end
 function s020_area2.OnAlpha_006_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
-    _ARG_1_.AI:AddBossDoor("Door017")
+    -- _ARG_1_.AI:AddBossDoor("Door017")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Alpha006_001")
