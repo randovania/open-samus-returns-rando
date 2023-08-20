@@ -1,21 +1,16 @@
-import copy
 import json
 import logging
 import shutil
 import typing
 from pathlib import Path
 
-import jsonschema
-
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
-from mercury_engine_data_structures.formats import Bmsad
 
-from open_samus_returns_rando.misc_patches.exefs import DSPatch
-from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando import lua_util
-from open_samus_returns_rando.model_data import get_data
+from open_samus_returns_rando.misc_patches.exefs import DSPatch
+from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
-
+from open_samus_returns_rando.pickup import patch_pickups
 
 T = typing.TypeVar("T")
 LOG = logging.getLogger("samus_returns_patcher")
@@ -29,10 +24,6 @@ def _read_schema():
 def _read_template_powerup():
     with Path(__file__).parent.joinpath("templates", "template_powerup_bmsad.json").open() as f:
         return json.load(f)
-
-
-def _read_powerup_lua() -> bytes:
-    return Path(__file__).parent.joinpath("files", "randomizer_powerup.lua").read_bytes()
 
 
 def create_custom_init(configuration: dict):
@@ -66,99 +57,21 @@ def create_custom_init(configuration: dict):
 
     return lua_util.replace_lua_template("custom_init.lua", replacement)
 
-def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
-    template_bmsad = editor.get_parsed_asset("actors/items/powerup_chargebeam/charclasses/powerup_chargebeam.bmsad").raw
 
-    pkgs_for_lua = set()
-
-    for i, pickup in enumerate(pickups_config):
-        LOG.info("Writing pickup %d: %s", i, pickup["item_id"])
-        pkgs_for_level = set(editor.find_pkgs(path_for_level(pickup["pickup_actor"]["scenario"]) + ".bmsld"))
-        pkgs_for_lua.update(pkgs_for_level)
-
-        actor_reference = pickup["pickup_actor"]
-        scenario = editor.get_scenario(actor_reference["scenario"])
-        actor_name = actor_reference["actor"]
-
-        actor = next((layer[actor_name] for layer in scenario.raw.actors if actor_name in layer), None)
-        if actor is None:
-            raise KeyError(f"No actor named '{actor_name}' found in {actor_reference['scenario']}")
-
-        model_name: str = pickup["model"]
-        model_data = get_data(model_name)
-
-        new_template = copy.deepcopy(template_bmsad)
-
-        # Update used model
-        new_template["model_name"] = model_data.bcmdl_path
-        MODELUPDATER = new_template["components"]["MODELUPDATER"]
-        MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
-
-        # Update caption
-        PICKABLE = new_template["components"]["PICKABLE"]
-
-        # Update given item
-        set_custom_params: dict = PICKABLE["functions"][0]["params"]
-        item_id: str = pickup["item_id"]
-        quantity: float = pickup["quantity"]
-
-        if item_id == "ITEM_ENERGY_TANKS":
-            item_id = "fMaxLife"
-            quantity *= 100.0
-            set_custom_params["Param4"]["value"] = "Full"
-            set_custom_params["Param5"]["value"] = "fCurrentLife"
-            set_custom_params["Param6"]["value"] = "LIFE"
-
-        elif item_id == "ITEM_SENERGY_TANKS":
-            item_id = "fMaxEnergy"
-            quantity *= 50.0
-            set_custom_params["Param4"]["value"] = "Full"
-            set_custom_params["Param5"]["value"] = "fEnergy"
-            set_custom_params["Param6"]["value"] = "SPECIALENERGY"
-
-        set_custom_params["Param1"]["value"] = item_id
-        set_custom_params["Param2"]["value"] = quantity
-
-        actordef_id = f"randomizer_powerup_{i}"
-        new_template["name"] = actordef_id
-        new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
-        
-        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
-        actor.type = actordef_id
-
-        # Powerup is in plain sight (except for the part we're using the sphere model)
-        # actor.components.pop("LIFE", None)
-
-        # Dependencies
-        for level_pkg in pkgs_for_level:
-            editor.ensure_present(level_pkg, "system/animtrees/base.bmsat")
-            for dep in model_data.dependencies:
-                editor.ensure_present(level_pkg, dep)
-
-        # For debugging, write the bmsad we just created
-        # Path("custom_bmsad", f"randomizer_powerup_{i}.bmsad.json").write_text(
-        #     json.dumps(new_template, indent=4)
-        # )
-
-    editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc",
-                         _read_powerup_lua(),
-                         in_pkgs=pkgs_for_lua)
-
-
-def patch_exefs(exefs_patches: Path, configuration: dict):
+def patch_exefs(exefs_patches: Path):
     exefs_patches.mkdir(parents=True, exist_ok=True)
     patch = DSPatch()
     # file needs to be named code.ips for Citra
     exefs_patches.joinpath("code.ips").write_bytes(bytes(patch))
 
 
-def patch(input_path: Path, output_path: Path, configuration: dict):
+def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
 
     DefaultValidatingDraft7Validator(_read_schema()).validate(configuration)
 
     out_romfs = output_path.joinpath("romfs")
-    out_exefs= output_path.joinpath("exefs")
+    out_exefs = output_path.joinpath("exefs")
     shutil.rmtree(out_romfs, ignore_errors=True)
     shutil.rmtree(out_exefs, ignore_errors=True)
     editor = PatcherEditor(input_path)
@@ -182,7 +95,7 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
 
     # Exefs
     LOG.info("Creating exefs patches")
-    patch_exefs(out_exefs, configuration)
+    patch_exefs(out_exefs)
 
     editor.flush_modified_assets()
 

@@ -4,8 +4,10 @@
       "actor": "StartPoint0"
     },
     "starting_items": {
-      "ITEM_WEAPON_MISSILE_MAX": 24,
       "ITEM_MAX_LIFE": 99,
+      "ITEM_WEAPON_MISSILE_MAX": 24,
+      "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
+      "ITEM_WEAPON_POWER_BOMB_MAX": 0,
       "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": 1,
       "ITEM_MAX_SPECIAL_ENERGY": 1450,
       "ITEM_BABY_HATCHLING": 1
