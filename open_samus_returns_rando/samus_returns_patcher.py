@@ -14,6 +14,7 @@ from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando import lua_util
 from open_samus_returns_rando.model_data import get_data
+from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
 
 
 T = typing.TypeVar("T")
@@ -140,16 +141,18 @@ def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
                          _read_powerup_lua(),
                          in_pkgs=pkgs_for_lua)
 
+
 def patch_exefs(exefs_patches: Path, configuration: dict):
     exefs_patches.mkdir(parents=True, exist_ok=True)
     patch = DSPatch()
     # file needs to be named code.ips for Citra
     exefs_patches.joinpath("code.ips").write_bytes(bytes(patch))
 
+
 def patch(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
 
-    jsonschema.validate(instance=configuration, schema=_read_schema())
+    DefaultValidatingDraft7Validator(_read_schema()).validate(configuration)
 
     out_romfs = output_path.joinpath("romfs")
     out_exefs= output_path.joinpath("exefs")
