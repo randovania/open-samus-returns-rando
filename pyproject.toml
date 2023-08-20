@@ -32,3 +32,32 @@ Homepage = "https://github.com/randovania/open-samus-returns-rando"
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
 write_to = "open_samus_returns_rando/version.py"
+
+[tool.ruff]
+line-length = 120
+select = [
+    "E", "F", "W", "C90", "I", "UP", "C4",
+    "RSE",
+    "TCH",
+    "PTH",
+    "COM818", "COM819",
+    "ISC",
+    "PIE",
+    "PT",
+
+    "PLC",
+    "PLC0208",  # iterating over set is also not deterministic, so we shouldn't do that!
+
+    "PLE",
+    "PLR0402", "PLR1701", "PLR1711", "PLR1722", "PLR0206",
+    "PLR0133", "PLR0124",
+    "PLW",
+]
+
+# Version to target for generated code.
+target-version = "py39"
+
+[tool.ruff.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 25.
+# Defaults to 10, but we're being very flexible right now
+max-complexity = 25

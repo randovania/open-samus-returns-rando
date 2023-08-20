@@ -1,5 +1,6 @@
 import ips
 
+
 class DSPatch(ips.Patch):
     def __init__(self):
         super().__init__(False)

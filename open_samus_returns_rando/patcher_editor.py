@@ -19,7 +19,7 @@ class PatcherEditor(FileTreeEditor):
         super().__init__(root, Game.SAMUS_RETURNS)
         self.memory_files = {}
 
-    def get_file(self, path: str, type_hint: typing.Type[T] = BaseResource) -> T:
+    def get_file(self, path: str, type_hint: type[T] = BaseResource) -> T:
         if path not in self.memory_files:
             self.memory_files[path] = self.get_parsed_asset(path, type_hint=type_hint)
         return self.memory_files[path]

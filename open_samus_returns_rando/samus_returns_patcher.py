@@ -9,8 +9,8 @@ from mercury_engine_data_structures.file_tree_editor import OutputFormat
 from open_samus_returns_rando import lua_util
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.patcher_editor import PatcherEditor
-from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
 from open_samus_returns_rando.pickup import patch_pickups
+from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
 
 T = typing.TypeVar("T")
 LOG = logging.getLogger("samus_returns_patcher")
@@ -47,7 +47,7 @@ def create_custom_init(configuration: dict):
 
     replacement = {
         "new_game_inventory": "\n".join(
-            "{} = {},".format(key, value)
+            f"{key} = {value},"
             for key, value in final_inventory.items()
         ),
         "starting_scenario": _wrap(starting_location["scenario"]),
