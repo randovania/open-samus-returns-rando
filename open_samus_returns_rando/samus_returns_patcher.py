@@ -22,7 +22,7 @@ def _read_schema():
 
 
 def _read_template_powerup():
-    with Path(__file__).parent.joinpath('templates', "template_powerup_bmsad.json").open() as f:
+    with Path(__file__).parent.joinpath("templates", "template_powerup_bmsad.json").open() as f:
         return json.load(f)
 
 

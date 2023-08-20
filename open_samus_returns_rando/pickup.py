@@ -1,11 +1,13 @@
 import copy
+import logging
 from pathlib import Path
 
 from mercury_engine_data_structures.formats import Bmsad
 
 from open_samus_returns_rando.model_data import get_data
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
-from open_samus_returns_rando.samus_returns_patcher import LOG
+
+LOG = logging.getLogger("pickup")
 
 
 def _read_powerup_lua() -> bytes:
