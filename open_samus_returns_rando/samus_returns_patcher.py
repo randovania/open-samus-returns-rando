@@ -14,6 +14,7 @@ from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando import lua_util
 from open_samus_returns_rando.model_data import get_data
+from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
 
 
 T = typing.TypeVar("T")
@@ -34,9 +35,12 @@ def _read_powerup_lua() -> bytes:
     return Path(__file__).parent.joinpath("files", "randomizer_powerup.lua").read_bytes()
 
 
-def create_custom_init(inventory: dict[str, int], starting_location: dict):
+def create_custom_init(configuration: dict):
     def _wrap(v: str):
         return f'"{v}"'
+
+    starting_items = configuration["starting_items"]
+    starting_location = configuration["starting_location"]
 
     # Game doesn't like to start if some fields are missing, like ITEM_WEAPON_POWER_BOMB_MAX
     final_inventory = {
@@ -48,7 +52,7 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
         "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
         "ITEM_WEAPON_POWER_BOMB_MAX": 0,
     }
-    final_inventory.update(inventory)
+    final_inventory.update(starting_items)
 
     replacement = {
         "new_game_inventory": "\n".join(
@@ -57,8 +61,8 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
         ),
         "starting_scenario": _wrap(starting_location["scenario"]),
         "starting_actor": _wrap(starting_location["actor"]),
+        "reveal_map_on_start": configuration["reveal_map_on_start"],
     }
-
 
     return lua_util.replace_lua_template("custom_init.lua", replacement)
 
@@ -140,16 +144,18 @@ def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
                          _read_powerup_lua(),
                          in_pkgs=pkgs_for_lua)
 
+
 def patch_exefs(exefs_patches: Path, configuration: dict):
     exefs_patches.mkdir(parents=True, exist_ok=True)
     patch = DSPatch()
     # file needs to be named code.ips for Citra
     exefs_patches.joinpath("code.ips").write_bytes(bytes(patch))
 
+
 def patch(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
 
-    jsonschema.validate(instance=configuration, schema=_read_schema())
+    DefaultValidatingDraft7Validator(_read_schema()).validate(configuration)
 
     out_romfs = output_path.joinpath("romfs")
     out_exefs= output_path.joinpath("exefs")
@@ -161,10 +167,8 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
     lua_util.create_script_copy(editor, "system/scripts/init")
     editor.replace_asset(
         "system/scripts/init.lc",
-        create_custom_init(
-            configuration["starting_items"],
-            configuration["starting_location"]
-        ).encode("ascii"),
+        create_custom_init(configuration)
+        .encode("ascii"),
     )
 
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
