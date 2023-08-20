@@ -5,17 +5,14 @@ import shutil
 import typing
 from pathlib import Path
 
-import jsonschema
-
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 from mercury_engine_data_structures.formats import Bmsad
 
-from open_samus_returns_rando.misc_patches.exefs import DSPatch
-from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando import lua_util
+from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.model_data import get_data
+from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
-
 
 T = typing.TypeVar("T")
 LOG = logging.getLogger("samus_returns_patcher")
@@ -56,7 +53,7 @@ def create_custom_init(configuration: dict):
 
     replacement = {
         "new_game_inventory": "\n".join(
-            "{} = {},".format(key, value)
+            f"{key} = {value},"
             for key, value in final_inventory.items()
         ),
         "starting_scenario": _wrap(starting_location["scenario"]),
@@ -122,7 +119,7 @@ def patch_pickups(editor: PatcherEditor, pickups_config: list[dict]):
         actordef_id = f"randomizer_powerup_{i}"
         new_template["name"] = actordef_id
         new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
-        
+
         editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
         actor.type = actordef_id
 

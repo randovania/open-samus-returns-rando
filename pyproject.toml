@@ -53,9 +53,6 @@ select = [
     "PLR0133", "PLR0124",
     "PLW",
 ]
-extend-ignore = [
-    "PLW0603",  # we use some globals here and there
-]
 
 # Version to target for generated code.
 target-version = "py39"

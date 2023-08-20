@@ -1,19 +1,18 @@
 import dataclasses
-from typing import Optional, Tuple
 
 
 @dataclasses.dataclass(frozen=True)
 class Transform:
-    position: Tuple[float, float, float] = (0.0, 0.0, 0.0)
-    angle: Tuple[float, float, float] = (0.0, 0.0, 0.0)
-    scale: Tuple[float, float, float] = (1.0, 1.0, 1.0)
+    position: tuple[float, float, float] = (0.0, 0.0, 0.0)
+    angle: tuple[float, float, float] = (0.0, 0.0, 0.0)
+    scale: tuple[float, float, float] = (1.0, 1.0, 1.0)
 
 
 @dataclasses.dataclass(frozen=True)
 class ModelData:
     bcmdl_path: str
     dependencies: tuple[str, ...]
-    transform: Optional[Transform] = None
+    transform: Transform | None = None
 
 
 ALL_MODEL_DATA: dict[str, ModelData] = {
@@ -51,7 +50,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/itemsphere/animations/relax.bcskla"
         ),
     ),
-    
+
     "powerup_spazerbeam": ModelData(
         bcmdl_path="actors/items/powerup_spazerbeam/models/powerup_spazerbeam.bcmdl",
         dependencies=(

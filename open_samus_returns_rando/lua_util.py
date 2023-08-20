@@ -28,12 +28,12 @@ def replace_lua_template(file: str, replacement: dict[str, str]) -> str:
 def lua_convert(data) -> str:
     if isinstance(data, list):
         return "{\n" + "\n".join(
-            "{},".format(lua_convert(item))
+            f"{lua_convert(item)},"
             for item in data
         ) + "\n}"
     if isinstance(data, dict):
         return "{\n" + "\n".join(
-            "{} = {},".format(key, lua_convert(value))
+            f"{key} = {lua_convert(value)},"
             for key, value in data.items()
         ) + "\n}"
     if isinstance(data, bool):
@@ -81,8 +81,8 @@ def replace_area_lua(editor: FileTreeEditor):
         "s090_area9",
         "s100_area10",
         "s110_surfaceb",
-    ] 
-    
+    ]
+
     # ALL_PICKUPS = [
     #     "powerup_gravitysuit",
     #     "powerup_variasuit",
@@ -95,7 +95,7 @@ def replace_area_lua(editor: FileTreeEditor):
             f"maps/levels/c10_samus/{x}/{x}",
             f"levels/{x}.lua"
             )
-        
+
     # for x in ALL_PICKUPS:
     #     replace_script(
     #         editor,

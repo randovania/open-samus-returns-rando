@@ -5,6 +5,12 @@ Currently supports patching starting items.
 ## Installation
 `pip install open-samus-returns-rando`
 
+This repository uses [pre-commit](https://pre-commit.com/). 
+```
+pip install pre-commit
+pre-commit install
+```
+
 ## Usage
 You will need to provide JSON data matching the [JSON schema](https://github.com/randovania/open-samus-returns-rando/blob/main/open_samus_returns_rando/files/schema.json) in order to successfully patch the game. 
 
