@@ -63,6 +63,11 @@
                     "destination"
                 ]
             }
+        },
+        "reveal_map_on_start": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, the game will start with the whole map revealed"
         }
     },
     "required": [
