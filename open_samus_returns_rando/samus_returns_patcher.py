@@ -35,9 +35,12 @@ def _read_powerup_lua() -> bytes:
     return Path(__file__).parent.joinpath("files", "randomizer_powerup.lua").read_bytes()
 
 
-def create_custom_init(inventory: dict[str, int], starting_location: dict):
+def create_custom_init(configuration: dict):
     def _wrap(v: str):
         return f'"{v}"'
+
+    starting_items = configuration["starting_items"]
+    starting_location = configuration["starting_location"]
 
     # Game doesn't like to start if some fields are missing, like ITEM_WEAPON_POWER_BOMB_MAX
     final_inventory = {
@@ -49,7 +52,7 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
         "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
         "ITEM_WEAPON_POWER_BOMB_MAX": 0,
     }
-    final_inventory.update(inventory)
+    final_inventory.update(starting_items)
 
     replacement = {
         "new_game_inventory": "\n".join(
@@ -58,8 +61,8 @@ def create_custom_init(inventory: dict[str, int], starting_location: dict):
         ),
         "starting_scenario": _wrap(starting_location["scenario"]),
         "starting_actor": _wrap(starting_location["actor"]),
+        "reveal_map_on_start": configuration["reveal_map_on_start"],
     }
-
 
     return lua_util.replace_lua_template("custom_init.lua", replacement)
 
@@ -164,10 +167,8 @@ def patch(input_path: Path, output_path: Path, configuration: dict):
     lua_util.create_script_copy(editor, "system/scripts/init")
     editor.replace_asset(
         "system/scripts/init.lc",
-        create_custom_init(
-            configuration["starting_items"],
-            configuration["starting_location"]
-        ).encode("ascii"),
+        create_custom_init(configuration)
+        .encode("ascii"),
     )
 
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
