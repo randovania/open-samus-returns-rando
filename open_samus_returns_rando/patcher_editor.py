@@ -7,8 +7,10 @@ from mercury_engine_data_structures.game_check import Game
 
 T = typing.TypeVar("T")
 
+
 def path_for_level(level_name: str) -> str:
     return f"maps/levels/c10_samus/{level_name}/{level_name}"
+
 
 class PatcherEditor(FileTreeEditor):
     memory_files: dict[str, BaseResource]

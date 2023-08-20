@@ -1,1 +1,1 @@
-from .samus_returns_patcher import patch
+from .samus_returns_patcher import patch_extracted
