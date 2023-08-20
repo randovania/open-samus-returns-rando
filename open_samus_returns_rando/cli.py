@@ -58,7 +58,7 @@ def main():
     with args.input_json.open() as f:
         configuration = json.load(f)
 
-    samus_returns_patcher.patch(
+    samus_returns_patcher.patch_extracted(
         args.input_path,
         args.output_path,
         configuration,
