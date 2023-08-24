@@ -134,3 +134,6 @@ dmypy.json
 # Project
 open_samus_returns_rando/version.py
 open_samus_returns_rando/__pycache__/samus_returns_patcher.cpython-310.pyc
+
+# VSCode
+.vscode

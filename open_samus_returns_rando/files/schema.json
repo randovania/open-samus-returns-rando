@@ -22,27 +22,62 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "pickup_type": {
+                        "type": "string"
+                    },
                     "caption": {
                         "type": "string"
-                    },
-                    "item_id": {
-                        "type": "string"
-                    },
-                    "quantity": {
-                        "type": "number"
                     },
                     "pickup_actor": {
                         "$ref": "#/$defs/actor_reference_with_layer"
                     },
                     "model": {
-                        "type": "string"
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1,
+                        "description": "A list of model identifiers used by this pickup. Non-progressive items will only have one model identifier."
+                    },
+                    "resources": {
+                        "type": "array",
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/$defs/item"
+                            },
+                            "minItems": 1,
+                            "description": "An array of all resources that will be gained from a particular stage of progression."
+                        },
+                        "minItems": 1,
+                        "description": "An array of arrays representing progressive item stages and resource gains for each stage.",
+                        "examples": [
+                            [
+                                [
+                                    { "item_id": "ITEM_WEAPON_WAVE_BEAM", "quantity": 1 }
+                                ],
+                                [
+                                    { "item_id": "ITEM_WEAPON_SPAZER_BEAM", "quantity": 1 }
+                                ],
+                                [
+                                    { "item_id": "ITEM_WEAPON_PLASMA_BEAM", "quantity": 1 }
+                                ]
+                            ],
+                            [
+                                [
+                                    { "item_id": "ITEM_WEAPON_POWER_BOMB", "quantity": 1 },
+                                    { "item_id": "ITEM_WEAPON_POWER_BOMB_MAX", "quantity": 2 }
+                                ]
+                            ]
+                        ]
                     }
                 },
                 "required": [
+                    "pickup_type",
+                    "caption",
+                    "resources",
                     "pickup_actor",
-                    "model",
-                    "item_id",
-                    "quantity"
+                    "model"
                 ]
             }
         },
@@ -164,6 +199,22 @@
                 "ITEM_METROID_TOTAL_COUNT",
                 "ITEM_ADN"
             ]
+        },
+        "item": {
+            "type": "object",
+            "properties": {
+                "item_id": {
+                    "$ref": "#/$defs/item_id"
+                },
+                "quantity": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "item_id",
+                "quantity"
+            ],
+            "additionalProperties": false
         }
     }
 }

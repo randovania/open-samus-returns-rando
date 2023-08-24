@@ -1,47 +1,84 @@
-Game.LogWarn(0, "Loading randomizer_powerup.lua...")
-
 RandomizerPowerup = {}
 function RandomizerPowerup.main()
 end
 
 RandomizerPowerup.Self = nil
 
-function RandomizerPowerup.OnPickedUp(actor, progression)
+function RandomizerPowerup.SetItemAmount(item_id, quantity)
+    if type(quantity) == "string" then
+        quantity = RandomizerPowerup.GetItemAmount(quantity)
+    end
+    Game.SetItemAmount(Game.GetPlayerName(), item_id, quantity)
+end
+function RandomizerPowerup.GetItemAmount(item_id)
+    return Game.GetItemAmount(Game.GetPlayerName(), item_id)
+end
+function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
+    local target = RandomizerPowerup.GetItemAmount(item_id) + quantity
+    if capacity ~= nil then
+        if type(capacity) == "string" then
+            capacity = RandomizerPowerup.GetItemAmount(capacity)
+        end
+        target = math.min(target, capacity)
+    end
+    target = math.max(target, 0)
+    RandomizerPowerup.SetItemAmount(item_id, target)
+end
+
+function RandomizerPowerup.OnPickedUp(actor, resources)
     RandomizerPowerup.Self = actor
-    local name = "Boss"
-    if actor ~= nil then name = actor.sName end
-    Game.LogWarn(0, "Collected pickup: " .. name)
-    local granted = RandomizerPowerup.ProgressivePickup(progression)
+    local granted = RandomizerPowerup.HandlePickupResources(resources)
+
     RandomizerPowerup.ChangeSuit()
-    RandomizerPowerup.IncreaseEnergy(granted)
-    -- Game.ReinitPlayerFromBlackboard()
+
+    for _, resource in ipairs(granted) do
+        RandomizerPowerup.IncreaseEnergy(resource)
+    end
+
     return granted
 end
 
-function RandomizerPowerup.ProgressivePickup(progression)
+
+
+function RandomizerPowerup.HandlePickupResources(progression)
     progression = progression or {}
-    local loop = false
+
+    local alwaysGrant = false
 
     if #progression == 0 then
-        return nil
+        return {}
     elseif #progression == 1 then
-        loop = true
+        alwaysGrant = true
     end
 
-    local data = "Progression: "
-    for _, resource in ipairs(progression) do
-        data = data .. resource.item_id .. " (" .. resource.quantity .. ") / "
-    end
-    Game.LogWarn(0, data)
-
-    for _, resource in ipairs(progression) do
-        local current = Game.GetItemAmount(Game.GetPlayerName(), resource.item_id)
-        if loop or current < resource.quantity then
-            Game.LogWarn(0, "Granting " .. resource.quantity .. " " .. resource.item_id)
-            Game.GetPlayer().INVENTORY:SetItemAmount(resource.item_id, current + resource.quantity, true)
-            return resource.item_id
+    for _, resource_list in ipairs(progression) do
+        local data = "  - "
+        for _, resource in ipairs(resource_list) do
+            data = data .. resource.item_id .. " (" .. resource.quantity .. ") / "
         end
     end
+
+    -- For each progression stage, if the player does not have the FIRST item in that stage, the whole stage is granted
+    for _, resource_list in ipairs(progression) do
+        -- Check if we need to grant anything from this progression stage
+
+        if #resource_list > 0 then
+            local current = RandomizerPowerup.GetItemAmount(resource_list[1].item_id)
+            local shouldGrant = alwaysGrant or current < resource_list[1].quantity
+
+            if shouldGrant then
+                for _, resource in ipairs(resource_list) do
+                    RandomizerPowerup.IncreaseItemAmount(resource.item_id, resource.quantity)
+                end
+
+                return resource_list
+            end
+        end
+
+        -- Otherwise, loop to next progression stage (or fall out of loop)
+    end
+
+    return {} -- nothing granted after final stage of progression is reached
 end
 
 function RandomizerPowerup.ChangeSuit()
@@ -54,7 +91,6 @@ function RandomizerPowerup.ChangeSuit()
     for _, suit in ipairs(suits) do
         if suit.model == model_updater.sModelAlias then break end
         if Game.GetItemAmount(Game.GetPlayerName(), suit.item) > 0 then
-            Game.LogWarn(0, "Updating suit to " .. suit.model)
             model_updater.sModelAlias = suit.model
             model_updater:ForceUpdate()
             break
