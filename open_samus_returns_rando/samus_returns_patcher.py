@@ -6,7 +6,8 @@ from pathlib import Path
 
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
-from open_samus_returns_rando import lua_util
+from open_samus_returns_rando.lua_editor import LuaEditor
+from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickup import patch_pickups
@@ -18,11 +19,6 @@ LOG = logging.getLogger("samus_returns_patcher")
 
 def _read_schema():
     with Path(__file__).parent.joinpath("files", "schema.json").open() as f:
-        return json.load(f)
-
-
-def _read_template_powerup():
-    with Path(__file__).parent.joinpath("templates", "template_powerup_bmsad.json").open() as f:
         return json.load(f)
 
 
@@ -74,7 +70,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     out_exefs = output_path.joinpath("exefs")
     shutil.rmtree(out_romfs, ignore_errors=True)
     shutil.rmtree(out_exefs, ignore_errors=True)
+
     editor = PatcherEditor(input_path)
+    lua_scripts = LuaEditor()
 
     # Update init.lc
     lua_util.create_script_copy(editor, "system/scripts/init")
@@ -84,22 +82,22 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
         .encode("ascii"),
     )
 
+    # Add custom lua files
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
     lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
 
-    # Replaces the original area lua files with modified ones
-    lua_util.replace_area_lua(editor)
+    # Patch all pickups
+    patch_pickups(editor, lua_scripts, configuration["pickups"], configuration)
 
-    # Pickups
-    patch_pickups(editor, configuration["pickups"])
-
-    # Exefs
+    # Create Exefs patches (currently there are none)
     LOG.info("Creating exefs patches")
     patch_exefs(out_exefs)
 
+    LOG.info("Saving modified lua scripts")
+    lua_scripts.save_modifications(editor)
+
     editor.flush_modified_assets()
 
-    # shutil.rmtree(out_romfs)
     editor.save_modifications(out_romfs, OutputFormat.PKG)
 
     logging.info("Done")

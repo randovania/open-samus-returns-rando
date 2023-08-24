@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from open_samus_returns_rando import lua_util
+from open_samus_returns_rando.misc_patches import lua_util
 
 
 def test_create_script_copy_exists():
