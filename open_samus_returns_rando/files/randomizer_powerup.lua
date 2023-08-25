@@ -101,8 +101,6 @@ function RandomizerPowerup.ChangeSuit()
     end
 end
 
-end
-
 -- Main PBs (always) + PB expansions (if required mains are disabled)
 RandomizerPowerBomb = {}
 setmetatable(RandomizerPowerBomb, {__index = RandomizerPowerup})
