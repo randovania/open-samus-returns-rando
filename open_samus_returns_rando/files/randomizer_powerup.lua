@@ -93,7 +93,8 @@ function RandomizerPowerup.ChangeSuit()
     local model_updater = Game.GetPlayer().MODELUPDATER
     for _, suit in ipairs(suits) do
         if suit.model == model_updater.sModelAlias then break end
-        if Game.GetItemAmount(Game.GetPlayerName(), suit.item) > 0 then
+        if Game.GetItemAmount(Game.GetPlayerName(), suit.item) > (0 or 1) then
+            Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
             model_updater.sModelAlias = suit.model
             model_updater:ForceUpdate()
             break
