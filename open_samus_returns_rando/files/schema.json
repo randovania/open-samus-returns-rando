@@ -99,6 +99,16 @@
                 ]
             }
         },
+        "energy_per_tank": {
+            "description": "How much energy collecting an Energy Tank gives",
+            "type": "number",
+            "default": 100.0
+        },
+        "aeion_per_tank": {
+            "description": "How much aeion collecting an Aeion Tank gives",
+            "type": "number",
+            "default": 50.0
+        },
         "reveal_map_on_start": {
             "type": "boolean",
             "default": false,
@@ -168,6 +178,10 @@
             "enum": [
                 "ITEM_NONE",
                 "ITEM_MAX_LIFE",
+                "ITEM_MAX_SPECIAL_ENERGY",
+                "ITEM_WEAPON_MISSILE_MAX",
+                "ITEM_WEAPON_SUPER_MISSILE_MAX",
+                "ITEM_WEAPON_POWER_BOMB_MAX",
                 "ITEM_WEAPON_ICE_BEAM",
                 "ITEM_WEAPON_WAVE_BEAM",
                 "ITEM_WEAPON_SPAZER_BEAM",
@@ -191,10 +205,7 @@
                 "ITEM_SCREW_ATTACK",
                 "ITEM_BABY_HATCHLING",
                 "ITEM_ENERGY_TANKS",
-                "ITEM_WEAPON_MISSILE_MAX",
-                "ITEM_WEAPON_SUPER_MISSILE_MAX",
-                "ITEM_WEAPON_POWER_BOMB_MAX",
-                "ITEM_MAX_SPECIAL_ENERGY",
+                "ITEM_AEION_TANKS",
                 "ITEM_METROID_COUNT",
                 "ITEM_METROID_TOTAL_COUNT",
                 "ITEM_ADN"

@@ -35,14 +35,14 @@ class ActorPickup(BasePickup):
 
         if item_id == "ITEM_ENERGY_TANKS":
             item_id = "fMaxLife"
-            quantity *= 100.0
+            quantity *= self.configuration["energy_per_tank"]
             set_custom_params["Param4"]["value"] = "Full"
             set_custom_params["Param5"]["value"] = "fCurrentLife"
             set_custom_params["Param6"]["value"] = "LIFE"
 
-        elif item_id == "ITEM_SENERGY_TANKS":
+        elif item_id == "ITEM_AEION_TANKS":
             item_id = "fMaxEnergy"
-            quantity *= 50.0
+            quantity *= self.configuration["aeion_per_tank"]
             set_custom_params["Param4"]["value"] = "Full"
             set_custom_params["Param5"]["value"] = "fEnergy"
             set_custom_params["Param6"]["value"] = "SPECIALENERGY"

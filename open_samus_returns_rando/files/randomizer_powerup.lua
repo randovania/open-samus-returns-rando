@@ -13,6 +13,9 @@ end
 function RandomizerPowerup.GetItemAmount(item_id)
     return Game.GetItemAmount(Game.GetPlayerName(), item_id)
 end
+function RandomizerPowerup.HasItem(item_id)
+    return RandomizerPowerup.GetItemAmount(item_id) > 0
+end
 function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
     local target = RandomizerPowerup.GetItemAmount(item_id) + quantity
     if capacity ~= nil then
@@ -31,9 +34,9 @@ function RandomizerPowerup.OnPickedUp(actor, resources)
 
     RandomizerPowerup.ChangeSuit()
 
-    for _, resource in ipairs(granted) do
-        RandomizerPowerup.IncreaseEnergy(resource)
-    end
+    -- for _, resource in ipairs(granted) do
+    --     RandomizerPowerup.IncreaseAmmo(resource)
+    -- end
 
     return granted
 end
@@ -98,12 +101,6 @@ function RandomizerPowerup.ChangeSuit()
     end
 end
 
-function RandomizerPowerup.IncreaseEnergy(item_id)
-    if item_id ~= "ITEM_ENERGY_TANKS" then return end
-    Game.LogWarn(0, "Increasing player energy.")
-    local max = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_MAX_LIFE")
-    Game.GetPlayer().INVENTORY:SetItemAmount("ITEM_MAX_LIFE", max+100, true)
-    Game.GetPlayer().INVENTORY:SetItemAmount("ITEM_CURRENT_LIFE", max+100, true)
 end
 
 -- Main PBs (always) + PB expansions (if required mains are disabled)
