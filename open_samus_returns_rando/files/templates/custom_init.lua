@@ -45,4 +45,5 @@ function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
   end
 
 Game.SetForceSkipCutscenes(true)
+
 Game.LogWarn(0, "Finished modded system/init.lc")

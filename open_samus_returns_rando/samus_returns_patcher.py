@@ -22,24 +22,40 @@ def _read_schema():
         return json.load(f)
 
 
-def create_custom_init(configuration: dict):
+def create_custom_init(configuration: dict) -> str:
     def _wrap(v: str):
         return f'"{v}"'
+    
+    inventory: dict[str, int] = configuration["starting_items"]
+    starting_location: dict = configuration["starting_location"]
 
-    starting_items = configuration["starting_items"]
-    starting_location = configuration["starting_location"]
+    energy_per_tank = configuration["energy_per_tank"]
+    max_life = energy_per_tank - 1
+
+    aeion_per_tank = configuration["aeion_per_tank"]
+    max_aeion = 1000 - aeion_per_tank
+
+     # increase starting HP if starting with etanks
+    if "ITEM_ENERGY_TANKS" in inventory:
+        etanks = inventory.pop("ITEM_ENERGY_TANKS")
+        max_life += etanks * energy_per_tank
+
+     # increase starting Aeion if starting with atanks
+    if "ITEM_AEION_TANKS" in inventory:
+        atanks = inventory.pop("ITEM_AEION_TANKS")
+        max_aeion += atanks * aeion_per_tank
 
     # Game doesn't like to start if some fields are missing, like ITEM_WEAPON_POWER_BOMB_MAX
     final_inventory = {
-        "ITEM_MAX_LIFE": 99,
-        "ITEM_MAX_SPECIAL_ENERGY": 1000,
+        "ITEM_MAX_LIFE": max_life,
+        "ITEM_MAX_SPECIAL_ENERGY": max_aeion,
         "ITEM_METROID_COUNT": 0,
         "ITEM_METROID_TOTAL_COUNT": 40,
         "ITEM_WEAPON_MISSILE_MAX": 0,
         "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
         "ITEM_WEAPON_POWER_BOMB_MAX": 0,
     }
-    final_inventory.update(starting_items)
+    final_inventory.update(inventory)
 
     replacement = {
         "new_game_inventory": "\n".join(
@@ -48,6 +64,8 @@ def create_custom_init(configuration: dict):
         ),
         "starting_scenario": _wrap(starting_location["scenario"]),
         "starting_actor": _wrap(starting_location["actor"]),
+        "energy_per_tank": energy_per_tank,
+        "aeion_per_tank": aeion_per_tank,
         "reveal_map_on_start": configuration["reveal_map_on_start"],
     }
 
@@ -78,8 +96,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     lua_util.create_script_copy(editor, "system/scripts/init")
     editor.replace_asset(
         "system/scripts/init.lc",
-        create_custom_init(configuration)
-        .encode("ascii"),
+        create_custom_init(configuration).encode("ascii"),
     )
 
     # Add custom lua files
@@ -96,8 +113,10 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Saving modified lua scripts")
     lua_scripts.save_modifications(editor)
 
+    LOG.info("Flush modified assets")
     editor.flush_modified_assets()
 
+    LOG.info("Saving modified pkgs to %s", out_romfs)
     editor.save_modifications(out_romfs, OutputFormat.PKG)
 
-    logging.info("Done")
+    LOG.info("Done")

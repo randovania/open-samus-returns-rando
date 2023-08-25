@@ -12,6 +12,7 @@
           "ITEM_MORPH_BALL": 1,
           "ITEM_SPIDER_BALL": 1,
           "ITEM_ENERGY_TANKS": 2,
+          "ITEM_AEION_TANKS": 3,
           "ITEM_WEAPON_BOMB": 1,
           "ITEM_WEAPON_WAVE_BEAM": 1
         },
@@ -78,5 +79,6 @@
           }
         ],
         "energy_per_tank": 100,
+        "aeion_per_tank": 50,
         "reveal_map_on_start": true
       }
