@@ -63,8 +63,10 @@ class ActorPickup(BasePickup):
         script: dict = bmsad["components"]["SCRIPT"]
 
         set_custom_params: dict = pickable["functions"][0]["params"]
-        # FIXME: I would set it to "ITEM_NONE" but the game is crashing if you pick up a second progressive
-        set_custom_params["Param1"]["value"] = "ITEM_WEAPON_WAVE_BEAM"
+        # FIXME: Better would be a nothing item but the game is crashing if you pick up a second progressive when
+        # it tries to show the item on the inventory screen. Now it always shows the first progressive.
+        set_custom_params["Param1"]["value"] = self.pickup["resources"][0][0]["item_id"]
+        set_custom_params["Param2"]["value"] = 0
 
         script["functions"][0]["params"]["Param1"]["value"] = \
             'actors/items/randomizer_powerup/scripts/randomizer_powerup.lc'
