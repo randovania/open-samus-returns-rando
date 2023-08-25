@@ -34,9 +34,9 @@ function RandomizerPowerup.OnPickedUp(actor, resources)
 
     RandomizerPowerup.ChangeSuit()
 
-    for _, resource in ipairs(granted) do
-        RandomizerPowerup.IncreaseAmmo(resource)
-    end
+    -- for _, resource in ipairs(granted) do
+    --     RandomizerPowerup.IncreaseAmmo(resource)
+    -- end
 
     return granted
 end
