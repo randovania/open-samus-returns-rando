@@ -101,8 +101,6 @@ function RandomizerPowerup.ChangeSuit()
     end
 end
 
-function RandomizerPowerup.SuperMissileState()
-    return {
 end
 
 -- Main PBs (always) + PB expansions (if required mains are disabled)
