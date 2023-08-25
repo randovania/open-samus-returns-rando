@@ -23,9 +23,6 @@ def _read_schema():
 
 
 def create_custom_init(configuration: dict) -> str:
-    def _wrap(v: str):
-        return f'"{v}"'
-    
     inventory: dict[str, int] = configuration["starting_items"]
     starting_location: dict = configuration["starting_location"]
 
@@ -59,12 +56,9 @@ def create_custom_init(configuration: dict) -> str:
     final_inventory.update(inventory)
 
     replacement = {
-        "new_game_inventory": "\n".join(
-            f"{key} = {value},"
-            for key, value in final_inventory.items()
-        ),
-        "starting_scenario": _wrap(starting_location["scenario"]),
-        "starting_actor": _wrap(starting_location["actor"]),
+        "new_game_inventory": final_inventory,
+        "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
+        "starting_actor": lua_util.wrap_string(starting_location["actor"]),
         "energy_per_tank": energy_per_tank,
         "aeion_per_tank": aeion_per_tank,
         "reveal_map_on_start": configuration["reveal_map_on_start"],
