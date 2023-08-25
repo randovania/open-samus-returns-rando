@@ -2,8 +2,6 @@ Game.ImportLibrary("system/scripts/init_original.lua")
 
 Init.tNewGameInventory = TEMPLATE("new_game_inventory")
 
-Init.fEnergyPerTank = TEMPLATE("energy_per_tank")
-Init.fAeionPerTank = TEMPLATE("aeion_per_tank")
 Init.bRevealMap = TEMPLATE("reveal_map_on_start")
 
 Game.LogWarn(0, "Inventory:")
