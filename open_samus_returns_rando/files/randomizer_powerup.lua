@@ -32,6 +32,8 @@ function RandomizerPowerup.OnPickedUp(actor, resources)
     RandomizerPowerup.Self = actor
     local granted = RandomizerPowerup.HandlePickupResources(resources)
 
+    -- RandomizerPowerup.ChangeSuit()
+
     -- for _, resource in ipairs(granted) do
     --     RandomizerPowerup.IncreaseAmmo(resource)
     -- end
@@ -125,8 +127,18 @@ RandomizerVariaSuit = {}
 setmetatable(RandomizerVariaSuit, {__index = RandomizerPowerup})
 function RandomizerVariaSuit.OnPickedUp(actor, progression)
     RandomizerPowerup.OnPickedUp(actor, progression)
-    Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
-    Game.GetPlayer().MODELUPDATER.sModelAlias = "Varia"
+    -- Prevents changing the suit to varia if gravity
+    if Game.GetPlayer().MODELUPDATER.sModelAlias == "Default" then
+        Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
+    end
+    Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
+end
+
+RandomizerGravitySuit = {}
+setmetatable(RandomizerGravitySuit, {__index = RandomizerPowerup})
+function RandomizerGravitySuit.OnPickedUp(actor, progression)
+    RandomizerPowerup.OnPickedUp(actor, progression)
+    Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
     Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
 end
 

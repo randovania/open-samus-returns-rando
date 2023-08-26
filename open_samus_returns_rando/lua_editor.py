@@ -16,6 +16,7 @@ def _read_level_lua(level_id: str) -> str:
 
 SPECIFIC_CLASSES = {
     "ITEM_VARIA_SUIT": "RandomizerVariaSuit",
+    "ITEM_GRAVITY_SUIT": "RandomizerGravitySuit",
     "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": "RandomizerScanPulse"
 }
 
