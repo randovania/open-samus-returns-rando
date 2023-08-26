@@ -141,15 +141,3 @@ function RandomizerGravitySuit.OnPickedUp(actor, progression)
     Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
     Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
 end
-
-RandomizerScanPulse = {}
-setmetatable(RandomizerScanPulse, {__index = RandomizerPowerup})
-function RandomizerScanPulse.OnPickedUp(actor, progression)
-    Game.ScanningPulseTutorialSE_XY()
-    Game.PlayEntitySoundContinueOnDead("generic/obtencion.wav", _ARG_0_.sName, 1, 500, 4000, 1)
-    CurrentScenario.LaunchSpecialEnergyCutscene()
-    guicallbacks.OnPickableItemPickedUp("#GUI_ITEM_ACQUIRED_SCANNING_PULSE", false)
-    SpecialEnergyCloud.ActivateSpecialEnergy("TG_SpecialEnergyCloud")
-    Game.HUDAvailabilityGoOff(true, false, false, false)
-    Game.SetIgnoreHUDAvailabilityActivationByAbilityComponent(true)
-end
