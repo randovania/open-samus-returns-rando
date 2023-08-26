@@ -32,7 +32,7 @@ function RandomizerPowerup.OnPickedUp(actor, resources)
     RandomizerPowerup.Self = actor
     local granted = RandomizerPowerup.HandlePickupResources(resources)
 
-    -- RandomizerPowerup.ChangeSuit()
+    RandomizerPowerup.ChangeSuit()
 
     -- for _, resource in ipairs(granted) do
     --     RandomizerPowerup.IncreaseAmmo(resource)
@@ -90,7 +90,7 @@ function RandomizerPowerup.ChangeSuit()
         {item = "ITEM_GRAVITY_SUIT", model = "Gravity"},
         {item = "ITEM_VARIA_SUIT", model = "Varia"},
     }
-    local model_updater = Game.GetPlayer().MODELUPDATER
+    local model_updater = Game.GetEntity("Samus").MODELUPDATER
     for _, suit in ipairs(suits) do
         if suit.model == model_updater.sModelAlias then break end
         if Game.GetItemAmount(Game.GetPlayerName(), suit.item) > 0 then
