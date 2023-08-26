@@ -14,7 +14,10 @@ def _read_level_lua(level_id: str) -> str:
     return files_path().joinpath("levels", f"{level_id}.lua").read_text()
 
 
-SPECIFIC_CLASSES = {}
+SPECIFIC_CLASSES = {
+    "ITEM_VARIA_SUIT": "RandomizerVariaSuit",
+    "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": "RandomizerScanPulse"
+}
 
 
 class LuaEditor:
