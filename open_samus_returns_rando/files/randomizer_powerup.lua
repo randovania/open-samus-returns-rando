@@ -41,7 +41,23 @@ function RandomizerPowerup.OnPickedUp(actor, resources)
     return granted
 end
 
+function RandomizerPowerup.DisableLiquids()
+    if Game.GetPlayer().MODELUPDATER.sModelAlias == "Varia" then
+        if Scenario.CurrentScenarioID == "s010_area1" then
+            Game.GetEntity("Lava_Trigger_001").TRIGGER:DisableTrigger()
+        elseif Scenario.CurrentScenarioID == "s067_area6c" then
+            Game.GetEntity("TG_SP_Water_002").TRIGGER:DisableTrigger()
+        end
+    end
+end
 
+function RandomizerPowerup.EnableLiquids()
+    if Scenario.CurrentScenarioID == "s010_area1" then
+        Game.GetEntity("Lava_Trigger_001").TRIGGER:EnableTrigger()
+    elseif Scenario.CurrentScenarioID == "s067_area6c" then
+        Game.GetEntity("TG_SP_Water_002").TRIGGER:EnableTrigger()
+    end
+end
 
 function RandomizerPowerup.HandlePickupResources(progression)
     progression = progression or {}
@@ -71,7 +87,9 @@ function RandomizerPowerup.HandlePickupResources(progression)
 
             if shouldGrant then
                 for _, resource in ipairs(resource_list) do
+                    RandomizerPowerup.DisableLiquids()
                     RandomizerPowerup.IncreaseItemAmount(resource.item_id, resource.quantity)
+                    RandomizerPowerup.EnableLiquids()
                 end
 
                 return resource_list
@@ -137,7 +155,8 @@ end
 RandomizerGravitySuit = {}
 setmetatable(RandomizerGravitySuit, {__index = RandomizerPowerup})
 function RandomizerGravitySuit.OnPickedUp(actor, progression)
+    RandomizerPowerup.DisableLiquids()
     RandomizerPowerup.OnPickedUp(actor, progression)
     Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
-    Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
+    RandomizerPowerup.EnableLiquids()
 end
