@@ -208,7 +208,8 @@
                 "ITEM_AEION_TANKS",
                 "ITEM_METROID_COUNT",
                 "ITEM_METROID_TOTAL_COUNT",
-                "ITEM_ADN"
+                "ITEM_ADN",
+                "ITEM_RANDO_LOCKED_SUPERS"
             ]
         },
         "item": {

@@ -47,6 +47,19 @@ class ActorPickup(BasePickup):
             set_custom_params["Param5"]["value"] = "fEnergy"
             set_custom_params["Param6"]["value"] = "SPECIALENERGY"
 
+        # elif item_id in {"ITEM_WEAPON_MISSILE_MAX", "ITEM_WEAPON_SUPER_MISSILE_MAX", "ITEM_WEAPON_POWER_BOMB_MAX"}:
+        #     current = item_id.replace("_MAX", "_CURRENT")
+        #     if item_id == current:
+        #         current += "_CURRENT"
+
+        #     set_custom_params["Param4"]["value"] = "Custom"
+        #     set_custom_params["Param5"]["value"] = current
+        #     set_custom_params["Param8"]["value"] = "guicallbacks.OnSecondaryGunsFire"
+        #     set_custom_params["Param13"] = {
+        #         "type": "f",
+        #         "value": quantity,
+        #     }
+
         set_custom_params["Param1"]["value"] = item_id
         set_custom_params["Param2"]["value"] = quantity
 

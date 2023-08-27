@@ -34,9 +34,9 @@ function RandomizerPowerup.OnPickedUp(actor, resources)
 
     RandomizerPowerup.ChangeSuit()
 
-    -- for _, resource in ipairs(granted) do
-    --     RandomizerPowerup.IncreaseAmmo(resource)
-    -- end
+    for _, resource in ipairs(granted) do
+        RandomizerPowerup.IncreaseAmmo(resource)
+    end
 
     return granted
 end
@@ -101,6 +101,22 @@ function RandomizerPowerup.ChangeSuit()
     end
 end
 
+function RandomizerPowerup.IncreaseAmmo(resource)
+    if not resource then return end
+
+    local current_id = nil
+
+    if resource.item_id == "ITEM_WEAPON_SUPER_MISSILE_MAX" then
+    current_id = "ITEM_WEAPON_SUPER_MISSILE_CURRENT"
+    elseif resource.item_id == "ITEM_WEAPON_POWER_BOMB_MAX" then
+        current_id = "ITEM_WEAPON_POWER_BOMB_CURRENT"
+    end
+
+    if current_id == nil then return end
+
+    RandomizerPowerup.IncreaseItemAmount(current_id, resource.quantity, resource.item_id)
+end
+
 -- Main PBs (always) + PB expansions (if required mains are disabled)
 RandomizerPowerBomb = {}
 setmetatable(RandomizerPowerBomb, {__index = RandomizerPowerup})
@@ -112,15 +128,33 @@ function RandomizerPowerBomb.OnPickedUp(actor, progression)
     end
 end
 
--- Main Supers (always) + Super expansions (if required mains are disabled)
+-- Main Supers
+-- RandomizerSuperMissile = {}
+-- setmetatable(RandomizerSuperMissile, {__index = RandomizerPowerup})
+-- function RandomizerSuperMissile.OnPickedUp(actor, progression)
+--     RandomizerPowerup.OnPickedUp(actor, progression)
+--     local locked_supers = Blackboard.GetProp("PLAYER_INVENTORY", "LOCKED_SUPERS")
+--     if locked_supers > 0 then
+--         -- grant all supers
+--         Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_SUPER_MISSILE_MAX", locked_supers)
+--     end
+--     local max = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_SUPER_MISSILE_MAX")
+--     Game.GetPlayer().INVENTORY:SetItemAmount("ITEM_WEAPON_SUPER_MISSILE_MAX", max, true)
+-- end
+
 RandomizerSuperMissile = {}
 setmetatable(RandomizerSuperMissile, {__index = RandomizerPowerup})
 function RandomizerSuperMissile.OnPickedUp(actor, progression)
-    progression = {{item_id = "ITEM_WEAPON_SUPER_MISSILE_MAX", quantity = 0}}
-    local granted = RandomizerPowerup.OnPickedUp(actor, progression)
-    if granted == "ITEM_WEAPON_SUPER_MISSILE_MAX" then
-        Game.GetPlayer().INVENTORY:SetItemAmount("ITEM_WEAPON_SUPER_MISSILE", 1, true)
-    end
+    progression = progression or {{{ item_id = "ITEM_WEAPON_SUPER_MISSILE_MAX", quantity = 0 }}}
+    RandomizerPowerup.OnPickedUp(actor, progression)
+end
+
+RandomizerSuperMissileTank = {}
+setmetatable(RandomizerSuperMissileTank, {__index = RandomizerPowerup})
+function RandomizerSuperMissileTank.OnPickedUp(actor, progression)
+    RandomizerPowerup.OnPickedUp(actor, progression)
+    local locked_supers = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_RANDO_LOCKED_SUPERS")
+    Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_RANDO_LOCKED_SUPERS", "f", locked_supers + amount)
 end
 
 RandomizerVariaSuit = {}
