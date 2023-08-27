@@ -90,7 +90,7 @@ function RandomizerPowerup.ChangeSuit()
         {item = "ITEM_GRAVITY_SUIT", model = "Gravity"},
         {item = "ITEM_VARIA_SUIT", model = "Varia"},
     }
-    local model_updater = Game.GetPlayer().MODELUPDATER
+    local model_updater = Game.GetEntity("Samus").MODELUPDATER
     for _, suit in ipairs(suits) do
         if suit.model == model_updater.sModelAlias then break end
         if Game.GetItemAmount(Game.GetPlayerName(), suit.item) > 0 then
@@ -121,4 +121,23 @@ function RandomizerSuperMissile.OnPickedUp(actor, progression)
     if granted == "ITEM_WEAPON_SUPER_MISSILE_MAX" then
         Game.GetPlayer().INVENTORY:SetItemAmount("ITEM_WEAPON_SUPER_MISSILE", 1, true)
     end
+end
+
+RandomizerVariaSuit = {}
+setmetatable(RandomizerVariaSuit, {__index = RandomizerPowerup})
+function RandomizerVariaSuit.OnPickedUp(actor, progression)
+    RandomizerPowerup.OnPickedUp(actor, progression)
+    -- Prevents changing the suit to varia if gravity
+    if Game.GetPlayer().MODELUPDATER.sModelAlias == "Default" then
+        Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
+    end
+    Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
+end
+
+RandomizerGravitySuit = {}
+setmetatable(RandomizerGravitySuit, {__index = RandomizerPowerup})
+function RandomizerGravitySuit.OnPickedUp(actor, progression)
+    RandomizerPowerup.OnPickedUp(actor, progression)
+    Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
+    Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
 end
