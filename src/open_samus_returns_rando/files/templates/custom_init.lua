@@ -11,6 +11,7 @@ Init.tScenarioMapping = TEMPLATE("scenario_mapping")
 Init.iNumRandoTextBoxes = TEMPLATE("textbox_count")
 Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier")
 Init.tBoxesSeen = 0
+Init.bDisableMusic = TEMPLATE("disable_music")
 
 function Init.InitGameBlackboard()
   Blackboard.ResetWithExceptionList({
@@ -71,6 +72,9 @@ function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
   end
 
 Game.SetForceSkipCutscenes(true)
+if Init.bDisableMusic then
+  Game.EnableMusic(false)
+end
 
 -- Only required for ils test code
 -- ALL_SCENARIOS = {
