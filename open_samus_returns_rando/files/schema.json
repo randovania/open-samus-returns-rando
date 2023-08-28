@@ -114,6 +114,17 @@
             "default": false,
             "description": "When true, the game will start with the whole map revealed"
         },
+        "game_patches": {
+            "type": "object",
+            "properties": {
+                "nerf_power_bombs": {
+                    "type": "boolean",
+                    "description": "Changes weaknesses for certain props to make Power Bombs less overpowered.",
+                    "default": false
+                }
+            },
+            "additionalProperties": false
+        },
         "new_spawn_points": {
             "type": "array",
             "description": "Creates new spawn points",
