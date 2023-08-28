@@ -113,11 +113,47 @@
             "type": "boolean",
             "default": false,
             "description": "When true, the game will start with the whole map revealed"
+        },
+        "game_patches": {
+            "type": "object",
+            "properties": {
+                "nerf_power_bombs": {
+                    "type": "boolean",
+                    "description": "Changes weaknesses for certain props to make Power Bombs less overpowered.",
+                    "default": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "new_spawn_points": {
+            "type": "array",
+            "description": "Creates new spawn points",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "new_actor": {
+                        "$ref": "#/$defs/actor_reference"
+                    },
+                    "location": {
+                        "$ref": "#/$defs/position"
+                    },
+                    "collision_camera_name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "new_actor",
+                    "location",
+                    "collision_camera_name"
+                ],
+                "additionalProperties": false
+            },
+            "default": []
         }
     },
     "required": [
-        "starting_items",
         "starting_location",
+        "starting_items",
         "pickups"
     ],
     "$defs": {
@@ -227,6 +263,25 @@
                 "quantity"
             ],
             "additionalProperties": false
+        },
+        "position": {
+            "type": "object",
+            "properties": {
+                "x": {
+                    "type": "number"
+                },
+                "y": {
+                    "type": "number"
+                },
+                "z": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "x",
+                "y",
+                "z"
+            ]
         }
     }
 }

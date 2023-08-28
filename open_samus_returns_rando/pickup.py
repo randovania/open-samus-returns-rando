@@ -99,7 +99,7 @@ class ActorPickup(BasePickup):
 
     def patch(self, editor: PatcherEditor):
         template_bmsad = editor.get_parsed_asset(
-            "actors/items/powerup_chargebeam/charclasses/powerup_chargebeam.bmsad"
+            "actors/items/powerup_spiderball/charclasses/powerup_spiderball.bmsad"
             ).raw
 
         actor_reference = self.pickup["pickup_actor"]
