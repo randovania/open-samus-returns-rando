@@ -125,7 +125,7 @@ function RandomizerPowerup.IncreaseAmmo(resource)
     local current_id = nil
 
     if resource.item_id == "ITEM_WEAPON_SUPER_MISSILE_MAX" then
-    current_id = "ITEM_WEAPON_SUPER_MISSILE_CURRENT"
+        current_id = "ITEM_WEAPON_SUPER_MISSILE_CURRENT"
     elseif resource.item_id == "ITEM_WEAPON_POWER_BOMB_MAX" then
         current_id = "ITEM_WEAPON_POWER_BOMB_CURRENT"
     end
@@ -146,33 +146,79 @@ function RandomizerPowerBomb.OnPickedUp(actor, progression)
     end
 end
 
--- Main Supers
--- RandomizerSuperMissile = {}
--- setmetatable(RandomizerSuperMissile, {__index = RandomizerPowerup})
--- function RandomizerSuperMissile.OnPickedUp(actor, progression)
---     RandomizerPowerup.OnPickedUp(actor, progression)
---     local locked_supers = Blackboard.GetProp("PLAYER_INVENTORY", "LOCKED_SUPERS")
---     if locked_supers > 0 then
---         -- grant all supers
---         Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_SUPER_MISSILE_MAX", locked_supers)
---     end
---     local max = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_SUPER_MISSILE_MAX")
---     Game.GetPlayer().INVENTORY:SetItemAmount("ITEM_WEAPON_SUPER_MISSILE_MAX", max, true)
--- end
+-- Supers Main + Tanks
+function RandomizerPowerup._AddLockedSupers(main_item)
+    local locked_supers = RandomizerSuperMissile.GetLockedSupers()
+    local current_max = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SUPER_MISSILE_MAX")
+    local current_current = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SUPER_MISSILE_CURRENT")
+    local new_current = 0
+    if main_item then
+        new_current = current_max + locked_supers
+    else
+        new_current = current_current + locked_supers
+    end
+    RandomizerPowerup.SetItemAmount("ITEM_WEAPON_SUPER_MISSILE_MAX", current_max + locked_supers)
+    RandomizerPowerup.SetItemAmount("ITEM_WEAPON_SUPER_MISSILE_CURRENT", new_current)
+    RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_SUPERS", 0)
+    hud.UpdatePlayerInfo(true)
+end
 
 RandomizerSuperMissile = {}
 setmetatable(RandomizerSuperMissile, {__index = RandomizerPowerup})
-function RandomizerSuperMissile.OnPickedUp(actor, progression)
-    progression = progression or {{{ item_id = "ITEM_WEAPON_SUPER_MISSILE_MAX", quantity = 0 }}}
-    RandomizerPowerup.OnPickedUp(actor, progression)
+function RandomizerSuperMissile.GetLockedSupers() 
+    local locked_supers = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_RANDO_LOCKED_SUPERS")
+    if locked_supers == nil then
+        locked_supers = 0
+    end
+    return locked_supers
+end
+
+function RandomizerSuperMissile.OnPickedUp(actor, progression) 
+    -- non actor case: grant locked supers
+    if progression ~= nil then
+        local locked_supers = RandomizerSuperMissile.GetLockedSupers()
+        for _, outer in ipairs(progression) do
+            for _, inner in ipairs(outer) do
+                if inner.item_id == "ITEM_WEAPON_SUPER_MISSILE_MAX" then
+                    inner.quantity = inner.quantity + locked_supers
+                end
+            end
+        end
+        RandomizerPowerup.OnPickedUp(actor, progression)
+        RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_SUPERS", 0)
+    -- actor case: increase ammo by locked supers after game handled the pickup
+    else
+        RandomizerPowerup.OnPickedUp(actor, progression)
+        Game.AddSF(0.0, "RandomizerPowerup._AddLockedSupers", "b", true)
+    end
+
 end
 
 RandomizerSuperMissileTank = {}
 setmetatable(RandomizerSuperMissileTank, {__index = RandomizerPowerup})
 function RandomizerSuperMissileTank.OnPickedUp(actor, progression)
-    RandomizerPowerup.OnPickedUp(actor, progression)
-    local locked_supers = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_RANDO_LOCKED_SUPERS")
-    Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_RANDO_LOCKED_SUPERS", "f", locked_supers + amount)
+    -- use locked supers or super missile max if > 0, which means we have main item
+    local new_item_id = "ITEM_RANDO_LOCKED_SUPERS"
+    local is_main_unlocked = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SUPER_MISSILE_MAX") > 0
+    if is_main_unlocked then
+        new_item_id = "ITEM_WEAPON_SUPER_MISSILE_MAX"
+    end
+
+    -- non actor case => change to correct item
+    if progression ~= nil then
+        -- grant locked supers or new tank
+        for _, outer in ipairs(progression) do
+            for _, inner in ipairs(outer) do
+                inner.item_id = new_item_id
+            end
+        end
+        RandomizerPowerup.OnPickedUp(actor, progression)
+    else
+        if is_main_unlocked then
+            RandomizerPowerup.OnPickedUp(actor, progression)
+            Game.AddSF(0.0, "RandomizerPowerup._AddLockedSupers", "")
+        end
+    end
 end
 
 RandomizerVariaSuit = {}
