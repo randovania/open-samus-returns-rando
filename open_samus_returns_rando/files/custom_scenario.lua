@@ -48,3 +48,26 @@ function EnableHazarous(_ARG_0_, _ARG_1_)
   end
  end
 end
+
+function Scenario._UpdateProgressiveItemModels()
+  for name, actordef in pairs(Game.GetEntities()) do
+    local progressive_models = RandomizerPowerup.tProgressiveModels[actordef]
+    if progressive_models ~= nil then
+    for _, model in ipairs(progressive_models) do
+        if not RandomizerPowerup.HasItem(model.item) then
+          local pickup = Game.GetEntity(name)
+          pickup.MODELUPDATER.sModelAlias = model.alias
+          break
+        end
+      end
+    end
+  end
+end
+
+function Scenario.UpdateProgressiveItemModels()
+  Game.AddSF(0.2, "Scenario._UpdateProgressiveItemModels", "")
+end
+
+function Scenario.OnSubAreaChange(old_subarea, old_actorgroup, new_subarea, new_actorgroup, disable_fade)
+  Scenario.UpdateProgressiveItemModels()
+end

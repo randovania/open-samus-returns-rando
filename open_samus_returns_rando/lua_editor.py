@@ -48,9 +48,8 @@ class LuaEditor:
             # Single-item pickup; don't include progressive template
             return parent
 
-        # TODO: Add progressive models
-        # if actordef_name and len(pickup["model"]) > 1:
-        #     self.add_progressive_models(pickup, actordef_name)
+        if actordef_name and len(pickup["model"]) > 1:
+            self.add_progressive_models(pickup, actordef_name)
 
         hashable_progression = "_".join([
             f'{res[0]["item_id"]}_{res[0]["quantity"]}'
@@ -93,11 +92,9 @@ class LuaEditor:
                 "alias": lua_util.wrap_string(model_name),
             }
             for resource, model_name in itertools.chain(
-                zip([r[0] for r in pickup["resources"]], pickup["model"][1:]),
-                [(pickup["resources"][-1][0], pickup["model"][-1])],
+                zip([r[0] for r in pickup["resources"]], pickup["model"][0:])
             )
         ]
-        progressive_models.reverse()
 
         replacement = {
             "actordef_name": actordef_name,

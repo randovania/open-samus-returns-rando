@@ -41,6 +41,7 @@ function s033_area3b.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_
   else
     Game.SetSceneGroupEnabledByName("sg_SubArea_Gamma_001_Wall", false)
   end
+  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s033_area3b.LaunchMinerBotDemolishCutscene()
   if Game.GetEntity("LE_ManicMiner") ~= nil then

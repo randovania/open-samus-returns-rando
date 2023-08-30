@@ -595,6 +595,7 @@ function s050_area5.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
   if _ARG_0_ == "collision_camera_010" and _ARG_2_ == "collision_camera_BeforeChase1" and not Scenario.ReadFromBlackboard("firstTimeBrokenChozoStatuePlayed", false) then
     s050_area5.LaunchFirstTimeBrokenChozoStatuePresentation()
   end
+  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s050_area5.LaunchFirstTimeZetaPresentation()
   Scenario.WriteToBlackboard("FirstTimeZetaPresentationPlayed", "b", true)

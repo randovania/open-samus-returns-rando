@@ -2,6 +2,8 @@ RandomizerPowerup = {}
 function RandomizerPowerup.main()
 end
 
+RandomizerPowerup.tProgressiveModels = {}
+
 RandomizerPowerup.Self = nil
 
 function RandomizerPowerup.SetItemAmount(item_id, quantity)
@@ -37,6 +39,8 @@ function RandomizerPowerup.OnPickedUp(actor, resources)
     for _, resource in ipairs(granted) do
         RandomizerPowerup.IncreaseAmmo(resource)
     end
+
+    Scenario.UpdateProgressiveItemModels()
 
     return granted
 end

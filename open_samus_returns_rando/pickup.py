@@ -77,11 +77,31 @@ class ActorPickup(BasePickup):
         return bmsad
 
     def patch_model(self, editor: PatcherEditor, model_names: list[str], new_template: dict):
-        # TODO: Add MulitModel / Progressive model logic
-        model_data = get_data(model_names[0])
-        new_template["model_name"] = model_data.bcmdl_path
-        MODELUPDATER = new_template["components"]["MODELUPDATER"]
-        MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
+        if len(model_names) == 1:
+            model_data = get_data(model_names[0])
+            new_template["model_name"] = model_data.bcmdl_path
+            MODELUPDATER = new_template["components"]["MODELUPDATER"]
+            MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
+        else:
+            MODELUPDATER = new_template["components"]["MODELUPDATER"]
+            MODELUPDATER["type"] = "CMultiModelUpdaterComponent"
+            # no idea what this is
+            MODELUPDATER["unk_1"][0] = 0x000009C4
+            MODELUPDATER["unk_1"][1] = 0x00000000
+
+            for idx, model_name in enumerate(model_names):
+                model_data = get_data(model_name)
+                if idx != 0:
+                    MODELUPDATER["functions"].append(copy.deepcopy(MODELUPDATER["functions"][0]))
+                MODELUPDATER["functions"][idx]["name"] = "AddModel"
+                MODELUPDATER["functions"][idx]["unk"] = 1
+                # this is just the alias which needs to be used in the update functions of lua
+                # we are simply using the model name as alias
+                MODELUPDATER["functions"][idx]["params"]["Param1"]["value"] = model_name
+                MODELUPDATER["functions"][idx]["params"]["Param2"] = copy.deepcopy(
+                    MODELUPDATER["functions"][idx]["params"]["Param1"]
+                )
+                MODELUPDATER["functions"][idx]["params"]["Param2"]["value"] = model_data.bcmdl_path
 
 
     def patch(self, editor: PatcherEditor):
@@ -125,12 +145,13 @@ class ActorPickup(BasePickup):
         actor.type = actordef_id
 
         # Dependencies
-        model_data = get_data(model_names[0])
         for level_pkg in pkgs_for_level:
             editor.ensure_present(level_pkg, "system/animtrees/base.bmsat")
             editor.ensure_present(level_pkg, "actors/items/randomizer_powerup/scripts/randomizer_powerup.lc")
-            for dep in model_data.dependencies:
-                editor.ensure_present(level_pkg, dep)
+            for model_name in model_names:
+                model_data = get_data(model_name)
+                for dep in model_data.dependencies:
+                    editor.ensure_present(level_pkg, dep)
 
         # TODO: Add BMSAS :( ?
 

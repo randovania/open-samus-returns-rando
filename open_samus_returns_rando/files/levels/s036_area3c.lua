@@ -464,6 +464,7 @@ function s036_area3c.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_
   if _ARG_0_ == "collision_camera_018" then
     s036_area3c.DeactivateEvents()
   end
+  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s036_area3c.DeactivateEvents()
   if Game.GetEntity("LE_Event_03c1") ~= nil and Scenario.ReadFromBlackboard("Event_03c1_Launched") then
