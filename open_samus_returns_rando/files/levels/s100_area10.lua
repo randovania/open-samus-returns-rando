@@ -347,6 +347,7 @@ function s100_area10.OnQueenGenerated(_ARG_0_, _ARG_1_)
   end
 end
 function s100_area10.OnQueenDead(_ARG_0_)
+  Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
   Blackboard.SetProp("DEFEATED_ENEMIES", "Queen", "i", 1)
   Game.SetSubAreaCurrentSetup("collision_camera_020", "PostMetroids_001", true)
   Game.LaunchCutscene("cutscenes/metroidqueendeath/takes/01/metroidqueendeath01.bmscu")
@@ -375,29 +376,30 @@ function s100_area10.OnEndQueenDeathCutscene()
   Game.SaveGame("checkpoint", "Checkpoint_AfterQueen", "ST_Queen_001_Checkpoint", true)
 end
 function s100_area10.OnBabyCreationCutsceneTrigger()
-  -- if not Scenario.ReadFromBlackboard("firstTimeMetroidHatchlingIntroPlayed", false) then
+  if not Scenario.ReadFromBlackboard("firstTimeMetroidHatchlingIntroPlayed", false) then
   --   Game.LaunchCutscene("cutscenes/metroidhatchlingintro/takes/01/metroidhatchlingintro01.bmscu")
-  --   if Game.GetEntity("TG_Intro_BabyHatchling") ~= nil then
+    if Game.GetEntity("TG_Intro_BabyHatchling") ~= nil then
       Game.SetSubAreasPreferredTransitionType("None")
       Game.GetEntity("TG_Intro_BabyHatchling").TRIGGER:DisableTrigger()
-  --   end
-  -- end
+    end
+  end
 end
 function s100_area10.OnMetroidHatchlingIntroCutsceneLaunch()
-  Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
+  if Scenario.ReadFromBlackboard("firstTimeMetroidHatchlingIntroPlayed", true) then
   -- if Game.GetDefaultPlayer() ~= nil then
   --   Game.GetDefaultPlayer().BABYHATCHLINGCREATION:SpawnBaby()
   --   Game.GetDefaultPlayer().GUN:SelectGun("IceBeam", true)
   -- end
-  Game.SetSceneGroupEnabledByName("sg_egg01", false)
-  Game.SetSceneGroupEnabledByName("sg_egg02", false)
+    Game.SetSceneGroupEnabledByName("sg_egg01", false)
+    Game.SetSceneGroupEnabledByName("sg_egg02", false)
+  end
 end
 function s100_area10.OnMetroidHatchlingIntroCutsceneLastTake()
   Game.SetSceneGroupEnabledByName("sg_egg02", true)
   Game.SetSubAreaCurrentSetup("collision_camera_022", "PostMetroids_001", true)
 end
 function s100_area10.OnMetroidHatchlingIntroCutsceneEnd()
-  -- Game.SetSubAreaCurrentSetup("collision_camera_020", "PostBabyHatchling", true)
+  Game.SetSubAreaCurrentSetup("collision_camera_020", "PostBabyHatchling", true)
   if Game.GetEntity("TG_ChangeEggMetroid") ~= nil then
     Game.GetEntity("TG_ChangeEggMetroid").TRIGGER:EnableTrigger()
   end
