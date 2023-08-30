@@ -17,7 +17,11 @@ def _read_level_lua(level_id: str) -> str:
 SPECIFIC_CLASSES = {
     "ITEM_VARIA_SUIT": "RandomizerVariaSuit",
     "ITEM_GRAVITY_SUIT": "RandomizerGravitySuit",
-    "ITEM_BABY_HATCHLING": "RandomizerBabyHatchling"
+    "ITEM_BABY_HATCHLING": "RandomizerBabyHatchling",
+    "ITEM_WEAPON_SUPER_MISSILE_MAX": "RandomizerSuperMissile",
+    "ITEM_RANDO_LOCKED_SUPERS": "RandomizerSuperMissileTank",
+    "ITEM_WEAPON_POWER_BOMB_MAX": "RandomizerPowerBomb",
+    "ITEM_RANDO_LOCKED_PBS": "RandomizerPowerBombTank"
 }
 
 
