@@ -72,6 +72,7 @@ function s100_area10.TestMetroidCount()
   Game.GetPlayer().vPos = V3D(-4459.72, 10426.6, 0)
 end
 function s100_area10.InitFromBlackboard()
+  Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
   if Game.GetEntity("LE_ValveQueen") ~= nil then
     if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
       Game.GetEntity("LE_ValveQueen").MODELUPDATER:SetMeshVisible("Valve", false)
@@ -347,7 +348,6 @@ function s100_area10.OnQueenGenerated(_ARG_0_, _ARG_1_)
   end
 end
 function s100_area10.OnQueenDead(_ARG_0_)
-  Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
   Blackboard.SetProp("DEFEATED_ENEMIES", "Queen", "i", 1)
   Game.SetSubAreaCurrentSetup("collision_camera_020", "PostMetroids_001", true)
   Game.LaunchCutscene("cutscenes/metroidqueendeath/takes/01/metroidqueendeath01.bmscu")
