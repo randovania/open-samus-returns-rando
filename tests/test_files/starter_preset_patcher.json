@@ -83,5 +83,19 @@
         "reveal_map_on_start": true,
         "game_patches": {
           "nerf_power_bombs": true
-        }
+        },
+        "custom_pickups": [
+          {
+              "new_actor": {
+                  "actor": "LE_BabyHatching",
+                  "scenario": "s100_area10"
+              },
+              "location": {
+                  "x": -3400.0,
+                  "y": 11225.0,
+                  "z": 0.0
+              },
+              "collision_camera_name": "collision_camera_026"
+          }
+      ]
       }
