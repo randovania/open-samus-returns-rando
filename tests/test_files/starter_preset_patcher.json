@@ -76,7 +76,26 @@
               "actor": "LE_Item_001"
             },
             "model": ["powerup_wavebeam", "powerup_spazerbeam",  "powerup_plasmabeam"]
-          }
+          },
+          {
+            "pickup_type": "actor",
+            "caption": "Screw Attack acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SCREW_ATTACK",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+            "scenario": "s100_area10",
+            "actor": "LE_Baby_Hatching"
+            },
+            "model": [
+                "powerup_screwattack"
+            ]
+        }
         ],
         "energy_per_tank": 100,
         "aeion_per_tank": 50,
@@ -87,7 +106,7 @@
         "custom_pickups": [
           {
               "new_actor": {
-                  "actor": "LE_BabyHatching",
+                  "actor": "LE_Baby_Hatching",
                   "scenario": "s100_area10"
               },
               "location": {
@@ -95,7 +114,7 @@
                   "y": 11225.0,
                   "z": 0.0
               },
-              "collision_camera_name": "collision_camera_026"
+              "collision_camera_name": "collision_camera_022"
           }
       ]
       }
