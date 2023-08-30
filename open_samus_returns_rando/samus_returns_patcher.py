@@ -90,6 +90,21 @@ def patch_spawn_points(editor: PatcherEditor, spawn_config: list[dict]):
         eg_collison_camera = next((sub_area for sub_area in scenario.raw.sub_areas if sub_area.name ==  eg_name), None)
         eg_collison_camera.names.append(new_actor_name)
 
+def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
+    # create custom pickup
+        _EXAMPLE_PICKUP = {"scenario": "s000_surface", "layer": "9", "actor": "LE_PowerUP_Morphball"}
+        base_actor = editor.resolve_actor_reference(_EXAMPLE_PICKUP)
+        for new_pickup in pickup_config:
+            scenario_name = new_pickup["new_actor"]["scenario"]
+            new_actor_name = new_pickup["new_actor"]["actor"]
+            collision_camera_name = new_pickup["collision_camera_name"]
+            new_pickup_pos = (new_pickup["location"]["x"], new_pickup["location"]["y"], new_pickup["location"]["z"])
+            scenario = editor.get_scenario(scenario_name)
+            editor.copy_actor(scenario_name, new_pickup_pos, base_actor, new_actor_name, 9)
+            eg_name = f"eg_SubArea_{collision_camera_name}"
+            eg_collison_camera = next((sub_area for sub_area in scenario.raw.sub_areas if sub_area.name ==  eg_name), None)
+            eg_collison_camera.names.append(new_actor_name)
+
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
 
@@ -113,6 +128,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     # Add custom lua files
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
     lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
+
+    # custom pickups
+    patch_custom_pickups(editor, configuration["custom_pickups"])
 
     # Patch all pickups
     patch_pickups(editor, lua_scripts, configuration["pickups"], configuration)

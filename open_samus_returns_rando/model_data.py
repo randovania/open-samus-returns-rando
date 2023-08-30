@@ -38,6 +38,22 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         ),
     ),
 
+    "babyhatchling": ModelData(
+        bcmdl_path="actors/characters/babyhatchling/models/babyhatchling.bcmdl",
+        dependencies=(
+            "actors/characters/babyhatchling/charclasses/babyhatchling.bmsad",
+            "actors/characters/babyhatchling/models/babyhatchling.bcmdl",
+            "actors/characters/babyhatchling/models/babyhatchlingcutscene.bcmdl",
+            "actors/characters/babyhatchling/models/babyhatchlingsmall.bcmdl",
+            "actors/characters/babyhatchling/models/hatchling_telecolor.bcmdl",
+            "actors/characters/babyhatchling/models/hatchling_teledisolve.bcmdl",
+            "actors/characters/babyhatchling/models/textures/babyhatchling_a.bctex",
+            "actors/characters/babyhatchling/models/textures/babyhatchling_d.bctex",
+            "actors/characters/babyhatchling/models/textures/coreveins.bctex",
+            "actors/characters/babyhatchling/models/textures/cubemetroids.bctex"
+        ),
+    ),
+
     "powerup_wavebeam": ModelData(
         bcmdl_path="actors/items/powerup_wavebeam/models/powerup_wavebeam.bcmdl",
         dependencies=(

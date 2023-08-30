@@ -289,3 +289,10 @@ function RandomizerGravitySuit.OnPickedUp(actor, progression)
     Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
     RandomizerPowerup.EnableLiquids()
 end
+
+RandomizerBabyHatchling = {}
+setmetatable(RandomizerBabyHatchling, {__index = RandomizerPowerup})
+function RandomizerBabyHatchling.OnPickedUp(actor, progression)
+    RandomizerPowerup.OnPickedUp(actor, progression)
+    Game.GetDefaultPlayer("Samus").BABYHATCHLINGCREATION:SpawnBaby()
+end

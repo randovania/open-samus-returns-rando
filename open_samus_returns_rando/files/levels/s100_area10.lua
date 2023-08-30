@@ -72,6 +72,7 @@ function s100_area10.TestMetroidCount()
   Game.GetPlayer().vPos = V3D(-4459.72, 10426.6, 0)
 end
 function s100_area10.InitFromBlackboard()
+  Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
   if Game.GetEntity("LE_ValveQueen") ~= nil then
     if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
       Game.GetEntity("LE_ValveQueen").MODELUPDATER:SetMeshVisible("Valve", false)
@@ -376,7 +377,7 @@ function s100_area10.OnEndQueenDeathCutscene()
 end
 function s100_area10.OnBabyCreationCutsceneTrigger()
   if not Scenario.ReadFromBlackboard("firstTimeMetroidHatchlingIntroPlayed", false) then
-    Game.LaunchCutscene("cutscenes/metroidhatchlingintro/takes/01/metroidhatchlingintro01.bmscu")
+  --   Game.LaunchCutscene("cutscenes/metroidhatchlingintro/takes/01/metroidhatchlingintro01.bmscu")
     if Game.GetEntity("TG_Intro_BabyHatchling") ~= nil then
       Game.SetSubAreasPreferredTransitionType("None")
       Game.GetEntity("TG_Intro_BabyHatchling").TRIGGER:DisableTrigger()
@@ -384,13 +385,14 @@ function s100_area10.OnBabyCreationCutsceneTrigger()
   end
 end
 function s100_area10.OnMetroidHatchlingIntroCutsceneLaunch()
-  Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
-  if Game.GetDefaultPlayer() ~= nil then
-    Game.GetDefaultPlayer().BABYHATCHLINGCREATION:SpawnBaby()
-    Game.GetDefaultPlayer().GUN:SelectGun("IceBeam", true)
+  if Scenario.ReadFromBlackboard("firstTimeMetroidHatchlingIntroPlayed", true) then
+  -- if Game.GetDefaultPlayer() ~= nil then
+  --   Game.GetDefaultPlayer().BABYHATCHLINGCREATION:SpawnBaby()
+  --   Game.GetDefaultPlayer().GUN:SelectGun("IceBeam", true)
+  -- end
+    Game.SetSceneGroupEnabledByName("sg_egg01", false)
+    Game.SetSceneGroupEnabledByName("sg_egg02", false)
   end
-  Game.SetSceneGroupEnabledByName("sg_egg01", false)
-  Game.SetSceneGroupEnabledByName("sg_egg02", false)
 end
 function s100_area10.OnMetroidHatchlingIntroCutsceneLastTake()
   Game.SetSceneGroupEnabledByName("sg_egg02", true)
