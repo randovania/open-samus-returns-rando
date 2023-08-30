@@ -2,6 +2,7 @@ from mercury_engine_data_structures.formats import Bmsad
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
+
 def apply_game_patches(editor: PatcherEditor, configuration: dict):
 
     if configuration["nerf_power_bombs"]:
