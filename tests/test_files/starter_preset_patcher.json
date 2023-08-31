@@ -101,7 +101,8 @@
         "aeion_per_tank": 50,
         "reveal_map_on_start": true,
         "game_patches": {
-          "nerf_power_bombs": true
+          "nerf_power_bombs": true,
+          "remove_elevator_grapple_blocks": true
         },
         "custom_pickups": [
           {

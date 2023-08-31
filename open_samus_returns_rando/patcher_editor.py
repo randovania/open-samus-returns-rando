@@ -56,3 +56,10 @@ class PatcherEditor(FileTreeEditor):
         newActor.z = coords[2] + offset[2]
 
         return newActor
+    
+    def remove_entity(self, reference: dict):
+        scenario = self.get_scenario(reference["scenario"])
+        layer = reference.get("layer", "default")
+        actor_name = reference["actor"]
+
+        scenario.raw.actors[layer].pop(actor_name)

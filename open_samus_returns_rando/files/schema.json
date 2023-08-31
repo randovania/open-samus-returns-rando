@@ -120,7 +120,12 @@
                 "nerf_power_bombs": {
                     "type": "boolean",
                     "description": "Changes weaknesses for certain props to make Power Bombs less overpowered.",
-                    "default": false
+                    "default": true
+                },
+                "remove_elevator_grapple_blocks": {
+                    "type": "boolean",
+                    "description": "Removes the Grapple Blocks in the paths exiting areas.",
+                    "default": true
                 }
             },
             "additionalProperties": false

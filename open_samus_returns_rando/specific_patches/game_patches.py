@@ -2,11 +2,39 @@ from mercury_engine_data_structures.formats import Bmsad
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
+_ELEVATOR_GRAPPLE_BLOCKS = [
+    {
+        # Area 4 West to Area 4 East
+        "scenario": "s040_area4",
+        "layer": 9,
+        "actor": "LE_GrappleMov_001"
+    },
+    {
+        # Area 5 to Area 6
+        "scenario": "s060_area6",
+        "layer": 9,
+        "actor": "LE_GrappleMov_004"
+    },
+    {
+        # Area 6 to Area 7
+        "scenario": "s070_area7",
+        "layer": 9,
+        "actor": "LE_GrappleMov_001"
+    },
+    {
+        # Area 7 to Area 8
+        "scenario": "s090_area9",
+        "layer": 9,
+        "actor": "LE_GrappleMov_001"
+    }
+]
 
 def apply_game_patches(editor: PatcherEditor, configuration: dict):
 
     if configuration["nerf_power_bombs"]:
         _remove_pb_weaknesses(editor)
+
+    _remove_grapple_blocks(editor, configuration)
 
 def _remove_pb_weaknesses(editor: PatcherEditor):
     # Charge Door
@@ -30,3 +58,8 @@ def _remove_pb_weaknesses(editor: PatcherEditor):
                 func_wp.params.Param1.value = "PLASMA_BEAM"
         if func_s.params.Param1.value:
             func_s.params.Param1.value = "SPAZER_BEAM"
+
+def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
+    if configuration["remove_elevator_grapple_blocks"]:
+        for reference in _ELEVATOR_GRAPPLE_BLOCKS:
+            editor.remove_entity(reference)
