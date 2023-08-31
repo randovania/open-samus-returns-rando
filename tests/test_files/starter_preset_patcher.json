@@ -102,7 +102,8 @@
         "reveal_map_on_start": true,
         "game_patches": {
           "nerf_power_bombs": true,
-          "remove_elevator_grapple_blocks": true
+          "remove_elevator_grapple_blocks": true,
+          "remove_grapple_block_area3_interior_shortcut": false
         },
         "custom_pickups": [
           {

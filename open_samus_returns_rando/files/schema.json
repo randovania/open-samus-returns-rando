@@ -124,8 +124,13 @@
                 },
                 "remove_elevator_grapple_blocks": {
                     "type": "boolean",
-                    "description": "Removes the Grapple Blocks in the paths exiting areas.",
+                    "description": "Remove the Grapple Blocks in the exit paths to the connecting areas.",
                     "default": true
+                },
+                "remove_grapple_block_area3_interior_shortcut": {
+                    "type": "boolean",
+                    "description": "Remove the Grapple Block in the path to Area 3 Interior (West) from Area 3 Interior (East).",
+                    "default": false
                 }
             },
             "additionalProperties": false

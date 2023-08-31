@@ -63,3 +63,12 @@ def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
     if configuration["remove_elevator_grapple_blocks"]:
         for reference in _ELEVATOR_GRAPPLE_BLOCKS:
             editor.remove_entity(reference)
+
+    if configuration["remove_grapple_block_area3_interior_shortcut"]:
+        editor.remove_entity(
+            {
+                "scenario": "s036_area3c",
+                "layer": 9,
+                "actor": "LE_GrappleDest_004"
+            }
+        )
