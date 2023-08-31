@@ -6,6 +6,7 @@ from pathlib import Path
 
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
+from open_samus_returns_rando.bmsld_add import add_actor_to_entity_groups
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
@@ -75,35 +76,33 @@ def patch_exefs(exefs_patches: Path):
     # file needs to be named code.ips for Citra
     exefs_patches.joinpath("code.ips").write_bytes(bytes(patch))
 
+def unpack_new_actor(new_actor: dict):
+    scenario_name = new_actor["new_actor"]["scenario"]
+    new_actor_name = new_actor["new_actor"]["actor"]
+    collision_camera_name = new_actor["collision_camera_name"]
+    new_pos = (new_actor["location"]["x"], new_actor["location"]["y"], new_actor["location"]["z"])
+    return scenario_name,new_actor_name,collision_camera_name,new_pos
+
 def patch_spawn_points(editor: PatcherEditor, spawn_config: list[dict]):
     # create custom spawn point
     _EXAMPLE_SP = {"scenario": "s010_area1", "layer": "5", "actor": "StartPoint0"}
     base_actor = editor.resolve_actor_reference(_EXAMPLE_SP)
     for new_spawn in spawn_config:
-        scenario_name = new_spawn["new_actor"]["scenario"]
-        new_actor_name = new_spawn["new_actor"]["actor"]
-        collision_camera_name = new_spawn["collision_camera_name"]
-        new_spawn_pos = (new_spawn["location"]["x"], new_spawn["location"]["y"], new_spawn["location"]["z"])
+        scenario_name, new_actor_name, collision_camera_name, new_spawn_pos = unpack_new_actor(new_spawn)
         scenario = editor.get_scenario(scenario_name)
         editor.copy_actor(scenario_name, new_spawn_pos, base_actor, new_actor_name, 5)
-        eg_name = f"eg_SubArea_{collision_camera_name}"
-        eg_collison_camera = next((sub_area for sub_area in scenario.raw.sub_areas if sub_area.name ==  eg_name), None)
-        eg_collison_camera.names.append(new_actor_name)
+        add_actor_to_entity_groups(scenario, collision_camera_name, new_actor_name)
 
 def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
     # create custom pickup
     _EXAMPLE_PICKUP = {"scenario": "s000_surface", "layer": "9", "actor": "LE_PowerUP_Morphball"}
     base_actor = editor.resolve_actor_reference(_EXAMPLE_PICKUP)
     for new_pickup in pickup_config:
-        scenario_name = new_pickup["new_actor"]["scenario"]
-        new_actor_name = new_pickup["new_actor"]["actor"]
-        collision_camera_name = new_pickup["collision_camera_name"]
-        new_pickup_pos = (new_pickup["location"]["x"], new_pickup["location"]["y"], new_pickup["location"]["z"])
+        scenario_name, new_actor_name, collision_camera_name, new_pos = unpack_new_actor(new_pickup)
         scenario = editor.get_scenario(scenario_name)
-        editor.copy_actor(scenario_name, new_pickup_pos, base_actor, new_actor_name, 9)
-        eg_name = f"eg_SubArea_{collision_camera_name}"
-        eg_collison_camera = next((sub_area for sub_area in scenario.raw.sub_areas if sub_area.name ==  eg_name), None)
-        eg_collison_camera.names.append(new_actor_name)
+        editor.copy_actor(scenario_name, new_pos, base_actor, new_actor_name, 9)
+        add_actor_to_entity_groups(scenario, collision_camera_name, new_actor_name)
+
 
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
