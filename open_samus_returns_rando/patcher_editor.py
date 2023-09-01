@@ -47,7 +47,7 @@ class PatcherEditor(FileTreeEditor):
         self.memory_files = {}
 
     def copy_actor(self, scenario: str, coords, template_actor: Container, new_name: str,
-                   layer_index: int, offset: tuple = (0, 0, 0)):       
+                   layer_index: int, offset: tuple = (0, 0, 0)):
         new_actor = copy.deepcopy(template_actor)
         current_scenario = self.get_scenario(scenario)
         current_scenario.raw.actors[layer_index][new_name] = new_actor
