@@ -7,6 +7,8 @@ from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
 from mercury_engine_data_structures.formats import BaseResource, Bmsld
 from mercury_engine_data_structures.game_check import Game
 
+from open_samus_returns_rando.bmsld_add import remove_actor_from_all_groups
+
 T = typing.TypeVar("T")
 
 
@@ -56,7 +58,7 @@ class PatcherEditor(FileTreeEditor):
         new_actor.z = coords[2] + offset[2]
 
         return new_actor
-      
+
     def remove_entity(self, reference: dict):
         scenario = self.get_scenario(reference["scenario"])
         layer = reference["layer"]
