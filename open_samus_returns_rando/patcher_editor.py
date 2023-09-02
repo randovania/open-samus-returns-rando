@@ -40,6 +40,7 @@ class PatcherEditor(FileTreeEditor):
 
     def resolve_actor_reference(self, ref: dict) -> Container:
         scenario = self.get_scenario(ref["scenario"])
+        # FIXME: There is no "default" as layer in SR
         layer = int(ref.get("layer", "default"))
         return scenario.raw.actors[layer][ref["actor"]]
 
