@@ -133,6 +133,11 @@
                     "type": "boolean",
                     "description": "Remove the Grapple Block in the path to Area 3 Interior (West) from Area 3 Interior (East).",
                     "default": false
+                },
+                "nerf_super_missiles": {
+                    "type": "boolean",
+                    "description": "Removes the Super Missile weakness on Missile shields.",
+                    "default": false
                 }
             },
             "additionalProperties": false
