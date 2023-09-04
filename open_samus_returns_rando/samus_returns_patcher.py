@@ -97,6 +97,15 @@ def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
         editor.copy_actor(scenario_name, new_pos, base_actor, new_actor_name, 9)
         add_actor_to_entity_groups(scenario, collision_camera_name, new_actor_name)
 
+def fix_heat_rooms(editor: PatcherEditor):
+    # area2b => just uses one heat trigger for multiple rooms => just append it to
+    # the group of the missing room
+    heat_trigger_2b = {"scenario": "s025_area2b", "layer": "2", "actor": "TG_SP_Heat_001"}
+    scenario_2b = editor.get_scenario(heat_trigger_2b["scenario"])
+    add_actor_to_entity_groups(scenario_2b, "collision_camera013", heat_trigger_2b["actor"])
+
+    # TODO: Implement the other areas
+
 
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
@@ -130,6 +139,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     # custom spawn points
     patch_spawn_points(editor, configuration["new_spawn_points"])
+
+    # make some heat rooms really heated
+    fix_heat_rooms(editor)
 
     # Specific game patches
     game_patches.apply_game_patches(editor, configuration.get("game_patches", {}))
