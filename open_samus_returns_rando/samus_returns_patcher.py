@@ -29,7 +29,7 @@ def create_custom_init(configuration: dict) -> str:
     starting_location: dict = configuration["starting_location"]
 
     energy_per_tank = configuration["energy_per_tank"]
-    max_life = energy_per_tank - 1
+    max_life = inventory.pop("ITEM_MAX_LIFE")
 
     # max_aeion has to be setup like this,
     # otherwise the starting aeion amount will be 1000 (hardcoded) plus the aeion tank amount
@@ -46,20 +46,14 @@ def create_custom_init(configuration: dict) -> str:
         atanks = inventory.pop("ITEM_AEION_TANKS")
         max_aeion += atanks * aeion_per_tank
 
-    # Game doesn't like to start if some fields are missing, like ITEM_WEAPON_POWER_BOMB_MAX
-    final_inventory = {
+    inventory_update = {
         "ITEM_MAX_LIFE": max_life,
         "ITEM_MAX_SPECIAL_ENERGY": max_aeion,
-        "ITEM_METROID_COUNT": 0,
-        "ITEM_METROID_TOTAL_COUNT": 40,
-        "ITEM_WEAPON_MISSILE_MAX": 0,
-        "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
-        "ITEM_WEAPON_POWER_BOMB_MAX": 0,
     }
-    final_inventory.update(inventory)
+    inventory.update(inventory_update)
 
     replacement = {
-        "new_game_inventory": final_inventory,
+        "new_game_inventory": inventory,
         "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
         "starting_actor": lua_util.wrap_string(starting_location["actor"]),
         "energy_per_tank": energy_per_tank,

@@ -14,7 +14,9 @@
                 "ITEM_MAX_LIFE",
                 "ITEM_WEAPON_MISSILE_MAX",
                 "ITEM_WEAPON_SUPER_MISSILE_MAX",
-                "ITEM_WEAPON_POWER_BOMB_MAX"
+                "ITEM_WEAPON_POWER_BOMB_MAX",
+                "ITEM_METROID_COUNT",
+                "ITEM_METROID_TOTAL_COUNT"
             ]
         },
         "pickups": {
