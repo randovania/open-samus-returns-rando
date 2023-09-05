@@ -36,6 +36,9 @@ def apply_game_patches(editor: PatcherEditor, configuration: dict):
 
     _remove_grapple_blocks(editor, configuration)
 
+    if configuration["nerf_super_missiles"]:
+        _remove_super_missile_weakness(editor)
+
 def _remove_pb_weaknesses(editor: PatcherEditor):
     # Charge Door
     for door in ["doorchargecharge", "doorclosedcharge"]:
@@ -72,3 +75,9 @@ def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
                 "actor": "LE_GrappleDest_004"
             }
         )
+
+def _remove_super_missile_weakness(editor: PatcherEditor):
+    missile_door = editor.get_file(f"actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad", Bmsad)
+    func = missile_door.raw.components.LIFE.functions[1]
+    if func.params.Param1.value:
+        func.params.Param1.value = "MISSILE"
