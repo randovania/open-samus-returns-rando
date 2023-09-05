@@ -11,8 +11,8 @@ def all_actor_groups(scenario: Bmsld) -> Iterator[tuple[str, Container]]:
     for sub_area in scenario.raw.sub_areas:
         yield sub_area.name, sub_area
 
-def add_actor_to_group(group: Container, actor_name: str):
-    group.names.append(actor_name)
+def add_actor_to_group(group: Container, actor_name: str, pos: int = -1):
+    group.names.insert(pos, actor_name)
 
 def get_actor_group(scenario: Bmsld, group_name: str) -> Container:
     group = next(
@@ -25,14 +25,14 @@ def get_actor_group(scenario: Bmsld, group_name: str) -> Container:
     return group
 
 def add_actor_to_entity_groups(scenario: Bmsld, collision_camera_name: str, actor_name: str, all_groups: bool = False):
-    def comapre_func(first: str, second: str) -> bool:
+    def compare_func(first: str, second: str) -> bool:
         if all_groups:
             return first.startswith(f"eg_SubArea_{second}")
         else:
             return first == f"eg_SubArea_{second}"
 
     collision_camera_groups = [group for group_name, group in all_actor_groups(scenario)
-                                if comapre_func(group_name, collision_camera_name)]
+                                if compare_func(group_name, collision_camera_name)]
     if len(collision_camera_groups) == 0:
         raise Exception(f"No entity group found for {collision_camera_name}")
     for group in collision_camera_groups:
@@ -47,6 +47,7 @@ def all_actor_group_names_for_actor(scenario: Bmsld, actor_name: str) -> list[st
     ]
 
 def remove_actor_from_group(scenario: Bmsld, group_name: str, actor_name: str):
+    LOG.debug("Remove actor %s from group %s", actor_name, group_name)
     group = get_actor_group(scenario, group_name)
     group.names.remove(actor_name)
 

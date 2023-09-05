@@ -77,7 +77,7 @@ def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
         )
 
 def _remove_super_missile_weakness(editor: PatcherEditor):
-    missile_door = editor.get_file(f"actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad", Bmsad)
+    missile_door = editor.get_file("actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad", Bmsad)
     func = missile_door.raw.components.LIFE.functions[1]
     if func.params.Param1.value:
         func.params.Param1.value = "MISSILE"
