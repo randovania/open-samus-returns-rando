@@ -96,15 +96,16 @@ class ActorPickup(BasePickup):
             MODELUPDATER = new_template["components"]["MODELUPDATER"]
             MODELUPDATER["type"] = "CMultiModelUpdaterComponent"
             # no idea what this is
-            MODELUPDATER["unk_1"][0] = 0x000009C4
-            MODELUPDATER["unk_1"][1] = 0x00000000
+            MODELUPDATER["unk_1"] = 2500
+            MODELUPDATER["unk_2"] = 0.0
 
             for idx, model_name in enumerate(model_names):
                 model_data = get_data(model_name)
                 if idx != 0:
                     MODELUPDATER["functions"].append(copy.deepcopy(MODELUPDATER["functions"][0]))
                 MODELUPDATER["functions"][idx]["name"] = "AddModel"
-                MODELUPDATER["functions"][idx]["unk"] = 1
+                MODELUPDATER["functions"][idx]["unk1"] = True
+                MODELUPDATER["functions"][idx]["unk2"] = False
                 # this is just the alias which needs to be used in the update functions of lua
                 # we are simply using the model name as alias
                 MODELUPDATER["functions"][idx]["params"]["Param1"]["value"] = model_name
