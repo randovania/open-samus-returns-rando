@@ -73,9 +73,9 @@ MULTI_ROOM_GAMMAS = [
     },
 ]
 
-def fix_multi_room_gammas(editor: PatcherEditor):
+def patch_multi_room_gammas(editor: PatcherEditor):
     for reference in MULTI_ROOM_GAMMAS:
             editor.remove_entity(reference)
 
 def apply_static_fixes(editor: PatcherEditor):
-      fix_multi_room_gammas(editor)
+      patch_multi_room_gammas(editor)
