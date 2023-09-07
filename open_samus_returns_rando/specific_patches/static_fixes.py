@@ -22,6 +22,16 @@ MULTI_ROOM_GAMMAS = [
         "actor": "Gamma_004_Intro_C"
     },
     {
+        "scenario": "s036_area3c",
+        "layer": 4,
+        "actor": "SP_Gamma_007_B"
+    },
+    {
+        "scenario": "s036_area3c",
+        "layer": 4,
+        "actor": "SP_Gamma_007_Intro_B"
+    },
+    {
         "scenario": "s040_area4",
         "layer": 4,
         "actor": "SP_Gamma_001_B"
