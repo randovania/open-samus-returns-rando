@@ -18,7 +18,7 @@ LOG = logging.getLogger("pickup")
 def _read_template_powerup():
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
         return json.load(f)
-    
+
 
 class PickupType(Enum):
     ACTOR = "actor"
