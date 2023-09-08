@@ -99,8 +99,6 @@ def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
         editor.copy_actor(scenario_name, new_pos, base_actor, new_actor_name, 9)
         add_actor_to_entity_groups(scenario, collision_camera_name, new_actor_name)
 
-    # TODO: Implement the other areas
-
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
 
@@ -132,7 +130,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     # Custom spawn points
     patch_spawn_points(editor, configuration["new_spawn_points"])
 
-    # make some heat rooms really heated
+    # Fix unheated heat rooms
     patch_heat_rooms(editor)
 
     # Specific game patches
