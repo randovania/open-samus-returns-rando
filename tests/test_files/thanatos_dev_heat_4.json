@@ -1,8 +1,8 @@
 {
     "$schema": "../../open_samus_returns_rando/files/schema.json",
     "starting_location": {
-        "scenario": "s036_area3c",
-        "actor": "ST_SG_Alpha_001"
+        "scenario": "s040_area4",
+        "actor": "ST_Gamma_001C_Checkpoint"
     },
     "starting_items": {
         "ITEM_MAX_LIFE": 599,

@@ -1,13 +1,13 @@
 {
     "$schema": "../../open_samus_returns_rando/files/schema.json",
     "starting_location": {
-        "scenario": "s036_area3c",
-        "actor": "ST_SG_Alpha_001"
+        "scenario": "s067_area6c",
+        "actor": "ST_SG_Gamma_001"
     },
     "starting_items": {
         "ITEM_MAX_LIFE": 599,
         "ITEM_WEAPON_MISSILE_MAX": 50,
-        "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
+        "ITEM_WEAPON_SUPER_MISSILE_MAX": 10,
         "ITEM_WEAPON_POWER_BOMB_MAX": 0,
         "ITEM_MORPH_BALL": 1,
         "ITEM_SPIDER_BALL": 1,
@@ -15,6 +15,10 @@
         "ITEM_AEION_TANKS": 3,
         "ITEM_WEAPON_BOMB": 1,
         "ITEM_WEAPON_CHARGE_BEAM": 1,
+        "ITEM_WEAPON_SPAZER_BEAM": 1,
+        "ITEM_WEAPON_ICE_BEAM": 1,
+        "ITEM_WEAPON_PLASMA_BEAM": 1,
+        "ITEM_WEAPON_WAVE_BEAM": 1,
         "ITEM_HIGH_JUMP_BOOTS": 1,
         "ITEM_SPACE_JUMP": 1,
         "ITEM_SPRING_BALL": 1,
