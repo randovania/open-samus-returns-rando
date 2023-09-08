@@ -13,6 +13,7 @@ from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import game_patches
+from open_samus_returns_rando.specific_patches.static_fixes import apply_static_fixes
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
 
 T = typing.TypeVar("T")
@@ -112,13 +113,11 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     DefaultValidatingDraft7Validator(_read_schema()).validate(configuration)
 
-    out_romfs = output_path.joinpath("romfs")
-    out_exefs = output_path.joinpath("exefs")
-    shutil.rmtree(out_romfs, ignore_errors=True)
-    shutil.rmtree(out_exefs, ignore_errors=True)
-
     editor = PatcherEditor(input_path)
     lua_scripts = LuaEditor()
+
+    # Apply fixes
+    apply_static_fixes(editor)
 
     # Update init.lc
     lua_util.create_script_copy(editor, "system/scripts/init")
@@ -131,20 +130,25 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
     lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
 
-    # custom pickups
+    # Custom pickups
     patch_custom_pickups(editor, configuration["custom_pickups"])
 
     # Patch all pickups
     patch_pickups(editor, lua_scripts, configuration["pickups"], configuration)
 
-    # custom spawn points
+    # Custom spawn points
     patch_spawn_points(editor, configuration["new_spawn_points"])
 
-    # make some heat rooms really heated
+    # Fix unheated heat rooms
     fix_heat_rooms(editor)
 
     # Specific game patches
     game_patches.apply_game_patches(editor, configuration.get("game_patches", {}))
+
+    out_romfs = output_path.joinpath("romfs")
+    out_exefs = output_path.joinpath("exefs")
+    shutil.rmtree(out_romfs, ignore_errors=True)
+    shutil.rmtree(out_exefs, ignore_errors=True)
 
     # Create Exefs patches (currently there are none)
     LOG.info("Creating exefs patches")
