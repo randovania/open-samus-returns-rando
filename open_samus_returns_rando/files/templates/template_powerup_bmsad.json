@@ -2,190 +2,226 @@
     "magic": "MSAD",
     "version": 2883585,
     "name": "randomizer_powerup",
-    "property": {
+    "header": {
         "model_name": "actors/items/itemsphere/models/itemsphere.bcmdl",
         "unk_1": 0,
-        "unk_2": [
-            1.0,
-            50.0,
-            0.0,
-            1.0,
-            0.0,
+        "unk_2a": 1.0,
+        "unk_2b": 50.0,
+        "unk_2c": 0.0,
+        "unk_2d": 1.0,
+        "unk_2e": 0.0,
+        "unk_2f": [
             100.0,
             100.0,
-            100.0,
-            50.0
+            100.0
         ],
+        "unk_2g": 50.0,
         "unk_3": 0,
         "unk_4": 8,
-        "other_magic": 4294967295,
-        "unk_5": 0,
-        "unk_6": [],
-        "unk_7": 0,
+        "other_magic": -1,
+        "unk_5": false,
+        "unk_5b": false,
+        "unk_6": false,
+        "category": "",
+        "unk_7": false,
         "sub_actors": [],
-        "unk_8": 0,
-        "components": {
-            "PICKABLE": {
-                "type": "CPickableItemComponent",
-                "unk_1": [ 
-                    3000,
-                    0
-                ],
-                "functions": [
-                    {
-                        "name": "SetCustomParams",
-                        "unk": 1,
-                        "params": {
-                            "Param1": {
-                                "type": "s",
-                                "value": "ITEM_SCREW_ATTACK"
-                            },
-                            "Param2": {
-                                "type": "f",
-                                "value": 3.0
-                            },
-                            "Param3": { 
-                                "type": "f",
-                                "value": -1.0
-                            },
-                            "Param4": { 
-                                "type": "s",
-                                "value": "null"
-                            },
-                            "Param5": { 
-                                "type": "s",
-                                "value": ""
-                            },
-                            "Param6": { 
-                                "type": "s",
-                                "value": ""
-                            },
-                            "Param7": { 
-                                "type": "s",
-                                "value": ""
-                            },
-                            "Param8": { 
-                                "type": "s",
-                                "value": ""
-                            },
-                            "Param9": { 
-                                "type": "b",
-                                "value": false
-                            },
-                            "Param10": { 
-                                "type": "b",
-                                "value": true
-                            },
-                            "Param11": { 
-                                "type": "b",
-                                "value": false
-                            },
-                            "Param12": { 
-                                "type": "s",
-                                "value": "NumTanksPickedUp"
-                            },
-                            "Param13": { 
-                                "type": "f",
-                                "value": 3.0
-                            }
+        "unk_8": 0
+    },
+    "components": {
+        "PICKABLE": {
+            "type": "CPickableItemComponent",
+            "unk_1": 3000,
+            "unk_2": 0.0,
+            "functions": [
+                {
+                    "name": "SetCustomParams",
+                    "unk1": true,
+                    "unk2": false,
+                    "params": {
+                        "Param1": {
+                            "type": "s",
+                            "value": "ITEM_SPIDER_BALL"
+                        },
+                        "Param2": {
+                            "type": "f",
+                            "value": 1.0
+                        },
+                        "Param3": {
+                            "type": "f",
+                            "value": -1.0
+                        },
+                        "Param4": {
+                            "type": "s",
+                            "value": "None"
+                        },
+                        "Param5": {
+                            "type": "s",
+                            "value": ""
+                        },
+                        "Param6": {
+                            "type": "s",
+                            "value": ""
+                        },
+                        "Param7": {
+                            "type": "s",
+                            "value": ""
+                        },
+                        "Param8": {
+                            "type": "s",
+                            "value": ""
+                        },
+                        "Param9": {
+                            "type": "b",
+                            "value": true
+                        },
+                        "Param10": {
+                            "type": "b",
+                            "value": true
+                        },
+                        "Param11": {
+                            "type": "b",
+                            "value": false
+                        },
+                        "Param12": {
+                            "type": "s",
+                            "value": "NumMissileTanksPickedUp"
                         }
                     }
-                ],
-                "extra_fields": {},
-                "dependencies": null
-            },
-            "SCRIPT": {
-                "type": "CScriptComponent",
-                "unk_1": [
-                    0,
-                    3212836864
-                ],
-                "functions": [
-                    {
-                        "name": "SetParams",
-                        "unk": 1,
-                        "params": {
-                            "Param1": {
-                                "type": "s",
-                                "value": "actors/items/randomizer_powerup/scripts/randomizer_powerup.lua"
-                            },
-                            "Param2": {
-                                "type": "s",
-                                "value": "RandomizerPowerup"
-                            }
-                        }
-                    }
-                ],
-                "extra_fields": {},
-                "dependencies": null
-            },
-            "MODELUPDATER": {
-                "type": "CModelUpdaterComponent",
-                "unk_1": [
-                    2500,
-                    0
-                ],
-                "functions": [
-                    {
-                        "name": "LoadModel",
-                        "unk": 1,
-                        "params": {
-                            "Param1": {
-                                "type": "s",
-                                "value": "actors/items/itemsphere/models/itemsphere.bcmdl"
-                            },
-                            "Param2": {
-                                "type": "s",
-                                "value": "actors/items/itemsphere/models/itemsphere.bcmdl"
-                            }
-                        }
-                    }
-                ],
-                "extra_fields": {},
-                "dependencies": null
-            },
-            "ANIMATION": {
-                "type": "CAnimationComponent",
-                "unk_1": [
-                    3000,
-                    0
-                ],
-                "functions": [
-                    {
-                        "name": "LoadAnimTree",
-                        "unk": 1,
-                        "params": {
-                            "Param1": {
-                                "type": "s",
-                                "value": "system/animtrees/base.bmsat"
-                            }
-                        }
-                    },
-                    {
-                        "name": "SetInitialAction",
-                        "unk": 0,
-                        "params": {
-                            "Param1": {
-                                "type": "s",
-                                "value": "relax"
-                            }
-                        }
-                    }
-                ],
-                "extra_fields": {},
-                "dependencies": []
-            },
-            "AUDIO": {
-                "type": "CAudioComponent",
-                "unk_1": [
-                    3000,
-                    0
-                ],
-                "functions": [],
-                "extra_fields": {},
-                "dependencies": null
+                }
+            ],
+            "fields": {},
+            "dependencies": null
         },
-        "binaries": []
+        "SCRIPT": {
+            "type": "CScriptComponent",
+            "unk_1": 0,
+            "unk_2": -1.0,
+            "functions": [
+                {
+                    "name": "SetParams",
+                    "unk1": true,
+                    "unk2": false,
+                    "params": {
+                        "Param1": {
+                            "type": "s",
+                            "value": "actors/items/randomizer_powerup/scripts/randomizer_powerup.lua"
+                        },
+                        "Param2": {
+                            "type": "s",
+                            "value": "RandomizerPowerup"
+                        }
+                    }
+                }
+            ],
+            "fields": {},
+            "dependencies": null
+        },
+        "MODELUPDATER": {
+            "type": "CModelUpdaterComponent",
+            "unk_1": 2500,
+            "unk_2": 0.0,
+            "functions": [
+                {
+                    "name": "LoadModel",
+                    "unk1": true,
+                    "unk2": false,
+                    "params": {
+                        "Param1": {
+                            "type": "s",
+                            "value": "actors/items/itemsphere/models/itemsphere.bcmdl"
+                        },
+                        "Param2": {
+                            "type": "s",
+                            "value": "actors/items/itemsphere/models/itemsphere.bcmdl"
+                        }
+                    }
+                }
+            ],
+            "fields": {},
+            "dependencies": null
+        },
+        "ANIMATION": {
+            "type": "CAnimationComponent",
+            "unk_1": 3000,
+            "unk_2": 0.0,
+            "functions": [
+                {
+                    "name": "LoadAnimTree",
+                    "unk1": true,
+                    "unk2": false,
+                    "params": {
+                        "Param1": {
+                            "type": "s",
+                            "value": "system/animtrees/base.bmsat"
+                        }
+                    }
+                },
+                {
+                    "name": "SetInitialAction",
+                    "unk1": false,
+                    "unk2": false,
+                    "params": {
+                        "Param1": {
+                            "type": "s",
+                            "value": "relax"
+                        }
+                    }
+                }
+            ],
+            "fields": {},
+            "dependencies": []
+        },
+        "AUDIO": {
+            "type": "CAudioComponent",
+            "unk_1": 3000,
+            "unk_2": 0.0,
+            "functions": [],
+            "fields": {},
+            "dependencies": null
         }
-    }
+    },
+    "unk_1": 1,
+    "unk_1a": null,
+    "unk_1b": null,
+    "unk_2": "Default",
+    "unk_3": 0,
+    "action_sets": [
+        {
+            "name": "FullBody",
+            "animations": [
+                {
+                    "animation_id": 120,
+                    "track_count": 0,
+                    "extra_actions_count": 0,
+                    "event_counts": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "action": {
+                        "action_name": "relax",
+                        "bcskla": "actors/items/itemsphere/animations/relax.bcskla"
+                    },
+                    "transition_to_action": "",
+                    "unk1": 1,
+                    "unk2": 0,
+                    "unk3": 0.05999999865889549,
+                    "unk4": -1.0,
+                    "tracks": [],
+                    "events0": [],
+                    "events1": [],
+                    "events2": [],
+                    "events3": [],
+                    "extra_actions": []
+                }
+            ]
+        }
+    ],
+    "sound_fx": [
+        [
+            "generic/obtencion.wav",
+            1
+        ]
+    ]
 }
