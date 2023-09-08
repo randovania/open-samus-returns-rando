@@ -249,21 +249,21 @@ function s036_area3c.OnGamma_007_A_Generated(_ARG_0_, _ARG_1_)
     _ARG_1_.AI:AddElectricMinesLogicPath(2, "PATH_Gamma007_A_mines_003")
     _ARG_1_.AI:AddElectricMinesLogicPath(2, "PATH_Gamma007_A_mines_004")
     _ARG_1_.AI:AddIdleLogicPath("PATH_Gamma007_A_Idle")
-    Gamma.SetArenaLife(_ARG_0_, _ARG_1_)
-    if Gamma.GetNumValveUsed(_ARG_0_) == 0 then
-      _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_A_001")
-      _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_A_002")
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveLifePct", 0.6)
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveTime", 60)
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveSamusLife", 99)
-    end
-    if Gamma.GetNumValveUsed(_ARG_0_) == 1 then
-      _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_A_001")
-      _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_A_002")
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveLifePct", 0.3)
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveTime", 90)
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveSamusLife", 99)
-    end
+    -- Gamma.SetArenaLife(_ARG_0_, _ARG_1_)
+    -- if Gamma.GetNumValveUsed(_ARG_0_) == 0 then
+    --   _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_A_001")
+    --   _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_A_002")
+    --   _ARG_1_.AI:AddBlackboardParam("fGotoValveLifePct", 0.6)
+    --   _ARG_1_.AI:AddBlackboardParam("fGotoValveTime", 60)
+    --   _ARG_1_.AI:AddBlackboardParam("fGotoValveSamusLife", 99)
+    -- end
+    -- if Gamma.GetNumValveUsed(_ARG_0_) == 1 then
+    --   _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_A_001")
+    --   _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_A_002")
+    --   _ARG_1_.AI:AddBlackboardParam("fGotoValveLifePct", 0.3)
+    --   _ARG_1_.AI:AddBlackboardParam("fGotoValveTime", 90)
+    --   _ARG_1_.AI:AddBlackboardParam("fGotoValveSamusLife", 99)
+    -- end
   end
 end
 function s036_area3c.OnGamma_007_B_Trigger()
