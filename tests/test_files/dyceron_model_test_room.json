@@ -1,8 +1,8 @@
 {
     "$schema": "../../open_samus_returns_rando/files/schema.json",
     "starting_location": {
-        "scenario": "s010_area1",
-        "actor": "ST_CheckPoint_005"
+        "scenario": "s033_area3b",
+        "actor": "ST_Gamma_004A_Checkpoint"
     },
     "starting_items": {
         "ITEM_MAX_LIFE": 599,
@@ -15,11 +15,11 @@
     "pickups": [
         {
             "pickup_type": "actor",
-            "caption": "Progressive Suit acquired.",
+            "caption": "Morph Ball acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_VARIA_SUIT",
+                        "item_id": "ITEM_MORPH_BALL",
                         "quantity": 1
                     }
                 ]
@@ -34,11 +34,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Progressive Suit acquired.",
+            "caption": "Bomb acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_VARIA_SUIT",
+                        "item_id": "ITEM_WEAPON_BOMB",
                         "quantity": 1
                     }
                 ]
@@ -53,11 +53,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Wave Beam acquired.",
+            "caption": "Spider Ball acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_WAVE_BEAM",
+                        "item_id": "ITEM_SPIDER_BALL",
                         "quantity": 1
                     }
                 ]
@@ -72,12 +72,12 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Wave Beam acquired.",
+            "caption": "Power Bomb acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_WAVE_BEAM",
-                        "quantity": 1
+                        "item_id": "ITEM_WEAPON_POWER_BOMB_MAX",
+                        "quantity": 5
                     }
                 ]
             ],
@@ -91,11 +91,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Charge Beam acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_WEAPON_CHARGE_BEAM",
                         "quantity": 1
                     }
                 ]
@@ -129,11 +129,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Wave Beam acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_WEAPON_WAVE_BEAM",
                         "quantity": 1
                     }
                 ]
@@ -148,11 +148,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Spazer Beam acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_WEAPON_SPAZER_BEAM",
                         "quantity": 1
                     }
                 ]
@@ -167,11 +167,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Plasma Beam acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_WEAPON_PLASMA_BEAM",
                         "quantity": 1
                     }
                 ]
@@ -186,11 +186,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Grapple Beam acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_WEAPON_GRAPPLE_BEAM",
                         "quantity": 1
                     }
                 ]
@@ -205,11 +205,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "High Jump Boots acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_HIGH_JUMP_BOOTS",
                         "quantity": 1
                     }
                 ]
@@ -224,11 +224,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Space Jump acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_SPACE_JUMP",
                         "quantity": 1
                     }
                 ]
@@ -243,11 +243,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Varia Suit acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_VARIA_SUIT",
                         "quantity": 1
                     }
                 ]
@@ -262,11 +262,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Gravity Suit acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_GRAVITY_SUIT",
                         "quantity": 1
                     }
                 ]
@@ -281,12 +281,12 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Progressive Suit acquired.",
+            "caption": "Super Missile acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_VARIA_SUIT",
-                        "quantity": 1
+                        "item_id": "ITEM_WEAPON_SUPER_MISSILE_MAX",
+                        "quantity": 5
                     }
                 ]
             ],
@@ -300,11 +300,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Progressive Suit acquired.",
+            "caption": "Screw Attack acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_VARIA_SUIT",
+                        "item_id": "ITEM_SCREW_ATTACK",
                         "quantity": 1
                     }
                 ]
@@ -319,11 +319,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Wave Beam acquired.",
+            "caption": "Spring Ball acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_WAVE_BEAM",
+                        "item_id": "ITEM_SPRING_BALL",
                         "quantity": 1
                     }
                 ]
@@ -338,11 +338,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Wave Beam acquired.",
+            "caption": "Scan Pulse acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_WAVE_BEAM",
+                        "item_id": "ITEM_SPECIAL_ENERGY_SCANNING_PULSE",
                         "quantity": 1
                     }
                 ]
@@ -357,11 +357,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Lightning Armor acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD",
                         "quantity": 1
                     }
                 ]
@@ -376,11 +376,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Beam Burst acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_SPECIAL_ENERGY_ENERGY_WAVE",
                         "quantity": 1
                     }
                 ]
@@ -395,11 +395,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Phase Drift acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT",
                         "quantity": 1
                     }
                 ]
@@ -414,11 +414,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Energy Tank acquired. Energy capacity increased by 100.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_ENERGY_TANKS",
                         "quantity": 1
                     }
                 ]
@@ -433,12 +433,12 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Missile Tank acquired. Missile capacity increased by 3.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
-                        "quantity": 1
+                        "item_id": "ITEM_WEAPON_MISSILE_MAX",
+                        "quantity": 3
                     }
                 ]
             ],
@@ -452,11 +452,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Super Missile Tank acquired. Super Missile capacity increased by 1.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_RANDO_LOCKED_SUPERS",
                         "quantity": 1
                     }
                 ]
@@ -471,11 +471,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Power Bomb Tank acquired. Power Bomb capacity increased by 1.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_RANDO_LOCKED_PBS",
                         "quantity": 1
                     }
                 ]
@@ -490,11 +490,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Aeion Tank acquired. Aeion capacity increased.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_AEION_TANKS",
                         "quantity": 1
                     }
                 ]
@@ -509,11 +509,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Nothing acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_NONE",
                         "quantity": 1
                     }
                 ]
@@ -528,11 +528,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Ice Beam acquired.",
+            "caption": "Metroid DNA acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "item_id": "ITEM_ADN",
                         "quantity": 1
                     }
                 ]
@@ -543,6 +543,25 @@
             },
             "model": [
                 "adn"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Baby Metroid acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_BABY_HATCHLING",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup29"
+            },
+            "model": [
+                "babyhatchling"
             ]
         }
     ],
@@ -899,6 +918,18 @@
             "location": {
                 "x": -3300.0,
                 "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup29",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4600.0,
+                "y": -16700.0,
                 "z": 0.0
             },
             "collision_camera_name": "collision_camera_033"
