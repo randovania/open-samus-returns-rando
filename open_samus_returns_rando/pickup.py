@@ -45,6 +45,8 @@ class ActorPickup(BasePickup):
 
         action_sets: dict = bmsad["action_sets"][0]["animations"][0]
 
+        fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
+
         if item_id == "ITEM_ENERGY_TANKS":
             item_id = "fMaxLife"
             quantity *= self.configuration["energy_per_tank"]
@@ -66,6 +68,21 @@ class ActorPickup(BasePickup):
         elif item_id == "ITEM_WEAPON_MISSILE_MAX" or item_id == "ITEM_RANDO_LOCKED_SUPERS" or item_id == "ITEM_RANDO_LOCKED_PBS":
             action_sets["animation_id"] = 150
             action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
+
+        elif item_id.startswith("ITEM_SPECIAL_ENERGY"):
+            fx_create_and_link["Param13"]["value"] = True
+            if item_id == "ITEM_SPECIAL_ENERGY_SCANNING_PULSE":
+                fx_create_and_link["Param1"]["value"] = "orb"
+                fx_create_and_link["Param2"]["value"] = "actors/items/powerup_scanningpulse/fx/orb.bcptl"
+            if item_id == "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD":
+                fx_create_and_link["Param1"]["value"] = "orb"
+                fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energyshield/fx/orb.bcptl"
+            if item_id == "ITEM_SPECIAL_ENERGY_ENERGY_WAVE":
+                fx_create_and_link["Param1"]["value"] = "yelloworb"
+                fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energywave/fx/yelloworb.bcptl"
+            elif item_id == "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT":
+                fx_create_and_link["Param1"]["value"] = "purpleorb"
+                fx_create_and_link["Param2"]["value"] = "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
 
         set_custom_params["Param1"]["value"] = item_id
         set_custom_params["Param2"]["value"] = quantity
