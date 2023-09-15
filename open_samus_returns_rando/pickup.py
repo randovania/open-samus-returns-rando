@@ -43,12 +43,16 @@ class ActorPickup(BasePickup):
         quantity: float = self.pickup["resources"][0][0]["quantity"]
         set_custom_params: dict = pickable["functions"][0]["params"]
 
+        action_sets: dict = bmsad["action_sets"][0]["animations"][0]
+
         if item_id == "ITEM_ENERGY_TANKS":
             item_id = "fMaxLife"
             quantity *= self.configuration["energy_per_tank"]
             set_custom_params["Param4"]["value"] = "Full"
             set_custom_params["Param5"]["value"] = "fCurrentLife"
             set_custom_params["Param6"]["value"] = "LIFE"
+            action_sets["animation_id"] = 150
+            action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
 
         elif item_id == "ITEM_AEION_TANKS":
             item_id = "fMaxEnergy"
@@ -56,6 +60,12 @@ class ActorPickup(BasePickup):
             set_custom_params["Param4"]["value"] = "Full"
             set_custom_params["Param5"]["value"] = "fEnergy"
             set_custom_params["Param6"]["value"] = "SPECIALENERGY"
+            action_sets["animation_id"] = 150
+            action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
+
+        elif item_id == "ITEM_WEAPON_MISSILE_MAX" or item_id == "ITEM_RANDO_LOCKED_SUPERS" or item_id == "ITEM_RANDO_LOCKED_PBS":
+            action_sets["animation_id"] = 150
+            action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
 
         set_custom_params["Param1"]["value"] = item_id
         set_custom_params["Param2"]["value"] = quantity
