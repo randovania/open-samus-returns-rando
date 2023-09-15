@@ -83,7 +83,7 @@ class ActorPickup(BasePickup):
             elif item_id == "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT":
                 fx_create_and_link["Param1"]["value"] = "purpleorb"
                 fx_create_and_link["Param2"]["value"] = "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
-        
+
         elif item_id == "ITEM_ADN":
             fx_create_and_link["Param1"]["value"] = "leak"
             fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
@@ -121,9 +121,12 @@ class ActorPickup(BasePickup):
     def patch_model(self, editor: PatcherEditor, model_names: list[str], new_template: dict):
         if len(model_names) == 1:
             model_data = get_data(model_names[0])
-            new_template["model_name"] = model_data.bcmdl_path
+            new_template["header"]["model_name"] = model_data.bcmdl_path
             MODELUPDATER = new_template["components"]["MODELUPDATER"]
             MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
+            if model_names[0] == "item_powerbombtank":
+                energytank_bcmdl = "actors/items/item_energytank/models/item_energytank.bcmdl"
+                MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
         else:
             MODELUPDATER = new_template["components"]["MODELUPDATER"]
             MODELUPDATER["type"] = "CMultiModelUpdaterComponent"
