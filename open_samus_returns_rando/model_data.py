@@ -300,7 +300,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/item_powerbombtank/charclasses/item_powerbombtank.bmsad",
             "actors/items/item_powerbombtank/models/item_powerbombtank.bcmdl",
-            "actors/items/item_energytank/models/item_energytank.bcmdl"
+            "actors/items/item_energytank/models/item_energytank.bcmdl",
+            "maps/textures/powerbomb_d.bctex",
+            "actors/weapons/powerbomb/models/textures/powerbomb_d.bctex",
         ),
     ),
 
