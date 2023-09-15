@@ -83,6 +83,11 @@ class ActorPickup(BasePickup):
             elif item_id == "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT":
                 fx_create_and_link["Param1"]["value"] = "purpleorb"
                 fx_create_and_link["Param2"]["value"] = "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
+        
+        elif item_id == "ITEM_ADN":
+            fx_create_and_link["Param1"]["value"] = "leak"
+            fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
+            fx_create_and_link["Param13"]["value"] = True
 
         set_custom_params["Param1"]["value"] = item_id
         set_custom_params["Param2"]["value"] = quantity
