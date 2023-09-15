@@ -23,7 +23,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/itemsphere/animations/droparachnus.bcskla",
             "actors/items/itemsphere/animations/relax.bcskla",
             "actors/items/itemsphere/fx/itemsphereexplode.bcptl",
-            "actors/items/itemsphere/fx/itemsphereparts.bcptl"
+            "actors/items/itemsphere/fx/itemsphereparts.bcptl",
+            "maps/textures/chozoartifactor_d.bctex",
+            "maps/textures/chozoartifactorbase_d.bctex",
         ),
     ),
 
@@ -117,7 +119,11 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_scanningpulse/charclasses/powerup_scanningpulse.bmsad",
             "actors/items/powerup_scanningpulse/fx/orb.bcptl",
             "actors/items/powerup_scanningpulse/fx/scanpulseloop.bcptl",
-            "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
+            "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl",
+            "system/fx/textures/halfwave.bctex",
+            "system/fx/textures/haloflame.bctex",
+            "system/fx/textures/splat.bctex",
+            "system/fx/textures/xflare_large.bctex",
         )
     ),
 
@@ -128,7 +134,11 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_energyshield/fx/orb.bcptl",
             "actors/items/powerup_energyshield/fx/lightingarmourloop.bcptl",
             "actors/items/powerup_energyshield/models/powerup_energyshield.bcmdl",
-            "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
+            "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl",
+            "system/fx/textures/halfwave.bctex",
+            "system/fx/textures/haloflame.bctex",
+            "system/fx/textures/splat.bctex",
+            "system/fx/textures/xflare_large.bctex",
         )
     ),
 
@@ -139,7 +149,11 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_energywave/fx/yelloworb.bcptl",
             "actors/items/powerup_energywave/fx/energywaveloop.bcptl",
             "actors/items/powerup_energywave/models/powerup_energywave.bcmdl",
-            "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
+            "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl",
+            "system/fx/textures/halfwave.bctex",
+            "system/fx/textures/haloflame.bctex",
+            "system/fx/textures/splat.bctex",
+            "system/fx/textures/xflare_large.bctex",
         )
     ),
 
@@ -150,7 +164,11 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl",
             "actors/items/powerup_phasedisplacement/fx/phasedisplacementloop.bcptl",
             "actors/items/powerup_phasedisplacement/models/powerup_phasedisplacement.bcmdl",
-            "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
+            "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl",
+            "system/fx/textures/halfwave.bctex",
+            "system/fx/textures/haloflame.bctex",
+            "system/fx/textures/splat.bctex",
+            "system/fx/textures/xflare_large.bctex",
         )
     ),
 
