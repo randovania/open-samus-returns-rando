@@ -65,7 +65,7 @@ class ActorPickup(BasePickup):
             action_sets["animation_id"] = 150
             action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
 
-        elif item_id == "ITEM_WEAPON_MISSILE_MAX" or item_id == "ITEM_RANDO_LOCKED_SUPERS" or item_id == "ITEM_RANDO_LOCKED_PBS":
+        elif item_id in {"ITEM_WEAPON_MISSILE_MAX", "ITEM_RANDO_LOCKED_SUPERS", "ITEM_RANDO_LOCKED_PBS"}:
             action_sets["animation_id"] = 150
             action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
 
