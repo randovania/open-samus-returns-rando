@@ -124,7 +124,7 @@ class ActorPickup(BasePickup):
             new_template["header"]["model_name"] = model_data.bcmdl_path
             MODELUPDATER = new_template["components"]["MODELUPDATER"]
             MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
-            if model_names[0] == "item_powerbombtank":
+            if model_names[0] in {"item_missiletank", "item_supermissiletank", "item_powerbombtank", "item_senergytank"}:
                 energytank_bcmdl = "actors/items/item_energytank/models/item_energytank.bcmdl"
                 MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
         else:

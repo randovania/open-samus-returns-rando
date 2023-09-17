@@ -25,7 +25,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/itemsphere/fx/itemsphereexplode.bcptl",
             "actors/items/itemsphere/fx/itemsphereparts.bcptl",
             "maps/textures/chozoartifactor_d.bctex",
-            "maps/textures/chozoartifactorbase_d.bctex",
+            "maps/textures/chozoartifactorbase_d.bctex"
         ),
     ),
 
@@ -73,7 +73,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_plasmabeam/charclasses/powerup_plasmabeam.bmsad",
             "actors/items/powerup_plasmabeam/models/powerup_plasmabeam.bcmdl",
             "actors/items/powerup_plasmabeam/models/textures/itemplasmabeam_d.bctex",
-            "system/fx/textures/plasmabeamhead.bctex"
+            # "system/fx/textures/plasmabeamhead.bctex"
         ),
     ),
 
@@ -108,8 +108,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         bcmdl_path="actors/items/powerup_supermissile/models/powerup_supermissile.bcmdl",
         dependencies=(
             "actors/items/powerup_supermissile/charclasses/powerup_supermissile.bmsad",
-            "actors/items/powerup_supermissile/models/powerup_supermissile.bcmdl",
-            "actors/items/itemsphere/models/itemsphere.bcmdl"
+            "actors/items/powerup_supermissile/models/powerup_supermissile.bcmdl"
         ),
     ),
 
@@ -215,8 +214,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/items/powerup_springball/charclasses/powerup_springball.bmsad",
             "actors/items/powerup_springball/models/powerup_springball.bcmdl",
-            "actors/items/powerup_springball/models/textures/itemspringball_d.bctex",
-            "actors/items/powerup_springball/scripts/powerup_springball.lc"
+            "actors/items/powerup_springball/models/textures/itemspringball_d.bctex"
         ),
     ),
 
