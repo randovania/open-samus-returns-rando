@@ -21,7 +21,11 @@ SPECIFIC_CLASSES = {
     "ITEM_WEAPON_SUPER_MISSILE_MAX": "RandomizerSuperMissile",
     "ITEM_RANDO_LOCKED_SUPERS": "RandomizerSuperMissileTank",
     "ITEM_WEAPON_POWER_BOMB_MAX": "RandomizerPowerBomb",
-    "ITEM_RANDO_LOCKED_PBS": "RandomizerPowerBombTank"
+    "ITEM_RANDO_LOCKED_PBS": "RandomizerPowerBombTank",
+    "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": "RandomizerScanningPulse",
+    "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD": "RandomizerEnergyShield",
+    "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": "RandomizerEnergyWave",
+    "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "RandomizerPhaseDisplacement",
 }
 
 

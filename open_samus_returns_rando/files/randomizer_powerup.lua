@@ -300,3 +300,31 @@ function RandomizerBabyHatchling.OnPickedUp(actor, progression)
     RandomizerPowerup.OnPickedUp(actor, progression)
     Game.GetDefaultPlayer("Samus").BABYHATCHLINGCREATION:SpawnBaby()
 end
+
+RandomizerScanningPulse = {}
+setmetatable(RandomizerScanningPulse, {__index = RandomizerPowerup})
+function RandomizerScanningPulse.OnPickedUp(actor, progression)
+    RandomizerPowerup.OnPickedUp(actor, progression)
+    Player.SetAbilityUnlocked("ScanningPulse", true)
+end
+
+RandomizerEnergyShield = {}
+setmetatable(RandomizerEnergyShield, {__index = RandomizerPowerup})
+function RandomizerEnergyShield.OnPickedUp(actor, progression)
+    RandomizerPowerup.OnPickedUp(actor, progression)
+    Player.SetAbilityUnlocked("EnergyShield", true)
+end
+
+RandomizerEnergyWave = {}
+setmetatable(RandomizerEnergyWave, {__index = RandomizerPowerup})
+function RandomizerEnergyWave.OnPickedUp(actor, progression)
+    RandomizerPowerup.OnPickedUp(actor, progression)
+    Player.SetAbilityUnlocked("EnergyWave", true)
+end
+
+RandomizerPhaseDisplacement = {}
+setmetatable(RandomizerPhaseDisplacement, {__index = RandomizerPowerup})
+function RandomizerPhaseDisplacement.OnPickedUp(actor, progression)
+    RandomizerPowerup.OnPickedUp(actor, progression)
+    Player.SetAbilityUnlocked("PhaseDisplacement", true)
+end
