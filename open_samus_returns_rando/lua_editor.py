@@ -110,5 +110,7 @@ class LuaEditor:
 
     def save_modifications(self, editor: PatcherEditor):
         editor.replace_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", self._powerup_script)
+        editor.replace_asset("actors/props/heatzone/scripts/heatzone.lc",
+                             files_path().joinpath("heatzone.lua").read_bytes())
         for scenario, script in self._custom_level_scripts.items():
             editor.replace_asset(path_for_level(scenario) + ".lc", script["script"].encode("utf-8"))
