@@ -16,7 +16,7 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "mercury-engine-data-structures>=0.24.0",
+    "mercury-engine-data-structures>=0.24.1.dev5",
     "jsonschema>=4.0.0",
     "ips.py>=0.1.2",
 ]
