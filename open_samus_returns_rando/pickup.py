@@ -43,12 +43,18 @@ class ActorPickup(BasePickup):
         quantity: float = self.pickup["resources"][0][0]["quantity"]
         set_custom_params: dict = pickable["functions"][0]["params"]
 
+        action_sets: dict = bmsad["action_sets"][0]["animations"][0]
+
+        fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
+
         if item_id == "ITEM_ENERGY_TANKS":
             item_id = "fMaxLife"
             quantity *= self.configuration["energy_per_tank"]
             set_custom_params["Param4"]["value"] = "Full"
             set_custom_params["Param5"]["value"] = "fCurrentLife"
             set_custom_params["Param6"]["value"] = "LIFE"
+            action_sets["animation_id"] = 150
+            action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
 
         elif item_id == "ITEM_AEION_TANKS":
             item_id = "fMaxEnergy"
@@ -56,6 +62,32 @@ class ActorPickup(BasePickup):
             set_custom_params["Param4"]["value"] = "Full"
             set_custom_params["Param5"]["value"] = "fEnergy"
             set_custom_params["Param6"]["value"] = "SPECIALENERGY"
+            action_sets["animation_id"] = 150
+            action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
+
+        elif item_id in {"ITEM_WEAPON_MISSILE_MAX", "ITEM_RANDO_LOCKED_SUPERS", "ITEM_RANDO_LOCKED_PBS"}:
+            action_sets["animation_id"] = 150
+            action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
+
+        elif item_id.startswith("ITEM_SPECIAL_ENERGY"):
+            fx_create_and_link["Param13"]["value"] = True
+            if item_id == "ITEM_SPECIAL_ENERGY_SCANNING_PULSE":
+                fx_create_and_link["Param1"]["value"] = "orb"
+                fx_create_and_link["Param2"]["value"] = "actors/items/powerup_scanningpulse/fx/orb.bcptl"
+            if item_id == "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD":
+                fx_create_and_link["Param1"]["value"] = "orb"
+                fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energyshield/fx/orb.bcptl"
+            if item_id == "ITEM_SPECIAL_ENERGY_ENERGY_WAVE":
+                fx_create_and_link["Param1"]["value"] = "yelloworb"
+                fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energywave/fx/yelloworb.bcptl"
+            elif item_id == "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT":
+                fx_create_and_link["Param1"]["value"] = "purpleorb"
+                fx_create_and_link["Param2"]["value"] = "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
+
+        elif item_id == "ITEM_ADN":
+            fx_create_and_link["Param1"]["value"] = "leak"
+            fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
+            fx_create_and_link["Param13"]["value"] = True
 
         set_custom_params["Param1"]["value"] = item_id
         set_custom_params["Param2"]["value"] = quantity
@@ -86,12 +118,19 @@ class ActorPickup(BasePickup):
 
         return bmsad
 
-    def patch_model(self, editor: PatcherEditor, model_names: list[str], new_template: dict):
+    def patch_model(self, model_names: list[str], new_template: dict) -> None:
         if len(model_names) == 1:
             model_data = get_data(model_names[0])
-            new_template["model_name"] = model_data.bcmdl_path
+            new_template["header"]["model_name"] = model_data.bcmdl_path
             MODELUPDATER = new_template["components"]["MODELUPDATER"]
             MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
+
+            if model_names[0] in {"item_missiletank", "item_supermissiletank",
+                                  "item_powerbombtank", "item_senergytank"}:
+                energytank_bcmdl = "actors/items/item_energytank/models/item_energytank.bcmdl"
+                MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
+            elif model_names[0] == "item_energytank":
+                MODELUPDATER["functions"][0]["params"].pop("Param2")
         else:
             MODELUPDATER = new_template["components"]["MODELUPDATER"]
             MODELUPDATER["type"] = "CMultiModelUpdaterComponent"
@@ -133,7 +172,7 @@ class ActorPickup(BasePickup):
 
         # Update model
         model_names: list[str] = self.pickup["model"]
-        self.patch_model(editor, model_names, new_template)
+        self.patch_model(model_names, new_template)
 
         # TODO Update minimap
 
@@ -155,8 +194,6 @@ class ActorPickup(BasePickup):
 
         # Dependencies
         for level_pkg in pkgs_for_level:
-            editor.ensure_present(level_pkg, "system/animtrees/base.bmsat")
-            editor.ensure_present(level_pkg, "actors/items/randomizer_powerup/scripts/randomizer_powerup.lc")
             for model_name in model_names:
                 model_data = get_data(model_name)
                 for dep in model_data.dependencies:
@@ -169,10 +206,30 @@ class ActorPickup(BasePickup):
         #     json.dumps(new_template, indent=4)
         # )
 
+def ensure_base_models(editor: PatcherEditor) -> None:
+    for level_pkg in editor.get_all_level_pkgs():
+        # ensure base stuff
+        editor.ensure_present(level_pkg, "system/animtrees/base.bmsat")
+        editor.ensure_present(level_pkg, "sounds/generic/obtencion.bcwav")
+        editor.ensure_present(level_pkg, "actors/items/randomizer_powerup/scripts/randomizer_powerup.lc")
+
+        # ensure itemsphere stuff (base for many majors)
+        editor.ensure_present(level_pkg, "actors/items/itemsphere/animations/relax.bcskla")
+        model_data = get_data("itemsphere")
+        for dep in model_data.dependencies:
+            editor.ensure_present(level_pkg, dep)
+
+        # ensure energytank stuff (base for all tanks)
+        editor.ensure_present(level_pkg, "actors/items/itemtank/animations/relax.bcskla")
+        model_data = get_data("item_energytank")
+        for dep in model_data.dependencies:
+            editor.ensure_present(level_pkg, dep)
+
 
 
 def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
     editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", b'', [])
+    ensure_base_models(editor)
 
     for i, pickup in enumerate(pickups_config):
         LOG.debug("Writing pickup %d: %s", i, pickup["caption"])

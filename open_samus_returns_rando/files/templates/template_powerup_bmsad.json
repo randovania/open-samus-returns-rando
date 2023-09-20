@@ -171,6 +171,78 @@
             "fields": {},
             "dependencies": []
         },
+        "FX": {
+            "type": "CFXComponent",
+            "unk_1": 1500,
+            "unk_2": 0.0,
+            "functions": [
+                {
+                    "name": "FXCreateAndLink",
+                    "unk1": true,
+                    "unk2": false,
+                    "params": {
+                        "Param1": {
+                            "type": "s",
+                            "value": ""
+                        },
+                        "Param2": {
+                            "type": "s",
+                            "value": ""
+                        },
+                        "Param3": {
+                            "type": "s",
+                            "value": ""
+                        },
+                        "Param4": {
+                            "type": "s",
+                            "value": ""
+                        },
+                        "Param5": {
+                            "type": "i",
+                            "value": 0
+                        },
+                        "Param6": {
+                            "type": "i",
+                            "value": 4
+                        },
+                        "Param7": {
+                            "type": "f",
+                            "value": 0.0
+                        },
+                        "Param8": {
+                            "type": "f",
+                            "value": 0.0
+                        },
+                        "Param9": {
+                            "type": "f",
+                            "value": 0.0
+                        },
+                        "Param10": {
+                            "type": "f",
+                            "value": 0.0
+                        },
+                        "Param11": {
+                            "type": "f",
+                            "value": 0.0
+                        },
+                        "Param12": {
+                            "type": "f",
+                            "value": 0.0
+                        },
+                        "Param13": {
+                            "type": "b",
+                            "value": false
+                        },
+                        "Param14": {
+                            "type": "b",
+                            "value": true
+                        }
+                    }
+                }
+            ],
+            "fields": {},
+            "dependencies": []
+        },
         "AUDIO": {
             "type": "CAudioComponent",
             "unk_1": 3000,

@@ -1,0 +1,938 @@
+{
+    "$schema": "../../open_samus_returns_rando/files/schema.json",
+    "starting_location": {
+        "scenario": "s033_area3b",
+        "actor": "ST_Gamma_004A_Checkpoint"
+    },
+    "starting_items": {
+        "ITEM_MAX_LIFE": 599,
+        "ITEM_WEAPON_MISSILE_MAX": 50,
+        "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
+        "ITEM_WEAPON_POWER_BOMB_MAX": 0,
+        "ITEM_METROID_COUNT": 0,
+        "ITEM_METROID_TOTAL_COUNT": 40
+    },
+    "pickups": [
+        {
+            "pickup_type": "actor",
+            "caption": "Morph Ball acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_MORPH_BALL",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup1"
+            },
+            "model": [
+                "powerup_morphball"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Bomb acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_BOMB",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup2"
+            },
+            "model": [
+                "powerup_bomb"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Spider Ball acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SPIDER_BALL",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup3"
+            },
+            "model": [
+                "powerup_spiderball"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Power Bomb acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_POWER_BOMB_MAX",
+                        "quantity": 5
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup4"
+            },
+            "model": [
+                "powerup_powerbomb"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Charge Beam acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_CHARGE_BEAM",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup5"
+            },
+            "model": [
+                "powerup_chargebeam"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Ice Beam acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_ICE_BEAM",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup6"
+            },
+            "model": [
+                "powerup_icebeam"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Wave Beam acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_WAVE_BEAM",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup7"
+            },
+            "model": [
+                "powerup_wavebeam"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Spazer Beam acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_SPAZER_BEAM",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup8"
+            },
+            "model": [
+                "powerup_spazerbeam"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Plasma Beam acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_PLASMA_BEAM",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup9"
+            },
+            "model": [
+                "powerup_plasmabeam"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Grapple Beam acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_GRAPPLE_BEAM",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup10"
+            },
+            "model": [
+                "powerup_grapplebeam"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "High Jump Boots acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_HIGH_JUMP_BOOTS",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup11"
+            },
+            "model": [
+                "powerup_highjumpboots"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Space Jump acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SPACE_JUMP",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup12"
+            },
+            "model": [
+                "powerup_spacejump"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Varia Suit acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_VARIA_SUIT",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup13"
+            },
+            "model": [
+                "powerup_variasuit"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Gravity Suit acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_GRAVITY_SUIT",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup14"
+            },
+            "model": [
+                "powerup_gravitysuit"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Super Missile acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_SUPER_MISSILE_MAX",
+                        "quantity": 5
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup15"
+            },
+            "model": [
+                "powerup_supermissile"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Screw Attack acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SCREW_ATTACK",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup16"
+            },
+            "model": [
+                "powerup_screwattack"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Spring Ball acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SPRING_BALL",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup17"
+            },
+            "model": [
+                "powerup_springball"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Scan Pulse acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SPECIAL_ENERGY_SCANNING_PULSE",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup18"
+            },
+            "model": [
+                "powerup_scanningpulse"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Lightning Armor acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup19"
+            },
+            "model": [
+                "powerup_energyshield"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Beam Burst acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SPECIAL_ENERGY_ENERGY_WAVE",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup20"
+            },
+            "model": [
+                "powerup_energywave"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Phase Drift acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup21"
+            },
+            "model": [
+                "powerup_phasedisplacement"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Energy Tank acquired. Energy capacity increased by 100.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_ENERGY_TANKS",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup22"
+            },
+            "model": [
+                "item_energytank"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Missile Tank acquired. Missile capacity increased by 3.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_MISSILE_MAX",
+                        "quantity": 3
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup23"
+            },
+            "model": [
+                "item_missiletank"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Super Missile Tank acquired. Super Missile capacity increased by 1.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_RANDO_LOCKED_SUPERS",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup24"
+            },
+            "model": [
+                "item_supermissiletank"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Power Bomb Tank acquired. Power Bomb capacity increased by 1.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_RANDO_LOCKED_PBS",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup25"
+            },
+            "model": [
+                "item_powerbombtank"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Aeion Tank acquired. Aeion capacity increased.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_AEION_TANKS",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup26"
+            },
+            "model": [
+                "item_senergytank"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Nothing acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_NONE",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup27"
+            },
+            "model": [
+                "itemsphere"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Metroid DNA acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_ADN",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup28"
+            },
+            "model": [
+                "adn"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Baby Metroid acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_BABY_HATCHLING",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s033_area3b",
+                "actor": "another_pickup29"
+            },
+            "model": [
+                "babyhatchling"
+            ]
+        }
+    ],
+    "energy_per_tank": 100,
+    "aeion_per_tank": 50,
+    "reveal_map_on_start": true,
+    "game_patches": {
+        "nerf_power_bombs": false
+    },
+    "new_spawn_points": [
+        {
+            "new_actor": {
+                "actor": "SP_RDV_000",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -8000.0,
+                "y": 2016.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        }
+    ],
+    "custom_pickups": [
+        {
+            "new_actor": {
+                "actor": "another_pickup1",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4600.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup2",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4500.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup3",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4400.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup4",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4300.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup5",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4200.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup6",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4100.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup7",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4000.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup8",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3900.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup9",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3800.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup10",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3700.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup11",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3600.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup12",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3500.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup13",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3400.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup14",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3300.0,
+                "y": -16400.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup15",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4600.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup16",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4500.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup17",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4400.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup18",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4300.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup19",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4200.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup20",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4100.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup21",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4000.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup22",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3900.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup23",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3800.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup24",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3700.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup25",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3600.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup26",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3500.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup27",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3400.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup28",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -3300.0,
+                "y": -16600.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup29",
+                "scenario": "s033_area3b"
+            },
+            "location": {
+                "x": -4600.0,
+                "y": -16700.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_033"
+        }
+    ]
+}
