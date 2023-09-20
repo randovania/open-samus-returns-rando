@@ -222,6 +222,8 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_spacejump/charclasses/powerup_spacejump.bmsad",
             "actors/items/powerup_spacejump/models/powerup_spacejump.bcmdl",
             "actors/items/powerup_spacejump/models/textures/itemspacejump_d.bctex",
+            "maps/textures/cube5.bctex",
+            "maps/textures/cube00.bctex",
         ),
     ),
     "powerup_screwattack": ModelData(
