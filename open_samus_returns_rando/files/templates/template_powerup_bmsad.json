@@ -72,19 +72,11 @@
                         },
                         "Param9": {
                             "type": "b",
-                            "value": true
+                            "value": false
                         },
                         "Param10": {
                             "type": "b",
-                            "value": true
-                        },
-                        "Param11": {
-                            "type": "b",
                             "value": false
-                        },
-                        "Param12": {
-                            "type": "s",
-                            "value": "NumMissileTanksPickedUp"
                         }
                     }
                 }
