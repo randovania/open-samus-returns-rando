@@ -1,7 +1,10 @@
 Game.ImportLibrary("system/scripts/init_original.lua")
 
 Init.tNewGameInventory = TEMPLATE("new_game_inventory")
+
 Init.bRevealMap = TEMPLATE("reveal_map_on_start")
+Init.sStartingScenario = TEMPLATE("starting_scenario")
+Init.sStartingActor = TEMPLATE("starting_actor")
 Init.fEnergyPerTank = TEMPLATE("energy_per_tank")
 Init.fAeionPerTank = TEMPLATE("aeion_per_tank")
 
@@ -37,7 +40,7 @@ end
 
 function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
     Game.LogWarn(0, string.format("Will start Game - %s / %s / %s / %s", tostring(arg1), tostring(arg2), tostring(arg3), tostring(arg4)))
-    Game.LoadScenario("c10_samus", TEMPLATE("starting_scenario"), TEMPLATE("starting_actor"), "samus", 1)
+    Game.LoadScenario("c10_samus", Init.sStartingScenario, Init.sStartingActor, "samus", 1)
     if Init.bRevealMap then
       Game.AddGUISF(0.0, Game.ScanVisitDiscoverEverything, "", "")
     end
