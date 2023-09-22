@@ -147,7 +147,7 @@ function RandomizerPowerup.IncreaseAeion()
     local new_max = RandomizerPowerup.GetItemAmount("ITEM_MAX_SPECIAL_ENERGY") + aeion
     new_max = math.min(new_max, MAX_AEION)
     RandomizerPowerup.SetItemAmount("ITEM_MAX_SPECIAL_ENERGY", new_max)
-    RandomizerPowerup.SetItemAmount("ITEM_CURREITEM_CURRENT_SPECIAL_ENERGYNT_LIFE", new_max)
+    RandomizerPowerup.SetItemAmount("ITEM_CURRENT_SPECIAL_ENERGY", new_max)
 
     local specialEnergy = Game.GetPlayer().SPECIALENERGY
     specialEnergy.fMaxEnergy = new_max
@@ -173,14 +173,14 @@ end
 RandomizerPowerBombTank = {}
 setmetatable(RandomizerPowerBombTank, {__index = RandomizerPowerup})
 function RandomizerPowerBombTank.OnPickedUp(progression)
-    -- use locked supers or super missile max if > 0, which means we have main item
+    -- use locked pbs or power bomb max if > 0, which means we have main item
     local new_item_id = "ITEM_RANDO_LOCKED_PBS"
     local is_main_unlocked = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_POWER_BOMB_MAX") > 0
     if is_main_unlocked then
         new_item_id = "ITEM_WEAPON_POWER_BOMB_MAX"
     end
 
-    -- grant locked supers or new tank
+    -- grant locked pbs or new tank
     for _, outer in ipairs(progression) do
         for _, inner in ipairs(outer) do
             inner.item_id = new_item_id
