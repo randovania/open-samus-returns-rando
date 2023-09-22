@@ -119,7 +119,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     # Add custom lua files
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
-    lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
     lua_util.replace_script(editor, "actors/props/samusship/scripts/samusship", "custom_ship.lua")
     lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom_savestation.lua")
 
