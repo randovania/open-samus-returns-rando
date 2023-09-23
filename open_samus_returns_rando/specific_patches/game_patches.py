@@ -1,4 +1,4 @@
-from mercury_engine_data_structures.formats import Bmsad
+from mercury_engine_data_structures.formats import Bmsad, Bmsbk
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -7,42 +7,50 @@ _ELEVATOR_GRAPPLE_BLOCKS = [
         # Area 4 West to Area 4 East
         "scenario": "s040_area4",
         "layer": 9,
-        "actor": "LE_GrappleMov_001"
+        "actor": "LE_GrappleMov_001",
     },
     {
         # Area 5 to Area 6
         "scenario": "s060_area6",
         "layer": 9,
-        "actor": "LE_GrappleMov_004"
+        "actor": "LE_GrappleMov_004",
     },
     {
         # Area 6 to Area 7
         "scenario": "s070_area7",
         "layer": 9,
-        "actor": "LE_GrappleMov_001"
+        "actor": "LE_GrappleMov_001",
     },
     {
         # Area 7 to Area 8
         "scenario": "s090_area9",
         "layer": 9,
-        "actor": "LE_GrappleMov_001"
-    }
+        "actor": "LE_GrappleMov_001",
+    },
 ]
 
-def apply_game_patches(editor: PatcherEditor, configuration: dict):
 
+def apply_game_patches(editor: PatcherEditor, configuration: dict):
+    # Weapon patches
     if configuration["nerf_power_bombs"]:
         _remove_pb_weaknesses(editor)
-
-    _remove_grapple_blocks(editor, configuration)
 
     if configuration["nerf_super_missiles"]:
         _remove_super_missile_weakness(editor)
 
+    # Area patches
+    _remove_grapple_blocks(editor, configuration)
+
+    if configuration["patch_crumble_blocks"]:
+        _patch_crumble_blocks(editor)
+
+
 def _remove_pb_weaknesses(editor: PatcherEditor):
     # Charge Door
     for door in ["doorchargecharge", "doorclosedcharge"]:
-        charge_door = editor.get_file(f"actors/props/{door}/charclasses/{door}.bmsad", Bmsad)
+        charge_door = editor.get_file(
+            f"actors/props/{door}/charclasses/{door}.bmsad", Bmsad
+        )
         func = charge_door.raw.components.LIFE.functions[0]
         if func.params.Param1.value:
             func.params.Param1.value = "CHARGE_BEAM"
@@ -51,7 +59,9 @@ def _remove_pb_weaknesses(editor: PatcherEditor):
 
     # Beam Doors
     for door in ["doorwave", "doorspazerbeam", "doorcreature"]:
-        beam_door = editor.get_file(f"actors/props/{door}/charclasses/{door}.bmsad", Bmsad)
+        beam_door = editor.get_file(
+            f"actors/props/{door}/charclasses/{door}.bmsad", Bmsad
+        )
         func_wp = beam_door.raw.components.LIFE.functions[1]
         func_s = beam_door.raw.components.LIFE.functions[2]
         if func_wp.params.Param1.value:
@@ -62,6 +72,7 @@ def _remove_pb_weaknesses(editor: PatcherEditor):
         if func_s.params.Param1.value:
             func_s.params.Param1.value = "SPAZER_BEAM"
 
+
 def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
     if configuration["remove_elevator_grapple_blocks"]:
         for reference in _ELEVATOR_GRAPPLE_BLOCKS:
@@ -69,15 +80,36 @@ def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
 
     if configuration["remove_grapple_block_area3_interior_shortcut"]:
         editor.remove_entity(
-            {
-                "scenario": "s036_area3c",
-                "layer": 9,
-                "actor": "LE_GrappleDest_004"
-            }
+            {"scenario": "s036_area3c", "layer": 9, "actor": "LE_GrappleDest_004"}
         )
 
+
 def _remove_super_missile_weakness(editor: PatcherEditor):
-    missile_door = editor.get_file("actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad", Bmsad)
+    missile_door = editor.get_file(
+        "actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad", Bmsad
+    )
     func = missile_door.raw.components.LIFE.functions[1]
     if func.params.Param1.value:
         func.params.Param1.value = "MISSILE"
+
+
+def _patch_crumble_blocks(editor: PatcherEditor):
+    # Crumble blocks after Scan Pulse
+    surface = editor.get_file(
+        "maps/levels/c10_samus/s000_surface/s000_surface.bmsbk", Bmsbk
+    )
+    post_scan_pulse_crumbles = surface.raw["block_groups"][37]
+    post_scan_pulse_crumbles["types"][0]["block_type"] = "power_beam"
+    post_scan_pulse_crumbles["types"][0]["blocks"][0]["unk4"] = 0.0
+    post_scan_pulse_crumbles["types"][0]["blocks"][1]["unk4"] = 0.0
+    post_scan_pulse_crumbles["types"][0]["blocks"][2]["unk4"] = 0.0
+
+    # Crumble blocks leaving Area 1
+    area1 = editor.get_file("maps/levels/c10_samus/s010_area1/s010_area1.bmsbk", Bmsbk)
+    area1_chozo_seal_crumbles = area1.raw["block_groups"][19]
+    area1_chozo_seal_crumbles["types"][0]["block_type"] = "power_beam"
+    area1_chozo_seal_crumbles["types"][0]["blocks"][0]["unk4"] = 0.0
+    area1_chozo_seal_crumbles["types"][0]["blocks"][1]["unk4"] = 0.0
+    area1_chozo_seal_crumbles["types"][0]["blocks"][2]["unk4"] = 0.0
+    area1_chozo_seal_crumbles["types"][0]["blocks"][3]["unk4"] = 0.0
+    area1_chozo_seal_crumbles["types"][0]["blocks"][4]["unk4"] = 0.0
