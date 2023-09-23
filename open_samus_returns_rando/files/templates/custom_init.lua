@@ -5,13 +5,13 @@ Init.tNewGameInventory = TEMPLATE("new_game_inventory")
 Init.bRevealMap = TEMPLATE("reveal_map_on_start")
 Init.sStartingScenario = TEMPLATE("starting_scenario")
 Init.sStartingActor = TEMPLATE("starting_actor")
+Init.fEnergyPerTank = TEMPLATE("energy_per_tank")
+Init.fAeionPerTank = TEMPLATE("aeion_per_tank")
 
 Game.LogWarn(0, "Inventory:")
 for k, v in pairs(Init.tNewGameInventory) do
     Game.LogWarn(0, tostring(k) .. " = " .. tostring(v))
 end
-
-local buff = {}
 
 function Init.InitGameBlackboard()
   Blackboard.ResetWithExceptionList({

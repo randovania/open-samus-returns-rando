@@ -32,11 +32,9 @@ def create_custom_init(configuration: dict) -> str:
 
     energy_per_tank = configuration["energy_per_tank"]
     max_life = inventory.pop("ITEM_MAX_LIFE")
-
-    # max_aeion has to be setup like this,
-    # otherwise the starting aeion amount will be 1000 (hardcoded) plus the aeion tank amount
+    
     aeion_per_tank = configuration["aeion_per_tank"]
-    max_aeion = 1000 - aeion_per_tank
+    max_aeion = inventory.pop("ITEM_MAX_SPECIAL_ENERGY")
 
      # increase starting HP if starting with etanks
     if "ITEM_ENERGY_TANKS" in inventory:
@@ -119,7 +117,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     # Add custom lua files
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
-    lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
     lua_util.replace_script(editor, "actors/props/samusship/scripts/samusship", "custom_ship.lua")
     lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom_savestation.lua")
 
