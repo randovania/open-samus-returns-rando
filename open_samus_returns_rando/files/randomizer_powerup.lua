@@ -126,7 +126,6 @@ function RandomizerPowerup.IncreaseAmmo(resource)
     RandomizerPowerup.IncreaseItemAmount(current_id, resource.quantity, resource.item_id)
 end
 
--- TODO: What's the max energy?
 MAX_ENERGY= 1099
 function RandomizerPowerup.IncreaseEnergy()
     local energy = Init.fEnergyPerTank
@@ -140,7 +139,6 @@ function RandomizerPowerup.IncreaseEnergy()
     life.fCurrentLife = new_max
 end
 
--- TODO: What's the max aeion?
 MAX_AEION= 2200
 function RandomizerPowerup.IncreaseAeion()
     local aeion = Init.fAeionPerTank
