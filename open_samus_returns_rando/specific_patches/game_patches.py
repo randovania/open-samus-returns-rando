@@ -40,9 +40,7 @@ def apply_game_patches(editor: PatcherEditor, configuration: dict):
 
     # Area patches
     _remove_grapple_blocks(editor, configuration)
-
-    if configuration["patch_crumble_blocks"]:
-        _patch_crumble_blocks(editor)
+    _patch_crumble_blocks(editor, configuration)
 
 
 def _remove_pb_weaknesses(editor: PatcherEditor):
@@ -93,23 +91,27 @@ def _remove_super_missile_weakness(editor: PatcherEditor):
         func.params.Param1.value = "MISSILE"
 
 
-def _patch_crumble_blocks(editor: PatcherEditor):
+def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict):
     # Crumble blocks after Scan Pulse
-    surface = editor.get_file(
-        "maps/levels/c10_samus/s000_surface/s000_surface.bmsbk", Bmsbk
-    )
-    post_scan_pulse_crumbles = surface.raw["block_groups"][37]
-    post_scan_pulse_crumbles["types"][0]["block_type"] = "power_beam"
-    post_scan_pulse_crumbles["types"][0]["blocks"][0]["unk4"] = 0.0
-    post_scan_pulse_crumbles["types"][0]["blocks"][1]["unk4"] = 0.0
-    post_scan_pulse_crumbles["types"][0]["blocks"][2]["unk4"] = 0.0
+    if configuration["patch_surface_crumbles"]:
+        surface = editor.get_file(
+            "maps/levels/c10_samus/s000_surface/s000_surface.bmsbk", Bmsbk
+        )
+        post_scan_pulse_crumbles = surface.raw["block_groups"][37]
+        post_scan_pulse_crumbles["types"][0]["block_type"] = "power_beam"
+        post_scan_pulse_crumbles["types"][0]["blocks"][0]["unk4"] = 0.0
+        post_scan_pulse_crumbles["types"][0]["blocks"][1]["unk4"] = 0.0
+        post_scan_pulse_crumbles["types"][0]["blocks"][2]["unk4"] = 0.0
 
     # Crumble blocks leaving Area 1
-    area1 = editor.get_file("maps/levels/c10_samus/s010_area1/s010_area1.bmsbk", Bmsbk)
-    area1_chozo_seal_crumbles = area1.raw["block_groups"][19]
-    area1_chozo_seal_crumbles["types"][0]["block_type"] = "power_beam"
-    area1_chozo_seal_crumbles["types"][0]["blocks"][0]["unk4"] = 0.0
-    area1_chozo_seal_crumbles["types"][0]["blocks"][1]["unk4"] = 0.0
-    area1_chozo_seal_crumbles["types"][0]["blocks"][2]["unk4"] = 0.0
-    area1_chozo_seal_crumbles["types"][0]["blocks"][3]["unk4"] = 0.0
-    area1_chozo_seal_crumbles["types"][0]["blocks"][4]["unk4"] = 0.0
+    if configuration["patch_area1_crumbles"]:
+        area1 = editor.get_file(
+            "maps/levels/c10_samus/s010_area1/s010_area1.bmsbk", Bmsbk
+        )
+        area1_chozo_seal_crumbles = area1.raw["block_groups"][19]
+        area1_chozo_seal_crumbles["types"][0]["block_type"] = "power_beam"
+        area1_chozo_seal_crumbles["types"][0]["blocks"][0]["unk4"] = 0.0
+        area1_chozo_seal_crumbles["types"][0]["blocks"][1]["unk4"] = 0.0
+        area1_chozo_seal_crumbles["types"][0]["blocks"][2]["unk4"] = 0.0
+        area1_chozo_seal_crumbles["types"][0]["blocks"][3]["unk4"] = 0.0
+        area1_chozo_seal_crumbles["types"][0]["blocks"][4]["unk4"] = 0.0

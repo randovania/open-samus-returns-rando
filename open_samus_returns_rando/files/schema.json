@@ -139,9 +139,14 @@
                     "description": "Removes the Super Missile weakness on Missile shields.",
                     "default": false
                 },
-                "patch_crumble_blocks": {
+                "patch_surface_crumbles": {
                     "type": "boolean",
-                    "description": "Changes the Crumble blocks after Scan Pulse and leaving Area 1 to be Power Beam blocks.",
+                    "description": "Changes the Crumble blocks after Scan Pulse to be Power Beam blocks.",
+                    "default": true
+                },
+                "patch_area1_crumbles": {
+                    "type": "boolean",
+                    "description": "Changes the Crumble blocks leaving Area 1 to be Power Beam blocks.",
                     "default": true
                 }
             },
