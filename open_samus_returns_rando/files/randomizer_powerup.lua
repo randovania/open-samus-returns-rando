@@ -9,14 +9,6 @@ RandomizerPowerup.Self = nil
 function RandomizerPowerup.Dummy()
 end
 
-function RandomizerPowerup.GenerateADN()
-    -- TODO: 
-    -- Add the __ARG__0 param
-    -- read its name and follow a name scheme for left and right side to delete other side
-    -- find out how to save -> reload -> permanently delete the door (guess blackboard property)    
-    Game.DeleteEntity("LE_SpazerShield_Door008")
-    Game.DeleteEntity("LE_SpazerShield_Door008_a")
-end
 
 function RandomizerPowerup.SetItemAmount(item_id, quantity)
     if type(quantity) == "string" then

@@ -4,9 +4,7 @@ import shutil
 import typing
 from pathlib import Path
 
-from construct import Container
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
-from mercury_engine_data_structures.formats import Bmsad
 
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches import lua_util
@@ -14,6 +12,7 @@ from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import game_patches
+from open_samus_returns_rando.specific_patches.door_patches import patch_shields
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
 from open_samus_returns_rando.specific_patches.static_fixes import apply_static_fixes
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
@@ -98,42 +97,6 @@ def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
         editor.copy_actor(scenario_name, new_pos, base_actor, new_actor_name, 9)
         scenario.add_actor_to_entity_groups(collision_camera_name, new_actor_name)
 
-def patch_shields(editor: PatcherEditor):
-    # TODO: Move this function clean up this mess
-    # TODO: Write down all door / shields...lol
-    # TODO: Make unk06 a float in MEDS branch (cause I'm assign float values here)
-    # create custom pickup
-    _EXAMPLE_LEFT_SIDE = {"scenario": "s000_surface", "layer": "9", "actor": "LE_MissileShield_Door_002"}
-    _EXAMPLE_RIGHT_SIDE = {"scenario": "s010_area1", "layer": "9", "actor": "LE_DoorShieldMissile"}
-    _EXAMPLE_SPAZER = {"scenario": "s050_area5", "layer": "9", "actor": "LE_SpazerShield_Door008"}
-
-    scenario = editor.get_scenario("s050_area5")
-    scenario.remove_actor_from_all_groups("LE_SpazerShield_Door008")
-
-
-    left_actor = editor.resolve_actor_reference(_EXAMPLE_LEFT_SIDE)
-    left_actor["unk06"] = 90
-    right_actor = editor.resolve_actor_reference(_EXAMPLE_RIGHT_SIDE)
-    right_actor["unk06"] = 90
-
-    # messy spazer stuff (basically adds a call to RandomizerPowerup.GenerateADN when the door creature dies)
-    spazer_bmsad = editor.get_parsed_asset("actors/props/doorspazerbeam/charclasses/doorspazerbeam.bmsad", type_hint=Bmsad) # noqa
-    alpha_bmsad = editor.get_parsed_asset("actors/characters/alphanewborn/charclasses/alphanewborn.bmsad", type_hint=Bmsad) # noqa
-    spazer_bmsad.raw["components"]["SCRIPT"] = alpha_bmsad.raw["components"]["SCRIPT"]
-    spazer_bmsad.raw["components"]["SCRIPT"]["functions"][0]["params"]["Param1"]["value"] = "actors/items/randomizer_powerup/scripts/randomizer_powerup.lua" # noqa
-    spazer_bmsad.raw["components"]["SCRIPT"]["functions"][0]["params"]["Param2"]["value"] = "RandomizerPowerup"
-    unknown_mess = Container({"unk1": 22, "unk2": 1, "unk3": 0, "args": Container({601445949: Container({"type": "s", "value": "GenerateADN"})})}) # noqa
-    spazer_bmsad.action_sets[0].raw["animations"][0].event_counts[0] = spazer_bmsad.action_sets[0].raw["animations"][0].event_counts[0] + 1 # noqa
-    spazer_bmsad.action_sets[0].raw["animations"][0]["events0"].append(unknown_mess)
-    editor.replace_asset("actors/props/doorspazerbeam/charclasses/doorspazerbeam.bmsad", spazer_bmsad)
-
-    spazer_actor = editor.resolve_actor_reference(_EXAMPLE_SPAZER)
-    new_spazer_actor = editor.copy_actor(_EXAMPLE_SPAZER["scenario"], (spazer_actor["x"],  spazer_actor["y"],  spazer_actor["z"]), spazer_actor, "LE_SpazerShield_Door008_a", 9) # noqa
-    new_spazer_actor["unk05"] = 0
-    new_spazer_actor["unk06"] = 0
-    new_spazer_actor["unk07"] = 0
-
-
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
 
@@ -169,6 +132,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     # Fix unheated heat rooms
     patch_heat_rooms(editor)
 
+    # Make shields on both sides
     patch_shields(editor)
 
     # Specific game patches
