@@ -641,7 +641,7 @@ end
 function s050_area5.SetAfterChaseSubAreaSetup()
 end
 function s050_area5.SetLocationTanksAfterChase()
-  if Scenario.ReadFromBlackboard("ChaseFinished", false) then
+  if Scenario.ReadFromBlackboard("ChaseFinished", true) then
     Game.GetEntity("LE_Item_003").vPos = Game.GetLandmarkPosition("LM_TankPosition_AfterChase")
     Game.GetEntity("LE_Item_010").vPos = Game.GetLandmarkPosition("LM_TankPosition_AfterChase001")
   end
