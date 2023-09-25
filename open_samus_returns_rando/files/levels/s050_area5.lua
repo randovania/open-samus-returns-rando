@@ -97,23 +97,7 @@ function s050_area5.SetupDebugGameBlackboard()
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT", "f", 0)
 end
 function s050_area5.InitFromBlackboard()
-  Game.SetSubAreaCurrentSetup("collision_camera_AfterChase", "AfterChase", true, false)
-  Game.SetSubAreaCurrentSetup("collision_camera_AfterChase_001", "AfterChase", true, false)
-  Game.SetSubAreaCurrentSetup("collision_camera_AfterChase_002", "AfterChase", true, false)
-  Game.SetSubAreaCurrentSetup("collision_camera_AfterChase_003", "AfterChase", true, false)
-  Game.SetSubAreaCurrentSetup("collision_camera_BeforeChase1", "AfterChase", true, false)
-  Game.SetSubAreaCurrentSetup("collision_camera_BeforeChase2", "AfterChase", true, false)
-  Game.SetSubAreaCurrentSetup("collision_camera_BeforeChase3", "AfterChase", true, false)
-  for _FORV_4_, _FORV_5_ in pairs({
-    "SpawnGroup025",
-    "SpawnGroup039",
-    "SpawnGroup040"
-  }) do
-    print(_FORV_5_)
-    if Game.GetEntity(_FORV_5_) ~= nil then
-      Game.GetEntity(_FORV_5_).SPAWNGROUP:EnableSpawnGroup()
-    end
-  end
+  s050_area5.SetAfterChaseSubAreaSetup()
   s050_area5.SetLocationTanksAfterChase()
   if Game.GetEntity("LE_Event_0501") ~= nil and Scenario.ReadFromBlackboard("SpecialEvent0501Launched") then
     Game.GetEntity("LE_Event_0501"):Disable()
@@ -637,8 +621,26 @@ function s050_area5.OnManicMinerBotChaseCutsceneStart()
 end
 function s050_area5.OnManicMinerBotChaseCutsceneEnd()
   Game.SetPlayerInputEnabled(true, false)
+  Game.LoadScenario("c10_samus", Init.sStartingScenario, "SPG_ManicMinerBotHidden", "samus", 1)
 end
 function s050_area5.SetAfterChaseSubAreaSetup()
+  Game.SetSubAreaCurrentSetup("collision_camera_AfterChase", "AfterChase", true, false)
+  Game.SetSubAreaCurrentSetup("collision_camera_AfterChase_001", "AfterChase", true, false)
+  Game.SetSubAreaCurrentSetup("collision_camera_AfterChase_002", "AfterChase", true, false)
+  Game.SetSubAreaCurrentSetup("collision_camera_AfterChase_003", "AfterChase", true, false)
+  Game.SetSubAreaCurrentSetup("collision_camera_BeforeChase1", "AfterChase", true, false)
+  Game.SetSubAreaCurrentSetup("collision_camera_BeforeChase2", "AfterChase", true, false)
+  Game.SetSubAreaCurrentSetup("collision_camera_BeforeChase3", "AfterChase", true, false)
+  for _FORV_4_, _FORV_5_ in pairs({
+    "SpawnGroup025",
+    "SpawnGroup039",
+    "SpawnGroup040"
+  }) do
+    print(_FORV_5_)
+    if Game.GetEntity(_FORV_5_) ~= nil then
+      Game.GetEntity(_FORV_5_).SPAWNGROUP:EnableSpawnGroup()
+    end
+  end
 end
 function s050_area5.SetLocationTanksAfterChase()
   if Scenario.ReadFromBlackboard("ChaseFinished", true) then
