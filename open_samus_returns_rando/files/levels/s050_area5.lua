@@ -621,6 +621,7 @@ function s050_area5.OnManicMinerBotChaseCutsceneStart()
 end
 function s050_area5.OnManicMinerBotChaseCutsceneEnd()
   Game.SetPlayerInputEnabled(true, false)
+  Game.LoadScenario("c10_samus", Init.sStartingScenario, "SPG_ManicMinerBotHidden", "samus", 1)
 end
 function s050_area5.SetAfterChaseSubAreaSetup()
   Game.SetSubAreaCurrentSetup("collision_camera_AfterChase", "AfterChase", true, false)
