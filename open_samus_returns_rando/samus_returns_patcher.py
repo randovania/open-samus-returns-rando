@@ -6,7 +6,6 @@ from pathlib import Path
 
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
-from open_samus_returns_rando.bmsld_add import add_actor_to_entity_groups
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
@@ -32,7 +31,7 @@ def create_custom_init(configuration: dict) -> str:
 
     energy_per_tank = configuration["energy_per_tank"]
     max_life = inventory.pop("ITEM_MAX_LIFE")
-    
+
     aeion_per_tank = configuration["aeion_per_tank"]
     max_aeion = inventory.pop("ITEM_MAX_SPECIAL_ENERGY")
 
@@ -85,7 +84,7 @@ def patch_spawn_points(editor: PatcherEditor, spawn_config: list[dict]):
         scenario_name, new_actor_name, collision_camera_name, new_spawn_pos = unpack_new_actor(new_spawn)
         scenario = editor.get_scenario(scenario_name)
         editor.copy_actor(scenario_name, new_spawn_pos, base_actor, new_actor_name, 5)
-        add_actor_to_entity_groups(scenario, collision_camera_name, new_actor_name)
+        scenario.add_actor_to_entity_groups(collision_camera_name, new_actor_name)
 
 def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
     # create custom pickup
@@ -95,7 +94,7 @@ def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
         scenario_name, new_actor_name, collision_camera_name, new_pos = unpack_new_actor(new_pickup)
         scenario = editor.get_scenario(scenario_name)
         editor.copy_actor(scenario_name, new_pos, base_actor, new_actor_name, 9)
-        add_actor_to_entity_groups(scenario, collision_camera_name, new_actor_name)
+        scenario.add_actor_to_entity_groups(collision_camera_name, new_actor_name)
 
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
