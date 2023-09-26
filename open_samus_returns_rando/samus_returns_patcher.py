@@ -32,7 +32,7 @@ def create_custom_init(configuration: dict) -> str:
 
     energy_per_tank = configuration["energy_per_tank"]
     max_life = inventory.pop("ITEM_MAX_LIFE")
-    
+
     aeion_per_tank = configuration["aeion_per_tank"]
     max_aeion = inventory.pop("ITEM_MAX_SPECIAL_ENERGY")
 

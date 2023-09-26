@@ -61,9 +61,9 @@ class PatcherEditor(FileTreeEditor):
         new_actor = copy.deepcopy(template_actor)
         current_scenario = self.get_scenario(scenario)
         current_scenario.raw.actors[layer_index][new_name] = new_actor
-        new_actor.x = coords[0] + offset[0]
-        new_actor.y = coords[1] + offset[1]
-        new_actor.z = coords[2] + offset[2]
+        new_actor["position"][0] = coords[0] + offset[0]
+        new_actor["position"][1] = coords[1] + offset[1]
+        new_actor["position"][2] = coords[2] + offset[2]
 
         return new_actor
 
