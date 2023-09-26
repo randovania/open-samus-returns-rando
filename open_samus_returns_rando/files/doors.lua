@@ -10,8 +10,13 @@ function Doors.RemoveDoors(_ARG_0_)
     if ending == "_o" then
         actor_name = string.sub(actor_name, 0, -3)
     end
-    Game.DeleteEntity(actor_name)
-    Game.DeleteEntity(actor_name .. "_o")
-    Scenario.WriteToBlackboard("entity_" .. actor_name .. "_dead", "b", true)
-    Scenario.WriteToBlackboard("entity_" .. actor_name .. "_o_dead", "b", true)
+
+    if Game.GetEntity(actor_name) ~= nil then
+        Game.DeleteEntity(actor_name)
+        Scenario.WriteToBlackboard("entity_" .. actor_name .. "_dead", "b", true)
+    end
+    if Game.GetEntity(actor_name .. "_o") ~= nil then
+        Game.DeleteEntity(actor_name .. "_o")
+        Scenario.WriteToBlackboard("entity_" .. actor_name .. "_o_dead", "b", true)
+    end
 end
