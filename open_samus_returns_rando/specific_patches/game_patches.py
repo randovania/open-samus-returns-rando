@@ -99,9 +99,9 @@ def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict):
         )
         post_scan_pulse_crumbles = surface.raw["block_groups"][37]
         post_scan_pulse_crumbles["types"][0]["block_type"] = "power_beam"
-        post_scan_pulse_crumbles["types"][0]["blocks"][0]["unk4"] = 0.0
-        post_scan_pulse_crumbles["types"][0]["blocks"][1]["unk4"] = 0.0
-        post_scan_pulse_crumbles["types"][0]["blocks"][2]["unk4"] = 0.0
+        post_scan_pulse_crumbles["types"][0]["blocks"][0]["respawn_time"] = 0.0
+        post_scan_pulse_crumbles["types"][0]["blocks"][1]["respawn_time"] = 0.0
+        post_scan_pulse_crumbles["types"][0]["blocks"][2]["respawn_time"] = 0.0
 
     # Crumble blocks leaving Area 1
     if configuration["patch_area1_crumbles"]:
@@ -110,8 +110,8 @@ def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict):
         )
         area1_chozo_seal_crumbles = area1.raw["block_groups"][19]
         area1_chozo_seal_crumbles["types"][0]["block_type"] = "power_beam"
-        area1_chozo_seal_crumbles["types"][0]["blocks"][0]["unk4"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][1]["unk4"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][2]["unk4"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][3]["unk4"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][4]["unk4"] = 0.0
+        area1_chozo_seal_crumbles["types"][0]["blocks"][0]["respawn_time"] = 0.0
+        area1_chozo_seal_crumbles["types"][0]["blocks"][1]["respawn_time"] = 0.0
+        area1_chozo_seal_crumbles["types"][0]["blocks"][2]["respawn_time"] = 0.0
+        area1_chozo_seal_crumbles["types"][0]["blocks"][3]["respawn_time"] = 0.0
+        area1_chozo_seal_crumbles["types"][0]["blocks"][4]["respawn_time"] = 0.0
