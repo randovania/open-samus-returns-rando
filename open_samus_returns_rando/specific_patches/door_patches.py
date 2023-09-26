@@ -51,7 +51,7 @@ def _patch_missile_covers(editor: PatcherEditor):
         scenario = editor.get_scenario(area)
         for layer, actor_name, actor in scenario.all_actors():
             if actor.type in missile_types:
-                actor["y_rotation"] = 90
+                actor["rotation"][1] = 90
 
 def _patch_beam_covers(editor: PatcherEditor):
     creature_bmsad_files = [
