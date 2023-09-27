@@ -1,6 +1,5 @@
 
 import copy
-import logging
 
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad
@@ -8,9 +7,6 @@ from mercury_engine_data_structures.formats import Bmsad
 from open_samus_returns_rando.constants import ALL_AREAS
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.patcher_editor import PatcherEditor
-
-# TODO: Remove it if we don't log anything after tests
-LOG = logging.getLogger("door_patches")
 
 SCRIPT_COMPONENT = Container({
     "type": "CScriptComponent",
@@ -49,32 +45,33 @@ ON_DEAD_CB = Container({
     }),
 })
 
-def _patch_missile_covers(editor: PatcherEditor):
-    missile_types = {"doorshieldmissile", "doorshieldpowerbomb", "doorshieldsupermissile"}
-    for area in ALL_AREAS:
-        scenario = editor.get_scenario(area)
-        for layer, actor_name, actor in scenario.all_actors():
-            if actor.type in missile_types:
-                actor["rotation"][1] = 90
 
-def _patch_beam_covers(editor: PatcherEditor):
-    EXCLUDES_PER_AREA = {
-        "s010_area1": [
-            "LE_DoorShieldPlasma011"
-        ],
-        "s025_area2b": [
-            "LE_WaveShield_Door008"
-        ],
-        "s040_area4": [
-            "LE_SpazerShield_Door_003",
-            "LE_SpazerShield_Door009",
-            "LE_PlasmaShield_Door_005"
-        ],
-        "s067_area6c": [
-            "LE_PlasmaShield_Door005"
-        ]
+def _patch_missile_covers(editor: PatcherEditor):
+    ALL_MISSILE_SHIELDS = {
+        "s000_surface": ["LE_MissileShield_Door_002", "LE_MissileShield_Door_006"],
+        "s010_area1": ["LE_DoorShieldMissile", "LE_DoorShieldMissile001"],
+        "s020_area2": ["LE_MissileShield_Door004", "LE_Shield_Door012"],
+        "s025_area2b": ["LE_MissileShield_Door006", "LE_MissileShield_Door009",
+                        "LE_MissileShield_Door013", "LE_PowerBombShield_Door015"],
+        "s030_area3": ["LE_MissileShield_Door003"],
+        "s036_area3c": ["LE_PowerBombShield_Door_007", "LE_SuperMissileShield_Door004"],
+        "s040_area4": ["LE_MissileShield_Door_002"],
+        "s050_area5": ["LE_MissileShield_Door004", "LE_MissileShield_Door013", "LE_SuperMissileShield_Door002",
+                    "LE_SuperMissileShield_Door005", "LE_SuperMissileShield_Door010"],
+        "s065_area6b": ["LE_MissileShield_Door002", "LE_PowerBombShield_Door005","LE_SuperMissileShield_Door004"],
+        "s067_area6c": ["LE_MissileShield_Door006", "LE_MissileShield_Door009",
+                        "LE_PowerBombShield_Door012", "LE_SuperMissileShield_Door011"],
+        "s070_area7": ["LE_MissileShield_Door012", "LE_PowerBombShield_Door007", "LE_PowerBomb_Shield_017"],
     }
 
+    for area_name, shield in ALL_MISSILE_SHIELDS.items():
+        scenario = editor.get_scenario(area_name)
+        for door in shield:
+            actor = scenario.raw.actors[9][door]
+            actor["rotation"][1] = 90
+
+
+def _patch_beam_bmsads(editor: PatcherEditor):
     creature_bmsad_files = [
         "actors/props/doorspazerbeam/charclasses/doorspazerbeam.bmsad",
         "actors/props/doorcreature/charclasses/doorcreature.bmsad",
@@ -100,47 +97,49 @@ def _patch_beam_covers(editor: PatcherEditor):
             cr_bmsad.components["COLLISION"].functions[1].params["Param10"].value = 300.0
         editor.replace_asset(creature_bmsad_file, cr_bmsad)
 
-    # TODO: remove it
-    test_door = True
-    beam_types = {"doorwave", "doorspazerbeam", "doorcreature"}
+    editor.add_new_asset("actors/props/doors/scripts/doors.lc", files_path().joinpath("doors.lua").read_bytes(), [])
     for area_name in ALL_AREAS:
         editor.ensure_present_in_scenario(area_name, "actors/props/doors/scripts/doors.lc")
+
+
+def _patch_beam_covers(editor: PatcherEditor):
+    ALL_BEAM_COVERS = {
+        "s000_surface": ["LE_PlasmaShield_Door_008"],
+        "s010_area1": ["LE_DoorShieldWave008", "LE_SpazerShield_Door007"],
+        "s020_area2": ["LE_WaveShield_Door010"],
+        "s025_area2b": ["LE_PlasmaShield_Door017", "LE_WaveShield_Door016", "LE_WaveShield_Door019"],
+        "s033_area3b": ["LE_SpazerShield_Door_010", "LE_WaveShield_Door_007"],
+        "s036_area3c": ["LE_WaveShield_Door_006"],
+        "s040_area4": ["LE_SpazerShield_Door_001", "LE_SpazerShield_Door_004"],
+        "s050_area5": ["LE_SpazerShield_Door008"],
+        "s065_area6b": ["LE_PlasmaShield_Door003"],
+        "s067_area6c": ["LE_PlasmaShield_Door014", "LE_PlasmaShield_Door016", "LE_SpazerShield_Door018"],
+        "s090_area9": ["LE_PlasmaShield_Door003", "LE_Shield_Door006", "LE_Shield_Door015"],
+        "s110_surfaceb": ["LE_SpazerShield_Door_012"]
+    }
+
+    for area_name, beam_covers in ALL_BEAM_COVERS.items():
         scenario = editor.get_scenario(area_name)
-        actor_list_copy = {actor_name: actor for layer, actor_name, actor in scenario.all_actors()}
-        excludes_of_area = EXCLUDES_PER_AREA.get(area_name, [])
-        for actor_name, actor in actor_list_copy.items():
-            if actor.type in beam_types and actor_name not in excludes_of_area:
-                new_actor_name = f"{actor_name}_o"
-                new_actor = editor.copy_actor(
-                    area_name, (actor["position"][0], actor["position"][1],  actor["position"][2]),
-                    actor, new_actor_name, 9
-                )
-                if new_actor["rotation"][1] == 0.0:
-                    new_actor["rotation"][0] = 0
-                    new_actor["rotation"][1] = 180
-                    new_actor["rotation"][2] = 0
-                elif new_actor["rotation"][1] == 180.0:
-                    new_actor["rotation"][0] = 0
-                    new_actor["rotation"][1] = 0
-                    new_actor["rotation"][2] = 0
-                else:
-                    # that one is weird (because of fake surface west ?)
-                    if area_name == "s000_surface" and actor_name == "LE_SpazerShield_Door_012":
-                        continue
-                    raise Exception
+        for cover_name in beam_covers:
+            actor = scenario.raw.actors[9][cover_name]
+            new_actor_name = f"{cover_name}_o"
+            new_actor = editor.copy_actor(
+                area_name, (actor["position"][0], actor["position"][1],  actor["position"][2]),
+                actor, new_actor_name, 9
+            )
+            new_actor["rotation"][0] = 0
+            new_actor["rotation"][2] = 0
+            current_rotation = new_actor["rotation"][1]
+            new_actor["rotation"][1] = 180 if current_rotation == 0.0 else 0.0
 
-                # no idea if this really gets the right door
-                door_name = actor_name[actor_name.find("Door"):]
-                door_name = door_name.replace("ShieldPlasma", "").replace("ShieldWave", "")
-                door_actor = actor_list_copy.get(door_name, None)
-                if door_actor is None:
-                    door_actor = actor_list_copy[door_name.replace("_", "")]
-                door_actor.components.append(copy.deepcopy(door_actor.components[0]))
-                door_actor.components[1]["arguments"][3]["value"] = new_actor_name
+            door_name = cover_name[cover_name.find("Door"):]
+            door_name = door_name.replace("ShieldPlasma", "").replace("ShieldWave", "")
+            door_actor = scenario.raw.actors[15].get(door_name, None)
+            if door_actor is None:
+                door_actor = scenario.raw.actors[15][door_name.replace("_", "")]
+            door_actor.components.append(copy.deepcopy(door_actor.components[0]))
+            door_actor.components[1]["arguments"][3]["value"] = new_actor_name
 
-            if actor.type == "doorwave" and test_door:
-                test_door = False
-                editor.copy_actor(area_name, (-15900.000, 1350.0, 0.0), actor, "COPY", 9)
 
 def _patch_charge_doors(editor: PatcherEditor):
     CHARGE_DOORS = {
@@ -155,12 +154,11 @@ def _patch_charge_doors(editor: PatcherEditor):
         "s090_area9": ["Door012"]
     }
 
-    for area_name in ALL_AREAS:
+    for area_name, doors in CHARGE_DOORS.items():
         scenario = editor.get_scenario(area_name)
-        charge_doors = CHARGE_DOORS.get(area_name, [])
-        for layer, actor_name, actor in scenario.all_actors():
-            if actor_name in charge_doors:
-                actor.type = "doorpowerpower"
+        for door in doors:
+            scenario.raw.actors[15][door].type = "doorpowerpower"
+
 
 def _patch_one_way_doors(editor: PatcherEditor):
     ONE_WAY_DOORS = {
@@ -172,17 +170,15 @@ def _patch_one_way_doors(editor: PatcherEditor):
         "s040_area4": ["Door001"]
     }
 
-    for area_name in ALL_AREAS:
+    for area_name, doors in ONE_WAY_DOORS.items():
         scenario = editor.get_scenario(area_name)
-        one_way_doors = ONE_WAY_DOORS.get(area_name, [])
-        for layer, actor_name, actor in scenario.all_actors():
-            if actor_name in one_way_doors:
-                actor.type = "doorpowerpower"
+        for door in doors:
+            scenario.raw.actors[15][door].type = "doorpowerpower"
+
 
 def patch_doors(editor: PatcherEditor):
-    editor.add_new_asset("actors/props/doors/scripts/doors.lc", files_path().joinpath("doors.lua").read_bytes(), [])
-
     _patch_missile_covers(editor)
+    _patch_beam_bmsads(editor)
     _patch_beam_covers(editor)
     _patch_charge_doors(editor)
     _patch_one_way_doors(editor)
