@@ -130,9 +130,27 @@ def _patch_beam_covers(editor: PatcherEditor):
             if actor.type == "doorwave" and test_door:
                 test_door = False
                 editor.copy_actor(area_name, (-15900.000, 1350.0, 0.0), actor, "COPY", 9)
+                
+def _patch_charge_doors(editor: PatcherEditor):
+    for area in ALL_AREAS:
+        scenario = editor.get_scenario(area)
+        for layer, actor_name, actor in scenario.all_actors():
+            if (
+                (area == "s000_surface" and actor_name in {"Door004", "Door011"})
+                or (area == "s010_area1" and actor_name == "Door002")
+                or (area == "s028_area2c" and actor_name in {"Door001", "Door007"})
+                or (area == "s030_area3" and actor_name in {"Door002", "Door008"})
+                or (area == "s040_area4" and actor_name in {"Door006", "Door014"})
+                or (area == "s050_area5" and actor_name == "Door006")
+                or (area == "s060_area6" and actor_name == "Door001")
+                or (area == "s070_area7" and actor_name == "Door010")
+                or (area == "s090_area9" and actor_name == "Door012")
+            ):
+                actor.type = "doorpowerpower"
 
 def patch_shields(editor: PatcherEditor):
     editor.add_new_asset("actors/props/doors/scripts/doors.lc", files_path().joinpath("doors.lua").read_bytes(), [])
 
     _patch_missile_covers(editor)
     _patch_beam_covers(editor)
+    _patch_charge_doors(editor)
