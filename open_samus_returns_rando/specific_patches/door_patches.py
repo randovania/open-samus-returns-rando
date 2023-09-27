@@ -61,6 +61,17 @@ def _patch_beam_covers(editor: PatcherEditor):
     EXCLUDES_PER_AREA = {
         "s010_area1": [
             "LE_DoorShieldPlasma011"
+        ],
+        "s025_area2b": [
+            "LE_WaveShield_Door008"
+        ],
+        "s040_area4": [
+            "LE_SpazerShield_Door_003",
+            "LE_SpazerShield_Door009",
+            "LE_PlasmaShield_Door_005"
+        ],
+        "s067_area6c": [
+            "LE_PlasmaShield_Door005"
         ]
     }
 
