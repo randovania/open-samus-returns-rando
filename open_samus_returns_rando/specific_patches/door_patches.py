@@ -143,6 +143,24 @@ def _patch_beam_covers(editor: PatcherEditor):
                 editor.copy_actor(area_name, (-15900.000, 1350.0, 0.0), actor, "COPY", 9)
                 
 def _patch_charge_doors(editor: PatcherEditor):
+    CHARGE_DOORS = {
+        "s000_surface": ["Door004", "Door011"],
+        "s010_area1": ["Door002"],
+        "s028_area2c": ["Door001", "Door007"],
+        "s030_area3": ["Door002", "Door008"],
+        "s040_area4": ["Door006", "Door014"],
+        "s050_area5": ["Door006"],
+        "s060_area6": ["Door001"],
+        "s070_area7": ["Door010"],
+        "s090_area9": ["Door012"]
+    }
+
+    for area_name in ALL_AREAS:
+        scenario = editor.get_scenario(area_name)
+        charge_doors = CHARGE_DOORS.get(area_name, [])
+        for layer, actor_name, actor in scenario.all_actors():
+            if actor_name in charge_doors:
+                actor.type = "doorpowerpower"
     for area in ALL_AREAS:
         scenario = editor.get_scenario(area)
         for layer, actor_name, actor in scenario.all_actors():
