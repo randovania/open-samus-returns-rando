@@ -145,7 +145,8 @@ def _patch_beam_covers(editor: PatcherEditor):
             entity_groups = [group for group_name, group in scenario.all_actor_groups()
                     if group_name in list(scenario.all_actor_group_names_for_actor(cover_name))]
             for group in entity_groups:
-                group.names.append(new_actor_name)
+                idx = group.names.index(cover_name)
+                group.names.insert(idx, new_actor_name)
 
 
 def _patch_charge_doors(editor: PatcherEditor):
