@@ -161,20 +161,22 @@ def _patch_charge_doors(editor: PatcherEditor):
         for layer, actor_name, actor in scenario.all_actors():
             if actor_name in charge_doors:
                 actor.type = "doorpowerpower"
-    for area in ALL_AREAS:
-        scenario = editor.get_scenario(area)
+
+def _patch_one_way_doors(editor: PatcherEditor):
+    ONE_WAY_DOORS = {
+        # Bombs, Right Exterior Door -> Interior, Exterior Alpha
+        "s010_area1": ["Door004", "Door012", "Door016"],
+        # Below Chozo Seal
+        "s030_area3": ["Door003", "Door006"],
+        # Chozo Seal Spazer Door
+        "s040_area4": ["Door001"]
+    }
+
+    for area_name in ALL_AREAS:
+        scenario = editor.get_scenario(area_name)
+        one_way_doors = ONE_WAY_DOORS.get(area_name, [])
         for layer, actor_name, actor in scenario.all_actors():
-            if (
-                (area == "s000_surface" and actor_name in {"Door004", "Door011"})
-                or (area == "s010_area1" and actor_name == "Door002")
-                or (area == "s028_area2c" and actor_name in {"Door001", "Door007"})
-                or (area == "s030_area3" and actor_name in {"Door002", "Door008"})
-                or (area == "s040_area4" and actor_name in {"Door006", "Door014"})
-                or (area == "s050_area5" and actor_name == "Door006")
-                or (area == "s060_area6" and actor_name == "Door001")
-                or (area == "s070_area7" and actor_name == "Door010")
-                or (area == "s090_area9" and actor_name == "Door012")
-            ):
+            if actor_name in one_way_doors:
                 actor.type = "doorpowerpower"
 
 def patch_shields(editor: PatcherEditor):
@@ -183,3 +185,4 @@ def patch_shields(editor: PatcherEditor):
     _patch_missile_covers(editor)
     _patch_beam_covers(editor)
     _patch_charge_doors(editor)
+    _patch_one_way_doors(editor)
