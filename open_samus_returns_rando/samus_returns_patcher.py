@@ -132,7 +132,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     # Fix unheated heat rooms
     patch_heat_rooms(editor)
 
-    # Make shields on both sides
+    # Patch door types and make shields on both sides
     patch_doors(editor)
 
     # Specific game patches
