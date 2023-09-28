@@ -113,7 +113,7 @@ def _patch_beam_covers(editor: PatcherEditor):
         "s040_area4": ["LE_SpazerShield_Door_001", "LE_SpazerShield_Door_004"],
         "s050_area5": ["LE_SpazerShield_Door008"],
         "s065_area6b": ["LE_PlasmaShield_Door003"],
-        "s067_area6c": ["LE_PlasmaShield_Door014", "LE_PlasmaShield_Door016", "LE_SpazerShield_Door018"],
+        "s067_area6c": ["LE_PlasmaShield_Door005", "LE_PlasmaShield_Door014", "LE_PlasmaShield_Door016", "LE_SpazerShield_Door018"],
         "s090_area9": ["LE_PlasmaShield_Door003", "LE_Shield_Door006", "LE_Shield_Door015"],
         "s110_surfaceb": ["LE_SpazerShield_Door_012"]
     }
@@ -175,7 +175,9 @@ def _patch_one_way_doors(editor: PatcherEditor):
         # Below Chozo Seal
         "s030_area3": ["Door003", "Door006"],
         # Chozo Seal Spazer Door
-        "s040_area4": ["Door001"]
+        "s040_area4": ["Door001"],
+        # Plasma Room Plasma and Missile doors, Gravity Room Missile Door
+        "s067_area6c": ["Door005", "Door006", "Door009"]
     }
 
     for area_name, doors in ONE_WAY_DOORS.items():
