@@ -107,7 +107,7 @@ def _patch_beam_covers(editor: PatcherEditor):
         "s000_surface": ["LE_PlasmaShield_Door_008"],
         "s010_area1": ["LE_DoorShieldWave008", "LE_SpazerShield_Door007"],
         "s020_area2": ["LE_WaveShield_Door010"],
-        "s025_area2b": ["LE_PlasmaShield_Door017", "LE_WaveShield_Door016", "LE_WaveShield_Door019"],
+        "s025_area2b": ["LE_PlasmaShield_Door017", "LE_WaveShield_Door008", "LE_WaveShield_Door016", "LE_WaveShield_Door019"],
         "s033_area3b": ["LE_SpazerShield_Door_010", "LE_WaveShield_Door_007"],
         "s036_area3c": ["LE_WaveShield_Door_006"],
         "s040_area4": ["LE_SpazerShield_Door_001", "LE_SpazerShield_Door_004"],
