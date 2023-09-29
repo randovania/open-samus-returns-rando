@@ -2,9 +2,9 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 MULTI_ROOM_GAMMAS = [
     {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_A"},
-    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_004_Intro_A"},
-    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_004_B"},
-    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_004_Intro_B"},
+    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_Intro_A"},
+    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_B"},
+    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_Intro_B"},
     {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_A"},
     {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_Intro_A"},
     {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_C"},
