@@ -6,9 +6,9 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
 def _patch_scanning_pulse(tunables: Bmtun):
-    ctunableminimap = tunables.raw["classes"]["CTunableMinimapScenario"]["tunables"]
-    # does nothing :(
-    ctunableminimap["iScanningPulseRadiusInTiles"]["value"] = 200
+    # # does nothing :(
+    # ctunableminimap = tunables.raw["classes"]["CTunableMinimapScenario"]["tunables"]
+    # ctunableminimap["iScanningPulseRadiusInTiles"]["value"] = 200
     tunables.raw["classes"]["CTunableAbilityScanningPulse"]["tunables"]["fConsumptionOnActivation"]["value"] = 0.0
 
 
