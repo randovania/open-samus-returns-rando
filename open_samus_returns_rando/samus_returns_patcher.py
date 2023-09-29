@@ -12,6 +12,7 @@ from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import game_patches
+from open_samus_returns_rando.specific_patches.door_patches import patch_doors
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
 from open_samus_returns_rando.specific_patches.static_fixes import apply_static_fixes
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
@@ -130,6 +131,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     # Fix unheated heat rooms
     patch_heat_rooms(editor)
+
+    # Patch door types and make shields on both sides
+    patch_doors(editor)
 
     # Specific game patches
     game_patches.apply_game_patches(editor, configuration.get("game_patches", {}))
