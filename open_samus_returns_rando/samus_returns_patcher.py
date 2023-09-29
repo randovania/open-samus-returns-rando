@@ -6,16 +6,15 @@ from pathlib import Path
 
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
-from open_samus_returns_rando.bmsld_add import add_actor_to_entity_groups
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import game_patches
+from open_samus_returns_rando.specific_patches.door_patches import patch_doors
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
 from open_samus_returns_rando.specific_patches.static_fixes import apply_static_fixes
-from open_samus_returns_rando.specific_patches.tunable_patches import patch_tunables
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
 
 T = typing.TypeVar("T")
@@ -34,10 +33,8 @@ def create_custom_init(configuration: dict) -> str:
     energy_per_tank = configuration["energy_per_tank"]
     max_life = inventory.pop("ITEM_MAX_LIFE")
 
-    # max_aeion has to be setup like this,
-    # otherwise the starting aeion amount will be 1000 (hardcoded) plus the aeion tank amount
     aeion_per_tank = configuration["aeion_per_tank"]
-    max_aeion = 1000 - aeion_per_tank
+    max_aeion = inventory.pop("ITEM_MAX_SPECIAL_ENERGY")
 
      # increase starting HP if starting with etanks
     if "ITEM_ENERGY_TANKS" in inventory:
@@ -88,7 +85,7 @@ def patch_spawn_points(editor: PatcherEditor, spawn_config: list[dict]):
         scenario_name, new_actor_name, collision_camera_name, new_spawn_pos = unpack_new_actor(new_spawn)
         scenario = editor.get_scenario(scenario_name)
         editor.copy_actor(scenario_name, new_spawn_pos, base_actor, new_actor_name, 5)
-        add_actor_to_entity_groups(scenario, collision_camera_name, new_actor_name)
+        scenario.add_actor_to_entity_groups(collision_camera_name, new_actor_name)
 
 def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
     # create custom pickup
@@ -98,7 +95,7 @@ def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
         scenario_name, new_actor_name, collision_camera_name, new_pos = unpack_new_actor(new_pickup)
         scenario = editor.get_scenario(scenario_name)
         editor.copy_actor(scenario_name, new_pos, base_actor, new_actor_name, 9)
-        add_actor_to_entity_groups(scenario, collision_camera_name, new_actor_name)
+        scenario.add_actor_to_entity_groups(collision_camera_name, new_actor_name)
 
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
@@ -120,7 +117,8 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     # Add custom lua files
     lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
-    lua_util.replace_script(editor, "actors/characters/player/scripts/player", "custom_player.lua")
+    lua_util.replace_script(editor, "actors/props/samusship/scripts/samusship", "custom_ship.lua")
+    lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom_savestation.lua")
 
     # Custom pickups
     patch_custom_pickups(editor, configuration["custom_pickups"])
@@ -134,8 +132,8 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     # Fix unheated heat rooms
     patch_heat_rooms(editor)
 
-    # Patch tunables
-    patch_tunables(editor)
+    # Patch door types and make shields on both sides
+    patch_doors(editor)
 
     # Specific game patches
     game_patches.apply_game_patches(editor, configuration.get("game_patches", {}))

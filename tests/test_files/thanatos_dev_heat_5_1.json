@@ -6,6 +6,7 @@
     },
     "starting_items": {
         "ITEM_MAX_LIFE": 599,
+        "ITEM_MAX_SPECIAL_ENERGY": 1000,
         "ITEM_WEAPON_MISSILE_MAX": 50,
         "ITEM_WEAPON_SUPER_MISSILE_MAX": 10,
         "ITEM_WEAPON_POWER_BOMB_MAX": 0,

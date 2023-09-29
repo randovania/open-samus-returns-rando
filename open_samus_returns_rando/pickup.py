@@ -13,6 +13,14 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_leve
 
 LOG = logging.getLogger("pickup")
 
+TANK_ITEMS = {
+    "ITEM_ENERGY_TANKS",
+    "ITEM_AEION_TANKS",
+    "ITEM_WEAPON_MISSILE_MAX",
+    "ITEM_RANDO_LOCKED_SUPERS",
+    "ITEM_RANDO_LOCKED_PBS",
+}
+
 
 @functools.cache
 def _read_template_powerup():
@@ -33,42 +41,21 @@ class BasePickup:
     def patch(self, editor: PatcherEditor):
         raise NotImplementedError
 
-# Note: MSR has a lot of customised Lua for Pickups. We maybe need to add them / take the logic into account?
 class ActorPickup(BasePickup):
     def patch_single_item_pickup(self, bmsad: dict) -> dict:
         pickable = bmsad["components"]["PICKABLE"]
         script: dict = bmsad["components"]["SCRIPT"]
 
         item_id: str = self.pickup["resources"][0][0]["item_id"]
-        quantity: float = self.pickup["resources"][0][0]["quantity"]
         set_custom_params: dict = pickable["functions"][0]["params"]
 
         action_sets: dict = bmsad["action_sets"][0]["animations"][0]
 
         fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
 
-        if item_id == "ITEM_ENERGY_TANKS":
-            item_id = "fMaxLife"
-            quantity *= self.configuration["energy_per_tank"]
-            set_custom_params["Param4"]["value"] = "Full"
-            set_custom_params["Param5"]["value"] = "fCurrentLife"
-            set_custom_params["Param6"]["value"] = "LIFE"
+        if item_id in TANK_ITEMS:
             action_sets["animation_id"] = 150
             action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
-
-        elif item_id == "ITEM_AEION_TANKS":
-            item_id = "fMaxEnergy"
-            quantity *= self.configuration["aeion_per_tank"]
-            set_custom_params["Param4"]["value"] = "Full"
-            set_custom_params["Param5"]["value"] = "fEnergy"
-            set_custom_params["Param6"]["value"] = "SPECIALENERGY"
-            action_sets["animation_id"] = 150
-            action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
-
-        elif item_id in {"ITEM_WEAPON_MISSILE_MAX", "ITEM_RANDO_LOCKED_SUPERS", "ITEM_RANDO_LOCKED_PBS"}:
-            action_sets["animation_id"] = 150
-            action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
-
         elif item_id.startswith("ITEM_SPECIAL_ENERGY"):
             fx_create_and_link["Param13"]["value"] = True
             if item_id == "ITEM_SPECIAL_ENERGY_SCANNING_PULSE":
@@ -83,20 +70,19 @@ class ActorPickup(BasePickup):
             elif item_id == "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT":
                 fx_create_and_link["Param1"]["value"] = "purpleorb"
                 fx_create_and_link["Param2"]["value"] = "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
-
         elif item_id == "ITEM_ADN":
             fx_create_and_link["Param1"]["value"] = "leak"
             fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
             fx_create_and_link["Param13"]["value"] = True
 
-        set_custom_params["Param1"]["value"] = item_id
-        set_custom_params["Param2"]["value"] = quantity
+        set_custom_params["Param1"]["value"] = "ITEM_NONE"
+        set_custom_params["Param2"]["value"] = 0
 
         script["functions"][0]["params"]["Param1"]["value"] = \
             'actors/items/randomizer_powerup/scripts/randomizer_powerup.lc'
-        script["functions"][0]["params"]["Param2"]["value"] = self.lua_editor.get_script_class(self.pickup,
-                                                                                               actordef_name=bmsad[
-                                                                                                   "name"])
+        script["functions"][0]["params"]["Param2"]["value"] = self.lua_editor.get_script_class(
+            self.pickup, actordef_name=bmsad["name"]
+        )
         return bmsad
 
 
@@ -105,17 +91,14 @@ class ActorPickup(BasePickup):
         script: dict = bmsad["components"]["SCRIPT"]
 
         set_custom_params: dict = pickable["functions"][0]["params"]
-        # FIXME: Better would be a nothing item but the game is crashing if you pick up a second progressive when
-        # it tries to show the item on the inventory screen. Now it always shows the first progressive.
-        set_custom_params["Param1"]["value"] = self.pickup["resources"][0][0]["item_id"]
+        set_custom_params["Param1"]["value"] = "ITEM_NONE"
         set_custom_params["Param2"]["value"] = 0
 
         script["functions"][0]["params"]["Param1"]["value"] = \
             'actors/items/randomizer_powerup/scripts/randomizer_powerup.lc'
-        script["functions"][0]["params"]["Param2"]["value"] = self.lua_editor.get_script_class(self.pickup,
-                                                                                               actordef_name=bmsad[
-                                                                                                   "name"])
-
+        script["functions"][0]["params"]["Param2"]["value"] = self.lua_editor.get_script_class(
+            self.pickup, actordef_name=bmsad["name"]
+            )
         return bmsad
 
     def patch_model(self, model_names: list[str], new_template: dict) -> None:
@@ -198,8 +181,6 @@ class ActorPickup(BasePickup):
                 model_data = get_data(model_name)
                 for dep in model_data.dependencies:
                     editor.ensure_present(level_pkg, dep)
-
-        # TODO: Add BMSAS :( ?
 
         # For debugging, write the bmsad we just created
         # Path("custom_bmsad", f"randomizer_powerup_{i}.bmsad.json").write_text(

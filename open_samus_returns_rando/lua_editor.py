@@ -15,8 +15,8 @@ def _read_level_lua(level_id: str) -> str:
 
 
 SPECIFIC_CLASSES = {
-    "ITEM_VARIA_SUIT": "RandomizerVariaSuit",
-    "ITEM_GRAVITY_SUIT": "RandomizerGravitySuit",
+    "ITEM_VARIA_SUIT": "RandomizerSuit",
+    "ITEM_GRAVITY_SUIT": "RandomizerSuit",
     "ITEM_BABY_HATCHLING": "RandomizerBabyHatchling",
     "ITEM_WEAPON_SUPER_MISSILE_MAX": "RandomizerSuperMissile",
     "ITEM_RANDO_LOCKED_SUPERS": "RandomizerSuperMissileTank",
@@ -26,12 +26,26 @@ SPECIFIC_CLASSES = {
     "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD": "RandomizerEnergyShield",
     "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": "RandomizerEnergyWave",
     "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "RandomizerPhaseDisplacement",
+    "ITEM_ENERGY_TANKS": "RandomizerEnergyTank",
+    "ITEM_AEION_TANKS": "RandomizerAeionTank",
+}
+
+SPECIFIC_SOUNDS = {
+    "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": "streams/music/special_ability2_32.wav",
+    "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD": "streams/music/special_ability2_32.wav",
+    "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": "streams/music/special_ability2_32.wav",
+    "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "streams/music/special_ability2_32.wav",
+    "ITEM_ENERGY_TANKS": "streams/music/tank_jingle.wav",
+    "ITEM_AEION_TANKS": "streams/music/tank_jingle.wav",
+    "ITEM_RANDO_LOCKED_SUPERS": "streams/music/tank_jingle.wav",
+    "ITEM_RANDO_LOCKED_PBS": "streams/music/tank_jingle.wav",
+    "ITEM_WEAPON_MISSILE_MAX": "streams/music/tank_jingle.wav",
 }
 
 
 class LuaEditor:
     def __init__(self):
-        self._progressive_classes = {}
+        self._item_classes = {}
         self._powerup_script = _read_powerup_lua()
         self._custom_level_scripts: dict[str, dict] = self._read_levels()
 
@@ -44,13 +58,10 @@ class LuaEditor:
     def get_parent_for(self, item_id) -> str:
         return SPECIFIC_CLASSES.get(item_id, "RandomizerPowerup")
 
-    def get_script_class(self, pickup: dict, boss: bool = False, actordef_name: str = "") -> str:
+    def get_script_class(self, pickup: dict, actordef_name: str = "") -> str:
         pickup_resources = pickup["resources"]
-        parent = self.get_parent_for(pickup_resources[0][0]["item_id"])
-
-        if not boss and len(pickup_resources) == 1 and len(pickup_resources[0]) == 1:
-            # Single-item pickup; don't include progressive template
-            return parent
+        first_item_id = pickup_resources[0][0]["item_id"]
+        parent = self.get_parent_for(first_item_id)
 
         if actordef_name and len(pickup["model"]) > 1:
             self.add_progressive_models(pickup, actordef_name)
@@ -60,10 +71,10 @@ class LuaEditor:
             for res in pickup_resources
         ]).replace("-", "MINUS")
 
-        if hashable_progression in self._progressive_classes.keys():
-            return self._progressive_classes[hashable_progression]
+        if hashable_progression in self._item_classes.keys():
+            return self._item_classes[hashable_progression]
 
-        class_name = f"RandomizerProgressive{hashable_progression}"
+        class_name = f"RandomizerItem{hashable_progression}"
 
         resources = [
             [
@@ -75,18 +86,22 @@ class LuaEditor:
             ]
             for resource_list in pickup_resources
         ]
+        sound = SPECIFIC_SOUNDS.get(first_item_id, "streams/music/sphere_jingle_placeholder.wav")
         replacement = {
             "name": class_name,
             "resources": resources,
             "parent": parent,
+            "caption": lua_util.wrap_string(pickup["caption"]),
+            "sound": lua_util.wrap_string(sound),
         }
-        self.add_progressive_class(replacement)
 
-        self._progressive_classes[hashable_progression] = class_name
+        self.add_item_class(replacement)
+        self._item_classes[hashable_progression] = class_name
+
         return class_name
 
-    def add_progressive_class(self, replacement):
-        new_class = lua_util.replace_lua_template("randomizer_progressive_template.lua", replacement)
+    def add_item_class(self, replacement):
+        new_class = lua_util.replace_lua_template("randomizer_item_template.lua", replacement)
         self._powerup_script += new_class.encode("utf-8")
 
     def add_progressive_models(self, pickup: dict, actordef_name: str):

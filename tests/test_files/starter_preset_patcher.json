@@ -14,7 +14,9 @@
           "ITEM_ENERGY_TANKS": 2,
           "ITEM_AEION_TANKS": 3,
           "ITEM_WEAPON_BOMB": 1,
-          "ITEM_WEAPON_WAVE_BEAM": 1
+          "ITEM_WEAPON_WAVE_BEAM": 1,
+          "ITEM_METROID_COUNT": 0,
+          "ITEM_METROID_TOTAL_COUNT": 40
         },
         "pickups": [
           {

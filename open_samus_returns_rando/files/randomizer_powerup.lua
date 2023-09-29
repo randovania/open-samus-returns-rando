@@ -6,18 +6,25 @@ RandomizerPowerup.tProgressiveModels = {}
 
 RandomizerPowerup.Self = nil
 
+function RandomizerPowerup.Dummy()
+end
+
+
 function RandomizerPowerup.SetItemAmount(item_id, quantity)
     if type(quantity) == "string" then
         quantity = RandomizerPowerup.GetItemAmount(quantity)
     end
     Game.SetItemAmount(Game.GetPlayerName(), item_id, quantity)
 end
+
 function RandomizerPowerup.GetItemAmount(item_id)
     return Game.GetItemAmount(Game.GetPlayerName(), item_id)
 end
+
 function RandomizerPowerup.HasItem(item_id)
     return RandomizerPowerup.GetItemAmount(item_id) > 0
 end
+
 function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
     local target = RandomizerPowerup.GetItemAmount(item_id) + quantity
     if capacity ~= nil then
@@ -30,11 +37,8 @@ function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
     RandomizerPowerup.SetItemAmount(item_id, target)
 end
 
-function RandomizerPowerup.OnPickedUp(actor, resources)
-    RandomizerPowerup.Self = actor
+function RandomizerPowerup.OnPickedUp(resources)
     local granted = RandomizerPowerup.HandlePickupResources(resources)
-
-    RandomizerPowerup.ChangeSuit()
 
     for _, resource in ipairs(granted) do
         RandomizerPowerup.IncreaseAmmo(resource)
@@ -106,22 +110,6 @@ function RandomizerPowerup.HandlePickupResources(progression)
     return {} -- nothing granted after final stage of progression is reached
 end
 
-function RandomizerPowerup.ChangeSuit()
-    -- ordered by priority
-    local suits = {
-        {item = "ITEM_GRAVITY_SUIT", model = "Gravity"},
-        {item = "ITEM_VARIA_SUIT", model = "Varia"},
-    }
-    local model_updater = Game.GetEntity("Samus").MODELUPDATER
-    for _, suit in ipairs(suits) do
-        if suit.model == model_updater.sModelAlias then break end
-        if Game.GetItemAmount(Game.GetPlayerName(), suit.item) > 0 then
-            Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
-            model_updater.sModelAlias = suit.model
-            break
-        end
-    end
-end
 
 function RandomizerPowerup.IncreaseAmmo(resource)
     if not resource then return end
@@ -139,192 +127,159 @@ function RandomizerPowerup.IncreaseAmmo(resource)
     RandomizerPowerup.IncreaseItemAmount(current_id, resource.quantity, resource.item_id)
 end
 
--- Main PBs (always) + PB expansions (if required mains are disabled)
-function RandomizerPowerup._AddLockedPBS(main_item)
-    local locked_pbs = RandomizerPowerup.GetItemAmount("ITEM_RANDO_LOCKED_PBS")
-    local current_max = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_POWER_BOMB_MAX")
-    local current_current = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_POWER_BOMB_CURRENT")
-    local new_current = 0
-    if main_item then
-        new_current = current_max + locked_pbs
-    else
-        new_current = current_current + locked_pbs
-    end
-    RandomizerPowerup.SetItemAmount("ITEM_WEAPON_POWER_BOMB_MAX", current_max + locked_pbs)
-    RandomizerPowerup.SetItemAmount("ITEM_WEAPON_POWER_BOMB_CURRENT", new_current)
-    RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_PBS", 0)
-    hud.UpdatePlayerInfo(true)
+MAX_ENERGY= 1099
+function RandomizerPowerup.IncreaseEnergy()
+    local energy = Init.fEnergyPerTank
+    local new_max = RandomizerPowerup.GetItemAmount("ITEM_MAX_LIFE") + energy
+    new_max = math.min(new_max, MAX_ENERGY)
+    RandomizerPowerup.SetItemAmount("ITEM_MAX_LIFE", new_max)
+    RandomizerPowerup.SetItemAmount("ITEM_CURRENT_LIFE", new_max)
+
+    local life = Game.GetPlayer().LIFE
+    life.fMaxLife = new_max
+    life.fCurrentLife = new_max
+end
+
+MAX_AEION= 2200
+function RandomizerPowerup.IncreaseAeion()
+    local aeion = Init.fAeionPerTank
+    local new_max = RandomizerPowerup.GetItemAmount("ITEM_MAX_SPECIAL_ENERGY") + aeion
+    new_max = math.min(new_max, MAX_AEION)
+    RandomizerPowerup.SetItemAmount("ITEM_MAX_SPECIAL_ENERGY", new_max)
+    RandomizerPowerup.SetItemAmount("ITEM_CURRENT_SPECIAL_ENERGY", new_max)
+
+    local specialEnergy = Game.GetPlayer().SPECIALENERGY
+    specialEnergy.fMaxEnergy = new_max
+    specialEnergy.fEnergy = new_max
 end
 
 RandomizerPowerBomb = {}
 setmetatable(RandomizerPowerBomb, {__index = RandomizerPowerup})
-function RandomizerPowerBomb.OnPickedUp(actor, progression)
-    -- non actor case: grant locked pbs
-    if progression ~= nil then
-        local locked_pbs = RandomizerPowerup.GetItemAmount("ITEM_RANDO_LOCKED_PBS")
-        for _, outer in ipairs(progression) do
-            for _, inner in ipairs(outer) do
-                if inner.item_id == "ITEM_WEAPON_POWER_BOMB_MAX" then
-                    inner.quantity = inner.quantity + locked_pbs
-                end
+function RandomizerPowerBomb.OnPickedUp(progression)
+    local locked_pbs = RandomizerPowerup.GetItemAmount("ITEM_RANDO_LOCKED_PBS")
+    for _, outer in ipairs(progression) do
+        for _, inner in ipairs(outer) do
+            if inner.item_id == "ITEM_WEAPON_POWER_BOMB_MAX" then
+                inner.quantity = inner.quantity + locked_pbs
             end
         end
-        RandomizerPowerup.OnPickedUp(actor, progression)
-        RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_PBS", 0)
-    -- actor case: increase ammo by locked pbs after game handled the pickup
-    else
-        RandomizerPowerup.OnPickedUp(actor, progression)
-        Game.AddSF(0.0, "RandomizerPowerup._AddLockedPBS", "b", true)
     end
-
+    RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_PBS", 0)
 end
 
 
 RandomizerPowerBombTank = {}
 setmetatable(RandomizerPowerBombTank, {__index = RandomizerPowerup})
-function RandomizerPowerBombTank.OnPickedUp(actor, progression)
-    -- use locked supers or super missile max if > 0, which means we have main item
+function RandomizerPowerBombTank.OnPickedUp(progression)
+    -- use locked pbs or power bomb max if > 0, which means we have main item
     local new_item_id = "ITEM_RANDO_LOCKED_PBS"
     local is_main_unlocked = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_POWER_BOMB_MAX") > 0
     if is_main_unlocked then
         new_item_id = "ITEM_WEAPON_POWER_BOMB_MAX"
     end
 
-    -- non actor case => change to correct item
-    if progression ~= nil then
-        -- grant locked supers or new tank
-        for _, outer in ipairs(progression) do
-            for _, inner in ipairs(outer) do
-                inner.item_id = new_item_id
-            end
-        end
-        RandomizerPowerup.OnPickedUp(actor, progression)
-    else
-        if is_main_unlocked then
-            RandomizerPowerup.OnPickedUp(actor, progression)
-            Game.AddSF(0.0, "RandomizerPowerup._AddLockedPBS", "")
+    -- grant locked pbs or new tank
+    for _, outer in ipairs(progression) do
+        for _, inner in ipairs(outer) do
+            inner.item_id = new_item_id
         end
     end
-end
-
--- Supers Main + Tanks
-function RandomizerPowerup._AddLockedSupers(main_item)
-    local locked_supers = RandomizerPowerup.GetItemAmount("ITEM_RANDO_LOCKED_SUPERS")
-    local current_max = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SUPER_MISSILE_MAX")
-    local current_current = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SUPER_MISSILE_CURRENT")
-    local new_current = 0
-    if main_item then
-        new_current = current_max + locked_supers
-    else
-        new_current = current_current + locked_supers
-    end
-    RandomizerPowerup.SetItemAmount("ITEM_WEAPON_SUPER_MISSILE_MAX", current_max + locked_supers)
-    RandomizerPowerup.SetItemAmount("ITEM_WEAPON_SUPER_MISSILE_CURRENT", new_current)
-    RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_SUPERS", 0)
-    hud.UpdatePlayerInfo(true)
+    RandomizerPowerup.OnPickedUp(progression)
 end
 
 RandomizerSuperMissile = {}
 setmetatable(RandomizerSuperMissile, {__index = RandomizerPowerup})
-function RandomizerSuperMissile.OnPickedUp(actor, progression) 
-    -- non actor case: grant locked supers
-    if progression ~= nil then
-        local locked_supers = RandomizerPowerup.GetItemAmount("ITEM_RANDO_LOCKED_SUPERS")
-        for _, outer in ipairs(progression) do
-            for _, inner in ipairs(outer) do
-                if inner.item_id == "ITEM_WEAPON_SUPER_MISSILE_MAX" then
-                    inner.quantity = inner.quantity + locked_supers
-                end
+function RandomizerSuperMissile.OnPickedUp(progression) 
+    local locked_supers = RandomizerPowerup.GetItemAmount("ITEM_RANDO_LOCKED_SUPERS")
+    for _, outer in ipairs(progression) do
+        for _, inner in ipairs(outer) do
+            if inner.item_id == "ITEM_WEAPON_SUPER_MISSILE_MAX" then
+                inner.quantity = inner.quantity + locked_supers
             end
         end
-        RandomizerPowerup.OnPickedUp(actor, progression)
-        RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_SUPERS", 0)
-    -- actor case: increase ammo by locked supers after game handled the pickup
-    else
-        RandomizerPowerup.OnPickedUp(actor, progression)
-        Game.AddSF(0.0, "RandomizerPowerup._AddLockedSupers", "b", true)
     end
-
+    RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_SUPERS", 0)
 end
 
 RandomizerSuperMissileTank = {}
 setmetatable(RandomizerSuperMissileTank, {__index = RandomizerPowerup})
-function RandomizerSuperMissileTank.OnPickedUp(actor, progression)
+function RandomizerSuperMissileTank.OnPickedUp(progression)
     -- use locked supers or super missile max if > 0, which means we have main item
     local new_item_id = "ITEM_RANDO_LOCKED_SUPERS"
     local is_main_unlocked = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SUPER_MISSILE_MAX") > 0
     if is_main_unlocked then
         new_item_id = "ITEM_WEAPON_SUPER_MISSILE_MAX"
     end
-
-    -- non actor case => change to correct item
-    if progression ~= nil then
-        -- grant locked supers or new tank
-        for _, outer in ipairs(progression) do
-            for _, inner in ipairs(outer) do
-                inner.item_id = new_item_id
-            end
-        end
-        RandomizerPowerup.OnPickedUp(actor, progression)
-    else
-        if is_main_unlocked then
-            RandomizerPowerup.OnPickedUp(actor, progression)
-            Game.AddSF(0.0, "RandomizerPowerup._AddLockedSupers", "")
+    -- grant locked supers or new tank
+    for _, outer in ipairs(progression) do
+        for _, inner in ipairs(outer) do
+            inner.item_id = new_item_id
         end
     end
+    RandomizerPowerup.OnPickedUp(progression)
 end
 
-RandomizerVariaSuit = {}
-setmetatable(RandomizerVariaSuit, {__index = RandomizerPowerup})
-function RandomizerVariaSuit.OnPickedUp(actor, progression)
-    RandomizerPowerup.OnPickedUp(actor, progression)
-    -- Prevents changing the suit to varia if gravity
-    if Game.GetPlayer().MODELUPDATER.sModelAlias == "Default" then
+RandomizerSuit = {}
+setmetatable(RandomizerSuit, {__index = RandomizerPowerup})
+function RandomizerSuit.OnPickedUp(progression)
+    RandomizerPowerup.DisableLiquids()
+    RandomizerPowerup.OnPickedUp(progression)
+    if Game.GetEntity("Samus").MODELUPDATER.sModelAlias == "Default" then
         Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
+    else
+        Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
     end
     Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
+    RandomizerPowerup.EnableLiquids()
 end
 
-RandomizerGravitySuit = {}
-setmetatable(RandomizerGravitySuit, {__index = RandomizerPowerup})
-function RandomizerGravitySuit.OnPickedUp(actor, progression)
-    RandomizerPowerup.DisableLiquids()
-    RandomizerPowerup.OnPickedUp(actor, progression)
-    Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
-    RandomizerPowerup.EnableLiquids()
+RandomizerEnergyTank = {}
+setmetatable(RandomizerEnergyTank, {__index = RandomizerPowerup})
+function RandomizerEnergyTank.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.IncreaseEnergy()
+end
+
+RandomizerAeionTank = {}
+setmetatable(RandomizerAeionTank, {__index = RandomizerPowerup})
+function RandomizerAeionTank.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.IncreaseAeion()
 end
 
 RandomizerBabyHatchling = {}
 setmetatable(RandomizerBabyHatchling, {__index = RandomizerPowerup})
-function RandomizerBabyHatchling.OnPickedUp(actor, progression)
-    RandomizerPowerup.OnPickedUp(actor, progression)
+function RandomizerBabyHatchling.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
     Game.GetDefaultPlayer("Samus").BABYHATCHLINGCREATION:SpawnBaby()
 end
 
 RandomizerScanningPulse = {}
 setmetatable(RandomizerScanningPulse, {__index = RandomizerPowerup})
-function RandomizerScanningPulse.OnPickedUp(actor, progression)
-    RandomizerPowerup.OnPickedUp(actor, progression)
+function RandomizerScanningPulse.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
     Player.SetAbilityUnlocked("ScanningPulse", true)
 end
 
 RandomizerEnergyShield = {}
 setmetatable(RandomizerEnergyShield, {__index = RandomizerPowerup})
-function RandomizerEnergyShield.OnPickedUp(actor, progression)
-    RandomizerPowerup.OnPickedUp(actor, progression)
+function RandomizerEnergyShield.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
     Player.SetAbilityUnlocked("EnergyShield", true)
 end
 
 RandomizerEnergyWave = {}
 setmetatable(RandomizerEnergyWave, {__index = RandomizerPowerup})
-function RandomizerEnergyWave.OnPickedUp(actor, progression)
-    RandomizerPowerup.OnPickedUp(actor, progression)
+function RandomizerEnergyWave.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
     Player.SetAbilityUnlocked("EnergyWave", true)
 end
 
 RandomizerPhaseDisplacement = {}
 setmetatable(RandomizerPhaseDisplacement, {__index = RandomizerPowerup})
-function RandomizerPhaseDisplacement.OnPickedUp(actor, progression)
-    RandomizerPowerup.OnPickedUp(actor, progression)
+function RandomizerPhaseDisplacement.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
     Player.SetAbilityUnlocked("PhaseDisplacement", true)
 end

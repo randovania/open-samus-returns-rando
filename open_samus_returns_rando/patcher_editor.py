@@ -7,7 +7,6 @@ from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
 from mercury_engine_data_structures.formats import BaseResource, Bmsld
 from mercury_engine_data_structures.game_check import Game
 
-from open_samus_returns_rando.bmsld_add import remove_actor_from_all_groups
 from open_samus_returns_rando.constants import ALL_AREAS
 
 T = typing.TypeVar("T")
@@ -61,9 +60,9 @@ class PatcherEditor(FileTreeEditor):
         new_actor = copy.deepcopy(template_actor)
         current_scenario = self.get_scenario(scenario)
         current_scenario.raw.actors[layer_index][new_name] = new_actor
-        new_actor.x = coords[0] + offset[0]
-        new_actor.y = coords[1] + offset[1]
-        new_actor.z = coords[2] + offset[2]
+        new_actor["position"][0] = coords[0] + offset[0]
+        new_actor["position"][1] = coords[1] + offset[1]
+        new_actor["position"][2] = coords[2] + offset[2]
 
         return new_actor
 
@@ -73,4 +72,4 @@ class PatcherEditor(FileTreeEditor):
         actor_name = reference["actor"]
 
         scenario.raw.actors[layer].pop(actor_name)
-        remove_actor_from_all_groups(scenario, actor_name)
+        scenario.remove_actor_from_all_groups(actor_name)
