@@ -142,6 +142,7 @@ function s067_area6c.OnEnter_SetCheckpoint_001_Gamma_001()
   Game.SetBossCheckPointNames("ST_SG_Gamma_001", "ST_SG_Gamma_001_Out", "SG_Gamma_001", "", "")
 end
 function s067_area6c.OnGamma_001_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_001")
   if _ARG_1_ ~= nil then
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
@@ -200,6 +201,7 @@ function s067_area6c.OnEnter_SetCheckpoint_001_Zeta_002()
   Game.SetBossCheckPointNames("ST_SG_Zeta_002", "ST_SG_Zeta_002_Out", "SG_Zeta_002", "", "")
 end
 function s067_area6c.OnZeta_002_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Zeta_002")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door022")
     _ARG_1_.AI.bPlaceholder = false

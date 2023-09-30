@@ -78,6 +78,7 @@ function s033_area3b.OnEnter_SetCheckpoint_001_Alpha_002()
   Game.SetBossCheckPointNames("ST_SG_Alpha_002", "ST_SG_Alpha_002_Out", "SG_Alpha_002", "", "")
 end
 function s033_area3b.OnAlpha_002_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Alpha_002")
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door016")
     -- _ARG_1_.AI:AddBossDoor("Door018")
@@ -117,6 +118,7 @@ function s033_area3b.OnEnter_SetCheckpoint_002_Alpha_003()
   Game.SetBossCheckPointNames("ST_SG_Alpha_003B", "ST_SG_Alpha_003B_Out", "SG_Alpha_003", "", "")
 end
 function s033_area3b.OnAlpha_003_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Alpha_003")
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door017")
     _ARG_1_.AI.bPlaceholder = false
@@ -172,6 +174,7 @@ function s033_area3b.OnEnter_SetCheckpoint_002_Gamma_001()
   Game.SetBossCheckPointNames("ST_SG_Gamma_001B", "ST_SG_Gamma_001B_Out", "SG_Gamma_001", "", "")
 end
 function s033_area3b.OnGamma_001_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_001")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door002")
     _ARG_1_.AI.bPlaceholder = false
@@ -230,6 +233,7 @@ function s033_area3b.OnEnter_SetCheckpoint_002_Gamma_002()
   Game.SetBossCheckPointNames("ST_SG_Gamma_002", "ST_SG_Gamma_002_Out", "SG_Gamma_002", "", "")
 end
 function s033_area3b.OnGamma_002_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_002")
   if _ARG_1_ ~= nil then
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
@@ -284,6 +288,7 @@ function s033_area3b.OnEnter_SetCheckpoint_001_Gamma_003()
   Game.SetBossCheckPointNames("ST_SG_Gamma_003", "ST_SG_Gamma_003_Out", "SG_Gamma_003", "", "")
 end
 function s033_area3b.OnGamma_003_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_003")
   if _ARG_1_ ~= nil then
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
@@ -399,6 +404,8 @@ function s033_area3b.OnGamma_004_Intro_B_Generated(_ARG_0_, _ARG_1_)
   s033_area3b.OnGamma_004_B_Generated(_ARG_0_, _ARG_1_)
 end
 function s033_area3b.OnGamma_004_B_Generated(_ARG_0_, _ARG_1_)
+  -- TODO: No idea if this is the right one (multi-room gamma)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_004_B")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door014")
     _ARG_1_.AI.bPlaceholder = false

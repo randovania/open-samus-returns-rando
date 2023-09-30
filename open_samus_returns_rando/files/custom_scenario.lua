@@ -71,3 +71,9 @@ end
 function Scenario.OnSubAreaChange(old_subarea, old_actorgroup, new_subarea, new_actorgroup, disable_fade)
   Scenario.UpdateProgressiveItemModels()
 end
+
+function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_name)
+  if created_actor ~= nil and created_actor.sName ~= nil then
+    CurrentScenario.currentMetroidSpawngroup = group_name
+  end
+end

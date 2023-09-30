@@ -501,6 +501,7 @@ function s010_area1.OnEnter_SetCheckpoint_001_Alpha_001()
   Game.SetBossCheckPointNames("ST_SG_Alpha_001", "ST_SG_Alpha_001_Out", "SG_Alpha_001", "", "")
 end
 function s010_area1.OnAlpha_001_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Alpha_001")
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
@@ -523,6 +524,7 @@ function s010_area1.OnEnter_SetCheckpoint_001_Alpha_002()
   Game.SetBossCheckPointNames("ST_SG_Alpha_002", "ST_SG_Alpha_002_Out", "SG_Alpha_002", "", "")
 end
 function s010_area1.OnAlpha_002_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Alpha_002")
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door014")
     _ARG_1_.AI.bPlaceholder = false
@@ -544,6 +546,7 @@ function s010_area1.OnEnter_SetCheckpoint_001_Alpha_003()
   Game.SetBossCheckPointNames("ST_SG_Alpha_003", "ST_SG_Alpha_003_Out", "SG_Alpha_003", "", "")
 end
 function s010_area1.OnAlpha_003_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Alpha_003")
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door015")
     _ARG_1_.AI.bPlaceholder = false
@@ -583,6 +586,7 @@ function s010_area1.OnEnter_SetCheckpoint_002_Alpha_004()
   Game.SetBossCheckPointNames("ST_SG_Alpha_004B", "ST_SG_Alpha_004B_Out", "SG_Alpha_004", "", "")
 end
 function s010_area1.OnAlpha_004_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Alpha_004")
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door016")
     _ARG_1_.AI.bPlaceholder = false
