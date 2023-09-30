@@ -107,13 +107,15 @@ def _patch_beam_covers(editor: PatcherEditor):
         "s000_surface": ["LE_PlasmaShield_Door_008"],
         "s010_area1": ["LE_DoorShieldWave008", "LE_SpazerShield_Door007"],
         "s020_area2": ["LE_WaveShield_Door010"],
-        "s025_area2b": ["LE_PlasmaShield_Door017", "LE_WaveShield_Door008", "LE_WaveShield_Door016", "LE_WaveShield_Door019"],
+        "s025_area2b": ["LE_PlasmaShield_Door017", "LE_WaveShield_Door008",
+                        "LE_WaveShield_Door016", "LE_WaveShield_Door019"],
         "s033_area3b": ["LE_SpazerShield_Door_010", "LE_WaveShield_Door_007"],
         "s036_area3c": ["LE_WaveShield_Door_006"],
         "s040_area4": ["LE_SpazerShield_Door_001", "LE_SpazerShield_Door_004"],
         "s050_area5": ["LE_SpazerShield_Door008"],
         "s065_area6b": ["LE_PlasmaShield_Door003"],
-        "s067_area6c": ["LE_PlasmaShield_Door005", "LE_PlasmaShield_Door014", "LE_PlasmaShield_Door016", "LE_SpazerShield_Door018"],
+        "s067_area6c": ["LE_PlasmaShield_Door005", "LE_PlasmaShield_Door014",
+                        "LE_PlasmaShield_Door016", "LE_SpazerShield_Door018"],
         "s090_area9": ["LE_PlasmaShield_Door003", "LE_Shield_Door006", "LE_Shield_Door015"],
         "s110_surfaceb": ["LE_SpazerShield_Door_012"]
     }
@@ -142,11 +144,11 @@ def _patch_beam_covers(editor: PatcherEditor):
 
             # Note: New actors should be added to the entity groups but maybe that brings back our old friend
             # "removing random actors in a room". Comment it out in that case after playtests
-            entity_groups = [group for group_name, group in scenario.all_actor_groups()
-                    if group_name in list(scenario.all_actor_group_names_for_actor(cover_name))]
-            for group in entity_groups:
-                idx = group.names.index(cover_name)
-                group.names.insert(idx, new_actor_name)
+            # entity_groups = [group for group_name, group in scenario.all_actor_groups()
+            #         if group_name in list(scenario.all_actor_group_names_for_actor(cover_name))]
+            # for group in entity_groups:
+            #     idx = group.names.index(cover_name)
+            #     group.names.insert(idx, new_actor_name)
 
 
 def _patch_charge_doors(editor: PatcherEditor):
