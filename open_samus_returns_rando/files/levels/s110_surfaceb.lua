@@ -551,7 +551,7 @@ function s110_surfaceb.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_
   Game.SetScenarioItemEnabledByName("ray01", false)
   Game.SetSceneGroupEnabledByName("sg_debris02", false)
   Game.SetSceneGroupEnabledByName("sg_debris03", false)
-  if _ARG_0_ == "collision_camera_017" and _ARG_2_ == "collision_camera_000" and Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_ADN") < 39 then
+  if _ARG_0_ == "collision_camera_017" and _ARG_2_ == "collision_camera_000" and Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") < 39 then
     Game.LoadScenario("c10_samus", "s000_surface", "", "Samus", 1)
     Game.GetPlayer().vPos = V3D(-22800, 4450, 0)
   end
