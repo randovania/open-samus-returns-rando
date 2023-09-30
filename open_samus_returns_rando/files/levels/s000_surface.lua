@@ -465,8 +465,9 @@ function s000_surface.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4
   --  s000_surface.LaunchFirstTimeChozoStatuePresentation()
   --elseif _ARG_0_ == "collision_camera_016" and _ARG_2_ == "collision_camera_002" and not Scenario.ReadFromBlackboard("MeleeTutoPlayed", false) then
   --  s000_surface.LaunchMeleeTutoCutscene()
-  --elseif _ARG_0_ == "collision_camera_003" and _ARG_2_ == "collision_camera_004" and not Scenario.ReadFromBlackboard("FirstTimeDNAStatuePlayed", false) then
-  --  s000_surface.LaunchFirstTimeDNAStatuePresentation()
+  if _ARG_2_ == "collision_camera_004" and not Scenario.ReadFromBlackboard("FirstTimeDNAStatuePlayed", false) then
+    s000_surface.LaunchFirstTimeDNAStatuePresentation()
+  end
   --elseif _ARG_0_ == "collision_camera_014" and _ARG_2_ == "collision_camera_023" and not Scenario.ReadFromBlackboard("IntroMetroidLarvaSurfacePlayed", false) then
   --  s000_surface.LaunchIntroMetroidLarvaSurfacePresentation()
   --end
@@ -502,8 +503,9 @@ function s000_surface.OnSkipPlanetArrival()
 end
 function s000_surface.LaunchFirstTimeDNAStatuePresentation()
   Scenario.WriteToBlackboard("FirstTimeDNAStatuePlayed", "b", true)
-  Game.AddEntityToUpdateInCutscene("LE_ChozoUnlockAreaDNA")
-  Game.LaunchCutscene("cutscenes/introdnastatue/takes/01/introdnastatue01.bmscu")
+  Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 1)
+  Game.GetEntity("LE_ChozoUnlockAreaDNA").USABLE:SetHintUseDNAExecuted()
+  -- Game.LaunchCutscene("cutscenes/introdnastatue/takes/01/introdnastatue01.bmscu")
   if Game.GetEntity("TG_Intro_DNAStatue") ~= nil then
     Game.GetEntity("TG_Intro_DNAStatue").TRIGGER:DisableTrigger()
   end
