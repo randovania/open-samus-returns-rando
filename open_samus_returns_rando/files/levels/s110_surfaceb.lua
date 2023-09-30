@@ -138,21 +138,19 @@ function s110_surfaceb.OnEnter_SetCheckpoint_001_Ridley()
   Game.SetBossCheckPointNames("ST_SG_Ridley", "ST_SG_Ridley", "SG_Ridley", "", "")
 end
 function s110_surfaceb.LaunchRidleyIntro()
-  if Game.GetPlayer().INVENTORY:GetItemAmount("ITEM_METROID_COUNT") == 0 then
-    Game.FadeOut(0.3)
-    if Game.GetPlayer() ~= nil then
-      Game.GetPlayer().INPUT:IgnoreInput(true, false)
-      Game.GetPlayer().MOVEMENT:StartForcedAnalogInput(1, 0)
-    end
-    Game.AddSF(0.31, "s110_surfaceb.ScheduledTeleportRidleyIntro", "")
-    if Game.GetEntity("Samus") ~= nil then
-      Game.GetEntity("Samus").MODELUPDATER:SetVertexLightsEnabled(true)
-    end
-    if Game.GetEntity("morphball") ~= nil then
-      Game.GetEntity("morphball").MODELUPDATER:SetVertexLightsEnabled(true)
-    end
-    s110_surfaceb.SetRidleyStormSoundEnabled(false)
+  Game.FadeOut(0.3)
+  if Game.GetPlayer() ~= nil then
+    Game.GetPlayer().INPUT:IgnoreInput(true, false)
+    Game.GetPlayer().MOVEMENT:StartForcedAnalogInput(1, 0)
   end
+  Game.AddSF(0.31, "s110_surfaceb.ScheduledTeleportRidleyIntro", "")
+  if Game.GetEntity("Samus") ~= nil then
+    Game.GetEntity("Samus").MODELUPDATER:SetVertexLightsEnabled(true)
+  end
+  if Game.GetEntity("morphball") ~= nil then
+    Game.GetEntity("morphball").MODELUPDATER:SetVertexLightsEnabled(true)
+  end
+  s110_surfaceb.SetRidleyStormSoundEnabled(false)
 end
 function s110_surfaceb.PlayMusicOnSkip(_ARG_0_)
   Game.PlayMusicFromLoopStart(_ARG_0_)
@@ -169,14 +167,12 @@ function s110_surfaceb.OnRidley3Skip()
   Game.AddSF(0.5, "s110_surfaceb.PlayMusicOnSkip", "s", "m_boss_ridley_third99")
 end
 function s110_surfaceb.ScheduledTeleportRidleyIntro()
-  if Game.GetPlayer().INVENTORY:GetItemAmount("ITEM_METROID_COUNT") == 0 then
-    Game.LockSamusOnMinimap()
-    if Game.GetEntity("SP_Ridley") ~= nil and Game.GetPlayer() ~= nil then
-      Game.GetPlayer().vPos = Game.GetEntity("SP_Ridley").vPos
-      Game.GetPlayer().MOVEMENT:StopForcedAnalogInput()
-    end
-    Game.AddSF(0, "s110_surfaceb.ScheduledLaunchRidleyIntro", "")
+  Game.LockSamusOnMinimap()
+  if Game.GetEntity("SP_Ridley") ~= nil and Game.GetPlayer() ~= nil then
+    Game.GetPlayer().vPos = Game.GetEntity("SP_Ridley").vPos
+    Game.GetPlayer().MOVEMENT:StopForcedAnalogInput()
   end
+  Game.AddSF(0, "s110_surfaceb.ScheduledLaunchRidleyIntro", "")
 end
 function s110_surfaceb.ScheduledLaunchRidleyIntro()
   if Game.GetPlayer() ~= nil then
@@ -555,7 +551,11 @@ function s110_surfaceb.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_
   Game.SetScenarioItemEnabledByName("ray01", false)
   Game.SetSceneGroupEnabledByName("sg_debris02", false)
   Game.SetSceneGroupEnabledByName("sg_debris03", false)
-  if _ARG_2_ == "collision_camera_021" and _ARG_0_ == "collision_camera_021" and _ARG_3_ == "RidleyCombat" and Game.GetPlayer().INVENTORY:GetItemAmount("ITEM_METROID_COUNT") == 0 then
+  if _ARG_0_ == "collision_camera_017" and _ARG_2_ == "collision_camera_000" and Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") < 39 then
+    Game.LoadScenario("c10_samus", "s000_surface", "", "Samus", 1)
+    Game.GetPlayer().vPos = V3D(-22800, 4450, 0)
+  end
+  if _ARG_2_ == "collision_camera_021" and _ARG_0_ == "collision_camera_021" and _ARG_3_ == "RidleyCombat" then
     if Game.GetEntity("SG_Ridley") ~= nil then
       Game.GetEntity("SG_Ridley").SPAWNGROUP:EnableSpawnGroup()
       if Game.GetEntityFromSpawnPoint("SP_Ridley") ~= nil then
