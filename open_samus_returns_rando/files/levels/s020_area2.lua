@@ -300,7 +300,7 @@ function s020_area2.OnEnter_SetCheckpoint_001_Alpha_004()
 end
 function s020_area2.OnAlpha_004_Generated(_ARG_0_, _ARG_1_)
   Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Alpha_004")
-    if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
+  if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door010")
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddBossCamera("CAM_Alpha")
