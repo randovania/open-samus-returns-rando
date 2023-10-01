@@ -18,9 +18,6 @@ function Metroid.RemoveMetroid(_ARG_0_)
         Scenario.WriteToBlackboard("entity_" .. spawnGroupName .. "_dead", "b", true)
         Scenario.WriteToBlackboard("entity_" .. spawnGroupName .. "_deaths", "i", 1)
         Scenario.WriteToBlackboard("entity_" .. spawnGroupName .. "_enabled", "b", false)
-        Scenario.WriteToBlackboard("entity_" .. "Alpha_001" .. "_dead", "b", true)
-        Scenario.WriteToBlackboard("entity_" .. "Alpha_001" .. "_deaths", "i", 1)
-        Scenario.WriteToBlackboard("entity_" .. "Alpha_001" .. "_enabled", "b", false)
         
         local count = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_METROID_COUNT") + 1
         Game.SetItemAmount(Game.GetPlayerName(), "ITEM_METROID_COUNT", count)
