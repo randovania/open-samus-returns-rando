@@ -177,6 +177,7 @@ function s070_area7.OnEnter_SetCheckpoint_001_Zeta_001()
   Game.SetBossCheckPointNames("ST_SG_Zeta_001", "ST_SG_Zeta_001_Out", "SG_Zeta_001", "", "")
 end
 function s070_area7.OnZeta_001_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Zeta_001")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door021")
     -- _ARG_1_.AI:AddBossDoor("Door022")
@@ -197,6 +198,7 @@ function s070_area7.OnEnter_SetCheckpoint_001_Omega_001()
   Game.SetBossCheckPointNames("ST_SG_Omega_001", "ST_SG_Omega_001", "SG_Omega_001", "", "")
 end
 function s070_area7.OnOmega_001_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Omega_001")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door015")
     -- _ARG_1_.AI:AddBossDoor("Door023")

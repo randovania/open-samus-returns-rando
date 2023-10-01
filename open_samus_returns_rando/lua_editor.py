@@ -46,6 +46,7 @@ SPECIFIC_SOUNDS = {
 class LuaEditor:
     def __init__(self):
         self._item_classes = {}
+        self._metroid_dict = {}
         self._powerup_script = _read_powerup_lua()
         self._custom_level_scripts: dict[str, dict] = self._read_levels()
 
@@ -124,8 +125,19 @@ class LuaEditor:
         self._powerup_script += models.encode("utf-8")
 
     def save_modifications(self, editor: PatcherEditor):
+        final_metroid_script = lua_util.replace_lua_template("metroid_template.lua", {"mapping": self._metroid_dict})
+
         editor.replace_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", self._powerup_script)
+        editor.replace_asset("actors/scripts/metroid.lc", final_metroid_script.encode("utf-8"))
         editor.replace_asset("actors/props/heatzone/scripts/heatzone.lc",
                              files_path().joinpath("heatzone.lua").read_bytes())
         for scenario, script in self._custom_level_scripts.items():
             editor.replace_asset(path_for_level(scenario) + ".lc", script["script"].encode("utf-8"))
+
+    def add_metroid_pickup(self, metroid_callback: dict, lua_class: str) -> None:
+        scenario = metroid_callback["scenario"]
+        spawngroup = metroid_callback["spawngroup"]
+        if scenario not in self._metroid_dict:
+            self._metroid_dict[scenario] = {}
+        scenario_list = self._metroid_dict[scenario]
+        scenario_list[spawngroup] = lua_class

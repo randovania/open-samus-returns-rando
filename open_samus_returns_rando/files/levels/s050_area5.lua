@@ -126,6 +126,8 @@ function s050_area5.OnGamma_002_Intro_A_Generated(_ARG_0_, _ARG_1_)
   s050_area5.OnGamma_002_A_Generated(_ARG_0_, _ARG_1_)
 end
 function s050_area5.OnGamma_002_A_Generated(_ARG_0_, _ARG_1_)
+  -- TODO: No idea if this is the right one (multi-room gamma)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_002_A")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door014")
     _ARG_1_.AI.bPlaceholder = false
@@ -294,6 +296,7 @@ function s050_area5.OnEnter_SetCheckpoint_Zeta_001()
   Game.SetBossCheckPointNames("ST_SG_Zeta_001", "ST_SG_Zeta_001_Out", "SG_Zeta_001", "", "")
 end
 function s050_area5.OnZeta_001_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Zeta_001")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door009")
     _ARG_1_.AI.bPlaceholder = false

@@ -228,6 +228,7 @@ function s000_surface.OnEnter_SetCheckpoint_001_Alpha_001()
   Game.SetBossCheckPointNames("ST_SG_Alpha_001", "ST_SG_Alpha_001_Out", "SG_Alpha_001", "", "")
 end
 function s000_surface.OnAlpha_001_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Alpha_001")
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door013")
     _ARG_1_.AI.bPlaceholder = false

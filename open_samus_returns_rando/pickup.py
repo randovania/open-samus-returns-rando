@@ -30,6 +30,7 @@ def _read_template_powerup():
 
 class PickupType(Enum):
     ACTOR = "actor"
+    METROID = "metroid"
 
 class BasePickup:
     def __init__(self, lua_editor: LuaEditor, pickup: dict, pickup_id: int, configuration: dict):
@@ -100,6 +101,7 @@ class ActorPickup(BasePickup):
             self.pickup, actordef_name=bmsad["name"]
             )
         return bmsad
+
 
     def patch_model(self, model_names: list[str], new_template: dict) -> None:
         if len(model_names) == 1:
@@ -187,12 +189,19 @@ class ActorPickup(BasePickup):
         #     json.dumps(new_template, indent=4)
         # )
 
+class MetroidPickup(BasePickup):
+    def patch(self, editor: PatcherEditor):
+        lua_class = self.lua_editor.get_script_class(self.pickup)
+        self.lua_editor.add_metroid_pickup(self.pickup["metroid_callback"], lua_class)
+
+
 def ensure_base_models(editor: PatcherEditor) -> None:
     for level_pkg in editor.get_all_level_pkgs():
         # ensure base stuff
         editor.ensure_present(level_pkg, "system/animtrees/base.bmsat")
         editor.ensure_present(level_pkg, "sounds/generic/obtencion.bcwav")
         editor.ensure_present(level_pkg, "actors/items/randomizer_powerup/scripts/randomizer_powerup.lc")
+        editor.ensure_present(level_pkg, "actors/scripts/metroid.lc")
 
         # ensure itemsphere stuff (base for many majors)
         editor.ensure_present(level_pkg, "actors/items/itemsphere/animations/relax.bcskla")
@@ -207,9 +216,9 @@ def ensure_base_models(editor: PatcherEditor) -> None:
             editor.ensure_present(level_pkg, dep)
 
 
-
 def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
     editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", b'', [])
+    editor.add_new_asset("actors/scripts/metroid.lc", b'', [])
     ensure_base_models(editor)
 
     for i, pickup in enumerate(pickups_config):
@@ -219,9 +228,9 @@ def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config:
         except NotImplementedError as e:
             LOG.warning(e)
 
-
 _PICKUP_TYPE_TO_CLASS: dict[PickupType, type[BasePickup]] = {
     PickupType.ACTOR: ActorPickup,
+    PickupType.METROID: MetroidPickup,
 }
 
 def pickup_object_for(lua_scripts: LuaEditor, pickup: dict, pickup_id: int, configuration: dict) -> "BasePickup":

@@ -1,0 +1,119 @@
+{
+    "$schema": "../../open_samus_returns_rando/files/schema.json",
+    "starting_location": {
+        "scenario": "s020_area2",
+        "actor": "ST_SG_Alpha_004_Out"
+    },
+    "starting_items": {
+        "ITEM_MAX_LIFE": 599,
+        "ITEM_MAX_SPECIAL_ENERGY": 1000,
+        "ITEM_METROID_COUNT": 0,
+        "ITEM_METROID_TOTAL_COUNT": 40,
+        "ITEM_WEAPON_MISSILE_MAX": 50,
+        "ITEM_WEAPON_SUPER_MISSILE_MAX": 10,
+        "ITEM_WEAPON_POWER_BOMB_MAX": 10,
+        "ITEM_MORPH_BALL": 1,
+        "ITEM_SPIDER_BALL": 1,
+        "ITEM_ENERGY_TANKS": 8,
+        "ITEM_AEION_TANKS": 3,
+        "ITEM_WEAPON_BOMB": 1,
+        "ITEM_WEAPON_CHARGE_BEAM": 1,
+        "ITEM_WEAPON_SPAZER_BEAM": 1,
+        "ITEM_WEAPON_ICE_BEAM": 1,
+        "ITEM_WEAPON_PLASMA_BEAM": 1,
+        "ITEM_WEAPON_WAVE_BEAM": 1,
+        "ITEM_HIGH_JUMP_BOOTS": 1,
+        "ITEM_SPACE_JUMP": 1,
+        "ITEM_SPRING_BALL": 1,
+        "ITEM_WEAPON_GRAPPLE_BEAM": 1,
+        "ITEM_VARIA_SUIT": 1
+    },
+    "pickups": [
+        {
+            "pickup_type": "actor",
+            "caption": "Space Jump acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SPACE_JUMP",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s020_area2",
+                "actor": "another_pickup12"
+            },
+            "model": [
+                "powerup_spacejump"
+            ]
+        },
+        {
+            "pickup_type": "metroid",
+            "caption": "Gravity Suit acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_GRAVITY_SUIT",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "metroid_callback": {
+                "scenario": "s020_area2",
+                "spawngroup": "SG_Alpha_004"
+            }
+        },
+        {
+            "pickup_type": "metroid",
+            "caption": "Scan Pulse acquired.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_SPECIAL_ENERGY_SCANNING_PULSE",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "metroid_callback": {
+                "scenario": "s020_area2",
+                "spawngroup": "SG_Alpha_003"
+            }
+        }
+
+    ],
+    "energy_per_tank": 100,
+    "aeion_per_tank": 50,
+    "reveal_map_on_start": true,
+    "game_patches": {
+        "nerf_power_bombs": false
+    },
+    "new_spawn_points": [
+        {
+            "new_actor": {
+                "actor": "SP_RDV_000",
+                "scenario": "s020_area2"
+            },
+            "location": {
+                "x": -8000.0,
+                "y": 2016.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_005"
+        }
+    ],
+    "custom_pickups": [
+        {
+            "new_actor": {
+                "actor": "another_pickup12",
+                "scenario": "s020_area2"
+            },
+            "location": {
+                "x": -6400.0,
+                "y": 3300.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_005"
+        }
+    ]
+}

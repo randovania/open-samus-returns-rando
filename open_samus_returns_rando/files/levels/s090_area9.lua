@@ -145,6 +145,7 @@ function s090_area9.OnEnter_SetCheckpoint_001_Omega_001()
   Game.SetBossCheckPointNames("ST_SG_Omega_001", "ST_SG_Omega_001", "SG_Omega_001", "", "")
 end
 function s090_area9.OnOmega_001_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Omega_001")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door016")
     _ARG_1_.AI.bPlaceholder = false
@@ -195,6 +196,7 @@ function s090_area9.OnEnter_SetCheckpoint_001_Omega_002()
   Game.SetBossCheckPointNames("ST_SG_Omega_002", "ST_SG_Omega_002", "SG_Omega_002", "", "")
 end
 function s090_area9.OnOmega_002_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Omega_002")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door006")
     _ARG_1_.AI.bPlaceholder = false
@@ -243,6 +245,7 @@ function s090_area9.OnEnter_SetCheckpoint_001_Omega_003()
   Game.SetBossCheckPointNames("ST_SG_Omega_003", "ST_SG_Omega_003_Out", "SG_Omega_003", "", "")
 end
 function s090_area9.OnOmega_003_Generated(_ARG_0_, _ARG_1_)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Omega_003")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door015")
     _ARG_1_.AI.bPlaceholder = false
