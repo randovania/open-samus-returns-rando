@@ -48,9 +48,15 @@ def create_custom_init(configuration: dict) -> str:
         atanks = inventory.pop("ITEM_AEION_TANKS")
         max_aeion += atanks * aeion_per_tank
 
+    # These fields are required to start the game
     inventory_update = {
         "ITEM_MAX_LIFE": max_life,
         "ITEM_MAX_SPECIAL_ENERGY": max_aeion,
+        "ITEM_WEAPON_MISSILE_MAX": 0,
+        "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
+        "ITEM_WEAPON_POWER_BOMB_MAX": 0,
+        "ITEM_METROID_COUNT": 0,
+        "ITEM_METROID_TOTAL_COUNT": 40,
     }
     inventory.update(inventory_update)
 
