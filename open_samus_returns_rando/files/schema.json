@@ -177,31 +177,6 @@
                 "additionalProperties": false
             },
             "default": []
-        },
-        "custom_pickups": {
-            "type": "array",
-            "description": "Creates new pickups",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "new_actor": {
-                        "$ref": "#/$defs/actor_reference"
-                    },
-                    "location": {
-                        "$ref": "#/$defs/position"
-                    },
-                    "collision_camera_name": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "new_actor",
-                    "location",
-                    "collision_camera_name"
-                ],
-                "additionalProperties": false
-            },
-            "default": []
         }
     },
     "required": [

@@ -6,6 +6,7 @@ from pathlib import Path
 
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
+from open_samus_returns_rando.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
@@ -88,15 +89,6 @@ def patch_spawn_points(editor: PatcherEditor, spawn_config: list[dict]):
         editor.copy_actor(scenario_name, new_spawn_pos, base_actor, new_actor_name, 5)
         scenario.add_actor_to_entity_groups(collision_camera_name, new_actor_name)
 
-def patch_custom_pickups(editor: PatcherEditor, pickup_config: list[dict]):
-    # create custom pickup
-    _EXAMPLE_PICKUP = {"scenario": "s000_surface", "layer": "9", "actor": "LE_PowerUP_Morphball"}
-    base_actor = editor.resolve_actor_reference(_EXAMPLE_PICKUP)
-    for new_pickup in pickup_config:
-        scenario_name, new_actor_name, collision_camera_name, new_pos = unpack_new_actor(new_pickup)
-        scenario = editor.get_scenario(scenario_name)
-        editor.copy_actor(scenario_name, new_pos, base_actor, new_actor_name, 9)
-        scenario.add_actor_to_entity_groups(collision_camera_name, new_actor_name)
 
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
@@ -122,7 +114,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom_savestation.lua")
 
     # Custom pickups
-    patch_custom_pickups(editor, configuration["custom_pickups"])
+    patch_custom_pickups(editor)
 
     # Patch all pickups
     patch_pickups(editor, lua_scripts, configuration["pickups"], configuration)
