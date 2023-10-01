@@ -7,8 +7,8 @@ def _get_actor(editor: PatcherEditor):
         "layer": "9",
         "actor": "LE_PowerUP_Morphball",
     }
-    baby_actor = editor.resolve_actor_reference(actor_to_copy)
-    return baby_actor
+    new_actor = editor.resolve_actor_reference(actor_to_copy)
+    return new_actor
 
 
 def _create_baby_pickup(editor: PatcherEditor):
@@ -22,6 +22,8 @@ def _create_baby_pickup(editor: PatcherEditor):
 
     group_cc22 = scenario_10.get_actor_group("eg_SubArea_collision_camera_022")
     group_cc22.names.insert(-1, "LE_Baby_Hatchling")
+
+    # TODO: Update minimap
 
 
 def patch_custom_pickups(editor: PatcherEditor):
