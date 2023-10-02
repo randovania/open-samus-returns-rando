@@ -98,6 +98,9 @@ function RandomizerPowerup.HandlePickupResources(progression)
                     RandomizerPowerup.DisableLiquids()
                     RandomizerPowerup.IncreaseItemAmount(resource.item_id, resource.quantity)
                     RandomizerPowerup.EnableLiquids()
+                    if string.sub(resource.item_id, 0, 14) == "ITEM_RANDO_DNA" then
+                        RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", resource.quantity)
+                    end
                 end
 
                 return resource_list
