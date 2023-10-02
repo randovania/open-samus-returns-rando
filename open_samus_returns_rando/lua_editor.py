@@ -92,7 +92,7 @@ class LuaEditor:
             "name": class_name,
             "resources": resources,
             "parent": parent,
-            "caption": lua_util.wrap_string(pickup["caption"]),
+            "caption": lua_util.wrap_string(pickup["caption"].replace("\n", "\\n")),
             "sound": lua_util.wrap_string(sound),
         }
 
