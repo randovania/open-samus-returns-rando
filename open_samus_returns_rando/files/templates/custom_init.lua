@@ -19,6 +19,10 @@ function Init.InitGameBlackboard()
   })
   for _FORV_3_, _FORV_4_ in pairs(Init.tNewGameInventory) do
     Blackboard.SetProp("PLAYER_INVENTORY", _FORV_3_, "f", _FORV_4_)
+    if string.sub(_FORV_3_, 0, 14) == "ITEM_RANDO_DNA" then
+      local current_amount = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_ADN") or 0
+      Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", current_amount + 1)
+    end
   end
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_METROID_COUNT", "f", 0)
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_CURRENT_LIFE", "f", Init.tNewGameInventory.ITEM_MAX_LIFE)
