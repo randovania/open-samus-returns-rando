@@ -50,7 +50,7 @@
           "remove_grapple_block_area3_interior_shortcut": true,
           "patch_crumble_blocks": false
         },
-        "custom_pickups": [
+        "debug_custom_pickups": [
           {
               "new_actor": {
                   "actor": "LE_Baby_Hatching",

@@ -35,5 +35,5 @@
     "game_patches": {
         "nerf_power_bombs": false
     },
-    "new_spawn_points": []
+    "debug_spawn_points": []
 }
