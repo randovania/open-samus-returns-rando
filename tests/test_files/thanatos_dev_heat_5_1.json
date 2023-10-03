@@ -113,7 +113,7 @@
     "game_patches": {
         "nerf_power_bombs": false
     },
-    "new_spawn_points": [
+    "debug_spawn_points": [
         {
             "new_actor": {
                 "actor": "SP_RDV_000",
@@ -127,7 +127,7 @@
             "collision_camera_name": "collision_camera_000"
         }
     ],
-    "custom_pickups": [
+    "debug_custom_pickups": [
         {
             "new_actor": {
                 "actor": "another_pickup1",

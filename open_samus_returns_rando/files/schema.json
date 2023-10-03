@@ -176,9 +176,9 @@
             },
             "additionalProperties": false
         },
-        "new_spawn_points": {
+        "debug_spawn_points": {
             "type": "array",
-            "description": "Creates new spawn points",
+            "description": "Creates new spawn points for debugging",
             "items": {
                 "type": "object",
                 "properties": {
@@ -201,9 +201,9 @@
             },
             "default": []
         },
-        "custom_pickups": {
+        "debug_custom_pickups": {
             "type": "array",
-            "description": "Creates new pickups",
+            "description": "Creates new pickups for debugging",
             "items": {
                 "type": "object",
                 "properties": {
