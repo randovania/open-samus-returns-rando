@@ -164,12 +164,12 @@ def _patch_area_5_2(editor: PatcherEditor):
     scenario_5.raw["objects_c"]["LS_Heat_002"] = new_logic_shape
 
     heat_actor = _get_heat_trigger(editor)
-    new_actor = editor.copy_actor(name_of_scenario, (5600.0, 16000.0, 0.0), heat_actor, "TG_Heat_004", 2)
+    new_actor = editor.copy_actor(name_of_scenario, (5600.0, 16000.0, 0.0), heat_actor, "TG_Heat_033", 2)
     new_actor["components"][0]["arguments"][16]["value"] = "LS_Heat_002"
 
-    scenario_5.add_actor_to_entity_groups("collision_camera_009", "TG_Heat_004", True)
-    scenario_5.add_actor_to_entity_groups("collision_camera_015", "TG_Heat_004", True)
-    scenario_5.add_actor_to_entity_groups("collision_camera_017", "TG_Heat_004", True)
+    scenario_5.add_actor_to_entity_groups("collision_camera_009", "TG_Heat_033", True)
+    scenario_5.add_actor_to_entity_groups("collision_camera_015", "TG_Heat_033", True)
+    scenario_5.add_actor_to_entity_groups("collision_camera_017", "TG_Heat_033", True)
 
 def _patch_area_6_b(editor: PatcherEditor):
     name_of_scenario = "s065_area6b"
