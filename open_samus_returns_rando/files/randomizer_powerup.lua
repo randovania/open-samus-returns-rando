@@ -257,6 +257,7 @@ setmetatable(RandomizerBabyHatchling, {__index = RandomizerPowerup})
 function RandomizerBabyHatchling.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     Game.GetDefaultPlayer("Samus").BABYHATCHLINGCREATION:SpawnBaby()
+    Game.GetEntity("Baby Hatchling").vPos = Game.GetDefaultPlayer("Samus").vPos
 end
 
 RandomizerScanningPulse = {}
