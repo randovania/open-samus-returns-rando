@@ -10,5 +10,5 @@ function SaveStation.WarpToStart()
 end
 function SaveStation.OnDialogDeclined()
   Usable._oUsableObject.USABLE:OnDialogDeclined()
-  GUI.LaunchMessage("Warp to Start?", "SaveStation.WarpToStart", " SaveStation.Dummy()")
+  GUI.LaunchMessage("Warp to Start?", "SaveStation.WarpToStart", " SaveStation.Dummy")
 end

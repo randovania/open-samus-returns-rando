@@ -10,5 +10,5 @@ function SamusShip.WarpToStart()
 end
 function SamusShip.OnDialogDeclined()
   Usable._oUsableObject.USABLE:OnDialogDeclined()
-  GUI.LaunchMessage("Warp to Start?", "SamusShip.WarpToStart", " SamusShip.Dummy()")
+  GUI.LaunchMessage("Warp to Start?", "SamusShip.WarpToStart", " SamusShip.Dummy")
 end
