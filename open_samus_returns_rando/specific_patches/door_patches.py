@@ -189,8 +189,7 @@ def _patch_one_way_doors(editor: PatcherEditor):
         for door in doors:
             properties = scenario.raw.actors[15][door]
             properties.type = "doorpowerpower"
-            if door in {"Door008", "Door012"}:
-                properties.components[0]["arguments"][2]["value"] = True
+            properties.components[0]["arguments"][2]["value"] = False
 
 
 def patch_doors(editor: PatcherEditor):
