@@ -185,7 +185,10 @@ def _patch_one_way_doors(editor: PatcherEditor):
     for area_name, doors in ONE_WAY_DOORS.items():
         scenario = editor.get_scenario(area_name)
         for door in doors:
-            scenario.raw.actors[15][door].type = "doorpowerpower"
+            properties = scenario.raw.actors[15][door]
+            properties.type = "doorpowerpower"
+            if door == "Door012":
+                properties.components[0]["arguments"][2]["value"] = True
 
 
 def patch_doors(editor: PatcherEditor):
