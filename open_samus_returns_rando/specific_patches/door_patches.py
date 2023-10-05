@@ -174,6 +174,8 @@ def _patch_one_way_doors(editor: PatcherEditor):
     ONE_WAY_DOORS = {
         # Bombs, Right Exterior Door -> Interior, Exterior Alpha
         "s010_area1": ["Door004", "Door012", "Door016"],
+        # Below Wave Beam
+        "s025_area2b": ["Door008"],
         # Below Chozo Seal
         "s030_area3": ["Door003", "Door006"],
         # Chozo Seal Spazer Door
@@ -187,7 +189,7 @@ def _patch_one_way_doors(editor: PatcherEditor):
         for door in doors:
             properties = scenario.raw.actors[15][door]
             properties.type = "doorpowerpower"
-            if door == "Door012":
+            if door in {"Door008", "Door012"}:
                 properties.components[0]["arguments"][2]["value"] = True
 
 
