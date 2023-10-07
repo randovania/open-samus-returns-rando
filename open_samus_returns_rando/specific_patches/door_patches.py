@@ -193,8 +193,8 @@ def _patch_one_way_doors(editor: PatcherEditor):
 
 
 def patch_doors(editor: PatcherEditor):
+    _patch_one_way_doors(editor)
     _patch_missile_covers(editor)
     _patch_beam_bmsads(editor)
     _patch_beam_covers(editor)
     _patch_charge_doors(editor)
-    _patch_one_way_doors(editor)
