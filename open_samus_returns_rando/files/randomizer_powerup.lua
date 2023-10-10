@@ -159,25 +159,26 @@ end
 RandomizerPowerBomb = {}
 setmetatable(RandomizerPowerBomb, {__index = RandomizerPowerup})
 function RandomizerPowerBomb.OnPickedUp(progression)
-    local locked_pbs = RandomizerPowerup.GetItemAmount("ITEM_RANDO_LOCKED_PBS")
+    local locked_pbs = RandomizerPowerup.GetItemAmount("ITEM_POWER_BOMB_TANKS")
     for _, outer in ipairs(progression) do
         for _, inner in ipairs(outer) do
-            if inner.item_id == "ITEM_WEAPON_POWER_BOMB_MAX" then
+            if inner.item_id == "ITEM_POWER_BOMB_TANKS" then
+                inner.item_id = "ITEM_WEAPON_POWER_BOMB_MAX"
                 inner.quantity = inner.quantity + locked_pbs
             end
         end
     end
     RandomizerPowerup.OnPickedUp(progression)
-    RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_PBS", 0)
+    RandomizerPowerup.SetItemAmount("ITEM_POWER_BOMB_TANKS", 0)
 end
 
 
 RandomizerPowerBombTank = {}
 setmetatable(RandomizerPowerBombTank, {__index = RandomizerPowerup})
 function RandomizerPowerBombTank.OnPickedUp(progression)
-    -- use locked pbs or power bomb max if > 0, which means we have main item
-    local new_item_id = "ITEM_RANDO_LOCKED_PBS"
-    local is_main_unlocked = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_POWER_BOMB_MAX") > 0
+    -- if we have main item use power bomb max else use locked power bombs
+    local new_item_id = "ITEM_POWER_BOMB_TANKS"
+    local is_main_unlocked = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_POWER_BOMB") > 0
     if is_main_unlocked then
         new_item_id = "ITEM_WEAPON_POWER_BOMB_MAX"
     end
@@ -194,24 +195,25 @@ end
 RandomizerSuperMissile = {}
 setmetatable(RandomizerSuperMissile, {__index = RandomizerPowerup})
 function RandomizerSuperMissile.OnPickedUp(progression) 
-    local locked_supers = RandomizerPowerup.GetItemAmount("ITEM_RANDO_LOCKED_SUPERS")
+    local locked_supers = RandomizerPowerup.GetItemAmount("ITEM_SUPER_MISSILE_TANKS")
     for _, outer in ipairs(progression) do
         for _, inner in ipairs(outer) do
-            if inner.item_id == "ITEM_WEAPON_SUPER_MISSILE_MAX" then
+            if inner.item_id == "ITEM_SUPER_MISSILE_TANKS" then
+                inner.item_id = "ITEM_WEAPON_SUPER_MISSILE_MAX"
                 inner.quantity = inner.quantity + locked_supers
             end
         end
     end
     RandomizerPowerup.OnPickedUp(progression)
-    RandomizerPowerup.SetItemAmount("ITEM_RANDO_LOCKED_SUPERS", 0)
+    RandomizerPowerup.SetItemAmount("ITEM_SUPER_MISSILE_TANKS", 0)
 end
 
 RandomizerSuperMissileTank = {}
 setmetatable(RandomizerSuperMissileTank, {__index = RandomizerPowerup})
 function RandomizerSuperMissileTank.OnPickedUp(progression)
-    -- use locked supers or super missile max if > 0, which means we have main item
-    local new_item_id = "ITEM_RANDO_LOCKED_SUPERS"
-    local is_main_unlocked = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SUPER_MISSILE_MAX") > 0
+    -- if we have main item use super missile max else use locked supers
+    local new_item_id = "ITEM_SUPER_MISSILE_TANKS"
+    local is_main_unlocked = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SUPER_MISSILE") > 0
     if is_main_unlocked then
         new_item_id = "ITEM_WEAPON_SUPER_MISSILE_MAX"
     end

@@ -14,27 +14,34 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_leve
 
 LOG = logging.getLogger("pickup")
 
-TANK_ITEMS = {
-    "ITEM_ENERGY_TANKS",
-    "ITEM_AEION_TANKS",
-    "ITEM_WEAPON_MISSILE_MAX",
-    "ITEM_RANDO_LOCKED_SUPERS",
-    "ITEM_RANDO_LOCKED_PBS",
+TANK_MODELS = {
+    "item_energytank",
+    "item_senergytank",
+    "item_missiletank",
+    "item_supermissiletank",
+    "item_powerbombtank",
 }
 
-ITEM_TO_OFFSET = {
-    "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": 50,
-    "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD": 50,
-    "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": 50,
-    "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": 50,
-    "ITEM_SPIDER_BALL": 40,
-    "ITEM_ENERGY_TANKS": 0,
-    "ITEM_AEION_TANKS": 0,
-    "ITEM_WEAPON_MISSILE_MAX": 0,
-    "ITEM_RANDO_LOCKED_SUPERS": 0,
-    "ITEM_RANDO_LOCKED_PBS": 0,
-    "ITEM_ADN": 50,
-    "ITEM_BABY_HATCHLING": 50,
+AEION_MODELS = {
+    "powerup_scanningpulse",
+    "powerup_energyshield",
+    "powerup_energywave",
+    "powerup_phasedisplacement",
+}
+
+MODEL_TO_OFFSET = {
+    "powerup_scanningpulse": 50,
+    "powerup_energyshield": 50,
+    "powerup_energywave": 50,
+    "powerup_phasedisplacement": 50,
+    "powerup_spiderball": 40,
+    "item_energytank": 0,
+    "item_senergytank": 0,
+    "item_missiletank": 0,
+    "item_supermissiletank": 0,
+    "item_powerbombtank": 0,
+    "adn": 50,
+    "babyhatchling": 50,
 }
 
 OFFSET =  Container({
@@ -77,8 +84,8 @@ class BasePickup:
         raise NotImplementedError
 
 class ActorPickup(BasePickup):
-    def patch_single_item_pickup(self, bmsad: dict) -> dict:
-        pickable = bmsad["components"]["PICKABLE"]
+    def patch_item_pickup(self, bmsad: dict) -> dict:
+        pickable: dict = bmsad["components"]["PICKABLE"]
         script: dict = bmsad["components"]["SCRIPT"]
 
         set_custom_params: dict = pickable["functions"][0]["params"]
@@ -93,63 +100,47 @@ class ActorPickup(BasePickup):
         return bmsad
 
 
-    def patch_multi_item_pickup(self, bmsad: dict) -> dict:
-        pickable: dict = bmsad["components"]["PICKABLE"]
-        script: dict = bmsad["components"]["SCRIPT"]
-
-        set_custom_params: dict = pickable["functions"][0]["params"]
-        set_custom_params["Param1"]["value"] = "ITEM_NONE"
-        set_custom_params["Param2"]["value"] = 0
-
-        script["functions"][0]["params"]["Param1"]["value"] = \
-            'actors/items/randomizer_powerup/scripts/randomizer_powerup.lc'
-        script["functions"][0]["params"]["Param2"]["value"] = self.lua_editor.get_script_class(
-            self.pickup, actordef_name=bmsad["name"]
-            )
-        return bmsad
-
-
     def patch_model(self, model_names: list[str], bmsad: dict) -> None:
         MODELUPDATER = bmsad["components"]["MODELUPDATER"]
-        item_id: str = self.pickup["resources"][0][0]["item_id"]
-        y_offset = ITEM_TO_OFFSET.get(item_id, 20)
+        model_name = model_names[0]
+        y_offset = MODEL_TO_OFFSET.get(model_name, 20)
         if len(model_names) == 1:
-            model_data = get_data(model_names[0])
+            model_data = get_data(model_name)
             action_sets: dict = bmsad["action_sets"][0]["animations"][0]
             bmsad["header"]["model_name"] = model_data.bcmdl_path
             fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
 
 
             MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
-            # tank items
-            if item_id in TANK_ITEMS:
+            # tank models
+            if model_name in TANK_MODELS:
                 action_sets["animation_id"] = 150
                 action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
-                if item_id != "ITEM_ENERGY_TANKS":
+                if model_name != "item_energytank":
                     energytank_bcmdl = "actors/items/item_energytank/models/item_energytank.bcmdl"
                     MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
                 else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
             # aeion abilities
-            elif item_id.startswith("ITEM_SPECIAL_ENERGY"):
+            elif model_name in AEION_MODELS:
                 fx_create_and_link["Param8"]["value"] = y_offset
 
                 scanningpulse_bcmdl = "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
                 MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = scanningpulse_bcmdl
                 fx_create_and_link["Param13"]["value"] = True
-                if item_id == "ITEM_SPECIAL_ENERGY_SCANNING_PULSE":
+                if model_name == "powerup_scanningpulse":
                     fx_create_and_link["Param1"]["value"] = "orb"
                     fx_create_and_link["Param2"]["value"] = "actors/items/powerup_scanningpulse/fx/orb.bcptl"
-                if item_id == "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD":
+                if model_name == "powerup_energyshield":
                     fx_create_and_link["Param1"]["value"] = "orb"
                     fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energyshield/fx/orb.bcptl"
-                if item_id == "ITEM_SPECIAL_ENERGY_ENERGY_WAVE":
+                if model_name == "powerup_energywave":
                     fx_create_and_link["Param1"]["value"] = "yelloworb"
                     fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energywave/fx/yelloworb.bcptl"
-                elif item_id == "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT":
+                elif model_name == "powerup_phasedisplacement":
                     fx_create_and_link["Param1"]["value"] = "purpleorb"
                     fx_create_and_link["Param2"]["value"] = "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
-            elif item_id == "ITEM_ADN":
+            elif model_name == "adn":
                 fx_create_and_link["Param8"]["value"] = y_offset
                 fx_create_and_link["Param1"]["value"] = "leak"
                 fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
@@ -176,7 +167,7 @@ class ActorPickup(BasePickup):
                 MODELUPDATER["functions"][idx]["params"]["Param2"]["value"] = model_data.bcmdl_path
 
         # offset for single and multimodels
-        if item_id not in TANK_ITEMS:
+        if model_name not in TANK_MODELS:
             MODELUPDATER["fields"] = OFFSET
             MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"][1] = y_offset
 
@@ -209,10 +200,7 @@ class ActorPickup(BasePickup):
         pickable["functions"][0]["params"]["Param7"]["value"] = self.pickup["caption"]
 
         # Update given item
-        if len(self.pickup["resources"]) == 1 and len(self.pickup["resources"][0]) == 1:
-            new_template = self.patch_single_item_pickup(new_template)
-        else:
-            new_template = self.patch_multi_item_pickup(new_template)
+        new_template = self.patch_item_pickup(new_template)
 
         # new_path = f"actors/items/randomizer_powerup/charclasses/randomizer_powerup_{self.pickup_id}.bmsad"
         new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"

@@ -18,10 +18,10 @@ SPECIFIC_CLASSES = {
     "ITEM_VARIA_SUIT": "RandomizerSuit",
     "ITEM_GRAVITY_SUIT": "RandomizerSuit",
     "ITEM_BABY_HATCHLING": "RandomizerBabyHatchling",
-    "ITEM_WEAPON_SUPER_MISSILE_MAX": "RandomizerSuperMissile",
-    "ITEM_RANDO_LOCKED_SUPERS": "RandomizerSuperMissileTank",
-    "ITEM_WEAPON_POWER_BOMB_MAX": "RandomizerPowerBomb",
-    "ITEM_RANDO_LOCKED_PBS": "RandomizerPowerBombTank",
+    "ITEM_WEAPON_SUPER_MISSILE": "RandomizerSuperMissile",
+    "ITEM_SUPER_MISSILE_TANKS": "RandomizerSuperMissileTank",
+    "ITEM_WEAPON_POWER_BOMB": "RandomizerPowerBomb",
+    "ITEM_POWER_BOMB_TANKS": "RandomizerPowerBombTank",
     "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": "RandomizerScanningPulse",
     "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD": "RandomizerEnergyShield",
     "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": "RandomizerEnergyWave",
@@ -37,8 +37,8 @@ SPECIFIC_SOUNDS = {
     "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "streams/music/special_ability2_32.wav",
     "ITEM_ENERGY_TANKS": "streams/music/tank_jingle.wav",
     "ITEM_AEION_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_RANDO_LOCKED_SUPERS": "streams/music/tank_jingle.wav",
-    "ITEM_RANDO_LOCKED_PBS": "streams/music/tank_jingle.wav",
+    "ITEM_SUPER_MISSILE_TANKS": "streams/music/tank_jingle.wav",
+    "ITEM_POWER_BOMB_TANKS": "streams/music/tank_jingle.wav",
     "ITEM_WEAPON_MISSILE_MAX": "streams/music/tank_jingle.wav",
 }
 
@@ -68,8 +68,9 @@ class LuaEditor:
             self.add_progressive_models(pickup, actordef_name)
 
         hashable_progression = "_".join([
-            f'{res[0]["item_id"]}_{res[0]["quantity"]}'
+            f'{pickup["item_id"]}_{pickup["quantity"]}'
             for res in pickup_resources
+            for pickup in res
         ]).replace("-", "MINUS")
 
         if hashable_progression in self._item_classes.keys():
