@@ -38,18 +38,12 @@ def create_custom_init(configuration: dict) -> str:
     energy_per_tank = configuration["energy_per_tank"]
     max_life = inventory.pop("ITEM_MAX_LIFE")
 
-    aeion_per_tank = configuration["aeion_per_tank"]
     max_aeion = inventory.pop("ITEM_MAX_SPECIAL_ENERGY")
 
     # increase starting HP if starting with etanks
     if "ITEM_ENERGY_TANKS" in inventory:
         etanks = inventory.pop("ITEM_ENERGY_TANKS")
         max_life += etanks * energy_per_tank
-
-    # increase starting Aeion if starting with atanks
-    if "ITEM_AEION_TANKS" in inventory:
-        atanks = inventory.pop("ITEM_AEION_TANKS")
-        max_aeion += atanks * aeion_per_tank
 
     # These fields are required to start the game
     final_inventory = {
@@ -68,7 +62,6 @@ def create_custom_init(configuration: dict) -> str:
         "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
         "starting_actor": lua_util.wrap_string(starting_location["actor"]),
         "energy_per_tank": energy_per_tank,
-        "aeion_per_tank": aeion_per_tank,
         "reveal_map_on_start": configuration["reveal_map_on_start"],
     }
 

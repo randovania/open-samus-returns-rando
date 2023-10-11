@@ -27,7 +27,6 @@ SPECIFIC_CLASSES = {
     "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": "RandomizerEnergyWave",
     "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "RandomizerPhaseDisplacement",
     "ITEM_ENERGY_TANKS": "RandomizerEnergyTank",
-    "ITEM_AEION_TANKS": "RandomizerAeionTank",
 }
 
 SPECIFIC_SOUNDS = {
@@ -36,7 +35,7 @@ SPECIFIC_SOUNDS = {
     "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": "streams/music/special_ability2_32.wav",
     "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "streams/music/special_ability2_32.wav",
     "ITEM_ENERGY_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_AEION_TANKS": "streams/music/tank_jingle.wav",
+    "ITEM_MAX_SPECIAL_ENERGY": "streams/music/tank_jingle.wav",
     "ITEM_SUPER_MISSILE_TANKS": "streams/music/tank_jingle.wav",
     "ITEM_POWER_BOMB_TANKS": "streams/music/tank_jingle.wav",
     "ITEM_WEAPON_MISSILE_MAX": "streams/music/tank_jingle.wav",
