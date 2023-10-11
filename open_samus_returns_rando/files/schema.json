@@ -130,11 +130,6 @@
             "type": "number",
             "default": 100.0
         },
-        "aeion_per_tank": {
-            "description": "How much aeion collecting an Aeion Tank gives",
-            "type": "number",
-            "default": 50.0
-        },
         "reveal_map_on_start": {
             "type": "boolean",
             "default": false,
@@ -325,7 +320,6 @@
                 "ITEM_SCREW_ATTACK",
                 "ITEM_BABY_HATCHLING",
                 "ITEM_ENERGY_TANKS",
-                "ITEM_AEION_TANKS",
                 "ITEM_METROID_COUNT",
                 "ITEM_METROID_TOTAL_COUNT",
                 "ITEM_ADN",

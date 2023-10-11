@@ -35,6 +35,12 @@ function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
     end
     target = math.max(target, 0)
     RandomizerPowerup.SetItemAmount(item_id, target)
+
+    if  item_id == "ITEM_CURRENT_SPECIAL_ENERGY" then
+        local specialEnergy = Game.GetPlayer().SPECIALENERGY
+        specialEnergy.fMaxEnergy = capacity + quantity
+        specialEnergy.fEnergy = capacity + quantity
+    end
 end
 
 function RandomizerPowerup.OnPickedUp(resources)
@@ -123,6 +129,8 @@ function RandomizerPowerup.IncreaseAmmo(resource)
         current_id = "ITEM_WEAPON_SUPER_MISSILE_CURRENT"
     elseif resource.item_id == "ITEM_WEAPON_POWER_BOMB_MAX" then
         current_id = "ITEM_WEAPON_POWER_BOMB_CURRENT"
+    elseif resource.item_id == "ITEM_MAX_SPECIAL_ENERGY" then
+        current_id = "ITEM_CURRENT_SPECIAL_ENERGY"
     end
 
     if current_id == nil then return end
@@ -141,19 +149,6 @@ function RandomizerPowerup.IncreaseEnergy()
     local life = Game.GetPlayer().LIFE
     life.fMaxLife = new_max
     life.fCurrentLife = new_max
-end
-
-MAX_AEION= 2200
-function RandomizerPowerup.IncreaseAeion()
-    local aeion = Init.fAeionPerTank
-    local new_max = RandomizerPowerup.GetItemAmount("ITEM_MAX_SPECIAL_ENERGY") + aeion
-    new_max = math.min(new_max, MAX_AEION)
-    RandomizerPowerup.SetItemAmount("ITEM_MAX_SPECIAL_ENERGY", new_max)
-    RandomizerPowerup.SetItemAmount("ITEM_CURRENT_SPECIAL_ENERGY", new_max)
-
-    local specialEnergy = Game.GetPlayer().SPECIALENERGY
-    specialEnergy.fMaxEnergy = new_max
-    specialEnergy.fEnergy = new_max
 end
 
 RandomizerPowerBomb = {}
@@ -245,13 +240,6 @@ setmetatable(RandomizerEnergyTank, {__index = RandomizerPowerup})
 function RandomizerEnergyTank.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     RandomizerPowerup.IncreaseEnergy()
-end
-
-RandomizerAeionTank = {}
-setmetatable(RandomizerAeionTank, {__index = RandomizerPowerup})
-function RandomizerAeionTank.OnPickedUp(progression)
-    RandomizerPowerup.OnPickedUp(progression)
-    RandomizerPowerup.IncreaseAeion()
 end
 
 RandomizerBabyHatchling = {}

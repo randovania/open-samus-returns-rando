@@ -5,12 +5,39 @@
         "actor": "StartPoint0"
     },
     "starting_items": {
-        "ITEM_MAX_LIFE": 599,
-        "ITEM_WEAPON_MISSILE_MAX": 50,
-        "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
-        "ITEM_WEAPON_POWER_BOMB_MAX": 0,
-        "ITEM_METROID_COUNT": 0,
-        "ITEM_METROID_TOTAL_COUNT": 40
+        "ITEM_WEAPON_MISSILE_MAX": 24,
+        "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": 1,
+        "ITEM_RANDO_DNA_11": 1,
+        "ITEM_RANDO_DNA_12": 1,
+        "ITEM_RANDO_DNA_13": 1,
+        "ITEM_RANDO_DNA_14": 1,
+        "ITEM_RANDO_DNA_15": 1,
+        "ITEM_RANDO_DNA_16": 1,
+        "ITEM_RANDO_DNA_17": 1,
+        "ITEM_RANDO_DNA_18": 1,
+        "ITEM_RANDO_DNA_19": 1,
+        "ITEM_RANDO_DNA_20": 1,
+        "ITEM_RANDO_DNA_21": 1,
+        "ITEM_RANDO_DNA_22": 1,
+        "ITEM_RANDO_DNA_23": 1,
+        "ITEM_RANDO_DNA_24": 1,
+        "ITEM_RANDO_DNA_25": 1,
+        "ITEM_RANDO_DNA_26": 1,
+        "ITEM_RANDO_DNA_27": 1,
+        "ITEM_RANDO_DNA_28": 1,
+        "ITEM_RANDO_DNA_29": 1,
+        "ITEM_RANDO_DNA_30": 1,
+        "ITEM_RANDO_DNA_31": 1,
+        "ITEM_RANDO_DNA_32": 1,
+        "ITEM_RANDO_DNA_33": 1,
+        "ITEM_RANDO_DNA_34": 1,
+        "ITEM_RANDO_DNA_35": 1,
+        "ITEM_RANDO_DNA_36": 1,
+        "ITEM_RANDO_DNA_37": 1,
+        "ITEM_RANDO_DNA_38": 1,
+        "ITEM_RANDO_DNA_39": 1,
+        "ITEM_MAX_LIFE": 99,
+        "ITEM_MAX_SPECIAL_ENERGY": 1000
     },
     "pickups": [
         {
@@ -72,11 +99,15 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Power Bomb acquired.",
+            "caption": "Main Power Bomb acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_POWER_BOMB_MAX",
+                        "item_id": "ITEM_WEAPON_POWER_BOMB",
+                        "quantity": 1
+                    },
+                    {
+                        "item_id": "ITEM_POWER_BOMB_TANKS",
                         "quantity": 5
                     }
                 ]
@@ -281,11 +312,15 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Super Missile acquired.",
+            "caption": "Super Missile Launcher acquired.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_WEAPON_SUPER_MISSILE_MAX",
+                        "item_id": "ITEM_WEAPON_SUPER_MISSILE",
+                        "quantity": 1
+                    },
+                    {
+                        "item_id": "ITEM_SUPER_MISSILE_TANKS",
                         "quantity": 5
                     }
                 ]
@@ -344,6 +379,10 @@
                     {
                         "item_id": "ITEM_SPECIAL_ENERGY_SCANNING_PULSE",
                         "quantity": 1
+                    },
+                    {
+                        "item_id": "ITEM_MAX_SPECIAL_ENERGY",
+                        "quantity": 150
                     }
                 ]
             ],
@@ -363,6 +402,10 @@
                     {
                         "item_id": "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD",
                         "quantity": 1
+                    },
+                    {
+                        "item_id": "ITEM_MAX_SPECIAL_ENERGY",
+                        "quantity": 150
                     }
                 ]
             ],
@@ -382,6 +425,10 @@
                     {
                         "item_id": "ITEM_SPECIAL_ENERGY_ENERGY_WAVE",
                         "quantity": 1
+                    },
+                    {
+                        "item_id": "ITEM_MAX_SPECIAL_ENERGY",
+                        "quantity": 150
                     }
                 ]
             ],
@@ -401,6 +448,10 @@
                     {
                         "item_id": "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT",
                         "quantity": 1
+                    },
+                    {
+                        "item_id": "ITEM_MAX_SPECIAL_ENERGY",
+                        "quantity": 150
                     }
                 ]
             ],
@@ -452,11 +503,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Super Missile Tank acquired. Super Missile capacity increased by 1.",
+            "caption": "Super Missile Tank acquired.\nSuper Missile capacity increased by 1.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_RANDO_LOCKED_SUPERS",
+                        "item_id": "ITEM_SUPER_MISSILE_TANKS",
                         "quantity": 1
                     }
                 ]
@@ -471,11 +522,11 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Power Bomb Tank acquired. Power Bomb capacity increased by 1.",
+            "caption": "Power Bomb Tank acquired.\nPower Bomb capacity increased by 1.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_RANDO_LOCKED_PBS",
+                        "item_id": "ITEM_POWER_BOMB_TANKS",
                         "quantity": 1
                     }
                 ]
@@ -490,12 +541,12 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Aeion Tank acquired. Aeion capacity increased.",
+            "caption": "Aeion Tank acquired.\nAeion Gauge expanded.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_AEION_TANKS",
-                        "quantity": 1
+                        "item_id": "ITEM_MAX_SPECIAL_ENERGY",
+                        "quantity": 50
                     }
                 ]
             ],
@@ -566,7 +617,6 @@
         }
     ],
     "energy_per_tank": 100,
-    "aeion_per_tank": 50,
     "reveal_map_on_start": true,
     "game_patches": {
         "nerf_power_bombs": false
