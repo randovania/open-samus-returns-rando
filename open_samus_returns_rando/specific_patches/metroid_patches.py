@@ -69,6 +69,11 @@ def patch_metroids(editor: PatcherEditor):
         metroid_bmsad = editor.get_parsed_asset(metroid_file, type_hint=Bmsad)
         action_set_anim = metroid_bmsad.action_sets[0].raw["animations"][death_index]
         action_set_anim["events0"][function_index]["args"][601445949]["value"] = "RemoveMetroid"
+        if metroid_file in {
+            "actors/characters/gamma/charclasses/gamma.bmsad",
+            "actors/characters/gammaevolved/charclasses/gammaevolved.bmsad"
+            }:
+            metroid_bmsad.action_sets[0].raw["animations"][2]["events0"][function_index]["args"][601445949]["value"] = "RemoveMetroid"
 
         drop_component = metroid_bmsad.raw["components"]["DROP"]
         # weird case where some fields are defined two times
