@@ -27,9 +27,9 @@ function Metroid.RemoveMetroid(_ARG_0_)
 
         local scenario = Scenario.CurrentScenarioID
         if scenario ~= nil and Metroid.Pickups ~= nil and
-            Metroid.Pickups[scenario] ~= nil and
-            Metroid.Pickups[scenario][spawnGroupName] ~= nil and
-            Metroid.Pickups[scenario][spawnGroupName].OnPickedUp ~= nil then
+                Metroid.Pickups[scenario] ~= nil and
+                Metroid.Pickups[scenario][spawnGroupName] ~= nil and
+                Metroid.Pickups[scenario][spawnGroupName].OnPickedUp ~= nil then
             Metroid.Pickups[scenario][spawnGroupName].OnPickedUp()
         end
     else
