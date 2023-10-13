@@ -32,6 +32,7 @@ function Metroid.RemoveMetroid(_ARG_0_)
                 Metroid.Pickups[scenario][spawnGroupName].OnPickedUp ~= nil then
             Metroid.Pickups[scenario][spawnGroupName].OnPickedUp()
         end
+        Game.SetInGameMusicState("RELAX")
     else
         GUI.LaunchMessage("Oops 2", "Metroid.Dummy", "")
     end
