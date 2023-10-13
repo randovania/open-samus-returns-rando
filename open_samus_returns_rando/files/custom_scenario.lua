@@ -72,8 +72,9 @@ function Scenario.OnSubAreaChange(old_subarea, old_actorgroup, new_subarea, new_
   Scenario.UpdateProgressiveItemModels()
 end
 
-function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_name)
+function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_name, is_multi)
   if created_actor ~= nil and created_actor.sName ~= nil then
     CurrentScenario.currentMetroidSpawngroup = group_name
+    CurrentScenario.isMultiGamma = is_multi or false
   end
 end
