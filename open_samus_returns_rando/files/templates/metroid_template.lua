@@ -25,8 +25,7 @@ function Metroid.DelayedDelete(spawnGroupName)
     elseif spawnGroupName == "SG_Gamma_007_A" then
         CurrentScenario.OnEnter_Gamma_007_Dead()
     end
-    -- TODO: Is the name allowed to be random?
-    Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
+    -- TODO: Add proper checkpoints
 end
 
 function Metroid.RemoveMetroid(_ARG_0_)
@@ -60,7 +59,6 @@ function Metroid.RemoveMetroid(_ARG_0_)
         end
         Game.SetInGameMusicState("RELAX")
         if not CurrentScenario.isMultiGamma then
-        -- TODO: Is the name allowed to be random?
             Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
         end
     else
