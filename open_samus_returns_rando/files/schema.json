@@ -167,6 +167,11 @@
                     "type": "boolean",
                     "description": "Changes the Crumble blocks leaving Area 1 to be Power Beam blocks.",
                     "default": true
+                },
+                "reverse_area8": {
+                    "type": "boolean",
+                    "description": "Removes the wall blocking access to the Baby, allowing access into Area 8 from Surface West.",
+                    "default": false
                 }
             },
             "additionalProperties": false
@@ -295,6 +300,8 @@
                 "ITEM_MAX_LIFE",
                 "ITEM_MAX_SPECIAL_ENERGY",
                 "ITEM_WEAPON_MISSILE_MAX",
+                "ITEM_WEAPON_SUPER_MISSILE_MAX",
+                "ITEM_WEAPON_POWER_BOMB_MAX",
                 "ITEM_SUPER_MISSILE_TANKS",
                 "ITEM_POWER_BOMB_TANKS",
                 "ITEM_WEAPON_ICE_BEAM",
