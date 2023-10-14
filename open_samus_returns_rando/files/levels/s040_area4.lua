@@ -55,8 +55,7 @@ function s040_area4.OnGamma_001_Intro_A_Generated(_ARG_0_, _ARG_1_)
   s040_area4.OnGamma_001_A_Generated(_ARG_0_, _ARG_1_)
 end
 function s040_area4.OnGamma_001_A_Generated(_ARG_0_, _ARG_1_)
-  -- TODO: No idea if this is the right one (multi-room gamma)
-  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_001_A")
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_001_A", true)
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoor("Door011")
     -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door004")

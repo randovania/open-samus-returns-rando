@@ -82,7 +82,7 @@ function s025_area2b.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_
   if _ARG_3_ ~= "PostVariaSuit" then
     Game.SetSubAreaEnvironmentLocked(false, false, false)
   end
-  if (_ARG_0_ == "collision_camera012" or _ARG_0_ == "collision_camera011") and _ARG_2_ == "collision_camera037" and not Scenario.ReadFromBlackboard("GammaIntroCutscenePlayed", false) then
+  if _ARG_2_ == "collision_camera037" and not Scenario.ReadFromBlackboard("GammaIntroCutscenePlayed", false) then
     s025_area2b.LaunchFirstTimeGammaPresentation()
   end
   Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)

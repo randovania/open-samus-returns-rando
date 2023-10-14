@@ -805,7 +805,7 @@ function s070_area7.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
       Game.SetCameraEnemy("manicminerbot")
       s070_area7.LaunchManicMinerBotIntroCutscene()
     end
-  elseif (_ARG_0_ == "collision_camera_047" or _ARG_2_ == "collision_camera_046") and (_ARG_2_ == "collision_camera_037" or _ARG_2_ == "collision_camera_046") and _ARG_3_ == "Omega_Enabled" and not Scenario.ReadFromBlackboard("OmegaIntroCutscenePlayed", false) then
+  elseif _ARG_2_ == "collision_camera_037" and _ARG_3_ == "Omega_Enabled" and not Scenario.ReadFromBlackboard("OmegaIntroCutscenePlayed", false) then
     s070_area7.LaunchFirstTimeOmegaPresentation()
   end
   if _ARG_2_ == "collision_camera_037" and _ARG_3_ == "Omega_Enabled" and not Scenario.ReadFromBlackboard("entity_SG_Omega_001_deaths", false) then

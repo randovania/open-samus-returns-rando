@@ -224,8 +224,7 @@ function s036_area3c.OnEnter_SetCheckpoint_001_Gamma_007()
   Game.SetBossCheckPointNames("ST_SG_Gamma_007", "ST_SG_Gamma_007", "SG_Gamma_007_A", "SG_Gamma_007_B", "SG_Gamma_007_C")
 end
 function s036_area3c.OnGamma_007_A_Generated(_ARG_0_, _ARG_1_)
-  -- TODO: No idea if this is the right one (multi-room gamma)
-  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_007_A")
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_007_A", true)
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door006")
     _ARG_1_.AI.bPlaceholder = false
