@@ -41,6 +41,7 @@ def apply_game_patches(editor: PatcherEditor, configuration: dict):
     # Area patches
     _remove_grapple_blocks(editor, configuration)
     _patch_crumble_blocks(editor, configuration)
+    _patch_reverse_area8(editor, configuration)
 
 
 def _remove_pb_weaknesses(editor: PatcherEditor):
@@ -115,3 +116,10 @@ def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict):
         area1_chozo_seal_crumbles["types"][0]["blocks"][2]["respawn_time"] = 0.0
         area1_chozo_seal_crumbles["types"][0]["blocks"][3]["respawn_time"] = 0.0
         area1_chozo_seal_crumbles["types"][0]["blocks"][4]["respawn_time"] = 0.0
+
+
+def _patch_reverse_area8(editor: PatcherEditor, configuration: dict):
+    if configuration["reverse_area8"]:
+        editor.remove_entity(
+            {"scenario": "s100_area10", "layer": 9, "actor": "LE_ValveQueen"}
+        )
