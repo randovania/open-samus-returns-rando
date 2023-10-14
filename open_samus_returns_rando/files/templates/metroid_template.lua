@@ -14,8 +14,17 @@ end
 
 function Metroid.DelayedDelete(spawnGroupName)
     Game.DeleteEntity(spawnGroupName)
-    -- TODO: Generalise the following line
-    CurrentScenario.OnEnter_Gamma_004_Dead()
+    if spawnGroupName == "SG_Gamma_001_A" then
+        CurrentScenario.OnEnter_Gamma_001_Dead()
+    elseif spawnGroupName == "SG_Gamma_002_A" then
+        CurrentScenario.OnEnter_Gamma_002_Dead()
+    elseif spawnGroupName == "SG_Gamma_004_B" then
+        CurrentScenario.OnEnter_Gamma_004_Dead()
+    elseif spawnGroupName == "SG_Gamma_005_C" then
+        CurrentScenario.OnEnter_Gamma_005_Dead()
+    elseif spawnGroupName == "SG_Gamma_007_A" then
+        CurrentScenario.OnEnter_Gamma_007_Dead()
+    end
     -- TODO: Is the name allowed to be random?
     Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
 end
@@ -31,14 +40,11 @@ function Metroid.RemoveMetroid(_ARG_0_)
                 Metroid.DisableSpawnGroup(otherSpawnGroupName)
             end
             local allDead = "Arena_" .. string.sub(spawnGroupName, 4, -3) .. "_AllDead"
+            Game.AddSF(4.0, "Metroid.DelayedDelete", "s", spawnGroupName)
             Scenario.WriteToBlackboard(allDead, "b", true)
         -- disable single arena metroid
         else
             Metroid.DisableSpawnGroup(spawnGroupName)
-        end
-
-        if CurrentScenario.isMultiGamma then
-            Game.AddSF(5.0, "Metroid.DelayedDelete", "s", spawnGroupName)
         end
 
         local count = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_METROID_COUNT") + 1
