@@ -53,8 +53,8 @@ function Scenario._UpdateProgressiveItemModels()
   for name, actordef in pairs(Game.GetEntities()) do
     local progressive_models = RandomizerPowerup.tProgressiveModels[actordef]
     if progressive_models ~= nil then
-    for _, model in ipairs(progressive_models) do
-        if not RandomizerPowerup.HasItem(model.item) then
+      for index, model in ipairs(progressive_models) do
+        if not RandomizerPowerup.HasItem(model.item) or #progressive_models == index then
           local pickup = Game.GetEntity(name)
           pickup.MODELUPDATER.sModelAlias = model.alias
           break
