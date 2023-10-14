@@ -40,8 +40,8 @@ function Metroid.RemoveMetroid(_ARG_0_)
                 Metroid.DisableSpawnGroup(otherSpawnGroupName)
             end
             local allDead = "Arena_" .. string.sub(spawnGroupName, 4, -3) .. "_AllDead"
-            Game.AddSF(4.0, "Metroid.DelayedDelete", "s", spawnGroupName)
             Scenario.WriteToBlackboard(allDead, "b", true)
+            Game.AddSF(4.0, "Metroid.DelayedDelete", "s", spawnGroupName)
         -- disable single arena metroid
         else
             Metroid.DisableSpawnGroup(spawnGroupName)
