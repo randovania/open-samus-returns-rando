@@ -73,6 +73,7 @@ function s100_area10.TestMetroidCount()
 end
 function s100_area10.InitFromBlackboard()
   Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
+  Game.DisableEntity("LE_Baby_Hatchling")
   if Game.GetEntity("LE_ValveQueen") ~= nil then
     if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
       Game.GetEntity("LE_ValveQueen").MODELUPDATER:SetMeshVisible("Valve", false)
@@ -265,9 +266,10 @@ function s100_area10.ScheduledQueenRoar()
 end
 s100_area10.fSafeFarPlaneFactor = -1
 function s100_area10.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
-  if _ARG_2_ == "collision_camera_022" and Scenario.ReadFromBlackboard("firstTimeMetroidHatchlingIntroPlayed", false) then
+  if Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") ~= nil then
     Game.SetSceneGroupEnabledByName("sg_egg01", false)
     Game.SetSceneGroupEnabledByName("sg_egg02", true)
+    Game.EnableEntity("LE_Baby_Hatchling")
   end
   if _ARG_2_ == "collision_camera_020" then
     s100_area10.fSafeFarPlaneFactor = Game.GetSafeFarPlaneFactor()
@@ -386,14 +388,14 @@ function s100_area10.OnBabyCreationCutsceneTrigger()
   end
 end
 function s100_area10.OnMetroidHatchlingIntroCutsceneLaunch()
-  if Scenario.ReadFromBlackboard("firstTimeMetroidHatchlingIntroPlayed", true) then
+  -- if Scenario.ReadFromBlackboard("firstTimeMetroidHatchlingIntroPlayed", true) then
   -- if Game.GetDefaultPlayer() ~= nil then
   --   Game.GetDefaultPlayer().BABYHATCHLINGCREATION:SpawnBaby()
   --   Game.GetDefaultPlayer().GUN:SelectGun("IceBeam", true)
   -- end
-    Game.SetSceneGroupEnabledByName("sg_egg01", false)
-    Game.SetSceneGroupEnabledByName("sg_egg02", false)
-  end
+    -- Game.SetSceneGroupEnabledByName("sg_egg01", false)
+    -- Game.SetSceneGroupEnabledByName("sg_egg02", false)
+  -- end
 end
 function s100_area10.OnMetroidHatchlingIntroCutsceneLastTake()
   Game.SetSceneGroupEnabledByName("sg_egg02", true)
