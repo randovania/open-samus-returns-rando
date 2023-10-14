@@ -170,7 +170,7 @@
                 },
                 "reverse_area8": {
                     "type": "boolean",
-                    "description": "Removes the wall blocking access to the Baby, allowing access into Area 8 from Surface West.",
+                    "description": "Removes the wall between the Queen and Baby, allowing access into Area 8 from Surface West.",
                     "default": false
                 }
             },
