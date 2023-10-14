@@ -12,6 +12,14 @@ function Metroid.DisableSpawnGroup(spawnGroupName)
     end
 end
 
+function Metroid.DelayedDelete(spawnGroupName)
+    Game.DeleteEntity(spawnGroupName)
+    -- TODO: Generalise the following line
+    CurrentScenario.OnEnter_Gamma_004_Dead()
+    -- TODO: Is the name allowed to be random?
+    Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
+end
+
 function Metroid.RemoveMetroid(_ARG_0_)
     local spawnGroupName = CurrentScenario.currentMetroidSpawngroup
     if spawnGroupName ~= nil then
@@ -29,12 +37,13 @@ function Metroid.RemoveMetroid(_ARG_0_)
             Metroid.DisableSpawnGroup(spawnGroupName)
         end
 
+        if CurrentScenario.isMultiGamma then
+            Game.AddSF(5.0, "Metroid.DelayedDelete", "s", spawnGroupName)
+        end
+
         local count = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_METROID_COUNT") + 1
         Game.SetItemAmount(Game.GetPlayerName(), "ITEM_METROID_COUNT", count)
         Game.IncrementMetroidTotalCount(0)
-
-        CurrentScenario.currentMetroidSpawngroup = nil
-        CurrentScenario.isMultiGamma = nil
 
         local scenario = Scenario.CurrentScenarioID
         if scenario ~= nil and Metroid.Pickups ~= nil and
@@ -44,9 +53,15 @@ function Metroid.RemoveMetroid(_ARG_0_)
             Metroid.Pickups[scenario][spawnGroupName].OnPickedUp()
         end
         Game.SetInGameMusicState("RELAX")
+        if not CurrentScenario.isMultiGamma then
+        -- TODO: Is the name allowed to be random?
+            Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
+        end
     else
         GUI.LaunchMessage("Oops 2", "Metroid.Dummy", "")
     end
+    CurrentScenario.currentMetroidSpawngroup = nil
+    CurrentScenario.isMultiGamma = nil
 end
 
 Metroid.Pickups = TEMPLATE("mapping")

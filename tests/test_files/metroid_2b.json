@@ -1,7 +1,7 @@
 {
     "starting_location": {
-        "scenario": "s025_area2b",
-        "actor": "SpawnGroup019"
+        "scenario": "s033_area3b",
+        "actor": "SP_MoheekWall_001"
     },
     "starting_items": {
         "ITEM_WEAPON_MISSILE_MAX": 50,
@@ -12,6 +12,7 @@
         "ITEM_WEAPON_WAVE_BEAM": 1,
         "ITEM_WEAPON_CHARGE_BEAM": 1,
         "ITEM_WEAPON_SPAZER_BEAM": 1,
+        "ITEM_VARIA_SUIT": 1,
         "ITEM_GRAVITY_SUIT": 1,
         "ITEM_HIGH_JUMP_BOOTS": 1,
         "ITEM_SPACE_JUMP": 1,
