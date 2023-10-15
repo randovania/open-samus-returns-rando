@@ -38,8 +38,8 @@ function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
 
     if  item_id == "ITEM_CURRENT_SPECIAL_ENERGY" then
         local specialEnergy = Game.GetPlayer().SPECIALENERGY
-        specialEnergy.fMaxEnergy = capacity + quantity
-        specialEnergy.fEnergy = capacity + quantity
+        specialEnergy.fMaxEnergy = capacity
+        specialEnergy.fEnergy = capacity
     end
 end
 
