@@ -56,9 +56,12 @@ function RandomizerPowerup.OnPickedUp(resources)
 end
 
 function RandomizerPowerup.DisableLiquids()
-    if Game.GetPlayer().MODELUPDATER.sModelAlias == "Varia" then
+    if Game.GetPlayer().MODELUPDATER.sModelAlias ~= "Gravity" then
         if Scenario.CurrentScenarioID == "s010_area1" then
             Game.GetEntity("Lava_Trigger_001").TRIGGER:DisableTrigger()
+        elseif Scenario.CurrentScenarioID == "s050_area5" then
+            Game.GetEntity("TG_Water_006").TRIGGER:DisableTrigger()
+            Game.GetEntity("TG_Water_009").TRIGGER:DisableTrigger()
         elseif Scenario.CurrentScenarioID == "s067_area6c" then
             Game.GetEntity("TG_SP_Water_002").TRIGGER:DisableTrigger()
         end
@@ -68,6 +71,9 @@ end
 function RandomizerPowerup.EnableLiquids()
     if Scenario.CurrentScenarioID == "s010_area1" then
         Game.GetEntity("Lava_Trigger_001").TRIGGER:EnableTrigger()
+    elseif Scenario.CurrentScenarioID == "s050_area5" then
+        Game.GetEntity("TG_Water_006").TRIGGER:EnableTrigger()
+        Game.GetEntity("TG_Water_009").TRIGGER:EnableTrigger()
     elseif Scenario.CurrentScenarioID == "s067_area6c" then
         Game.GetEntity("TG_SP_Water_002").TRIGGER:EnableTrigger()
     end
