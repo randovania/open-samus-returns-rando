@@ -27,7 +27,7 @@ def patch_multi_room_gammas(editor: PatcherEditor):
         editor.remove_entity(reference)
 
 
-def rotate_pickups(editor: PatcherEditor):
+def patch_pickup_rotation(editor: PatcherEditor):
     PICKUPS = {
         "s030_area3": ["LE_PowerUp_GrappleBeam"],
         "s050_area5": ["LE_PowerUp_SpaceJump"]
@@ -39,6 +39,25 @@ def rotate_pickups(editor: PatcherEditor):
             actor["rotation"][1] = 0.0
 
 
+def patch_pickup_position(editor: PatcherEditor):
+    PICKUPS = {
+        "s000_surface": ["LE_SpecialAbility_ScanningPulse"],
+        "s010_area1": ["LE_PowerUp_SpiderBall"],
+        "s028_area2c": ["LE_SpecialAbility_EnergyShield"],
+        "s030_area3": ["LE_SpecialAbility_EnergyWave"],
+        "s060_area6": ["LE_SpecialAbility_PhaseDisplacement"],
+    }
+    for area_name, pickups in PICKUPS.items():
+        scenario = editor.get_scenario(area_name)
+        for pickup in pickups:
+            actor = scenario.raw.actors[9][pickup]
+            if pickup != "LE_PowerUp_SpiderBall":
+                actor["position"][1] -= 55.0
+            else:
+                actor["position"][1] -= 49.0
+
+
 def apply_static_fixes(editor: PatcherEditor):
     patch_multi_room_gammas(editor)
-    rotate_pickups(editor)
+    patch_pickup_rotation(editor)
+    patch_pickup_position(editor)
