@@ -3,6 +3,7 @@ import copy
 from construct import Container, ListContainer
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
+from open_samus_returns_rando.temp_helper import add_actor_to_entity_groups, insert_into_sub_area
 
 
 def _get_new_logic_shape(editor: PatcherEditor, points: int) -> Container:
@@ -25,7 +26,7 @@ def _patch_area_2b(editor: PatcherEditor):
     # area2b => shape is already correct but ms forgot to add one room
     heat_trigger_2b = {"scenario": "s025_area2b", "layer": "2", "actor": "TG_SP_Heat_001"}
     scenario_2b = editor.get_scenario(heat_trigger_2b["scenario"])
-    scenario_2b.add_actor_to_entity_groups("collision_camera013", heat_trigger_2b["actor"])
+    add_actor_to_entity_groups(scenario_2b, "collision_camera013", heat_trigger_2b["actor"])
 
 def _patch_area_3b(editor: PatcherEditor):
     name_of_scenario = "s033_area3b"
@@ -53,7 +54,7 @@ def _patch_area_3b(editor: PatcherEditor):
     editor.copy_actor(name_of_scenario, (1000.0, 5000.0, 0.0), heat_actor, "TG_Heat_003", 2)
 
     group_cc36 = scenario_3b.get_actor_group("eg_SubArea_collision_camera_036")
-    group_cc36.names.insert(-1, "TG_Heat_003")
+    insert_into_sub_area(group_cc36, "TG_Heat_003")
 
 def _patch_area_3c(editor: PatcherEditor):
     name_of_scenario = "s036_area3c"
@@ -83,8 +84,8 @@ def _patch_area_3c(editor: PatcherEditor):
     group_cc22 = scenario_3c.get_actor_group("eg_SubArea_collision_camera_022")
     group_cc26 = scenario_3c.get_actor_group("eg_SubArea_collision_camera_026")
 
-    group_cc22.names.insert(-1, "TG_Heat_003")
-    group_cc26.names.insert(-1, "TG_Heat_003")
+    insert_into_sub_area(group_cc22, "TG_Heat_003")
+    insert_into_sub_area(group_cc26, "TG_Heat_003")
 
 def _patch_area_4(editor: PatcherEditor):
     name_of_scenario = "s040_area4"
@@ -111,7 +112,7 @@ def _patch_area_4(editor: PatcherEditor):
     heat_actor = _get_heat_trigger(editor)
     editor.copy_actor(name_of_scenario, (1000.0, 1000.0, 0.0), heat_actor, "TG_Heat_003", 2)
 
-    scenario_4.add_actor_to_entity_groups("collision_camera_005", "TG_Heat_003", True)
+    add_actor_to_entity_groups(scenario_4, "collision_camera_005", "TG_Heat_003", True)
 
 def _patch_area_5_1(editor: PatcherEditor):
     name_of_scenario = "s050_area5"
@@ -138,7 +139,7 @@ def _patch_area_5_1(editor: PatcherEditor):
     heat_actor = _get_heat_trigger(editor)
     editor.copy_actor(name_of_scenario, (-2000.0, 5000.0, 0.0), heat_actor, "TG_Heat_003", 2)
 
-    scenario_5.add_actor_to_entity_groups("collision_camera_006", "TG_Heat_003", True)
+    add_actor_to_entity_groups(scenario_5, "collision_camera_006", "TG_Heat_003", True)
 
 
 def _patch_area_5_2(editor: PatcherEditor):
@@ -167,9 +168,9 @@ def _patch_area_5_2(editor: PatcherEditor):
     new_actor = editor.copy_actor(name_of_scenario, (5600.0, 16000.0, 0.0), heat_actor, "TG_Heat_033", 2)
     new_actor["components"][0]["arguments"][16]["value"] = "LS_Heat_002"
 
-    scenario_5.add_actor_to_entity_groups("collision_camera_009", "TG_Heat_033", True)
-    scenario_5.add_actor_to_entity_groups("collision_camera_015", "TG_Heat_033", True)
-    scenario_5.add_actor_to_entity_groups("collision_camera_017", "TG_Heat_033", True)
+    add_actor_to_entity_groups(scenario_5, "collision_camera_009", "TG_Heat_033", True)
+    add_actor_to_entity_groups(scenario_5, "collision_camera_015", "TG_Heat_033", True)
+    add_actor_to_entity_groups(scenario_5, "collision_camera_017", "TG_Heat_033", True)
 
 def _patch_area_6_b(editor: PatcherEditor):
     name_of_scenario = "s065_area6b"
@@ -196,9 +197,9 @@ def _patch_area_6_b(editor: PatcherEditor):
     heat_actor = _get_heat_trigger(editor)
     editor.copy_actor(name_of_scenario, (6000.0, 9000.0, 0.0), heat_actor, "TG_Heat_003", 2)
 
-    scenario_6b.add_actor_to_entity_groups("collision_camera_014", "TG_Heat_003", True)
-    scenario_6b.add_actor_to_entity_groups("collision_camera_017", "TG_Heat_003", True)
-    scenario_6b.add_actor_to_entity_groups("collision_camera_018", "TG_Heat_003", True)
+    add_actor_to_entity_groups(scenario_6b, "collision_camera_014", "TG_Heat_003", True)
+    add_actor_to_entity_groups(scenario_6b, "collision_camera_017", "TG_Heat_003", True)
+    add_actor_to_entity_groups(scenario_6b, "collision_camera_018", "TG_Heat_003", True)
 
 
 def _patch_area_6_c(editor: PatcherEditor):
@@ -226,7 +227,7 @@ def _patch_area_6_c(editor: PatcherEditor):
     heat_actor = _get_heat_trigger(editor)
     editor.copy_actor(name_of_scenario, (1000.0, 2000.0, 0.0), heat_actor, "TG_Heat_003", 2)
 
-    scenario_6c.add_actor_to_entity_groups("collision_camera_022", "TG_Heat_003", True)
+    add_actor_to_entity_groups(scenario_6c, "collision_camera_022", "TG_Heat_003", True)
 
 def patch_heat_rooms(editor: PatcherEditor):
     _patch_area_2b(editor)

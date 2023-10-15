@@ -1,4 +1,5 @@
 from open_samus_returns_rando.patcher_editor import PatcherEditor
+from open_samus_returns_rando.temp_helper import insert_into_sub_area
 
 
 def _get_actor(editor: PatcherEditor):
@@ -22,7 +23,7 @@ def _create_baby_pickup(editor: PatcherEditor):
     )
 
     group_cc22 = scenario_10.get_actor_group("eg_SubArea_collision_camera_022")
-    group_cc22.names.insert(-1, "LE_Baby_Hatchling")
+    insert_into_sub_area(group_cc22, "LE_Baby_Hatchling")
 
     # TODO: Update minimap
 
