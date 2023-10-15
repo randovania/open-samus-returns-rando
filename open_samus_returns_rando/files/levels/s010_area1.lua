@@ -37,6 +37,7 @@ function s010_area1.SetupDebugGameBlackboard()
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT", "f", 0)
 end
 function s010_area1.InitFromBlackboard()
+  Game.GetEntity("LE_PowerUp_SpiderBall").vPos = V3D(13651.6, 4200.0, 0.0)
   if Scenario.ReadFromBlackboard("Alpha_PreSpawn11Event", false) then
     if Game.GetEntity("LE_Alpha_PreSpawn11Event") ~= nil then
       Game.GetEntity("LE_Alpha_PreSpawn11Event"):DelMe()

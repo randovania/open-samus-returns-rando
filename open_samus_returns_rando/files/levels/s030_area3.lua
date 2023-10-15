@@ -233,6 +233,7 @@ function s030_area3.ElevatorSetTarget(_ARG_0_)
   end
 end
 function s030_area3.InitFromBlackboard()
+  Game.GetEntity("LE_SpecialAbility_EnergyWave").vPos = V3D(-17749.4, 8955.0, 0.0)
   if Game.GetEntity("LE_Event_03") ~= nil and Scenario.ReadFromBlackboard("SpecialEvent03Launched") then
     Game.GetEntity("LE_Event_03"):Disable()
   end

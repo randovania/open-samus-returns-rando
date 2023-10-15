@@ -69,6 +69,7 @@ function s000_surface.OnShipStartPointTeleport(_ARG_0_, _ARG_1_)
   end
 end
 function s000_surface.InitFromBlackboard()
+  Game.GetEntity("LE_SpecialAbility_ScanningPulse").vPos = V3D(241.9, -5055.0, 0.0)
   Scenario.WriteToBlackboard("LarvaPresentationPlayed", "b", true)
   if Scenario.ReadFromBlackboard("LarvaPresentationPlayed", false) then
     Game.DisableTrigger("TG_Intro_MetroidSurface")
