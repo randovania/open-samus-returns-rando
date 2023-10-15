@@ -396,3 +396,6 @@ end
 function s065_area6b.OnExit_ChangeCamera_002()
   Game.SetCollisionCameraLocked("collision_camera_002_B", false)
 end
+function s065_area6b.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
+  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
+end
