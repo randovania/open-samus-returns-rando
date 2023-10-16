@@ -7,7 +7,6 @@ from mercury_engine_data_structures.formats import Bmsad
 from open_samus_returns_rando.constants import ALL_AREAS
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.patcher_editor import PatcherEditor
-from open_samus_returns_rando.temp_helper import insert_into_sub_area
 
 SCRIPT_COMPONENT = Container({
     "type": "CScriptComponent",
@@ -143,13 +142,10 @@ def _patch_beam_covers(editor: PatcherEditor):
             door_actor.components.append(copy.deepcopy(door_actor.components[0]))
             door_actor.components[1]["arguments"][3]["value"] = new_actor_name
 
-            # Note: New actors should be added to the entity groups but maybe that brings back our old friend
-            # "removing random actors in a room". Comment it out in that case after playtests
             entity_groups = [group for group_name, group in scenario.all_actor_groups()
                     if group_name in list(scenario.all_actor_group_names_for_actor(cover_name))]
             for group in entity_groups:
-                insert_into_sub_area(group, new_actor_name)
-
+                scenario.insert_into_entity_group(group, new_actor_name)
 
 
 

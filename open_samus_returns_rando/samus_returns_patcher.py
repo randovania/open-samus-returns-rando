@@ -6,7 +6,6 @@ from pathlib import Path
 
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
-from open_samus_returns_rando.constants import ALL_AREAS
 from open_samus_returns_rando.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.debug import debug_custom_pickups, debug_spawn_points
 from open_samus_returns_rando.lua_editor import LuaEditor
@@ -128,21 +127,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     # Text patches
     patch_credits(editor, configuration["spoiler_log"])
     patch_pb_status(editor)
-
-    # TODO: Remove this integrity check later
-    from mercury_engine_data_structures.crc import crc32
-    for area in ALL_AREAS:
-        scenario = editor.get_scenario(area)
-        for sub_area in scenario.raw["sub_areas"]:
-            crcs_list = [
-                crc32(name)
-                for name in sub_area.names
-            ]
-            sorted_list = sorted(crcs_list)
-            if sorted_list != crcs_list:
-                print(sub_area)
-                print(sub_area.names)
-                raise ValueError("oops")
 
     out_romfs = output_path.joinpath("romfs")
     out_exefs = output_path.joinpath("exefs")
