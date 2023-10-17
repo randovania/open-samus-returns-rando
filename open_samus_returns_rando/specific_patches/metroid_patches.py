@@ -1,4 +1,3 @@
-
 import logging
 
 from construct import ListContainer
@@ -99,7 +98,7 @@ def _create_checkpoint_gamma_2b(editor: PatcherEditor):
         name_of_scenario, (-1650.0, -4500.0, 0.0), trigger, name_of_trigger, 0,
     )
 
-    editor.copy_actor(
+    spawnpoint_actor = editor.copy_actor(
         name_of_scenario, (-1500.0, -4500.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
     )
 
@@ -113,7 +112,6 @@ def _create_checkpoint_gamma_2b(editor: PatcherEditor):
     trigger_actor = scenario_2b.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
     trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_002_Gamma_001"
 
-    spawnpoint_actor = scenario_2b.raw.actors[5][name_of_spawnpoint]
     spawnpoint_actor["rotation"][1] = -90
 
 def patch_metroids(editor: PatcherEditor):
