@@ -41,12 +41,12 @@ function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
         local specialEnergy = Game.GetPlayer().SPECIALENERGY
         specialEnergy.fMaxEnergy = capacity
         specialEnergy.fEnergy = capacity
-    elseif item_id == "ITEM_WEAPON_MISSILE_MAX" then
-        itemAmount:SetItemAmount("ITEM_WEAPON_MISSILE_CURRENT", item_id)
-    elseif item_id == "ITEM_WEAPON_SUPER_MISSILE_MAX" then
-        itemAmount:SetItemAmount("ITEM_WEAPON_SUPER_MISSILE_CURRENT", item_id)
-    elseif item_id == "ITEM_WEAPON_POWER_BOMB_MAX" then
-        itemAmount:SetItemAmount("ITEM_WEAPON_POWER_BOMB_CURRENT", item_id)
+    elseif item_id == "ITEM_WEAPON_MISSILE_CURRENT" then
+        itemAmount:SetItemAmount(item_id, capacity)
+    elseif item_id == "ITEM_WEAPON_SUPER_MISSILE_CURRENT" then
+        itemAmount:SetItemAmount(item_id, capacity)
+    elseif item_id == "ITEM_WEAPON_POWER_BOMB_CURRENT" then
+        itemAmount:SetItemAmount(item_id, capacity)
     end
 end
 
