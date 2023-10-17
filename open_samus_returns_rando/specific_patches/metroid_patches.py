@@ -108,6 +108,7 @@ def _create_checkpoint_gamma_2b(editor: PatcherEditor):
 
     scenario_2b.add_actor_to_entity_groups("collision_camera039", name_of_trigger)
     scenario_2b.add_actor_to_entity_groups("collision_camera039", name_of_spawnpoint)
+    scenario_2b.add_actor_to_entity_groups("collision_camera039", name_of_spawnpoint_out)
 
     trigger_actor = scenario_2b.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
     trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_002_Gamma_001"
