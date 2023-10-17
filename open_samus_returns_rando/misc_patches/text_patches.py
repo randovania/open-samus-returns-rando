@@ -41,10 +41,11 @@ def apply_text_patches(editor: PatcherEditor, patches: dict[str, str]):
 
 
 def patch_pb_status(editor: PatcherEditor):
-    status = f"GUI_STATUS_SPIDERBALL"
+    status = "GUI_STATUS_SPIDERBALL"
     original = get_text(editor, status)
     new = original.replace(
         "activate.",
-        "activate.\nWhile in Spider Ball form, lay a Power Bomb to activate the Spider Boost. It will launch you forward, damaging enemies you make contact with. It can also be used to reach certain items.",
+        "activate.\nWhile in Spider Ball form, lay a Power Bomb to activate the Spider Boost. It will "
+        "launch you forward, damaging enemies you make contact with. It can also be used to reach certain items.",
     )
     patch_text(editor, status, new)

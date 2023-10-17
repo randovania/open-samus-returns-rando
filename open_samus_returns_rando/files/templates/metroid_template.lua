@@ -61,6 +61,10 @@ function Metroid.RemoveMetroid(_ARG_0_)
         if not CurrentScenario.isMultiGamma then
             Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
         end
+        if scenario == "s000_surface" then
+            Game.DisableEntity("TG_Intro_Alpha")
+            Scenario.WriteToBlackboard("alpha_killed", "b", true)
+        end
     else
         GUI.LaunchMessage("Oops 2", "Metroid.Dummy", "")
     end

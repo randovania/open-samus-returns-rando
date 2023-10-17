@@ -440,13 +440,13 @@ function s000_surface.OnHazarousPoolDrain(_ARG_0_)
 end
 function s000_surface.OnEnterHazardous()
   PoisonZone.OnEnter()
-  Game.SetSubAreaCurrentSetup("collision_camera_004", "Enter_Hazardous", true)
-  Game.SetSubAreaCurrentSetup("collision_camera_005", "Enter_Hazardous", true)
+  -- Game.SetSubAreaCurrentSetup("collision_camera_004", "Enter_Hazardous", true)
+  -- Game.SetSubAreaCurrentSetup("collision_camera_005", "Enter_Hazardous", true)
 end
 function s000_surface.OnExitHazardous()
   PoisonZone.OnExit()
-  Game.SetSubAreaCurrentSetup("collision_camera_004", "Default", false)
-  Game.SetSubAreaCurrentSetup("collision_camera_005", "Default", false)
+  -- Game.SetSubAreaCurrentSetup("collision_camera_004", "Default", false)
+  -- Game.SetSubAreaCurrentSetup("collision_camera_005", "Default", false)
 end
 function s000_surface.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
   if _ARG_2_ == "collision_camera_002" and Scenario.ReadFromBlackboard("MeleeTutoPlayed", false) and not Scenario.ReadFromBlackboard("MeleeReminderTutoPlayed", false) then
@@ -482,12 +482,12 @@ function s000_surface.LaunchFirstTimeChozoStatuePresentation()
   end
 end
 function s000_surface.OnEnter_ChangeHazardousSetup()
-  Game.SetSubAreaCurrentSetup("collision_camera_004", "Hazardous_CameraAlphaDead", true)
-  Game.SetSubAreaCurrentSetup("collision_camera_005", "Hazardous_CameraAlphaDead", true)
+  -- Game.SetSubAreaCurrentSetup("collision_camera_004", "Hazardous_CameraAlphaDead", true)
+  -- Game.SetSubAreaCurrentSetup("collision_camera_005", "Hazardous_CameraAlphaDead", true)
 end
 function s000_surface.OnEnter_RestoreHazardousSetup()
-  Game.SetSubAreaCurrentSetup("collision_camera_004", "Default", true)
-  Game.SetSubAreaCurrentSetup("collision_camera_005", "Default", true)
+  -- Game.SetSubAreaCurrentSetup("collision_camera_004", "Default", true)
+  -- Game.SetSubAreaCurrentSetup("collision_camera_005", "Default", true)
 end
 function s000_surface.LaunchFirstTimeBestowalStatuePresentation()
   --Game.LaunchCutscene("cutscenes/introspenergystatue/takes/01/introspenergystatue01.bmscu")
