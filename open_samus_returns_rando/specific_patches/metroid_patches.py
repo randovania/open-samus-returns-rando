@@ -9,7 +9,7 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 LOG = logging.getLogger("metroid_patches")
 
-def patch_metroids(editor: PatcherEditor):
+def _patch_metroids(editor: PatcherEditor):
     METROID_FILES = [
         "actors/characters/alpha/charclasses/alpha.bmsad",
         "actors/characters/alphaevolved/charclasses/alphaevolved.bmsad",
@@ -63,3 +63,59 @@ def patch_metroids(editor: PatcherEditor):
         script_component["functions"][0]["params"]["Param2"]["value"] = "Metroid"
 
         editor.replace_asset(metroid_file, metroid_bmsad)
+
+
+def _get_trigger(editor: PatcherEditor):
+    actor_to_copy = {
+        "scenario": "s025_area2b",
+        "layer": "0",
+        "actor": "TG_SetCheckpoint_001_Gamma_001",
+    }
+    checkpoint_trigger = editor.resolve_actor_reference(actor_to_copy)
+    return checkpoint_trigger
+
+
+def _get_spawnpoint(editor: PatcherEditor):
+    actor_to_copy = {
+        "scenario": "s025_area2b",
+        "layer": "5",
+        "actor": "ST_SG_Gamma_001",
+    }
+    spawnpoint = editor.resolve_actor_reference(actor_to_copy)
+    return spawnpoint
+
+
+def _create_checkpoint_gamma_2b(editor: PatcherEditor):
+    name_of_scenario = "s025_area2b"
+    scenario_2b = editor.get_scenario(name_of_scenario)
+    name_of_trigger = "TG_SetCheckpoint_002_Gamma_001"
+    name_of_spawnpoint = "ST_SG_Gamma_001_2"
+    name_of_spawnpoint_out = "ST_SG_Gamma_001_2_Out"
+
+    trigger = _get_trigger(editor)
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (-1650.0, -4500.0, 0.0), trigger, name_of_trigger, 0,
+    )
+
+    editor.copy_actor(
+        name_of_scenario, (-1500.0, -4500.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
+    )
+
+    editor.copy_actor(
+        name_of_scenario, (-1500.0, -4500.0, 0.0), spawnpoint, name_of_spawnpoint_out, 5,
+    )
+
+    scenario_2b.add_actor_to_entity_groups("collision_camera039", name_of_trigger)
+    scenario_2b.add_actor_to_entity_groups("collision_camera039", name_of_spawnpoint)
+
+    trigger_actor = scenario_2b.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
+    trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_002_Gamma_001"
+
+    spawnpoint_actor = scenario_2b.raw.actors[5][name_of_spawnpoint]
+    spawnpoint_actor["rotation"][1] = -90
+
+def patch_metroids(editor: PatcherEditor):
+    _patch_metroids(editor)
+    _create_checkpoint_gamma_2b(editor)
