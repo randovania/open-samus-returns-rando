@@ -82,12 +82,70 @@ def _get_spawnpoint(editor: PatcherEditor):
     return spawnpoint
 
 
-def _create_checkpoint_gamma_2b(editor: PatcherEditor):
+def _create_checkpoint_alpha_surface(editor: PatcherEditor):
+    name_of_scenario = "s000_surface"
+    scenario_surface = editor.get_scenario(name_of_scenario)
+    name_of_trigger = "TG_SetCheckpoint_002_Alpha_001"
+    name_of_spawnpoint = "ST_SG_Alpha_001B"
+
+    trigger = _get_trigger(editor)
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (-1350.0, -10200.0, 0.0), trigger, name_of_trigger, 0,
+    )
+
+    spawnpoint_actor = editor.copy_actor(
+        name_of_scenario, (-953.0, -9790.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
+    )
+
+    scenario_surface.add_actor_to_entity_groups("collision_camera_024", name_of_trigger)
+    scenario_surface.add_actor_to_entity_groups("collision_camera_024", name_of_spawnpoint)
+
+    trigger_actor = scenario_surface.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
+    trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_002_Alpha_001"
+
+    spawnpoint_actor["rotation"][1] = -90
+
+
+def _create_checkpoint_alpha_003_area2(editor: PatcherEditor):
+    name_of_scenario = "s020_area2"
+    scenario_2 = editor.get_scenario(name_of_scenario)
+    name_of_trigger = "TG_SetCheckpoint_002_Alpha_003"
+    name_of_spawnpoint = "ST_SG_Alpha_003B"
+    name_of_spawnpoint_out = "ST_SG_Alpha_003B_Out"
+
+    trigger = _get_trigger(editor)
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (-18550.0, -6100.0, 0.0), trigger, name_of_trigger, 0,
+    )
+
+    editor.copy_actor(
+        name_of_scenario, (-18300.0, -6100.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
+    )
+
+    spawnpoint_actor = editor.copy_actor(
+        name_of_scenario, (-18300.0, -6100.0, 0.0), spawnpoint, name_of_spawnpoint_out, 5,
+    )
+
+    scenario_2.add_actor_to_entity_groups("collision_camera_028", name_of_trigger)
+    scenario_2.add_actor_to_entity_groups("collision_camera_028", name_of_spawnpoint)
+    scenario_2.add_actor_to_entity_groups("collision_camera_028", name_of_spawnpoint_out)
+
+    trigger_actor = scenario_2.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
+    trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_002_Alpha_003"
+
+    spawnpoint_actor["rotation"][1] = -90
+
+
+def _create_checkpoint_gamma_area2b(editor: PatcherEditor):
     name_of_scenario = "s025_area2b"
     scenario_2b = editor.get_scenario(name_of_scenario)
     name_of_trigger = "TG_SetCheckpoint_002_Gamma_001"
-    name_of_spawnpoint = "ST_SG_Gamma_001_2"
-    name_of_spawnpoint_out = "ST_SG_Gamma_001_2_Out"
+    name_of_spawnpoint = "ST_SG_Gamma_001B"
+    name_of_spawnpoint_out = "ST_SG_Gamma_001B_Out"
 
     trigger = _get_trigger(editor)
     spawnpoint = _get_spawnpoint(editor)
@@ -113,6 +171,183 @@ def _create_checkpoint_gamma_2b(editor: PatcherEditor):
 
     spawnpoint_actor["rotation"][1] = -90
 
+
+def _create_checkpoint_alpha_002_area3b(editor: PatcherEditor):
+    name_of_scenario = "s033_area3b"
+    scenario_3b = editor.get_scenario(name_of_scenario)
+    name_of_trigger = "TG_SetCheckpoint_002_Alpha_002"
+    name_of_spawnpoint = "ST_SG_Alpha_002B"
+    name_of_spawnpoint_out = "ST_SG_Alpha_002B_Out"
+
+    trigger = _get_trigger(editor)
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (-17800.0, 800.0, 0.0), trigger, name_of_trigger, 0,
+    )
+
+    editor.copy_actor(
+        name_of_scenario, (-18300.0, 800.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
+    )
+
+    spawnpoint_actor = editor.copy_actor(
+        name_of_scenario, (-18300.0, 800.0, 0.0), spawnpoint, name_of_spawnpoint_out, 5,
+    )
+
+    scenario_3b.add_actor_to_entity_groups("collision_camera_037", name_of_trigger)
+    scenario_3b.add_actor_to_entity_groups("collision_camera_037", name_of_spawnpoint)
+    scenario_3b.add_actor_to_entity_groups("collision_camera_037", name_of_spawnpoint_out)
+
+    trigger_actor = scenario_3b.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
+    trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_002_Alpha_002"
+
+    spawnpoint_actor["rotation"][1] = -90
+
+
+def _create_checkpoint_alpha_area6(editor: PatcherEditor):
+    name_of_scenario = "s060_area6"
+    scenario_6 = editor.get_scenario(name_of_scenario)
+    name_of_trigger = "TG_SetCheckpoint_002_Alpha_001"
+    name_of_spawnpoint = "ST_SG_Alpha_001B"
+    name_of_spawnpoint_out = "ST_SG_Alpha_001B_Out"
+
+    trigger = _get_trigger(editor)
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (3100.0, -6100.0, 0.0), trigger, name_of_trigger, 0,
+    )
+
+    editor.copy_actor(
+        name_of_scenario, (2800.0, -6100.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
+    )
+
+    spawnpoint_actor = editor.copy_actor(
+        name_of_scenario, (2800.0, -6100.0, 0.0), spawnpoint, name_of_spawnpoint_out, 5,
+    )
+
+    scenario_6.add_actor_to_entity_groups("collision_camera_015", name_of_trigger)
+    scenario_6.add_actor_to_entity_groups("collision_camera_015", name_of_spawnpoint)
+    scenario_6.add_actor_to_entity_groups("collision_camera_015", name_of_spawnpoint_out)
+
+    trigger_actor = scenario_6.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
+    trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_002_Alpha_001"
+
+    spawnpoint_actor["rotation"][1] = -90
+
+
+def _create_checkpoint_zeta_area7(editor: PatcherEditor):
+    name_of_scenario = "s070_area7"
+    scenario_7 = editor.get_scenario(name_of_scenario)
+    name_of_trigger = "TG_SetCheckpoint_002_Zeta_001"
+    name_of_spawnpoint = "ST_SG_Zeta_001B"
+    name_of_spawnpoint_out = "ST_SG_Zeta_001B_Out"
+
+    trigger = _get_trigger(editor)
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (6600.0, 7500.0, 0.0), trigger, name_of_trigger, 0,
+    )
+
+    spawnpoint_actor = editor.copy_actor(
+        name_of_scenario, (6900.0, 7500.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
+    )
+
+    editor.copy_actor(
+        name_of_scenario, (6900.0, 7500.0, 0.0), spawnpoint, name_of_spawnpoint_out, 5,
+    )
+
+    scenario_7.add_actor_to_entity_groups("collision_camera_040", name_of_trigger)
+    scenario_7.add_actor_to_entity_groups("collision_camera_040", name_of_spawnpoint)
+    scenario_7.add_actor_to_entity_groups("collision_camera_040", name_of_spawnpoint_out)
+
+    trigger_actor = scenario_7.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
+    trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_002_Zeta_001"
+
+    spawnpoint_actor["rotation"][1] = -90
+
+
+def _create_checkpoint_omega_area7_out(editor: PatcherEditor):
+    name_of_scenario = "s070_area7"
+    scenario_7 = editor.get_scenario(name_of_scenario)
+    name_of_spawnpoint_out = "ST_SG_Omega_001_Out"
+
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (2400.0, 7600.0, 0.0), spawnpoint, name_of_spawnpoint_out, 5,
+    )
+
+    scenario_7.add_actor_to_entity_groups("collision_camera_047", name_of_spawnpoint_out)
+
+
+def _create_checkpoint_omega_area7_1(editor: PatcherEditor):
+    name_of_scenario = "s070_area7"
+    scenario_7 = editor.get_scenario(name_of_scenario)
+    name_of_trigger = "TG_SetCheckpoint_002_Omega_001"
+    name_of_spawnpoint = "ST_SG_Omega_001B"
+    name_of_spawnpoint_out = "ST_SG_Omega_001B_Out"
+
+    trigger = _get_trigger(editor)
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (-2000.0, 7500.0, 0.0), trigger, name_of_trigger, 0,
+    )
+
+    editor.copy_actor(
+        name_of_scenario, (-2200.0, 7500.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
+    )
+
+    spawnpoint_actor = editor.copy_actor(
+        name_of_scenario, (-2200.0, 7500.0, 0.0), spawnpoint, name_of_spawnpoint_out, 5,
+    )
+
+    scenario_7.add_actor_to_entity_groups("collision_camera_046", name_of_trigger)
+    scenario_7.add_actor_to_entity_groups("collision_camera_046", name_of_spawnpoint)
+    scenario_7.add_actor_to_entity_groups("collision_camera_046", name_of_spawnpoint_out)
+
+    trigger_actor = scenario_7.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
+    trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_002_Omega_001"
+
+    spawnpoint_actor["rotation"][1] = -90
+
+
+def _create_checkpoint_omega_area7_2(editor: PatcherEditor):
+    name_of_scenario = "s070_area7"
+    scenario_7 = editor.get_scenario(name_of_scenario)
+    name_of_trigger = "TG_SetCheckpoint_003_Omega_001"
+    name_of_spawnpoint = "ST_SG_Omega_001C"
+
+    trigger = _get_trigger(editor)
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (-500.0, 9230.0, 0.0), trigger, name_of_trigger, 0,
+    )
+
+    spawnpoint_actor = editor.copy_actor(
+        name_of_scenario, (-500.0, 9230.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
+    )
+
+    scenario_7.add_actor_to_entity_groups("collision_camera_061", name_of_trigger)
+    scenario_7.add_actor_to_entity_groups("collision_camera_061", name_of_spawnpoint)
+
+    trigger_actor = scenario_7.raw.actors[0][name_of_trigger]["components"][0]["arguments"]
+    trigger_actor[3]["value"] = "CurrentScenario.OnEnter_SetCheckpoint_003_Omega_001"
+
+    spawnpoint_actor["rotation"][1] = -90
+
+
 def patch_metroids(editor: PatcherEditor):
     _patch_metroids(editor)
-    _create_checkpoint_gamma_2b(editor)
+    _create_checkpoint_alpha_surface(editor)
+    _create_checkpoint_alpha_003_area2(editor)
+    _create_checkpoint_gamma_area2b(editor)
+    _create_checkpoint_alpha_002_area3b(editor)
+    _create_checkpoint_alpha_area6(editor)
+    _create_checkpoint_zeta_area7(editor)
+    _create_checkpoint_omega_area7_out(editor)
+    _create_checkpoint_omega_area7_1(editor)
+    _create_checkpoint_omega_area7_2(editor)

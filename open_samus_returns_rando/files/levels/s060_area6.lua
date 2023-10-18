@@ -145,6 +145,9 @@ end
 function s060_area6.OnEnter_SetCheckpoint_001_Alpha_001()
   Game.SetBossCheckPointNames("ST_SG_Alpha_001", "ST_SG_Alpha_001", "SG_Alpha_001", "", "")
 end
+function s060_area6.OnEnter_SetCheckpoint_002_Alpha_001()
+  Game.SetBossCheckPointNames("ST_SG_Alpha_001B", "ST_SG_Alpha_001B", "SG_Alpha_001", "", "")
+end
 function s060_area6.OnAlpha_001_Generated(_ARG_0_, _ARG_1_)
   Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Alpha_001")
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
