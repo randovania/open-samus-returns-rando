@@ -203,7 +203,10 @@ class ActorPickup(BasePickup):
         new_template = self.patch_item_pickup(new_template)
 
         # special case for surface / surfaceb item
-        if actor_reference["scenario"] == "s000_surface" and actor_name == "LE_Item_002":
+        if (
+                actor_reference["scenario"] == "s000_surface" and
+                (actor_name == "LE_Item_002" or actor_name == "LE_Item_003")
+        ):
             surfaceb_name = "s110_surfaceb"
             surface_b = editor.get_scenario(surfaceb_name)
             mirrored_actor = next((layer[actor_name] for layer in surface_b.raw.actors if actor_name in layer), None)
