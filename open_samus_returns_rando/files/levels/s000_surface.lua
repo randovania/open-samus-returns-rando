@@ -78,12 +78,12 @@ function s000_surface.InitFromBlackboard()
   if Scenario.ReadFromBlackboard("AlphaIntroPlayed", false) then
     Game.DisableEntity("TG_Intro_Alpha")
   end
-  if not Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") or not (Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") > 0) then
-    Game.DisableEntity("LE_Queen_Door")
+  -- if not Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") or not (Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") > 0) then
+  Game.DisableEntity("LE_Queen_Door")
   -- else
   --   Game.SetSubAreaCurrentSetup("collision_camera_016", "PostQueen", true)
   --   Game.EnableEntity("LE_Queen_Door")
-  end
+  -- end
   if Scenario.ReadFromBlackboard("MeleeReminderTutoPlayed", false) then
     Game.DisableTrigger("TG_StartMeleeReminderTuto")
     Game.DisableTrigger("TG_EndMeleeReminderTuto")
