@@ -1,5 +1,4 @@
 import json
-import logging
 import shutil
 import typing
 from pathlib import Path
@@ -8,6 +7,7 @@ from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
 from open_samus_returns_rando.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.debug import debug_custom_pickups, debug_spawn_points
+from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.misc_patches.credits import patch_credits
@@ -24,8 +24,6 @@ from open_samus_returns_rando.specific_patches.tunable_patches import patch_tuna
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
 
 T = typing.TypeVar("T")
-LOG = logging.getLogger("samus_returns_patcher")
-
 
 def _read_schema():
     with Path(__file__).parent.joinpath("files", "schema.json").open() as f:

@@ -1,4 +1,3 @@
-import logging
 
 from construct import ListContainer
 from mercury_engine_data_structures.formats import Bmsad
@@ -6,7 +5,6 @@ from mercury_engine_data_structures.formats import Bmsad
 from open_samus_returns_rando.constants import ALL_AREAS
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
-LOG = logging.getLogger("metroid_patches")
 
 def _patch_metroids(editor: PatcherEditor):
     METROID_FILES = [
