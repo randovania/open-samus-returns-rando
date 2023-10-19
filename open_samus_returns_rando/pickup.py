@@ -200,7 +200,18 @@ class ActorPickup(BasePickup):
         # Update given item
         new_template = self.patch_item_pickup(new_template)
 
-        # new_path = f"actors/items/randomizer_powerup/charclasses/randomizer_powerup_{self.pickup_id}.bmsad"
+        # special case for surface / surfaceb item
+        if (
+                actor_reference["scenario"] == "s000_surface" and
+                (actor_name == "LE_Item_002" or actor_name == "LE_Item_003")
+        ):
+            surfaceb_name = "s110_surfaceb"
+            surface_b = editor.get_scenario(surfaceb_name)
+            mirrored_actor = next((layer[actor_name] for layer in surface_b.raw.actors if actor_name in layer), None)
+            assert mirrored_actor is not None
+            mirrored_actor.type = actordef_id
+            pkgs_for_level.update(set(editor.find_pkgs(path_for_level(surfaceb_name) + ".bmsld")))
+
         new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
         editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
         actor.type = actordef_id
