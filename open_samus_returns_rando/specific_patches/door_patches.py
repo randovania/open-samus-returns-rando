@@ -117,7 +117,6 @@ def _patch_beam_covers(editor: PatcherEditor):
         "s067_area6c": ["LE_PlasmaShield_Door005", "LE_PlasmaShield_Door014",
                         "LE_PlasmaShield_Door016", "LE_SpazerShield_Door018"],
         "s090_area9": ["LE_PlasmaShield_Door003", "LE_Shield_Door006", "LE_Shield_Door015"],
-        "s110_surfaceb": ["LE_SpazerShield_Door_012"]
     }
 
     for area_name, beam_covers in ALL_BEAM_COVERS.items():
