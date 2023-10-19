@@ -1,18 +1,16 @@
 import copy
 import functools
 import json
-import logging
 from enum import Enum
 
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad
 
 from open_samus_returns_rando.files import templates_path
+from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.model_data import get_data
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
-
-LOG = logging.getLogger("pickup")
 
 TANK_MODELS = {
     "item_energytank",
