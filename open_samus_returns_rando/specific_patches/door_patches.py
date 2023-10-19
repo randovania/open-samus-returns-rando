@@ -141,13 +141,11 @@ def _patch_beam_covers(editor: PatcherEditor):
             door_actor.components.append(copy.deepcopy(door_actor.components[0]))
             door_actor.components[1]["arguments"][3]["value"] = new_actor_name
 
-            # Note: New actors should be added to the entity groups but maybe that brings back our old friend
-            # "removing random actors in a room". Comment it out in that case after playtests
-            # entity_groups = [group for group_name, group in scenario.all_actor_groups()
-            #         if group_name in list(scenario.all_actor_group_names_for_actor(cover_name))]
-            # for group in entity_groups:
-            #     idx = group.names.index(cover_name)
-            #     group.names.insert(idx, new_actor_name)
+            entity_groups = [group for group_name, group in scenario.all_actor_groups()
+                    if group_name in list(scenario.all_actor_group_names_for_actor(cover_name))]
+            for group in entity_groups:
+                scenario.insert_into_entity_group(group, new_actor_name)
+
 
 
 def _patch_charge_doors(editor: PatcherEditor):

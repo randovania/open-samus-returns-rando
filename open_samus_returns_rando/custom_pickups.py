@@ -14,15 +14,15 @@ def _get_actor(editor: PatcherEditor):
 def _create_baby_pickup(editor: PatcherEditor):
     name_of_scenario = "s100_area10"
     scenario_10 = editor.get_scenario(name_of_scenario)
+    name_of_pickup = "LE_Baby_Hatchling"
 
     reference_actor = _get_actor(editor)
 
     editor.copy_actor(
-        name_of_scenario, (-3400.0, 11225.0, 0.0), reference_actor, "LE_Baby_Hatchling", 9,
+        name_of_scenario, (-3400.0, 11225.0, 0.0), reference_actor, name_of_pickup, 9,
     )
 
-    group_cc22 = scenario_10.get_actor_group("eg_SubArea_collision_camera_022")
-    group_cc22.names.insert(-1, "LE_Baby_Hatchling")
+    scenario_10.add_actor_to_entity_groups("collision_camera_022", name_of_pickup)
 
     # TODO: Update minimap
 
