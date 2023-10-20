@@ -176,6 +176,9 @@ end
 function s070_area7.OnEnter_SetCheckpoint_001_Zeta_001()
   Game.SetBossCheckPointNames("ST_SG_Zeta_001", "ST_SG_Zeta_001_Out", "SG_Zeta_001", "", "")
 end
+function s070_area7.OnEnter_SetCheckpoint_002_Zeta_001()
+  Game.SetBossCheckPointNames("ST_SG_Zeta_001B", "ST_SG_Zeta_001B_Out", "SG_Zeta_001", "", "")
+end
 function s070_area7.OnZeta_001_Generated(_ARG_0_, _ARG_1_)
   Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Zeta_001")
   if _ARG_1_ ~= nil then
@@ -195,7 +198,13 @@ function s070_area7.OnEnter_Zeta_001_Dead()
   end
 end
 function s070_area7.OnEnter_SetCheckpoint_001_Omega_001()
-  Game.SetBossCheckPointNames("ST_SG_Omega_001", "ST_SG_Omega_001", "SG_Omega_001", "", "")
+  Game.SetBossCheckPointNames("ST_SG_Omega_001", "ST_SG_Omega_001_Out", "SG_Omega_001", "", "")
+end
+function s070_area7.OnEnter_SetCheckpoint_002_Omega_001()
+  Game.SetBossCheckPointNames("ST_SG_Omega_001B", "ST_SG_Omega_001B_Out", "SG_Omega_001", "", "")
+end
+function s070_area7.OnEnter_SetCheckpoint_003_Omega_001()
+  Game.SetBossCheckPointNames("ST_SG_Omega_001C", "ST_SG_Omega_001C", "SG_Omega_001", "", "")
 end
 function s070_area7.OnOmega_001_Generated(_ARG_0_, _ARG_1_)
   Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Omega_001")

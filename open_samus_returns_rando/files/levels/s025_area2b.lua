@@ -114,7 +114,7 @@ function s025_area2b.OnEnter_SetCheckpoint_001_Gamma_001()
   Game.SetBossCheckPointNames("ST_SG_Gamma_001", "ST_SG_Gamma_001_Out", "SG_Gamma_001", "", "")
 end
 function s025_area2b.OnEnter_SetCheckpoint_002_Gamma_001()
-  Game.SetBossCheckPointNames("ST_SG_Gamma_001_2", "ST_SG_Gamma_001_2_Out", "SG_Gamma_001", "", "")
+  Game.SetBossCheckPointNames("ST_SG_Gamma_001B", "ST_SG_Gamma_001B_Out", "SG_Gamma_001", "", "")
 end
 function s025_area2b.OnGamma_001_Generated(_ARG_0_, _ARG_1_)
   Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_001")
