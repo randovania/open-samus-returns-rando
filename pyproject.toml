@@ -16,7 +16,7 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "mercury-engine-data-structures>=0.24.0",
+    "mercury-engine-data-structures>=0.25.0",
     "jsonschema>=4.0.0",
     "ips.py>=0.1.2",
 ]
@@ -28,6 +28,10 @@ content-type = "text/markdown"
 
 [project.urls]
 Homepage = "https://github.com/randovania/open-samus-returns-rando"
+
+# Entry Points for PyInstaller
+[project.entry-points.pyinstaller40]
+hook-dirs = "open_samus_returns_rando.__pyinstaller:get_hook_dirs"
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
