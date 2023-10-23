@@ -66,6 +66,12 @@ def _read_template_powerup():
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
         return json.load(f)
 
+def get_package_name(package_name: str, file_name: str):
+    without = ["bcmdl", "bcwav", "bctex", "bcskla", "bcptl"]
+    for ending in without:
+        if file_name.endswith(ending):
+            return package_name.replace("_discardables", "")
+    return package_name
 
 class PickupType(Enum):
     ACTOR = "actor"
@@ -221,7 +227,7 @@ class ActorPickup(BasePickup):
             for model_name in model_names:
                 model_data = get_data(model_name)
                 for dep in model_data.dependencies:
-                    editor.ensure_present(level_pkg, dep)
+                    editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
         # For debugging, write the bmsad we just created
         # Path("custom_bmsad", f"randomizer_powerup_{i}.bmsad.json").write_text(
@@ -237,22 +243,25 @@ class MetroidPickup(BasePickup):
 def ensure_base_models(editor: PatcherEditor) -> None:
     for level_pkg in editor.get_all_level_pkgs():
         # ensure base stuff
-        editor.ensure_present(level_pkg, "system/animtrees/base.bmsat")
-        editor.ensure_present(level_pkg, "sounds/generic/obtencion.bcwav")
-        editor.ensure_present(level_pkg, "actors/items/randomizer_powerup/scripts/randomizer_powerup.lc")
-        editor.ensure_present(level_pkg, "actors/scripts/metroid.lc")
+        editor.ensure_present(get_package_name(level_pkg, "bmsat"), "system/animtrees/base.bmsat")
+        editor.ensure_present(get_package_name(level_pkg, "bcwav"), "sounds/generic/obtencion.bcwav")
+        editor.ensure_present(
+            get_package_name(level_pkg, "lc"),
+            "actors/items/randomizer_powerup/scripts/randomizer_powerup.lc"
+        )
+        editor.ensure_present(get_package_name(level_pkg, "lc"), "actors/scripts/metroid.lc")
 
         # ensure itemsphere stuff (base for many majors)
-        editor.ensure_present(level_pkg, "actors/items/itemsphere/animations/relax.bcskla")
+        editor.ensure_present(get_package_name(level_pkg, "bcskla"), "actors/items/itemsphere/animations/relax.bcskla")
         model_data = get_data("itemsphere")
         for dep in model_data.dependencies:
-            editor.ensure_present(level_pkg, dep)
+            editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
         # ensure energytank stuff (base for all tanks)
-        editor.ensure_present(level_pkg, "actors/items/itemtank/animations/relax.bcskla")
+        editor.ensure_present(get_package_name(level_pkg, "bcskla"), "actors/items/itemtank/animations/relax.bcskla")
         model_data = get_data("item_energytank")
         for dep in model_data.dependencies:
-            editor.ensure_present(level_pkg, dep)
+            editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
 
 def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
