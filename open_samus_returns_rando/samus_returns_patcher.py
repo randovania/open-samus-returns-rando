@@ -98,6 +98,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     lua_util.replace_script(editor, "actors/props/samusship/scripts/samusship", "custom_ship.lua")
     lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom_savestation.lua")
 
+    # Update Map Icons
+    update_map_icons(editor)
+
     # Custom pickups
     patch_custom_pickups(editor)
     debug_custom_pickups(editor, configuration["debug_custom_pickups"])
@@ -126,9 +129,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     # Text patches
     patch_credits(editor, configuration["spoiler_log"])
     patch_pb_status(editor)
-
-    # Map Icons
-    update_map_icons(editor)
 
     out_romfs = output_path.joinpath("romfs")
     out_exefs = output_path.joinpath("exefs")

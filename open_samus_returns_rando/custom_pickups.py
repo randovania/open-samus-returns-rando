@@ -1,4 +1,19 @@
+from construct import Container, ListContainer
+from mercury_engine_data_structures.formats import Bmsmsd
+
 from open_samus_returns_rando.patcher_editor import PatcherEditor
+
+BABY_ICON = Container({
+    "actor_name": "LE_Baby_Hatchling",
+    "clear_condition": "",
+    "icon": "itemsphere",
+    "icon_priority": 0,
+    "coordinates": ListContainer([
+        -3400.0,
+        11225.0,
+        0.0
+    ]),
+})
 
 
 def _get_actor(editor: PatcherEditor):
@@ -24,7 +39,9 @@ def _create_baby_pickup(editor: PatcherEditor):
 
     scenario_10.add_actor_to_entity_groups("collision_camera_022", name_of_pickup)
 
-    # TODO: Update minimap
+    area10 = editor.get_file("gui/minimaps/c10_samus/s100_area10.bmsmsd", Bmsmsd)
+    mapicon = area10.raw["tiles"][252]
+    mapicon["icons"] = ListContainer([BABY_ICON])
 
 
 def patch_custom_pickups(editor: PatcherEditor):
