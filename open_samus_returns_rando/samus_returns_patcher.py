@@ -18,6 +18,7 @@ from open_samus_returns_rando.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import game_patches
 from open_samus_returns_rando.specific_patches.door_patches import patch_doors
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
+from open_samus_returns_rando.specific_patches.map_icons import update_map_icons
 from open_samus_returns_rando.specific_patches.metroid_patches import patch_metroids
 from open_samus_returns_rando.specific_patches.static_fixes import apply_static_fixes
 from open_samus_returns_rando.specific_patches.tunable_patches import patch_tunables
@@ -125,6 +126,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     # Text patches
     patch_credits(editor, configuration["spoiler_log"])
     patch_pb_status(editor)
+
+    # Map Icons
+    update_map_icons(editor)
 
     out_romfs = output_path.joinpath("romfs")
     out_exefs = output_path.joinpath("exefs")
