@@ -17,10 +17,14 @@ def _surface_icons(editor: PatcherEditor):
 
     for tile in range(479):
         # Hazardous Tiles
-        if mapicon[tile]["tile_type"] == 4:
-            mapicon[tile]["tile_type"] = 1
+        if mapicon[tile]["tile_type"] == "ACID":
+            mapicon[tile]["tile_type"] = "NORMAL"
         # Items
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and (
+            mapicon[tile]["icons"][0]["icon"].endswith("tank")
+            or mapicon[tile]["icons"][0]["icon"].startswith("itemsphere")
+            or mapicon[tile]["icons"][0]["icon"].startswith("spenergy")
+        ):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -45,10 +49,12 @@ def _area1_icons(editor: PatcherEditor):
 
     for tile in range(384):
         # Hazardous Tiles
-        if mapicon[tile]["tile_type"] == 4:
-            mapicon[tile]["tile_type"] = 1
+        if mapicon[tile]["tile_type"] == "ACID":
+            mapicon[tile]["tile_type"] = "NORMAL"
         # Items
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
     mapicon[158]["icons"][0]["icon"] = "itemenabledheat"
 
@@ -59,7 +65,9 @@ def _area2_icons(editor: PatcherEditor):
 
     # Items
     for tile in range(310):
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -74,7 +82,9 @@ def _area2b_icons(editor: PatcherEditor):
 
     # Items
     for tile in range(160):
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
     mapicon[88]["icons"][0]["icon"] = "itemenabledheat"
 
@@ -93,10 +103,13 @@ def _area2c_icons(editor: PatcherEditor):
 
     for tile in range(116):
         # Hazardous Tiles
-        if mapicon[tile]["tile_type"] == 4:
-            mapicon[tile]["tile_type"] = 1
+        if mapicon[tile]["tile_type"] == "ACID":
+            mapicon[tile]["tile_type"] = "NORMAL"
         # Items
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and (
+            mapicon[tile]["icons"][0]["icon"].startswith("item")
+            or mapicon[tile]["icons"][0]["icon"].startswith("spenergy")
+        ):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -114,10 +127,13 @@ def _area3_icons(editor: PatcherEditor):
 
     for tile in range(300):
         # Hazardous Tiles
-        if mapicon[tile]["tile_type"] == 4:
-            mapicon[tile]["tile_type"] = 1
+        if mapicon[tile]["tile_type"] == "ACID":
+            mapicon[tile]["tile_type"] = "NORMAL"
         # Items
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and (
+            mapicon[tile]["icons"][0]["icon"].startswith("item")
+            or mapicon[tile]["icons"][0]["icon"].startswith("spenergy")
+        ):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -127,7 +143,9 @@ def _area3b_icons(editor: PatcherEditor):
 
     # Items
     for tile in range(323):
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -137,7 +155,9 @@ def _area3c_icons(editor: PatcherEditor):
 
     # Items
     for tile in range(150):
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -159,10 +179,12 @@ def _area4_icons(editor: PatcherEditor):
 
     for tile in range(285):
         # Hazardous Tiles
-        if mapicon[tile]["tile_type"] == 4:
-            mapicon[tile]["tile_type"] = 1
+        if mapicon[tile]["tile_type"] in {"ACID", "ACID_FALL"}:
+            mapicon[tile]["tile_type"] = "NORMAL"
         # Items
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -173,11 +195,13 @@ def _area5_icons(editor: PatcherEditor):
     # Doors
     # Door006 (Elevator Charge Door)
     mapicon[100]["icons"][0]["icon"] = "doorpowerleft"
-    mapicon[100]["icons"][0]["icon"] = "doorpowerright"
+    mapicon[101]["icons"][0]["icon"] = "doorpowerright"
 
     # Items
     for tile in range(296):
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
     mapicon[213]["icons"][0]["icon"] = "itemenabledheat"
 
@@ -191,12 +215,15 @@ def _area6_icons(editor: PatcherEditor):
     mapicon[14]["icons"][0]["icon"] = "doorpowerleft"
     mapicon[15]["icons"][0]["icon"] = "doorpowerright"
 
-    for tile in range(214):
+    for tile in range(226):
         # Hazardous Tiles
-        if mapicon[tile]["tile_type"] == 4:
-            mapicon[tile]["tile_type"] = 1
+        if mapicon[tile]["tile_type"] == "ACID":
+            mapicon[tile]["tile_type"] = "NORMAL"
         # Items
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and (
+            mapicon[tile]["icons"][0]["icon"].startswith("item")
+            or mapicon[tile]["icons"][0]["icon"].startswith("spenergy")
+        ):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -206,7 +233,9 @@ def _area6b_icons(editor: PatcherEditor):
 
     # Items
     for tile in range(290):
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -226,7 +255,9 @@ def _area6c_icons(editor: PatcherEditor):
 
     # Items
     for tile in range(212):
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -241,10 +272,12 @@ def _area7_icons(editor: PatcherEditor):
 
     for tile in range(351):
         # Hazardous Tiles
-        if mapicon[tile]["tile_type"] in {4, 8, 12}:
-            mapicon[tile]["tile_type"] = 1
+        if mapicon[tile]["tile_type"] in {"ACID", "ACID_RISE", "ACID_FALL"}:
+            mapicon[tile]["tile_type"] = "NORMAL"
         # Items
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -259,10 +292,12 @@ def _area9_icons(editor: PatcherEditor):
 
     for tile in range(387):
         # Hazardous Tiles
-        if mapicon[tile]["tile_type"] == 4:
-            mapicon[tile]["tile_type"] = 1
+        if mapicon[tile]["tile_type"] == "ACID":
+            mapicon[tile]["tile_type"] = "NORMAL"
         # Items
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
@@ -272,7 +307,9 @@ def _area10_icons(editor: PatcherEditor):
 
     # Items
     for tile in range(339):
-        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0][
+            "icon"
+        ].startswith("item"):
             mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
