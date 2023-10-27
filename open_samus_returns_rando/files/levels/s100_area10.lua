@@ -289,10 +289,10 @@ function s100_area10.OnPlayerDead(_ARG_0_)
   s100_area10.SetLowModelsVisibility(false)
 end
 function s100_area10.SetLowModelsVisibility(_ARG_0_)
-  if Game.GetEntity("Samus") ~= nil then
-    Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Body_Ch", not _ARG_0_)
-    Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Combat_Ch", _ARG_0_)
-  end
+  -- if Game.GetEntity("Samus") ~= nil then
+  --   Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Body_Ch", not _ARG_0_)
+  --   Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Combat_Ch", _ARG_0_)
+  -- end
   if Game.GetEntityFromSpawnPoint("SP_Queen") ~= nil then
     Game.GetEntityFromSpawnPoint("SP_Queen").MODELUPDATER:SetMeshVisible("C01_Head_Ch", not _ARG_0_)
     Game.GetEntityFromSpawnPoint("SP_Queen").MODELUPDATER:SetMeshVisible("C01_Headcombat_Ch", _ARG_0_)
