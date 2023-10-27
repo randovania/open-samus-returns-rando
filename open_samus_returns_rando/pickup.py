@@ -196,8 +196,6 @@ class ActorPickup(BasePickup):
         model_names: list[str] = self.pickup["model"]
         self.patch_model(model_names, new_template)
 
-        # TODO Update minimap
-
         # Update caption
         pickable = new_template["components"]["PICKABLE"]
         # this actually wants an #GUI identifier but it works
@@ -229,10 +227,6 @@ class ActorPickup(BasePickup):
                 for dep in model_data.dependencies:
                     editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
-        # For debugging, write the bmsad we just created
-        # Path("custom_bmsad", f"randomizer_powerup_{i}.bmsad.json").write_text(
-        #     json.dumps(new_template, indent=4)
-        # )
 
 class MetroidPickup(BasePickup):
     def patch(self, editor: PatcherEditor):

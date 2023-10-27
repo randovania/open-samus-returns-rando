@@ -6,7 +6,7 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor
 BABY_ICON = Container({
     "actor_name": "LE_Baby_Hatchling",
     "clear_condition": "",
-    "icon": "itemsphere",
+    "icon": "itemenabled",
     "icon_priority": 0,
     "coordinates": ListContainer([
         -3400.0,

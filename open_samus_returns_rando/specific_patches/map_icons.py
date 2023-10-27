@@ -15,10 +15,13 @@ def _surface_icons(editor: PatcherEditor):
     mapicon[57]["icons"][0]["icon"] = "doorpowerleft"
     mapicon[58]["icons"][0]["icon"] = "doorpowerright"
 
-    # Hazardous Tiles
-    for tile in range(89):
+    for tile in range(479):
+        # Hazardous Tiles
         if mapicon[tile]["tile_type"] == 4:
             mapicon[tile]["tile_type"] = 1
+        # Items
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
 def _area1_icons(editor: PatcherEditor):
@@ -40,10 +43,24 @@ def _area1_icons(editor: PatcherEditor):
     # Door016 (Exterior Alpha)
     mapicon[302]["icons"][0]["icon"] = "doorpowerright"
 
-    # Hazardous Tiles
-    for tile in range(52):
+    for tile in range(384):
+        # Hazardous Tiles
         if mapicon[tile]["tile_type"] == 4:
             mapicon[tile]["tile_type"] = 1
+        # Items
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
+    mapicon[158]["icons"][0]["icon"] = "itemenabledheat"
+
+
+def _area2_icons(editor: PatcherEditor):
+    area2 = editor.get_file("gui/minimaps/c10_samus/s020_area2.bmsmsd", Bmsmsd)
+    mapicon = area2.raw["tiles"]
+
+    # Items
+    for tile in range(310):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
 def _area2b_icons(editor: PatcherEditor):
@@ -54,6 +71,12 @@ def _area2b_icons(editor: PatcherEditor):
     # Door008 (Below Wave Beam)
     mapicon[152]["icons"][0]["icon"] = "doorpowerleft"
     mapicon[153]["icons"][0]["clear_condition"] = ""
+
+    # Items
+    for tile in range(160):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
+    mapicon[88]["icons"][0]["icon"] = "itemenabledheat"
 
 
 def _area2c_icons(editor: PatcherEditor):
@@ -68,10 +91,13 @@ def _area2c_icons(editor: PatcherEditor):
     mapicon[32]["icons"][0]["icon"] = "doorpowerleft"
     mapicon[33]["icons"][0]["icon"] = "doorpowerright"
 
-    # Hazardous Tiles
-    for tile in range(37):
+    for tile in range(116):
+        # Hazardous Tiles
         if mapicon[tile]["tile_type"] == 4:
             mapicon[tile]["tile_type"] = 1
+        # Items
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
 def _area3_icons(editor: PatcherEditor):
@@ -86,10 +112,33 @@ def _area3_icons(editor: PatcherEditor):
     mapicon[2]["icons"][0]["icon"] = "doorpowerleft"
     mapicon[3]["icons"][0]["icon"] = "doorpowerright"
 
-    # Hazardous Tiles
-    for tile in range(44):
+    for tile in range(300):
+        # Hazardous Tiles
         if mapicon[tile]["tile_type"] == 4:
             mapicon[tile]["tile_type"] = 1
+        # Items
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
+
+
+def _area3b_icons(editor: PatcherEditor):
+    area3b = editor.get_file("gui/minimaps/c10_samus/s033_area3b.bmsmsd", Bmsmsd)
+    mapicon = area3b.raw["tiles"]
+
+    # Items
+    for tile in range(323):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
+
+
+def _area3c_icons(editor: PatcherEditor):
+    area3c = editor.get_file("gui/minimaps/c10_samus/s036_area3c.bmsmsd", Bmsmsd)
+    mapicon = area3c.raw["tiles"]
+
+    # Items
+    for tile in range(150):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
 def _area4_icons(editor: PatcherEditor):
@@ -108,10 +157,13 @@ def _area4_icons(editor: PatcherEditor):
     mapicon[2]["icons"][1]["icon"] = "doorpowerleft"
     mapicon[3]["icons"][0]["icon"] = "doorpowerright"
 
-    # Hazardous Tiles
-    for tile in range(40):
+    for tile in range(285):
+        # Hazardous Tiles
         if mapicon[tile]["tile_type"] == 4:
             mapicon[tile]["tile_type"] = 1
+        # Items
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
 def _area5_icons(editor: PatcherEditor):
@@ -123,10 +175,11 @@ def _area5_icons(editor: PatcherEditor):
     mapicon[100]["icons"][0]["icon"] = "doorpowerleft"
     mapicon[100]["icons"][0]["icon"] = "doorpowerright"
 
-    # Hazardous Tiles
-    for tile in range(40):
-        if mapicon[tile]["tile_type"] == 4:
-            mapicon[tile]["tile_type"] = 1
+    # Items
+    for tile in range(296):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
+    mapicon[213]["icons"][0]["icon"] = "itemenabledheat"
 
 
 def _area6_icons(editor: PatcherEditor):
@@ -138,10 +191,23 @@ def _area6_icons(editor: PatcherEditor):
     mapicon[14]["icons"][0]["icon"] = "doorpowerleft"
     mapicon[15]["icons"][0]["icon"] = "doorpowerright"
 
-    # Hazardous Tiles
-    for tile in range(42):
+    for tile in range(214):
+        # Hazardous Tiles
         if mapicon[tile]["tile_type"] == 4:
             mapicon[tile]["tile_type"] = 1
+        # Items
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
+
+
+def _area6b_icons(editor: PatcherEditor):
+    area6b = editor.get_file("gui/minimaps/c10_samus/s065_area6b.bmsmsd", Bmsmsd)
+    mapicon = area6b.raw["tiles"]
+
+    # Items
+    for tile in range(290):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
 def _area6c_icons(editor: PatcherEditor):
@@ -158,20 +224,28 @@ def _area6c_icons(editor: PatcherEditor):
     # Door009 (Gravity Suit Missile Door)
     mapicon[149]["icons"][0]["icon"] = "doorpowerleft"
 
+    # Items
+    for tile in range(212):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
+
 
 def _area7_icons(editor: PatcherEditor):
     area7 = editor.get_file("gui/minimaps/c10_samus/s070_area7.bmsmsd", Bmsmsd)
     mapicon = area7.raw["tiles"]
 
     # Doors
-    # Door010 (Chozo Seal Charge Door)
+    # Door010 (Pre-Steal Charge Door)
     mapicon[273]["icons"][0]["icon"] = "doorpowerleft"
     mapicon[274]["icons"][0]["icon"] = "doorpowerright"
 
-    # Hazardous Tiles
-    for tile in range(49):
-        if mapicon[tile]["tile_type"] == 4:
+    for tile in range(351):
+        # Hazardous Tiles
+        if mapicon[tile]["tile_type"] in {4, 8, 12}:
             mapicon[tile]["tile_type"] = 1
+        # Items
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
 def _area9_icons(editor: PatcherEditor):
@@ -179,25 +253,43 @@ def _area9_icons(editor: PatcherEditor):
     mapicon = area9.raw["tiles"]
 
     # Doors
-    # Door012 (Elevator Charge Door)
+    # Door012 (Chozo Seal Charge Door)
     mapicon[89]["icons"][0]["icon"] = "doorpowerleft"
     mapicon[90]["icons"][0]["icon"] = "doorpowerright"
 
-    # Hazardous Tiles
-    for tile in range(61):
+    for tile in range(387):
+        # Hazardous Tiles
         if mapicon[tile]["tile_type"] == 4:
             mapicon[tile]["tile_type"] = 1
+        # Items
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
+
+
+def _area10_icons(editor: PatcherEditor):
+    area10 = editor.get_file("gui/minimaps/c10_samus/s100_area10.bmsmsd", Bmsmsd)
+    mapicon = area10.raw["tiles"]
+
+    # Items
+    for tile in range(339):
+        if mapicon[tile]["icons"] != ([]) and mapicon[tile]["icons"][0]["icon"].startswith("item"):
+            mapicon[tile]["icons"][0]["icon"] = "itemenabled"
 
 
 def update_map_icons(editor: PatcherEditor):
     _surface_icons(editor)
     _area1_icons(editor)
+    _area2_icons(editor)
     _area2b_icons(editor)
     _area2c_icons(editor)
     _area3_icons(editor)
+    _area3b_icons(editor)
+    _area3c_icons(editor)
     _area4_icons(editor)
     _area5_icons(editor)
     _area6_icons(editor)
+    _area6b_icons(editor)
     _area6c_icons(editor)
     _area7_icons(editor)
     _area9_icons(editor)
+    _area10_icons(editor)
