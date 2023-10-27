@@ -138,9 +138,14 @@
         "game_patches": {
             "type": "object",
             "properties": {
-                "nerf_power_bombs": {
+                "charge_door_buff": {
                     "type": "boolean",
-                    "description": "Changes weaknesses for certain props to make Power Bombs less overpowered.",
+                    "description": "Remove the Power Bomb weakness from Charge Beam Doors to make Power Bombs less overpowered.",
+                    "default": true
+                },
+                "beam_door_buff": {
+                    "type": "boolean",
+                    "description": "Remove the Power Bomb weakness from Beam Doors to make Power Bombs less overpowered.",
                     "default": true
                 },
                 "remove_elevator_grapple_blocks": {
@@ -330,8 +335,6 @@
                 "ITEM_METROID_COUNT",
                 "ITEM_METROID_TOTAL_COUNT",
                 "ITEM_ADN",
-                "ITEM_RANDO_LOCKED_SUPERS",
-                "ITEM_RANDO_LOCKED_PBS",
                 "ITEM_RANDO_DNA_1",
                 "ITEM_RANDO_DNA_2",
                 "ITEM_RANDO_DNA_3",
