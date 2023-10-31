@@ -174,7 +174,7 @@ def _patch_one_way_doors(editor: PatcherEditor):
         # Below Wave Beam
         "s025_area2b": ["Door008"],
         # Below Chozo Seal
-        "s030_area3": ["Door003", "Door006"],
+        "s030_area3": ["Door005", "Door006"],
         # Chozo Seal Spazer Door
         "s040_area4": ["Door001"],
         # Plasma Room Plasma and Missile doors, Gravity Room Missile Door
