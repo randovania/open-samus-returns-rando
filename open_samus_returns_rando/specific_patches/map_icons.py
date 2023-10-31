@@ -25,9 +25,6 @@ def patch_tiles(editor: PatcherEditor):
             tiles = scenario.raw["tiles"]
             for tile_idx in range(len(tiles)):
                 current_tile = tiles[tile_idx]
-                # Hazardous Tiles
-                if current_tile["tile_type"] in {"ACID", "ACID_RISE", "ACID_FALL"}:
-                    current_tile["tile_type"] = "NORMAL"
 
                 # Items
                 icons = current_tile["icons"]

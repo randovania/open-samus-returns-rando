@@ -236,7 +236,6 @@ function s030_area3.InitFromBlackboard()
   if Game.GetEntity("LE_Event_03") ~= nil and Scenario.ReadFromBlackboard("SpecialEvent03Launched") then
     Game.GetEntity("LE_Event_03"):Disable()
   end
-  Game.GetEntity("LE_HazarousPool").HAZAROUSPOOL:Activate(false)
 end
 function s030_area3.LaunchSpecialEnergyCutscene()
   Game.LaunchCutscene("cutscenes/energywave/takes/01/energywave01.bmscu")

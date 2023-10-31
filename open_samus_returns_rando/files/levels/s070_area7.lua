@@ -91,7 +91,7 @@ s070_area7.tDNAScanLandmarks = {
 }
 function s070_area7.InitFromBlackboard()
   if Blackboard.GetProp("s070_area7", "entity_LE_HazarousPool_001_enabled") == nil then
-    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(false)
+    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(true)
     Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(false)
   end
   s070_area7.OnFansInit()
