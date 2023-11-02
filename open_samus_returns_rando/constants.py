@@ -1,5 +1,6 @@
 # constant data, including "magic numbers" and common data that many modules use
 
+
 # list of all areas
 ALL_AREAS = [
     "s000_surface",
@@ -20,3 +21,13 @@ ALL_AREAS = [
     "s100_area10",
     "s110_surfaceb",
 ]
+
+def get_package_name(package_name: str, file_name: str):
+    without = ["bcmdl", "bcwav", "bctex", "bcskla", "bcptl"]
+    for ending in without:
+        if file_name.endswith(ending):
+            return package_name.replace("_discardables", "")
+    return package_name
+
+def lua_pkgs(pkgs: list[str]):
+    return [get_package_name(level_pkg, "lc") for level_pkg in pkgs]

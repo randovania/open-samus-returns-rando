@@ -6,6 +6,7 @@ from enum import Enum
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad
 
+from open_samus_returns_rando.constants import get_package_name, lua_pkgs
 from open_samus_returns_rando.files import templates_path
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
@@ -65,13 +66,6 @@ OFFSET =  Container({
 def _read_template_powerup():
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
         return json.load(f)
-
-def get_package_name(package_name: str, file_name: str):
-    without = ["bcmdl", "bcwav", "bctex", "bcskla", "bcptl"]
-    for ending in without:
-        if file_name.endswith(ending):
-            return package_name.replace("_discardables", "")
-    return package_name
 
 class PickupType(Enum):
     ACTOR = "actor"
@@ -239,11 +233,6 @@ def ensure_base_models(editor: PatcherEditor) -> None:
         # ensure base stuff
         editor.ensure_present(get_package_name(level_pkg, "bmsat"), "system/animtrees/base.bmsat")
         editor.ensure_present(get_package_name(level_pkg, "bcwav"), "sounds/generic/obtencion.bcwav")
-        editor.ensure_present(
-            get_package_name(level_pkg, "lc"),
-            "actors/items/randomizer_powerup/scripts/randomizer_powerup.lc"
-        )
-        editor.ensure_present(get_package_name(level_pkg, "lc"), "actors/scripts/metroid.lc")
 
         # ensure itemsphere stuff (base for many majors)
         editor.ensure_present(get_package_name(level_pkg, "bcskla"), "actors/items/itemsphere/animations/relax.bcskla")
@@ -259,8 +248,9 @@ def ensure_base_models(editor: PatcherEditor) -> None:
 
 
 def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
-    editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", b'', [])
-    editor.add_new_asset("actors/scripts/metroid.lc", b'', [])
+    all_pkgs = editor.get_all_level_pkgs()
+    editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", b'', lua_pkgs(all_pkgs))
+    editor.add_new_asset("actors/scripts/metroid.lc", b'', lua_pkgs(all_pkgs))
     ensure_base_models(editor)
 
     for i, pickup in enumerate(pickups_config):
