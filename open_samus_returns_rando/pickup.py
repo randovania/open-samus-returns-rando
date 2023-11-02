@@ -250,7 +250,9 @@ def ensure_base_models(editor: PatcherEditor) -> None:
 def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
     all_pkgs = editor.get_all_level_pkgs()
     editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", b'', lua_pkgs(all_pkgs))
-    editor.add_new_asset("actors/scripts/metroid.lc", b'', lua_pkgs(all_pkgs))
+    # FIXME: Why it doesn't work when we directly add it to the pkgs?
+    # Addition: Tested => It seems like this file is read fro RomFS but why not from pkg?
+    editor.add_new_asset("actors/scripts/metroid.lc", b'', [])
     ensure_base_models(editor)
 
     for i, pickup in enumerate(pickups_config):

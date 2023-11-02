@@ -2,7 +2,6 @@
 from construct import ListContainer
 from mercury_engine_data_structures.formats import Bmsad
 
-from open_samus_returns_rando.constants import ALL_AREAS
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
@@ -18,9 +17,6 @@ def _patch_metroids(editor: PatcherEditor):
         "actors/characters/zeta/charclasses/zeta.bmsad",
         "actors/characters/zetaevolved/charclasses/zetaevolved.bmsad",
     ]
-
-    for area_name in ALL_AREAS:
-        editor.ensure_present_in_scenario(area_name, "actors/scripts/metroid.lc")
 
     for metroid_file in METROID_FILES:
         metroid_bmsad = editor.get_parsed_asset(metroid_file, type_hint=Bmsad)
