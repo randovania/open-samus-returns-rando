@@ -6,10 +6,6 @@ Init.bRevealMap = TEMPLATE("reveal_map_on_start")
 Init.sStartingScenario = TEMPLATE("starting_scenario")
 Init.sStartingActor = TEMPLATE("starting_actor")
 Init.fEnergyPerTank = TEMPLATE("energy_per_tank")
-Init.tDNAPerArea = TEMPLATE("dna_per_area")
-Init.tScenarioMapping = TEMPLATE("scenario_mapping")
-Init.iNumRandoTextBoxes = TEMPLATE("textbox_count")
-Init.tBoxesSeen = 0
 
 Game.LogWarn(0, "Inventory:")
 for k, v in pairs(Init.tNewGameInventory) do
@@ -25,10 +21,6 @@ function Init.InitGameBlackboard()
     if string.sub(_FORV_3_, 0, 14) == "ITEM_RANDO_DNA" then
       local current_amount = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_ADN") or 0
       Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", current_amount + 1)
-    end
-    if string.sub(_FORV_3_, 1, 17) == "ITEM_RESERVE_TANK" then
-      Blackboard.SetProp("GAME", _FORV_3_ .. "_ACTIVE", "b", true)
-      Blackboard.SetProp("GAME", _FORV_3_ .. "_FULL", "b", true)
     end
   end
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_METROID_COUNT", "f", 0)
@@ -46,27 +38,13 @@ function Init.InitGameBlackboard()
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "LevelID", "s", "c10_samus")
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "ScenarioID", "s", TEMPLATE("starting_scenario"))
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "StartPoint", "s", TEMPLATE("starting_actor"))
-  Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "RANDO_GAME_INITIALIZED", "b", false)
-  Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "RANDO_START_TEXT", "b", false)
-  Blackboard.SetProp("s000_surface", "entity_LE_HazarousPool_enabled", "b", false)
-  Blackboard.SetProp("s010_area1", "entity_LE_HazarousPool_enabled", "b", false)
-  Blackboard.SetProp("s028_area2c", "entity_LE_HazarousPool_enabled", "b", false)
-  Blackboard.SetProp("s030_area3", "entity_LE_HazarousPool_enabled", "b", false)
-  Blackboard.SetProp("s040_area4", "entity_LE_HazarousPool_001_enabled", "b", false)
-  Blackboard.SetProp("s040_area4", "entity_LE_HazarousPool_002_enabled", "b", false)
-  Blackboard.SetProp("s060_area6", "entity_LE_HazarousPool_enabled", "b", false)
-  Blackboard.SetProp("s070_area7", "entity_LE_HazarousPool_001_enabled", "b", false)
-  Blackboard.SetProp("s070_area7", "entity_LE_HazarousPool_002_enabled", "b", false)
-  Blackboard.SetProp("s090_area9", "entity_LE_HazarousPool_enabled", "b", false)
 
-  Blackboard.SetProp("s000_surface", "LarvaPresentationPlayed", "b", true)
-  Game.WriteToGameBlackboardSection("PlayedCutscenes", "cutscenes/planetarrival/takes/10/planetarrival10.bmscu", true)
+  Blackboard.SetProp("s100_area10", "s100_area10_discovered",  "b", false)
 
   Game.UnlockAmiiboMenu()
 end
 
 function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
-    Init.tBoxesSeen = 0
     Game.LogWarn(0, string.format("Will start Game - %s / %s / %s / %s", tostring(arg1), tostring(arg2), tostring(arg3), tostring(arg4)))
     Game.LoadScenario("c10_samus", Init.sStartingScenario, Init.sStartingActor, "samus", 1)
     if Init.bRevealMap then

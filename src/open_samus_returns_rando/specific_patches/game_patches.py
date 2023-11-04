@@ -111,3 +111,8 @@ def _patch_reverse_area8(editor: PatcherEditor, configuration: dict):
         editor.remove_entity(
             {"scenario": "s100_area10", "layer": 9, "actor": "LE_ValveQueen"}
         )
+        # This spawnpoint is unused and will not be used for random start
+        # There might be a more efficient way of disabling the elevator but this works just fine
+        editor.remove_entity(
+            {"scenario": "s110_surfaceb", "layer": 5, "actor": "StartPoint0"}
+        )

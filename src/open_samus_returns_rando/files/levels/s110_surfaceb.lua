@@ -60,6 +60,13 @@ function s110_surfaceb.ElevatorSetTarget(_ARG_0_)
   GUI.ElevatorSetTarget("s000_surface_elevator", false)
 end
 function s110_surfaceb.InitFromBlackboard()
+  if Game.GetEntity("StartPoint0") ~= nil then
+    Game.GetEntity("LE_Elevator_FromArea10_down").USABLE:Activate(false)
+  end
+  bArea10Discovered = Blackboard.GetProp("s100_area10", "s100_area10_discovered")
+  if bArea10Discovered == true then
+    Game.GetEntity("LE_Elevator_FromArea10_down").USABLE:Activate(true)
+  end
 end
 function s110_surfaceb.OnReloaded()
 end

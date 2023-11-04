@@ -273,6 +273,9 @@ function s100_area10.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_
     Game.SetSceneGroupEnabledByName("sg_egg02", true)
     Game.EnableEntity("LE_Baby_Hatchling")
   end
+  if _ARG_2_ == "collision_camera_007" then
+    Blackboard.SetProp("s100_area10", "s100_area10_discovered", "b", true)
+  end
   if _ARG_2_ == "collision_camera_020" then
     s100_area10.fSafeFarPlaneFactor = Game.GetSafeFarPlaneFactor()
     Game.SetSafeFarPlaneFactor(-1)
