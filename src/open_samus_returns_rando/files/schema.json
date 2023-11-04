@@ -206,7 +206,7 @@
                 },
                 "reverse_area8": {
                     "type": "boolean",
-                    "description": "Enables the elevator from Surface West to Area 8 and removes the wall between the Queen and Baby, allowing access into Area 8 from Surface West.",
+                    "description": "The elevator from Surface West to Area 8 has been changed to be disabled by default. This option enables the elevator and removes the wall between the Queen and Baby, allowing access into Area 8 from Surface West.",
                     "default": false
                 }
             },
