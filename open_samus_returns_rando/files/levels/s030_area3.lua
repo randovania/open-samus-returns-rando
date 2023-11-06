@@ -4,6 +4,7 @@ Game.ImportLibrary("actors/props/poisonzone/scripts/poisonzone.lua", false)
 Game.ImportLibrary("actors/props/waterzone/scripts/waterzone.lua", false)
 Game.ImportLibrary("actors/props/spenergycloud/scripts/spenergycloud.lua", false)
 function s030_area3.main()
+  Scenario.InitGUI()
 end
 function s030_area3.GetOnDeathOverrides()
   return {GoToMainMenu = false}
@@ -250,7 +251,7 @@ end
 function s030_area3.OnExit()
 end
 function s030_area3.OnEnter_ActivationDNA()
-  Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 10)
+  -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 10)
 end
 function s030_area3.OnEnter_ActivationTeleport_03A_001()
   Game.OnTeleportApproached("LE_Teleporter_03A_001")

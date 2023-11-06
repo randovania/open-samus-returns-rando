@@ -3,6 +3,7 @@ Game.ImportLibrary("actors/props/heatzone/scripts/heatzone.lua", false)
 Game.ImportLibrary("actors/props/poisonzone/scripts/poisonzone.lua", false)
 Game.ImportLibrary("actors/props/waterzone/scripts/waterzone.lua", false)
 function s090_area9.main()
+  Scenario.InitGUI()
 end
 function s090_area9.SetupDebugGameBlackboard()
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_CURRENT_SPECIAL_ENERGY", "f", 1000)
@@ -121,7 +122,7 @@ end
 function s090_area9.OnExit()
 end
 function s090_area9.OnEnter_ActivationDNA()
-  Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 3)
+  -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 3)
 end
 function s090_area9.OnEnter_ActivationTeleport_09_01()
   Game.OnTeleportApproached("LE_Teleporter_09_01")

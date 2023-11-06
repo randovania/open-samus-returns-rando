@@ -81,6 +81,9 @@ class BasePickup:
     def patch(self, editor: PatcherEditor):
         raise NotImplementedError
 
+    def get_scenario(self):
+        raise NotImplementedError
+
 class ActorPickup(BasePickup):
     def patch_item_pickup(self, bmsad: dict) -> dict:
         pickable: dict = bmsad["components"]["PICKABLE"]
@@ -221,11 +224,17 @@ class ActorPickup(BasePickup):
                 for dep in model_data.dependencies:
                     editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
+    def get_scenario(self):
+        return self.pickup["pickup_actor"]["scenario"]
+
 
 class MetroidPickup(BasePickup):
     def patch(self, editor: PatcherEditor):
         lua_class = self.lua_editor.get_script_class(self.pickup)
         self.lua_editor.add_metroid_pickup(self.pickup["metroid_callback"], lua_class)
+
+    def get_scenario(self):
+        return self.pickup["metroid_callback"]["scenario"]
 
 
 def ensure_base_models(editor: PatcherEditor) -> None:
@@ -246,6 +255,11 @@ def ensure_base_models(editor: PatcherEditor) -> None:
         for dep in model_data.dependencies:
             editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
+def count_dna(lua_scripts: LuaEditor, pickup_object: BasePickup):
+    item_id = pickup_object.pickup["resources"][0][0]["item_id"]
+    if item_id.startswith("ITEM_RANDO_DNA"):
+        scenario: str = pickup_object.get_scenario()
+        lua_scripts.add_dna(scenario)
 
 def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
     all_pkgs = editor.get_all_level_pkgs()
@@ -258,9 +272,12 @@ def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config:
     for i, pickup in enumerate(pickups_config):
         LOG.debug("Writing pickup %d: %s", i, pickup["caption"])
         try:
-            pickup_object_for(lua_scripts, pickup, i, configuration).patch(editor)
+            pickup_object = pickup_object_for(lua_scripts, pickup, i, configuration)
+            pickup_object.patch(editor)
+            count_dna(lua_scripts, pickup_object)
         except NotImplementedError as e:
             LOG.warning(e)
+    print(lua_scripts._dna_count_dict)
 
 _PICKUP_TYPE_TO_CLASS: dict[PickupType, type[BasePickup]] = {
     PickupType.ACTOR: ActorPickup,

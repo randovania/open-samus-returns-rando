@@ -69,6 +69,7 @@ function s000_surface.OnShipStartPointTeleport(_ARG_0_, _ARG_1_)
   end
 end
 function s000_surface.InitFromBlackboard()
+  Scenario.InitGUI()
   if Scenario.ReadFromBlackboard("LarvaPresentationPlayed", false) then
     Game.DisableTrigger("TG_Intro_MetroidSurface")
   else
@@ -504,7 +505,6 @@ function s000_surface.OnSkipPlanetArrival()
 end
 function s000_surface.LaunchFirstTimeDNAStatuePresentation()
   Scenario.WriteToBlackboard("FirstTimeDNAStatuePlayed", "b", true)
-  Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 1)
   Game.GetEntity("LE_ChozoUnlockAreaDNA").USABLE:SetHintUseDNAExecuted()
   -- Game.LaunchCutscene("cutscenes/introdnastatue/takes/01/introdnastatue01.bmscu")
   if Game.GetEntity("TG_Intro_DNAStatue") ~= nil then

@@ -4,6 +4,7 @@ Game.ImportLibrary("actors/props/poisonzone/scripts/poisonzone.lua", false)
 Game.ImportLibrary("actors/props/waterzone/scripts/waterzone.lua", false)
 Game.ImportLibrary("actors/props/spenergycloud/scripts/spenergycloud.lua", false)
 function s060_area6.main()
+  Scenario.InitGUI()
 end
 s060_area6.tDNAScanLandmarks = {
   SG_Alpha_001 = {
@@ -99,7 +100,7 @@ end
 function s060_area6.OnExit()
 end
 function s060_area6.OnEnter_ActivationDNA()
-  Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 7)
+  -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 7)
 end
 function s060_area6.OnEnter_ActivationTeleport_06A_001()
   Game.OnTeleportApproached("LE_Teleporter_06A_001")

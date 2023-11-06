@@ -238,12 +238,31 @@
             },
             "description": "A dict mapping item names to a string describing their location.",
             "default": {}
+        },
+        "hints": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "accesspoint_actor": {
+                        "$ref": "#/$defs/actor_reference"
+                    },
+                    "text": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "accesspoint_actor",
+                    "text"
+                ]
+            }
         }
     },
     "required": [
         "starting_location",
         "starting_items",
-        "pickups"
+        "pickups",
+        "hints"
     ],
     "$defs": {
         "actor_reference_with_layer": {
