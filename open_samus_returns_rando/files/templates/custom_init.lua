@@ -38,6 +38,22 @@ function Init.InitGameBlackboard()
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "LevelID", "s", "c10_samus")
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "ScenarioID", "s", TEMPLATE("starting_scenario"))
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "StartPoint", "s", TEMPLATE("starting_actor"))
+
+  Blackboard.SetProp("s000_surface", "entity_LE_HazarousPool_enabled", "b", false)
+  Blackboard.SetProp("s010_area1", "entity_LE_HazarousPool_enabled", "b", false)
+  Blackboard.SetProp("s028_area2c", "entity_LE_HazarousPool_enabled", "b", false)
+  Blackboard.SetProp("s030_area3", "entity_LE_HazarousPool_enabled", "b", false)
+  Blackboard.SetProp("s040_area4", "entity_LE_HazarousPool_001_enabled", "b", false)
+  Blackboard.SetProp("s040_area4", "entity_LE_HazarousPool_002_enabled", "b", false)
+  Blackboard.SetProp("s060_area6", "entity_LE_HazarousPool_enabled", "b", false)
+  Blackboard.SetProp("s070_area7", "entity_LE_HazarousPool_001_enabled", "b", false)
+  Blackboard.SetProp("s070_area7", "entity_LE_HazarousPool_002_enabled", "b", false)
+  Blackboard.SetProp("s090_area9", "entity_LE_HazarousPool_enabled", "b", false)
+
+  Blackboard.SetProp("s000_surface", "LarvaPresentationPlayed", "b", true)
+  Game.WriteToGameBlackboardSection("PlayedCutscenes", "cutscenes/planetarrival/takes/10/planetarrival10.bmscu", true)
+
+
   Game.UnlockAmiiboMenu()
 end
 

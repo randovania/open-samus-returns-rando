@@ -69,7 +69,6 @@ function s000_surface.OnShipStartPointTeleport(_ARG_0_, _ARG_1_)
   end
 end
 function s000_surface.InitFromBlackboard()
-  Scenario.WriteToBlackboard("LarvaPresentationPlayed", "b", true)
   if Scenario.ReadFromBlackboard("LarvaPresentationPlayed", false) then
     Game.DisableTrigger("TG_Intro_MetroidSurface")
   else
@@ -88,13 +87,11 @@ function s000_surface.InitFromBlackboard()
     Game.DisableTrigger("TG_StartMeleeReminderTuto")
     Game.DisableTrigger("TG_EndMeleeReminderTuto")
   end
-  Game.WriteToGameBlackboardSection("PlayedCutscenes", "cutscenes/planetarrival/takes/10/planetarrival10.bmscu", true)
   if not Game.GetFromGameBlackboardSection("PlayedCutscenes", "cutscenes/planetarrival/takes/10/planetarrival10.bmscu") then
     Game.AddEntityToUpdateInCutscene("LE_SamusShip")
     Game.SetPlayerInputEnabled(false, false)
     s000_surface.LaunchPlanetArrival()
   end
-  Game.GetEntity("LE_HazarousPool").HAZAROUSPOOL:Activate(false)
 end
 function s000_surface.OnReloaded()
 end

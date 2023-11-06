@@ -341,16 +341,16 @@ function s040_area4.InitFromBlackboard()
   Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_001", true)
   Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", true)
   if Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_001_enabled") == nil then
-    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(false)
-    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_001", true)
+    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(true)
+    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_001", false)
     Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(false)
-    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", true)
+    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", false)
   elseif Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_002_enabled") == nil then
-    Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(false)
-    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", true)
+    Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(true)
+    Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", false)
   else
-    --Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate((Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_001_enabled")))
-    --Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate((Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_002_enabled")))
+    Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate((Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_001_enabled")))
+    Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate((Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_002_enabled")))
   end
   s040_area4.OnFansInit()
   Game.SetArenaDefaultSpawnGroup("Gamma_001", "SG_Gamma_001_A")
