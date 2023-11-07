@@ -108,7 +108,7 @@ Scenario.AreaMapping = {
 function Scenario.UpdateDNACounter()
   local scenario = Scenario.AreaMapping[Scenario.CurrentScenarioID]
   local maxDNA = Init.tDNAPerArea[scenario] or 0
-  local currentDNA =  Blackboard.GetProp("GAME_PROGRESS", scenario .."_acquired_dna") or 0
+  local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
   
   GUILib.UpdateDNACounter(currentDNA, maxDNA)
 end
