@@ -146,7 +146,7 @@ function s100_area10.OnLarva_005_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Larva_005")
-    _ARG_1_.AI:AddDoorToLock("Door013")
+    -- _ARG_1_.AI:AddDoorToLock("Door013")
     _ARG_1_.AI:AddDoorToLock("Door014")
     _ARG_1_.AI:AddSpawnPointToUnlock("Larva_005")
     _ARG_1_.AI:AddSpawnPointToUnlock("Larva_006")
