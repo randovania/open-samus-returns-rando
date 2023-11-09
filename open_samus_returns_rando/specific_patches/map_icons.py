@@ -29,24 +29,21 @@ def patch_tiles(editor: PatcherEditor):
             for tile_idx in range(len(tiles)):
                 current_tile = tiles[tile_idx]
 
-                # Items
                 icons = current_tile["icons"]
-                if len(icons) != 0 and (
-                    icons[0]["icon"].endswith("tank")
-                    or icons[0]["icon"].startswith("itemsphere")
-                ):
-                    if current_tile["tile_type"] == TileType.HEAT:
-                        icons[0]["icon"] = "itemenabledheat"
-                    else:
-                        icons[0]["icon"] = "itemenabled"
-
-                for door in doors:
-                    if len(icons) == 1 and icons[0]["actor_name"].startswith(door):
-                        icons[0]["clear_condition"] = ""
-                        if "left" in icons[0]["icon"]:
-                            icons[0]["icon"] = "doorpowerleft"
+                if len(icons) != 0:
+                    icon_idx = icons[0] if len(icons) == 1 else icons[1]
+                    # Items
+                    if "tank" in icon_idx["icon"] or "itemsphere" in icon_idx["icon"]:
+                        if current_tile["tile_type"] == TileType.HEAT:
+                            icon_idx["icon"] = "itemenabledheat"
                         else:
-                            icons[0]["icon"] = "doorpowerright"
-                    elif len(icons) == 2 and icons[1]["actor_name"].startswith(door) and "left" in icons[1]["icon"]:
-                        icons[1]["clear_condition"] = ""
-                        icons[1]["icon"] = "doorpowerleft"
+                            icon_idx["icon"] = "itemenabled"
+
+                    # Doors
+                    for door in doors:
+                        if door in icon_idx["actor_name"]:
+                            icon_idx["clear_condition"] = ""
+                            if "left" in icon_idx["icon"]:
+                                icon_idx["icon"] = "doorpowerleft"
+                            else:
+                                icon_idx["icon"] = "doorpowerright"
