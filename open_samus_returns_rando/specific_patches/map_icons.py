@@ -29,24 +29,21 @@ def patch_tiles(editor: PatcherEditor):
             for tile_idx in range(len(tiles)):
                 current_tile = tiles[tile_idx]
 
-                # Items
                 icons = current_tile["icons"]
-                if len(icons) != 0 and (
-                    icons[0]["icon"].endswith("tank")
-                    or icons[0]["icon"].startswith("itemsphere")
-                ):
-                    if current_tile["tile_type"] == TileType.HEAT:
-                        icons[0]["icon"] = "itemenabledheat"
-                    else:
-                        icons[0]["icon"] = "itemenabled"
-
-                for door in doors:
-                    if len(icons) == 1 and icons[0]["actor_name"].startswith(door):
-                        icons[0]["clear_condition"] = ""
-                        if "left" in icons[0]["icon"]:
-                            icons[0]["icon"] = "doorpowerleft"
+                if len(icons) != 0:
+                    icons_length = icons[0] if len(icons) == 1 else icons[1]
+                    # Items
+                    if "tank" in icons_length["icon"] or "itemsphere" in icons_length["icon"]:
+                        if current_tile["tile_type"] == TileType.HEAT:
+                            icons_length["icon"] = "itemenabledheat"
                         else:
-                            icons[0]["icon"] = "doorpowerright"
-                    elif len(icons) == 2 and icons[1]["actor_name"].startswith(door) and "left" in icons[1]["icon"]:
-                        icons[1]["clear_condition"] = ""
-                        icons[1]["icon"] = "doorpowerleft"
+                            icons_length["icon"] = "itemenabled"
+
+                    # Doors
+                    for door in doors:
+                        if door in icons_length["actor_name"]:
+                            icons_length["clear_condition"] = ""
+                            if "left" in icons_length["icon"]:
+                                icons_length["icon"] = "doorpowerleft"
+                            else:
+                                icons_length["icon"] = "doorpowerright"
