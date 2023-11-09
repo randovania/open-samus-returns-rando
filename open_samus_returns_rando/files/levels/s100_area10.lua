@@ -846,7 +846,7 @@ function s100_area10.LaunchMetroidBossPresentation()
   Game.DelSF("s100_area10.ProcessMetroidRadarDistance")
   Game.DisableTrigger("TG_MetroidRadar")
   Game.DisableTrigger("TG_Intro_Larva")
-  Game.HUDAvailabilityGoOff(false, true, false, false)
+  -- Game.HUDAvailabilityGoOff(false, true, false, false)
   Game.SetIgnoreHUDAvailabilityActivationByAbilityComponent(true)
   Game.AddSF(1, "s100_area10.StartMetroidCountIncrement", "")
   if Game.GetEntity("SG_Larva_001") ~= nil then
@@ -864,7 +864,7 @@ end
 function s100_area10.LaunchMetroidBossPresentationCutsceneEnd()
   Game.HUDAvailabilityGoOn()
   Game.SetIgnoreHUDAvailabilityActivationByAbilityComponent(false)
-  Scenario.WriteToBlackboard("MetroidDiscovered", "b", true)
+  -- Scenario.WriteToBlackboard("MetroidDiscovered", "b", true)
   Game.AddSF(2.25, "Game.MetroidRadarForceStateOnEnd", "")
 end
 function s100_area10.OnEnter_ChangeCamera_IntroLarva()
