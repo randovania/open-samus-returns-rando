@@ -53,7 +53,7 @@ def create_custom_init(configuration: dict) -> str:
         "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
         "ITEM_WEAPON_POWER_BOMB_MAX": 0,
         "ITEM_METROID_COUNT": 0,
-        "ITEM_METROID_TOTAL_COUNT": 40,
+        "ITEM_METROID_TOTAL_COUNT": 50,
     }
     final_inventory.update(inventory)
 

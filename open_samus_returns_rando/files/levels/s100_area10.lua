@@ -853,7 +853,7 @@ function s100_area10.LaunchMetroidBossPresentation()
     Game.GetEntity("SG_Larva_001").SPAWNGROUP:EnableSpawnGroup()
   end
   Game.SetSubAreaCurrentSetup("collision_camera_008", "Default", true, true)
-  Game.LaunchCutscene("cutscenes/intrometroidboss/takes/01/intrometroidboss01.bmscu")
+  -- Game.LaunchCutscene("cutscenes/intrometroidboss/takes/01/intrometroidboss01.bmscu")
   if Game.GetEntity("Door010") ~= nil then
     Game.GetEntity("Door010").LIFE:SetInvulnerable(false)
   end
@@ -876,7 +876,7 @@ end
 function s100_area10.StartMetroidCountIncrement()
   Game.MetroidRadarForceStateOnBegin(1, 0.8, true, false)
   s100_area10.iMetroidTotalCountIncrements = 0
-  Game.AddSF(2, "s100_area10.IncrementMetroidTotalCount", "")
+  -- Game.AddSF(2, "s100_area10.IncrementMetroidTotalCount", "")
 end
 function s100_area10.IncrementMetroidTotalCount()
   Game.IncrementMetroidTotalCount(1)
