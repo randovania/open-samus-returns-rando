@@ -74,6 +74,7 @@ end
 function s100_area10.InitFromBlackboard()
   Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
   Game.DisableEntity("LE_Baby_Hatchling")
+  Game.DisableTrigger("TG_MetroidRadar")
   if Game.GetEntity("LE_ValveQueen") ~= nil then
     if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
       Game.GetEntity("LE_ValveQueen").MODELUPDATER:SetMeshVisible("Valve", false)
@@ -137,7 +138,7 @@ function s100_area10.OnLarva_004_Generated(_ARG_0_, _ARG_1_)
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Larva_004")
     _ARG_1_.AI:AddDoorToLock("Door012")
-    _ARG_1_.AI:AddDoorToLock("Door013")
+    -- _ARG_1_.AI:AddDoorToLock("Door013")
     _ARG_1_.AI:AddSpawnPointToUnlock("Larva_003")
     _ARG_1_.AI:AddSpawnPointToUnlock("Larva_004")
   end
@@ -146,7 +147,7 @@ function s100_area10.OnLarva_005_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Larva_005")
-    -- _ARG_1_.AI:AddDoorToLock("Door013")
+    _ARG_1_.AI:AddDoorToLock("Door013")
     _ARG_1_.AI:AddDoorToLock("Door014")
     _ARG_1_.AI:AddSpawnPointToUnlock("Larva_005")
     _ARG_1_.AI:AddSpawnPointToUnlock("Larva_006")
@@ -848,7 +849,7 @@ function s100_area10.LaunchMetroidBossPresentation()
   Game.DisableTrigger("TG_Intro_Larva")
   -- Game.HUDAvailabilityGoOff(false, true, false, false)
   Game.SetIgnoreHUDAvailabilityActivationByAbilityComponent(true)
-  Game.AddSF(1, "s100_area10.StartMetroidCountIncrement", "")
+  -- Game.AddSF(1, "s100_area10.StartMetroidCountIncrement", "")
   if Game.GetEntity("SG_Larva_001") ~= nil then
     Game.GetEntity("SG_Larva_001").SPAWNGROUP:EnableSpawnGroup()
   end
@@ -864,7 +865,7 @@ end
 function s100_area10.LaunchMetroidBossPresentationCutsceneEnd()
   Game.HUDAvailabilityGoOn()
   Game.SetIgnoreHUDAvailabilityActivationByAbilityComponent(false)
-  -- Scenario.WriteToBlackboard("MetroidDiscovered", "b", true)
+  Scenario.WriteToBlackboard("MetroidDiscovered", "b", true)
   Game.AddSF(2.25, "Game.MetroidRadarForceStateOnEnd", "")
 end
 function s100_area10.OnEnter_ChangeCamera_IntroLarva()
@@ -876,7 +877,7 @@ end
 function s100_area10.StartMetroidCountIncrement()
   Game.MetroidRadarForceStateOnBegin(1, 0.8, true, false)
   s100_area10.iMetroidTotalCountIncrements = 0
-  -- Game.AddSF(2, "s100_area10.IncrementMetroidTotalCount", "")
+  Game.AddSF(2, "s100_area10.IncrementMetroidTotalCount", "")
 end
 function s100_area10.IncrementMetroidTotalCount()
   Game.IncrementMetroidTotalCount(1)
