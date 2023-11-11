@@ -53,7 +53,6 @@ function Init.InitGameBlackboard()
   Blackboard.SetProp("s000_surface", "LarvaPresentationPlayed", "b", true)
   Game.WriteToGameBlackboardSection("PlayedCutscenes", "cutscenes/planetarrival/takes/10/planetarrival10.bmscu", true)
 
-
   Game.UnlockAmiiboMenu()
 end
 
