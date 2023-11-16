@@ -156,9 +156,7 @@ def _patch_charge_doors(editor: PatcherEditor):
         "s028_area2c": ["Door001", "Door007"],
         "s030_area3": ["Door002", "Door008"],
         "s040_area4": ["Door006", "Door014"],
-        "s050_area5": ["Door006"],
         "s060_area6": ["Door001"],
-        "s070_area7": ["Door010"],
         "s090_area9": ["Door012"]
     }
 
