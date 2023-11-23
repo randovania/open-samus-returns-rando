@@ -4,7 +4,6 @@ import copy
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad
 
-from open_samus_returns_rando.constants import lua_pkgs
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -98,8 +97,7 @@ def _patch_beam_bmsads(editor: PatcherEditor):
         editor.replace_asset(creature_bmsad_file, cr_bmsad)
 
     editor.add_new_asset(
-        "actors/props/doors/scripts/doors.lc", files_path().joinpath("doors.lua").read_bytes(),
-        lua_pkgs(editor.get_all_level_pkgs())
+        "actors/props/doors/scripts/doors.lc", files_path().joinpath("doors.lua").read_bytes(), []
     )
 
 

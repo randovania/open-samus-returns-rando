@@ -1,10 +1,6 @@
-Doors = {}
-
-function Doors.Dummy()
-end
+Doors = Doors or {}
 function Doors.RemoveDoors(_ARG_0_)
     local actor_name = _ARG_0_.sName
-    -- GUI.LaunchMessage(actor_name, "Doors.Dummy", "")
     local ending = string.sub(actor_name, -2)
     if ending == "_o" then
         actor_name = string.sub(actor_name, 0, -3)
