@@ -459,10 +459,9 @@ function s000_surface.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4
   elseif (_ARG_0_ == "collision_camera_024" and not Scenario.ReadFromBlackboard("alpha_killed", false)) then
     s000_surface.LaunchFirstTimeAlphaPresentation()
   end
-  if _ARG_0_ == "collision_camera_000" and _ARG_2_ == "collision_camera_017" then
+  if _ARG_2_ == "collision_camera_017" then
     Game.LoadScenario("c10_samus", "s110_surfaceb", "", "Samus", 1)
   end
-  
   --if _ARG_0_ == "collision_camera_002" and _ARG_2_ == "collision_camera_003" and not Scenario.ReadFromBlackboard("FirstTimeChozoStatuePlayed", false) then
   --  s000_surface.LaunchFirstTimeChozoStatuePresentation()
   --elseif _ARG_0_ == "collision_camera_016" and _ARG_2_ == "collision_camera_002" and not Scenario.ReadFromBlackboard("MeleeTutoPlayed", false) then
@@ -505,7 +504,6 @@ function s000_surface.OnSkipPlanetArrival()
 end
 function s000_surface.LaunchFirstTimeDNAStatuePresentation()
   Scenario.WriteToBlackboard("FirstTimeDNAStatuePlayed", "b", true)
-  Game.GetEntity("LE_ChozoUnlockAreaDNA").USABLE:SetHintUseDNAExecuted()
   -- Game.LaunchCutscene("cutscenes/introdnastatue/takes/01/introdnastatue01.bmscu")
   if Game.GetEntity("TG_Intro_DNAStatue") ~= nil then
     Game.GetEntity("TG_Intro_DNAStatue").TRIGGER:DisableTrigger()

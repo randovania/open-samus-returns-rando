@@ -52,8 +52,7 @@ end
 function s010_area1.OnExit()
 end
 function s010_area1.OnEnter_ActivationDNA()
-  -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 0)
-  -- Game.GetEntity("LE_ChozoUnlockAreaDNA").USABLE:SetHintUseDNAExecuted()
+  -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 4)
 end
 function s010_area1.OnEnter_ActivationTeleport_01_01()
 end
