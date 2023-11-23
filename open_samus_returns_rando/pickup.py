@@ -6,7 +6,7 @@ from enum import Enum
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad
 
-from open_samus_returns_rando.constants import get_package_name, lua_pkgs
+from open_samus_returns_rando.constants import get_package_name
 from open_samus_returns_rando.files import templates_path
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
@@ -85,6 +85,8 @@ class BasePickup:
         raise NotImplementedError
 
 class ActorPickup(BasePickup):
+    _bmsad_dict = {}
+
     def patch_item_pickup(self, bmsad: dict) -> dict:
         pickable: dict = bmsad["components"]["PICKABLE"]
         script: dict = bmsad["components"]["SCRIPT"]
@@ -99,6 +101,26 @@ class ActorPickup(BasePickup):
             self.pickup, actordef_name=bmsad["name"]
         )
         return bmsad
+
+    def add_new_bmsad(self, editor: PatcherEditor, actordef_id: str, pkgs_for_level: set[str]):
+        template_bmsad = _read_template_powerup()
+        new_template = copy.deepcopy(template_bmsad)
+        new_template["name"] = actordef_id
+        model_names: list[str] = self.pickup["model"]
+
+        # Update model
+        self.patch_model(model_names, new_template)
+
+        # Update caption
+        pickable = new_template["components"]["PICKABLE"]
+        # this actually wants an #GUI identifier but it works
+        pickable["functions"][0]["params"]["Param7"]["value"] = self.pickup["caption"]
+
+        # Update given item
+        new_template = self.patch_item_pickup(new_template)
+
+        new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
+        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
 
 
     def patch_model(self, model_names: list[str], bmsad: dict) -> None:
@@ -122,6 +144,7 @@ class ActorPickup(BasePickup):
                     MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
                 else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
+                bmsad["components"].pop("FX")
             # aeion abilities
             elif model_name in AEION_MODELS:
                 fx_create_and_link["Param8"]["value"] = y_offset
@@ -146,7 +169,11 @@ class ActorPickup(BasePickup):
                 fx_create_and_link["Param1"]["value"] = "leak"
                 fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
                 fx_create_and_link["Param13"]["value"] = True
+            else:
+                bmsad["components"].pop("FX")
+                bmsad["sound_fx"] = ListContainer([])
         else:
+            bmsad["components"].pop("FX")
             MODELUPDATER["type"] = "CMultiModelUpdaterComponent"
             # no idea what this is
             MODELUPDATER["unk_1"] = 2500
@@ -174,32 +201,29 @@ class ActorPickup(BasePickup):
 
 
     def patch(self, editor: PatcherEditor):
-        template_bmsad = _read_template_powerup()
-
         actor_reference = self.pickup["pickup_actor"]
-        pkgs_for_level = set(editor.find_pkgs(path_for_level(self.pickup["pickup_actor"]["scenario"]) + ".bmsld"))
         actor_name = actor_reference["actor"]
+        model_names: list[str] = self.pickup["model"]
+        scenario_name: str = actor_reference['scenario']
 
-        scenario = editor.get_scenario(actor_reference["scenario"])
+        pkgs_for_level = set(editor.find_pkgs(path_for_level(self.pickup["pickup_actor"]["scenario"]) + ".bmsld"))
+        scenario = editor.get_scenario(scenario_name)
         actor = next((layer[actor_name] for layer in scenario.raw.actors if actor_name in layer), None)
         if actor is None:
-            raise KeyError(f"No actor named '{actor_name}' found in {actor_reference['scenario']}")
+            raise KeyError(f"No actor named '{actor_name}' found in {scenario_name}")
 
-        new_template = copy.deepcopy(template_bmsad)
-        actordef_id = f"randomizer_powerup_{self.pickup_id}"
-        new_template["name"] = actordef_id
+        item_id = self.pickup["resources"][0][0]["item_id"]
+        cached_bmsad = self._bmsad_dict.get(item_id, None)
+        if cached_bmsad is None:
+            actordef_id = f"randomizer_powerup_{self.pickup_id}"
+            self._bmsad_dict[item_id] = actordef_id
+            self.add_new_bmsad(editor, actordef_id, pkgs_for_level)
+        else:
+            actordef_id = cached_bmsad
+            path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
+            editor.ensure_present_in_scenario(scenario_name, path)
 
-        # Update model
-        model_names: list[str] = self.pickup["model"]
-        self.patch_model(model_names, new_template)
-
-        # Update caption
-        pickable = new_template["components"]["PICKABLE"]
-        # this actually wants an #GUI identifier but it works
-        pickable["functions"][0]["params"]["Param7"]["value"] = self.pickup["caption"]
-
-        # Update given item
-        new_template = self.patch_item_pickup(new_template)
+        actor.type = actordef_id
 
         # special case for surface / surfaceb item
         if (
@@ -211,11 +235,11 @@ class ActorPickup(BasePickup):
             mirrored_actor = next((layer[actor_name] for layer in surface_b.raw.actors if actor_name in layer), None)
             assert mirrored_actor is not None
             mirrored_actor.type = actordef_id
+            # TODO: Code clean up
+            path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
+            editor.ensure_present_in_scenario(surfaceb_name, path)
             pkgs_for_level.update(set(editor.find_pkgs(path_for_level(surfaceb_name) + ".bmsld")))
 
-        new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
-        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
-        actor.type = actordef_id
 
         # Dependencies
         for level_pkg in pkgs_for_level:
@@ -262,10 +286,7 @@ def count_dna(lua_scripts: LuaEditor, pickup_object: BasePickup):
         lua_scripts.add_dna(scenario)
 
 def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
-    all_pkgs = editor.get_all_level_pkgs()
-    editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", b'', lua_pkgs(all_pkgs))
-    # FIXME: Why it doesn't work when we directly add it to the pkgs?
-    # Addition: Tested => It seems like this file is read fro RomFS but why not from pkg?
+    editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", b'', [])
     editor.add_new_asset("actors/scripts/metroid.lc", b'', [])
     ensure_base_models(editor)
 
