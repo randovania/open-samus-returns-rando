@@ -835,10 +835,13 @@ function s070_area7.OnPlayerDead(_ARG_0_)
   s070_area7.SetLowModelsVisibility(false)
 end
 function s070_area7.SetLowModelsVisibility(_ARG_0_)
-  -- if Game.GetEntity("Samus") ~= nil then
-  --   Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Body_Ch", not _ARG_0_)
-  --   Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Combat_Ch", _ARG_0_)
-  -- end
+  if _ARG_0_ and Game.GetEntity("Samus") ~= nil and Game.GetItemAmount(Game.GetPlayerName(), "ITEM_GRAVITY_SUIT") == 1 then
+    Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Body_Ch", false)
+    Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Combat_Ch", true)
+  elseif not _ARG_0_ and Game.GetEntity("Samus") ~= nil then
+    Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Body_Ch", true)
+    Game.GetEntity("Samus").MODELUPDATER:SetMeshVisible("C01_Combat_Ch", false)
+  end
 end
 function s070_area7.LaunchManicMinerBotIntroCutscene()
   if Game.GetEntity("LE_PowerUp_Powerbomb") ~= nil then
