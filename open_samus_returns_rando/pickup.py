@@ -277,7 +277,6 @@ def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config:
             count_dna(lua_scripts, pickup_object)
         except NotImplementedError as e:
             LOG.warning(e)
-    print(lua_scripts._dna_count_dict)
 
 _PICKUP_TYPE_TO_CLASS: dict[PickupType, type[BasePickup]] = {
     PickupType.ACTOR: ActorPickup,

@@ -255,7 +255,8 @@
                     "accesspoint_actor",
                     "text"
                 ]
-            }
+            },
+            "default": []
         }
     },
     "required": [

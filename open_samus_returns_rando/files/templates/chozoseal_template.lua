@@ -1,5 +1,5 @@
 Game.ImportLibraryWithName("actors/props/usable/scripts/usable.lua", "Usable")
-ChozoSeal = {}
+ChozoSeal = ChozoSeal or {}
 setmetatable(ChozoSeal, {__index = Usable})
 
 ChozoSeal.CurrentHintStrings = nil
