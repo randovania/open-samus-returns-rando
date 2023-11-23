@@ -1,4 +1,4 @@
-HeatZone = {}
+HeatZone = HeatZone or {}
 function HeatZone.main()
 end
 function HeatZone.OnPlayerDead()

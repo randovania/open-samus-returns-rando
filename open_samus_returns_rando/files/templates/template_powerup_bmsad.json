@@ -77,6 +77,18 @@
                         "Param10": {
                             "type": "b",
                             "value": false
+                        },
+                        "Param11": {
+                            "type": "b",
+                            "value": false
+                        },
+                        "Param12": {
+                            "type": "s",
+                            "value": ""
+                        },
+                        "Param13": {
+                            "type": "f",
+                            "value": 0.0
                         }
                     }
                 }

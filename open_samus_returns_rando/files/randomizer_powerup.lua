@@ -1,4 +1,4 @@
-RandomizerPowerup = {}
+RandomizerPowerup = RandomizerPowerup or {}
 function RandomizerPowerup.main()
 end
 
