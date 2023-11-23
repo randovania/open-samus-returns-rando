@@ -31,11 +31,12 @@ def patch_tiles(editor: PatcherEditor):
                 if len(icons) != 0:
                     tile = icons[0] if len(icons) == 1 else icons[1]
                     # Items
-                    if "tank" in tile["icon"] or "itemsphere" in tile["icon"]:
+                    if "tank" in tile["icon"] or "tank" in icons[0]["icon"] or "itemsphere" in tile["icon"]:
                         if current_tile["tile_type"] == TileType.HEAT:
                             tile["icon"] = "itemenabledheat"
                         else:
                             tile["icon"] = "itemenabled"
+                            icons[0]["icon"] = "itemenabled"
 
                     # Doors
                     for door in doors:
