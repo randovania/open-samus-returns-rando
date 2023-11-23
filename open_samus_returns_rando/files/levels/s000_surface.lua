@@ -6,6 +6,7 @@ Game.ImportLibrary("actors/props/firsttimednastatuehint/scripts/firsttimednastat
 Game.ImportLibrary("actors/props/firsttimecameras/scripts/firsttimecameras.lua", false)
 Game.ImportLibrary("actors/props/spenergycloud/scripts/spenergycloud.lua", false)
 function s000_surface.main()
+  Scenario.InitGUI()
 end
 function s000_surface.GetOnDeathOverrides()
   return {GoToMainMenu = false}
@@ -69,7 +70,6 @@ function s000_surface.OnShipStartPointTeleport(_ARG_0_, _ARG_1_)
   end
 end
 function s000_surface.InitFromBlackboard()
-  Scenario.InitGUI()
   if Scenario.ReadFromBlackboard("LarvaPresentationPlayed", false) then
     Game.DisableTrigger("TG_Intro_MetroidSurface")
   else
