@@ -75,6 +75,7 @@ end
 function s100_area10.InitFromBlackboard()
   Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
   Game.DisableEntity("LE_Baby_Hatchling")
+  Game.DisableTrigger("TG_MetroidRadar")
   if Game.GetEntity("LE_ValveQueen") ~= nil then
     if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
       Game.GetEntity("LE_ValveQueen").MODELUPDATER:SetMeshVisible("Valve", false)
@@ -138,7 +139,7 @@ function s100_area10.OnLarva_004_Generated(_ARG_0_, _ARG_1_)
     _ARG_1_.AI.bPlaceholder = false
     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Larva_004")
     _ARG_1_.AI:AddDoorToLock("Door012")
-    _ARG_1_.AI:AddDoorToLock("Door013")
+    -- _ARG_1_.AI:AddDoorToLock("Door013")
     _ARG_1_.AI:AddSpawnPointToUnlock("Larva_003")
     _ARG_1_.AI:AddSpawnPointToUnlock("Larva_004")
   end
@@ -847,14 +848,14 @@ function s100_area10.LaunchMetroidBossPresentation()
   Game.DelSF("s100_area10.ProcessMetroidRadarDistance")
   Game.DisableTrigger("TG_MetroidRadar")
   Game.DisableTrigger("TG_Intro_Larva")
-  Game.HUDAvailabilityGoOff(false, true, false, false)
+  -- Game.HUDAvailabilityGoOff(false, true, false, false)
   Game.SetIgnoreHUDAvailabilityActivationByAbilityComponent(true)
-  Game.AddSF(1, "s100_area10.StartMetroidCountIncrement", "")
+  -- Game.AddSF(1, "s100_area10.StartMetroidCountIncrement", "")
   if Game.GetEntity("SG_Larva_001") ~= nil then
     Game.GetEntity("SG_Larva_001").SPAWNGROUP:EnableSpawnGroup()
   end
   Game.SetSubAreaCurrentSetup("collision_camera_008", "Default", true, true)
-  Game.LaunchCutscene("cutscenes/intrometroidboss/takes/01/intrometroidboss01.bmscu")
+  -- Game.LaunchCutscene("cutscenes/intrometroidboss/takes/01/intrometroidboss01.bmscu")
   if Game.GetEntity("Door010") ~= nil then
     Game.GetEntity("Door010").LIFE:SetInvulnerable(false)
   end

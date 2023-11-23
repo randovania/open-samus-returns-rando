@@ -876,6 +876,7 @@ function s070_area7.UpdateMinimapItemsphereIcon()
   Game.UpdateSpecifiedMinimapCellIcon(6, 8)
 end
 function s070_area7.OnStartManicMinerBotDeathCutscene()
+  Game.GetPlayer("Samus").vPos = Game.GetEntity("DoorManicMinerBot").vPos
   if Game.GetEntity("LE_PowerUp_Powerbomb") ~= nil then
     Game.GetEntity("LE_PowerUp_Powerbomb"):Enable()
   end
