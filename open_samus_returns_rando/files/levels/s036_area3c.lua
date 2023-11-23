@@ -1,4 +1,5 @@
 function s036_area3c.main()
+  Scenario.InitGUI()
 end
 function s036_area3c.SetupDebugGameBlackboard()
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_CURRENT_SPECIAL_ENERGY", "f", 1000)

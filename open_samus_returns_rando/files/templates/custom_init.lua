@@ -6,6 +6,8 @@ Init.bRevealMap = TEMPLATE("reveal_map_on_start")
 Init.sStartingScenario = TEMPLATE("starting_scenario")
 Init.sStartingActor = TEMPLATE("starting_actor")
 Init.fEnergyPerTank = TEMPLATE("energy_per_tank")
+Init.tDNAPerArea = TEMPLATE("dna_per_area")
+Init.tAreaMapping = TEMPLATE("area_mapping")
 
 Game.LogWarn(0, "Inventory:")
 for k, v in pairs(Init.tNewGameInventory) do

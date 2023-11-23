@@ -118,6 +118,10 @@ function RandomizerPowerup.HandlePickupResources(progression)
                     RandomizerPowerup.IncreaseItemAmount(resource.item_id, resource.quantity)
                     RandomizerPowerup.EnableLiquids()
                     if string.sub(resource.item_id, 0, 14) == "ITEM_RANDO_DNA" then
+                        local scenario = Init.tAreaMapping[Scenario.CurrentScenarioID]
+                        local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
+                        Blackboard.SetProp("GAME", scenario .. "_acquired_dna", "i", currentDNA + 1)
+                        Scenario.UpdateDNACounter()
                         RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", resource.quantity)
                     end
                 end

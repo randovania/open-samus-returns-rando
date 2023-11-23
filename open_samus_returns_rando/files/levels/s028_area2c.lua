@@ -4,6 +4,7 @@ Game.ImportLibrary("actors/props/poisonzone/scripts/poisonzone.lua", false)
 Game.ImportLibrary("actors/props/waterzone/scripts/waterzone.lua", false)
 Game.ImportLibrary("actors/props/spenergycloud/scripts/spenergycloud.lua", false)
 function s028_area2c.main()
+  Scenario.InitGUI()
 end
 function s028_area2c.GetOnDeathOverrides()
   return {GoToMainMenu = false}
@@ -38,7 +39,7 @@ function s028_area2c.SetupDebugGameBlackboard()
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT", "f", 0)
 end
 function s028_area2c.OnEnter_ActivationDNA()
-  Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 8)
+  -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 8)
 end
 function s028_area2c.OnEnter_ActivationTeleport_02_01()
   Game.OnTeleportApproached("LE_Teleporter_02_01")

@@ -1,4 +1,5 @@
 Game.ImportLibrary("system/scripts/scenario_original.lua")
+Game.DoFile("system/scripts/guilib.lua")
 
 Scenario = Scenario or {}
 setmetatable(Scenario, {__index = _G})
@@ -77,4 +78,17 @@ function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_nam
     CurrentScenario.currentMetroidSpawngroup = group_name
     CurrentScenario.isMultiGamma = is_multi or false
   end
+end
+
+function Scenario.InitGUI()
+  GUILib.AddDNACounter()
+  Scenario.UpdateDNACounter()
+end
+
+function Scenario.UpdateDNACounter()
+  local scenario = Init.tAreaMapping[Scenario.CurrentScenarioID]
+  local maxDNA = Init.tDNAPerArea[scenario] or 0
+  local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
+  
+  GUILib.UpdateDNACounter(currentDNA, maxDNA)
 end

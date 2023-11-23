@@ -9,15 +9,16 @@ from open_samus_returns_rando.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.debug import debug_custom_pickups, debug_spawn_points
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
-from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.misc_patches.credits import patch_credits
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.misc_patches.text_patches import patch_pb_status
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import game_patches
+from open_samus_returns_rando.specific_patches.chozo_seal_patches import patch_chozo_seals
 from open_samus_returns_rando.specific_patches.door_patches import patch_doors
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
+from open_samus_returns_rando.specific_patches.hint_patches import patch_hints
 from open_samus_returns_rando.specific_patches.map_icons import patch_tiles
 from open_samus_returns_rando.specific_patches.metroid_patches import patch_metroids
 from open_samus_returns_rando.specific_patches.static_fixes import apply_static_fixes
@@ -29,43 +30,6 @@ T = typing.TypeVar("T")
 def _read_schema():
     with Path(__file__).parent.joinpath("files", "schema.json").open() as f:
         return json.load(f)
-
-
-def create_custom_init(configuration: dict) -> str:
-    inventory: dict[str, int] = configuration["starting_items"]
-    starting_location: dict = configuration["starting_location"]
-
-    energy_per_tank = configuration["energy_per_tank"]
-    max_life = inventory.pop("ITEM_MAX_LIFE")
-
-    max_aeion = inventory.pop("ITEM_MAX_SPECIAL_ENERGY")
-
-    # increase starting HP if starting with etanks
-    if "ITEM_ENERGY_TANKS" in inventory:
-        etanks = inventory.pop("ITEM_ENERGY_TANKS")
-        max_life += etanks * energy_per_tank
-
-    # These fields are required to start the game
-    final_inventory = {
-        "ITEM_MAX_LIFE": max_life,
-        "ITEM_MAX_SPECIAL_ENERGY": max_aeion,
-        "ITEM_WEAPON_MISSILE_MAX": 0,
-        "ITEM_WEAPON_SUPER_MISSILE_MAX": 0,
-        "ITEM_WEAPON_POWER_BOMB_MAX": 0,
-        "ITEM_METROID_COUNT": 0,
-        "ITEM_METROID_TOTAL_COUNT": 50,
-    }
-    final_inventory.update(inventory)
-
-    replacement = {
-        "new_game_inventory": final_inventory,
-        "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
-        "starting_actor": lua_util.wrap_string(starting_location["actor"]),
-        "energy_per_tank": energy_per_tank,
-        "reveal_map_on_start": configuration["reveal_map_on_start"],
-    }
-
-    return lua_util.replace_lua_template("custom_init.lua", replacement)
 
 
 def patch_exefs(exefs_patches: Path):
@@ -85,18 +49,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     # Apply fixes
     apply_static_fixes(editor)
-
-    # Update init.lc
-    lua_util.create_script_copy(editor, "system/scripts/init")
-    editor.replace_asset(
-        "system/scripts/init.lc",
-        create_custom_init(configuration).encode("ascii"),
-    )
-
-    # Add custom lua files
-    lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
-    lua_util.replace_script(editor, "actors/props/samusship/scripts/samusship", "custom_ship.lua")
-    lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom_savestation.lua")
 
     # Update Map Icons
     patch_tiles(editor)
@@ -123,6 +75,12 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     # Patch metroids
     patch_metroids(editor)
 
+    # Patch Chozo Seals
+    patch_chozo_seals(editor)
+
+    # Patch hints for Chozo Seals
+    patch_hints(lua_scripts, configuration["hints"])
+
     # Specific game patches
     game_patches.apply_game_patches(editor, configuration.get("game_patches", {}))
 
@@ -140,7 +98,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     patch_exefs(out_exefs)
 
     LOG.info("Saving modified lua scripts")
-    lua_scripts.save_modifications(editor)
+    lua_scripts.save_modifications(editor, configuration)
 
     LOG.info("Flush modified assets")
     editor.flush_modified_assets()

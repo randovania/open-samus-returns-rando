@@ -3,6 +3,7 @@ Game.ImportLibrary("actors/props/heatzone/scripts/heatzone.lua", false)
 Game.ImportLibrary("actors/props/poisonzone/scripts/poisonzone.lua", false)
 Game.ImportLibrary("actors/props/waterzone/scripts/waterzone.lua", false)
 function s065_area6b.main()
+  Scenario.InitGUI()
 end
 function s065_area6b.GetOnDeathOverrides()
   return {GoToMainMenu = false}

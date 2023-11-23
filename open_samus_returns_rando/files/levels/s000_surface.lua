@@ -6,6 +6,7 @@ Game.ImportLibrary("actors/props/firsttimednastatuehint/scripts/firsttimednastat
 Game.ImportLibrary("actors/props/firsttimecameras/scripts/firsttimecameras.lua", false)
 Game.ImportLibrary("actors/props/spenergycloud/scripts/spenergycloud.lua", false)
 function s000_surface.main()
+  Scenario.InitGUI()
 end
 function s000_surface.GetOnDeathOverrides()
   return {GoToMainMenu = false}
@@ -504,7 +505,6 @@ function s000_surface.OnSkipPlanetArrival()
 end
 function s000_surface.LaunchFirstTimeDNAStatuePresentation()
   Scenario.WriteToBlackboard("FirstTimeDNAStatuePlayed", "b", true)
-  Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA", 1)
   Game.GetEntity("LE_ChozoUnlockAreaDNA").USABLE:SetHintUseDNAExecuted()
   -- Game.LaunchCutscene("cutscenes/introdnastatue/takes/01/introdnastatue01.bmscu")
   if Game.GetEntity("TG_Intro_DNAStatue") ~= nil then

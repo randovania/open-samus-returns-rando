@@ -3,6 +3,7 @@ Game.ImportLibrary("actors/props/heatzone/scripts/heatzone.lua", false)
 Game.ImportLibrary("actors/props/poisonzone/scripts/poisonzone.lua", false)
 Game.ImportLibrary("actors/props/waterzone/scripts/waterzone.lua", false)
 function s070_area7.main()
+  Scenario.InitGUI()
 end
 function s070_area7.GetOnDeathOverrides()
   return {GoToMainMenu = false}
@@ -106,10 +107,10 @@ end
 function s070_area7.OnExit()
 end
 function s070_area7.OnEnter_ActivationDNA_001()
-  Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA_001", 1)
+  -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA_001", 1)
 end
 function s070_area7.OnEnter_ActivationDNA_002()
-  Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA_002", 1)
+  -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA_002", 1)
 end
 function s070_area7.OnEnter_ActivationTeleport_07_01()
   Game.OnTeleportApproached("LE_Teleporter_07_01")
