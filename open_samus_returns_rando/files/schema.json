@@ -231,6 +231,12 @@
             },
             "default": []
         },
+        "text_patches": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
         "spoiler_log": {
             "type": "object",
             "additionalProperties": {

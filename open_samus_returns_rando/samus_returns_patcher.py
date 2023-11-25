@@ -11,7 +11,7 @@ from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches.credits import patch_credits
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
-from open_samus_returns_rando.misc_patches.text_patches import patch_pb_status
+from open_samus_returns_rando.misc_patches.text_patches import apply_text_patches, patch_pb_status
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import game_patches
@@ -85,6 +85,8 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     game_patches.apply_game_patches(editor, configuration.get("game_patches", {}))
 
     # Text patches
+    if "text_patches" in configuration:
+        apply_text_patches(editor, configuration["text_patches"])
     patch_credits(editor, configuration["spoiler_log"])
     patch_pb_status(editor)
 
