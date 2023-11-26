@@ -5,7 +5,6 @@ from pathlib import Path
 
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
-from open_samus_returns_rando.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.debug import debug_custom_pickups, debug_spawn_points
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
@@ -13,7 +12,8 @@ from open_samus_returns_rando.misc_patches.credits import patch_credits
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.misc_patches.text_patches import apply_text_patches, patch_pb_status
 from open_samus_returns_rando.patcher_editor import PatcherEditor
-from open_samus_returns_rando.pickup import patch_pickups
+from open_samus_returns_rando.pickups.custom_pickups import patch_custom_pickups
+from open_samus_returns_rando.pickups.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import game_patches
 from open_samus_returns_rando.specific_patches.chozo_seal_patches import patch_chozo_seals
 from open_samus_returns_rando.specific_patches.door_patches import patch_doors
