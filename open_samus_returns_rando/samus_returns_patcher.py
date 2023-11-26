@@ -38,11 +38,13 @@ def patch_exefs(exefs_patches: Path):
     # file needs to be named code.ips for Citra
     exefs_patches.joinpath("code.ips").write_bytes(bytes(patch))
 
+def validate(configuration: dict):
+    DefaultValidatingDraft7Validator(_read_schema()).validate(configuration)
 
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     LOG.info("Will patch files from %s", input_path)
 
-    DefaultValidatingDraft7Validator(_read_schema()).validate(configuration)
+    validate(configuration)
 
     editor = PatcherEditor(input_path)
     lua_scripts = LuaEditor()
