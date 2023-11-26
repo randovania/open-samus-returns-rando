@@ -3,7 +3,6 @@ import copy
 
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad
-
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 

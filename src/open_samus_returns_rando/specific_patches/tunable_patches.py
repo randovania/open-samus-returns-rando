@@ -1,7 +1,6 @@
 
 
 from mercury_engine_data_structures.formats.bmtun import Bmtun
-
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 

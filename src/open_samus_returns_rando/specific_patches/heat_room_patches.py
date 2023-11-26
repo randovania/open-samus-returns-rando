@@ -1,7 +1,6 @@
 import copy
 
 from construct import Container, ListContainer
-
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
