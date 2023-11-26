@@ -62,8 +62,8 @@ def _patch_missile_covers(editor: PatcherEditor):
         "s070_area7": ["LE_MissileShield_Door012", "LE_PowerBombShield_Door007", "LE_PowerBomb_Shield_017"],
     }
 
-    for area_name, shield in ALL_MISSILE_SHIELDS.items():
-        scenario = editor.get_scenario(area_name)
+    for scenario_name, shield in ALL_MISSILE_SHIELDS.items():
+        scenario = editor.get_scenario(scenario_name)
         for door in shield:
             actor = scenario.raw.actors[9][door]
             actor["rotation"][1] = 90
@@ -117,13 +117,13 @@ def _patch_beam_covers(editor: PatcherEditor):
         "s090_area9": ["LE_PlasmaShield_Door003", "LE_Shield_Door006", "LE_Shield_Door015"],
     }
 
-    for area_name, beam_covers in ALL_BEAM_COVERS.items():
-        scenario = editor.get_scenario(area_name)
+    for scenario_name, beam_covers in ALL_BEAM_COVERS.items():
+        scenario = editor.get_scenario(scenario_name)
         for cover_name in beam_covers:
             actor = scenario.raw.actors[9][cover_name]
             new_actor_name = f"{cover_name}_o"
             new_actor = editor.copy_actor(
-                area_name, (actor["position"][0], actor["position"][1],  actor["position"][2]),
+                scenario_name, (actor["position"][0], actor["position"][1],  actor["position"][2]),
                 actor, new_actor_name, 9
             )
             new_actor["rotation"][0] = 0
@@ -157,8 +157,8 @@ def _patch_charge_doors(editor: PatcherEditor):
         "s090_area9": ["Door012"]
     }
 
-    for area_name, doors in CHARGE_DOORS.items():
-        scenario = editor.get_scenario(area_name)
+    for scenario_name, doors in CHARGE_DOORS.items():
+        scenario = editor.get_scenario(scenario_name)
         for door in doors:
             scenario.raw.actors[15][door].type = "doorpowerpower"
 
@@ -177,8 +177,8 @@ def _patch_one_way_doors(editor: PatcherEditor):
         "s067_area6c": ["Door005", "Door006", "Door009"]
     }
 
-    for area_name, doors in ONE_WAY_DOORS.items():
-        scenario = editor.get_scenario(area_name)
+    for scenario_name, doors in ONE_WAY_DOORS.items():
+        scenario = editor.get_scenario(scenario_name)
         for door in doors:
             properties = scenario.raw.actors[15][door]
             properties.type = "doorpowerpower"

@@ -1,6 +1,5 @@
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsmsd
-
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 BABY_ICON = Container({
