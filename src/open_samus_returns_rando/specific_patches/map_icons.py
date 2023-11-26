@@ -17,11 +17,11 @@ def patch_tiles(editor: PatcherEditor):
         "s090_area9": ["Door012"],
     }
 
-    for area in ALL_SCENARIOS:
-        if area != "s110_surfaceb":
-            scenario = editor.get_file(f"gui/minimaps/c10_samus/{area}.bmsmsd", Bmsmsd)
-            tiles = scenario.raw["tiles"]
-            doors = AREA_TO_DOORS.get(area, [])
+    for scenario in ALL_SCENARIOS:
+        if scenario != "s110_surfaceb":
+            scenario_file = editor.get_file(f"gui/minimaps/c10_samus/{scenario}.bmsmsd", Bmsmsd)
+            tiles = scenario_file.raw["tiles"]
+            doors = AREA_TO_DOORS.get(scenario, [])
 
             for tile_idx in range(len(tiles)):
                 current_tile = tiles[tile_idx]
