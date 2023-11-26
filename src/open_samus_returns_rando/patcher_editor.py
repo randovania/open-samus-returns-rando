@@ -7,7 +7,7 @@ from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
 from mercury_engine_data_structures.formats import BaseResource, Bmsld
 from mercury_engine_data_structures.game_check import Game
 
-from open_samus_returns_rando.constants import ALL_AREAS
+from open_samus_returns_rando.constants import ALL_SCENARIOS
 
 T = typing.TypeVar("T")
 
@@ -33,8 +33,8 @@ class PatcherEditor(FileTreeEditor):
 
     def get_all_level_pkgs(self) -> list[str]:
         def get_nested_list():
-            for area in ALL_AREAS:
-                yield self.get_level_pkgs(area)
+            for scenario in ALL_SCENARIOS:
+                yield self.get_level_pkgs(scenario)
         return [pkg for all_level_pkgs in get_nested_list() for pkg in all_level_pkgs]
 
     def ensure_present_in_scenario(self, scenario: str, asset):

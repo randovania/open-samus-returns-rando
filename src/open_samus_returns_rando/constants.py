@@ -1,8 +1,8 @@
 # constant data, including "magic numbers" and common data that many modules use
 
 
-# list of all areas
-ALL_AREAS = [
+# list of all scenarios
+ALL_SCENARIOS = [
     "s000_surface",
     "s010_area1",
     "s020_area2",

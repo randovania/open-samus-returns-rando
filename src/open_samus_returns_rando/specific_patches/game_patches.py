@@ -59,8 +59,8 @@ def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
         editor.remove_entity(
             {"scenario": "s060_area6", "layer": 9, "actor": "LE_GrappleMov_004"}
         )
-        for area_name, blocks in ELEVATOR_GRAPPLE_BLOCKS.items():
-            scenario = editor.get_scenario(area_name)
+        for scenario_name, blocks in ELEVATOR_GRAPPLE_BLOCKS.items():
+            scenario = editor.get_scenario(scenario_name)
             for block in blocks:
                 actor = scenario.raw.actors[9][block]
                 actor["position"][0] -= 100.0

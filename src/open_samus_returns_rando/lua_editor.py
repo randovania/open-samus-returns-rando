@@ -1,6 +1,6 @@
 import itertools
 
-from open_samus_returns_rando.constants import ALL_AREAS
+from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
@@ -74,7 +74,7 @@ class LuaEditor:
     def _read_levels(self) -> dict[str, dict]:
         return {
             scenario: {"script": _read_level_lua(scenario), "edited": False}
-            for scenario in ALL_AREAS
+            for scenario in ALL_SCENARIOS
         }
 
     def get_parent_for(self, item_id) -> str:

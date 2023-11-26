@@ -32,8 +32,8 @@ def patch_pickup_rotation(editor: PatcherEditor):
         "s030_area3": ["LE_PowerUp_GrappleBeam"],
         "s050_area5": ["LE_PowerUp_SpaceJump"],
     }
-    for area_name, pickups in PICKUPS.items():
-        scenario = editor.get_scenario(area_name)
+    for scenario_name, pickups in PICKUPS.items():
+        scenario = editor.get_scenario(scenario_name)
         for pickup in pickups:
             actor = scenario.raw.actors[9][pickup]
             actor["rotation"][1] = 0.0
@@ -47,8 +47,8 @@ def patch_pickup_position(editor: PatcherEditor):
         "s030_area3": ["LE_SpecialAbility_EnergyWave"],
         "s060_area6": ["LE_SpecialAbility_PhaseDisplacement"],
     }
-    for area_name, pickups in PICKUPS.items():
-        scenario = editor.get_scenario(area_name)
+    for scenario_name, pickups in PICKUPS.items():
+        scenario = editor.get_scenario(scenario_name)
         for pickup in pickups:
             actor = scenario.raw.actors[9][pickup]
             if pickup != "LE_PowerUp_SpiderBall":
