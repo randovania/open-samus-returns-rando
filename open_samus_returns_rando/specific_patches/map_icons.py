@@ -29,20 +29,19 @@ def patch_tiles(editor: PatcherEditor):
 
                 icons = current_tile["icons"]
                 if len(icons) != 0:
-                    tile = icons[0] if len(icons) == 1 else icons[1]
                     # Items
-                    if "tank" in tile["icon"] or "tank" in icons[0]["icon"] or "itemsphere" in tile["icon"]:
+                    if "tank" in icons[0]["icon"] or "itemsphere" in icons[0]["icon"]:
                         if current_tile["tile_type"] == TileType.HEAT:
-                            tile["icon"] = "itemenabledheat"
+                            icons[0]["icon"] = "itemenabledheat"
                         else:
-                            tile["icon"] = "itemenabled"
                             icons[0]["icon"] = "itemenabled"
 
                     # Doors
+                    door_tile = icons[0] if len(icons) == 1 else icons[1]
                     for door in doors:
-                        if door in tile["actor_name"]:
-                            tile["clear_condition"] = ""
-                            if "left" in tile["icon"]:
-                                tile["icon"] = "doorpowerleft"
+                        if door in door_tile["actor_name"]:
+                            door_tile["clear_condition"] = ""
+                            if "left" in door_tile["icon"]:
+                                door_tile["icon"] = "doorpowerleft"
                             else:
-                                tile["icon"] = "doorpowerright"
+                                door_tile["icon"] = "doorpowerright"
