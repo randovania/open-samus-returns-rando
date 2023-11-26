@@ -1,7 +1,6 @@
 import re
 
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
-
 from open_samus_returns_rando.files import files_path, templates_path
 
 

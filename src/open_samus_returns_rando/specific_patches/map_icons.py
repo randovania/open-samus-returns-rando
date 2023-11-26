@@ -1,6 +1,5 @@
 from mercury_engine_data_structures.formats import Bmsmsd
 from mercury_engine_data_structures.formats.bmsmsd import TileType
-
 from open_samus_returns_rando.constants import ALL_AREAS
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 

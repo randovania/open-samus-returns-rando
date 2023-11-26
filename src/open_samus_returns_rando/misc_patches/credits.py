@@ -2,7 +2,6 @@
 import re
 
 from mercury_engine_data_structures.formats import Txt
-
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 _PROJECT_MEMBERS = {
