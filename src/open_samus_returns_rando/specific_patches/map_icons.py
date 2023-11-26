@@ -1,6 +1,6 @@
 from mercury_engine_data_structures.formats import Bmsmsd
 from mercury_engine_data_structures.formats.bmsmsd import TileType
-from open_samus_returns_rando.constants import ALL_AREAS
+from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
@@ -17,7 +17,7 @@ def patch_tiles(editor: PatcherEditor):
         "s090_area9": ["Door012"],
     }
 
-    for area in ALL_AREAS:
+    for area in ALL_SCENARIOS:
         if area != "s110_surfaceb":
             scenario = editor.get_file(f"gui/minimaps/c10_samus/{area}.bmsmsd", Bmsmsd)
             tiles = scenario.raw["tiles"]
