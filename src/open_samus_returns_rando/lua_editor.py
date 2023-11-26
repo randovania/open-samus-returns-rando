@@ -41,7 +41,7 @@ SPECIFIC_SOUNDS = {
     "ITEM_WEAPON_MISSILE_MAX": "streams/music/tank_jingle.wav",
 }
 
-AREA_MAPPING = {
+SCENARIO_MAPPING = {
     "s000_surface": "s00",
     "s010_area1": "s01",
     "s020_area2": "s02",
@@ -179,7 +179,7 @@ class LuaEditor:
             "energy_per_tank": energy_per_tank,
             "reveal_map_on_start": configuration["reveal_map_on_start"],
             "dna_per_area": self._dna_count_dict,
-            "area_mapping": {key: lua_util.wrap_string(value) for key, value in AREA_MAPPING.items()},
+            "scenario_mapping": {key: lua_util.wrap_string(value) for key, value in SCENARIO_MAPPING.items()},
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)
@@ -248,6 +248,6 @@ class LuaEditor:
         scenario_list[actor] = two_hints_list
 
     def add_dna(self, scenario: str) -> None:
-        scenario_shortened: str = AREA_MAPPING[scenario]
+        scenario_shortened: str = SCENARIO_MAPPING[scenario]
         current_val = self._dna_count_dict.get(scenario_shortened, 0)
         self._dna_count_dict[scenario_shortened] = current_val + 1
