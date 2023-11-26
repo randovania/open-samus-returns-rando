@@ -2,17 +2,9 @@ import dataclasses
 
 
 @dataclasses.dataclass(frozen=True)
-class Transform:
-    position: tuple[float, float, float] = (0.0, 0.0, 0.0)
-    angle: tuple[float, float, float] = (0.0, 0.0, 0.0)
-    scale: tuple[float, float, float] = (1.0, 1.0, 1.0)
-
-
-@dataclasses.dataclass(frozen=True)
 class ModelData:
     bcmdl_path: str
     dependencies: tuple[str, ...]
-    transform: Transform | None = None
 
 
 ALL_MODEL_DATA: dict[str, ModelData] = {
