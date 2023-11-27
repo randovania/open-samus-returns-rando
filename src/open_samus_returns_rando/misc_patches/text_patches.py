@@ -10,7 +10,7 @@ if typing.TYPE_CHECKING:
 # may want to edit all the localization files?
 ALL_TEXT_FILES = {
     # "eu_dutch.txt",
-    # "eu_english.txt",
+    "eu_english.txt",
     # "eu_french.txt",
     # "eu_german.txt",
     # "eu_italian.txt",

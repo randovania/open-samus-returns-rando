@@ -3,6 +3,7 @@ import itertools
 from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.misc_patches import lua_util
+from open_samus_returns_rando.misc_patches.text_patches import patch_text
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 
 
@@ -149,9 +150,10 @@ class LuaEditor:
         models = lua_util.replace_lua_template("progressive_model_template.lua", replacement)
         self._powerup_script += models.encode("utf-8")
 
-    def _create_custom_init(self, configuration: dict) -> str:
+    def _create_custom_init(self, editor: PatcherEditor, configuration: dict) -> str:
         inventory: dict[str, int] = configuration["starting_items"]
         starting_location: dict = configuration["starting_location"]
+        starting_text: list[str] = configuration.get("starting_text", [])
 
         energy_per_tank = configuration["energy_per_tank"]
         max_life = inventory.pop("ITEM_MAX_LIFE")
@@ -175,6 +177,19 @@ class LuaEditor:
         }
         final_inventory.update(inventory)
 
+        # Use itertools batched when upgrading to python 3.12
+        def chunks(array: list[str], n: int):
+            for i in range(0, len(array), n):
+                yield array[i:i + n]
+
+        textboxes = 0
+        boxes = chunks(starting_text, 3)
+        for box in boxes:
+            textboxes += 1
+            box_text = "|".join(box)
+            patch_text(editor, f"RANDO_STARTING_TEXT_{textboxes}", box_text)
+
+
         replacement = {
             "new_game_inventory": final_inventory,
             "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
@@ -183,6 +198,7 @@ class LuaEditor:
             "reveal_map_on_start": configuration["reveal_map_on_start"],
             "dna_per_area": self._dna_count_dict,
             "scenario_mapping": {key: lua_util.wrap_string(value) for key, value in SCENARIO_MAPPING.items()},
+            "textbox_count": textboxes,
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)
@@ -192,7 +208,7 @@ class LuaEditor:
         lua_util.create_script_copy(editor, "system/scripts/init")
         editor.replace_asset(
             "system/scripts/init.lc",
-            self._create_custom_init(configuration).encode("ascii"),
+            self._create_custom_init(editor, configuration).encode("ascii"),
         )
 
         # Add custom lua files

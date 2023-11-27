@@ -8,6 +8,8 @@ Init.sStartingActor = TEMPLATE("starting_actor")
 Init.fEnergyPerTank = TEMPLATE("energy_per_tank")
 Init.tDNAPerArea = TEMPLATE("dna_per_area")
 Init.tScenarioMapping = TEMPLATE("scenario_mapping")
+Init.iNumRandoTextBoxes = TEMPLATE("textbox_count")
+Init.tBoxesSeen = 0
 
 Game.LogWarn(0, "Inventory:")
 for k, v in pairs(Init.tNewGameInventory) do
@@ -44,7 +46,8 @@ function Init.InitGameBlackboard()
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "LevelID", "s", "c10_samus")
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "ScenarioID", "s", TEMPLATE("starting_scenario"))
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "StartPoint", "s", TEMPLATE("starting_actor"))
-
+  Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "RANDO_GAME_INITIALIZED", "b", false)
+  Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "RANDO_START_TEXT", "b", false)
   Blackboard.SetProp("s000_surface", "entity_LE_HazarousPool_enabled", "b", false)
   Blackboard.SetProp("s010_area1", "entity_LE_HazarousPool_enabled", "b", false)
   Blackboard.SetProp("s028_area2c", "entity_LE_HazarousPool_enabled", "b", false)
@@ -63,6 +66,7 @@ function Init.InitGameBlackboard()
 end
 
 function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
+    Init.tBoxesSeen = 0
     Game.LogWarn(0, string.format("Will start Game - %s / %s / %s / %s", tostring(arg1), tostring(arg2), tostring(arg3), tostring(arg4)))
     Game.LoadScenario("c10_samus", Init.sStartingScenario, Init.sStartingActor, "samus", 1)
     if Init.bRevealMap then
