@@ -298,8 +298,8 @@ function RandomizerPhaseDisplacement.OnPickedUp(progression)
 end
 
 RandomizerReserveTankE = {}
-setmetatable(RandomizerReserveTankL, {__index = RandomizerPowerup})
-function RandomizerReserveTankL.OnPickedUp(progression)
+setmetatable(RandomizerReserveTankE, {__index = RandomizerPowerup})
+function RandomizerReserveTankE.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_LIFE_ACTIVE", "b", true)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_LIFE_FULL", "b", true)
@@ -314,8 +314,8 @@ function RandomizerReserveTankM.OnPickedUp(progression)
 end
 
 RandomizerReserveTankA = {}
-setmetatable(RandomizerReserveTankSE, {__index = RandomizerPowerup})
-function RandomizerReserveTankSE.OnPickedUp(progression)
+setmetatable(RandomizerReserveTankA, {__index = RandomizerPowerup})
+function RandomizerReserveTankA.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_ACTIVE", "b", true)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_FULL", "b", true)
