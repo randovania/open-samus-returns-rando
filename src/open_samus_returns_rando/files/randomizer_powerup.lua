@@ -303,6 +303,8 @@ function RandomizerReserveTankE.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_LIFE_ACTIVE", "b", true)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_LIFE_FULL", "b", true)
+    Game.AddSF(0.0, "Game.HUDIdleScreenGo", "")
+    Game.AddSF(0.5, "Game.HUDIdleScreenLeave", "")
 end
 
 RandomizerReserveTankM = {}
@@ -311,6 +313,8 @@ function RandomizerReserveTankM.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_ACTIVE", "b", true)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_FULL", "b", true)
+    Game.AddSF(0.0, "Game.HUDIdleScreenGo", "")
+    Game.AddSF(0.5, "Game.HUDIdleScreenLeave", "")
 end
 
 RandomizerReserveTankA = {}
@@ -319,4 +323,6 @@ function RandomizerReserveTankA.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_ACTIVE", "b", true)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_FULL", "b", true)
+    Game.AddSF(0.0, "Game.HUDIdleScreenGo", "")
+    Game.AddSF(0.5, "Game.HUDIdleScreenLeave", "")
 end
