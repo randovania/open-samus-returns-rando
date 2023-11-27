@@ -27,6 +27,9 @@ SPECIFIC_CLASSES = {
     "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": "RandomizerEnergyWave",
     "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "RandomizerPhaseDisplacement",
     "ITEM_ENERGY_TANKS": "RandomizerEnergyTank",
+    "ITEM_RESERVE_TANK_LIFE": "RandomizerReserveTankE",
+    "ITEM_RESERVE_TANK_MISSILE": "RandomizerReserveTankM",
+    "ITEM_RESERVE_TANK_SPECIAL_ENERGY": "RandomizerReserveTankA",
 }
 
 SPECIFIC_SOUNDS = {

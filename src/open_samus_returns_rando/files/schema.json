@@ -399,7 +399,10 @@
                 "ITEM_RANDO_DNA_36",
                 "ITEM_RANDO_DNA_37",
                 "ITEM_RANDO_DNA_38",
-                "ITEM_RANDO_DNA_39"
+                "ITEM_RANDO_DNA_39",
+                "ITEM_RESERVE_TANK_LIFE",
+                "ITEM_RESERVE_TANK_MISSILE",
+                "ITEM_RESERVE_TANK_SPECIAL_ENERGY"
             ]
         },
         "item": {

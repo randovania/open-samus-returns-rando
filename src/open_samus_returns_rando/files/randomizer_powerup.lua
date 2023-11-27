@@ -296,3 +296,33 @@ function RandomizerPhaseDisplacement.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     Player.SetAbilityUnlocked("PhaseDisplacement", true)
 end
+
+RandomizerReserveTankE = {}
+setmetatable(RandomizerReserveTankE, {__index = RandomizerPowerup})
+function RandomizerReserveTankE.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_LIFE_ACTIVE", "b", true)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_LIFE_FULL", "b", true)
+    Game.AddSF(0.0, "Game.HUDIdleScreenGo", "")
+    Game.AddSF(0.5, "Game.HUDIdleScreenLeave", "")
+end
+
+RandomizerReserveTankM = {}
+setmetatable(RandomizerReserveTankM, {__index = RandomizerPowerup})
+function RandomizerReserveTankM.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_ACTIVE", "b", true)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_FULL", "b", true)
+    Game.AddSF(0.0, "Game.HUDIdleScreenGo", "")
+    Game.AddSF(0.5, "Game.HUDIdleScreenLeave", "")
+end
+
+RandomizerReserveTankA = {}
+setmetatable(RandomizerReserveTankA, {__index = RandomizerPowerup})
+function RandomizerReserveTankA.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_ACTIVE", "b", true)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_FULL", "b", true)
+    Game.AddSF(0.0, "Game.HUDIdleScreenGo", "")
+    Game.AddSF(0.5, "Game.HUDIdleScreenLeave", "")
+end

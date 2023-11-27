@@ -12,6 +12,12 @@ from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando.pickups.model_data import get_data
 
+RESERVE_TANK_ITEMS = {
+    "ITEM_RESERVE_TANK_LIFE",
+    "ITEM_RESERVE_TANK_MISSILE",
+    "ITEM_RESERVE_TANK_SPECIAL_ENERGY",
+}
+
 TANK_MODELS = {
     "item_energytank",
     "item_senergytank",
@@ -124,6 +130,7 @@ class ActorPickup(BasePickup):
 
     def patch_model(self, model_names: list[str], bmsad: dict) -> None:
         MODELUPDATER = bmsad["components"]["MODELUPDATER"]
+        item_id: str = self.pickup["resources"][0][0]["item_id"]
         model_name = model_names[0]
         y_offset = MODEL_TO_OFFSET.get(model_name, 20)
         if len(model_names) == 1:
@@ -143,7 +150,15 @@ class ActorPickup(BasePickup):
                     MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
                 else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
-                bmsad["components"].pop("FX")
+                # Placeholder until custom models/textures are made
+                if item_id in RESERVE_TANK_ITEMS:
+                    fx_create_and_link["Param1"]["value"] = "spenergycloud"
+                    fx_create_and_link["Param2"]["value"] = "actors/props/spenergycloud/fx/specialenergystatue.bcptl"
+                    fx_create_and_link["Param8"]["value"] = 50
+                    fx_create_and_link["Param9"]["value"] = 10
+                    fx_create_and_link["Param13"]["value"] = True
+                else:
+                    bmsad["components"].pop("FX")
             # aeion abilities
             elif model_name in AEION_MODELS:
                 fx_create_and_link["Param8"]["value"] = y_offset
@@ -167,6 +182,11 @@ class ActorPickup(BasePickup):
                 fx_create_and_link["Param8"]["value"] = y_offset
                 fx_create_and_link["Param1"]["value"] = "leak"
                 fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
+                fx_create_and_link["Param13"]["value"] = True
+            elif model_name == "itemsphere":
+                fx_create_and_link["Param1"]["value"] = "itemsphere"
+                fx_create_and_link["Param2"]["value"] = "actors/items/itemsphere/fx/itemsphereparts.bcptl"
+                fx_create_and_link["Param8"]["value"] = 20
                 fx_create_and_link["Param13"]["value"] = True
             else:
                 bmsad["components"].pop("FX")
