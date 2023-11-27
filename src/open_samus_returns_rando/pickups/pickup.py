@@ -305,6 +305,7 @@ def count_dna(lua_scripts: LuaEditor, pickup_object: BasePickup):
         lua_scripts.add_dna(scenario)
 
 def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
+    ActorPickup._bmsad_dict = {}
     editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", b'', [])
     editor.add_new_asset("actors/scripts/metroid.lc", b'', [])
     ensure_base_models(editor)
