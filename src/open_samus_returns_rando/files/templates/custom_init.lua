@@ -24,6 +24,10 @@ function Init.InitGameBlackboard()
       local current_amount = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_ADN") or 0
       Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", current_amount + 1)
     end
+    if string.sub(_FORV_3_, 1, 17) == "ITEM_RESERVE_TANK" then
+      Blackboard.SetProp("GAME", _FORV_3_ .. "_ACTIVE", "b", true)
+      Blackboard.SetProp("GAME", _FORV_3_ .. "_FULL", "b", true)
+    end
   end
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_METROID_COUNT", "f", 0)
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_CURRENT_LIFE", "f", Init.tNewGameInventory.ITEM_MAX_LIFE)
