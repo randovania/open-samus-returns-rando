@@ -296,3 +296,27 @@ function RandomizerPhaseDisplacement.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     Player.SetAbilityUnlocked("PhaseDisplacement", true)
 end
+
+RandomizerReserveTankE = {}
+setmetatable(RandomizerReserveTankL, {__index = RandomizerPowerup})
+function RandomizerReserveTankL.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_LIFE_ACTIVE", "b", true)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_LIFE_FULL", "b", true)
+end
+
+RandomizerReserveTankM = {}
+setmetatable(RandomizerReserveTankM, {__index = RandomizerPowerup})
+function RandomizerReserveTankM.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_ACTIVE", "b", true)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_FULL", "b", true)
+end
+
+RandomizerReserveTankA = {}
+setmetatable(RandomizerReserveTankSE, {__index = RandomizerPowerup})
+function RandomizerReserveTankSE.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_ACTIVE", "b", true)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_FULL", "b", true)
+end
