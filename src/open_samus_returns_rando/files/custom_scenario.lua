@@ -54,3 +54,31 @@ function Scenario.UpdateDNACounter()
   
   GUILib.UpdateDNACounter(currentDNA, maxDNA)
 end
+
+local original_init = Scenario.InitScenario
+function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
+  original_init(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
+  local player_section = Game.GetPlayerBlackboardSectionName()
+  local current_level = Blackboard.GetProp(player_section, "LevelID") or ""
+  if current_level == "c10_samus" then
+    local rando_initialized = Blackboard.GetProp(player_section, "RANDO_GAME_INITIALIZED") or false
+    if not rando_initialized then
+      Blackboard.SetProp(player_section, "RANDO_GAME_INITIALIZED", "b", true)
+      Scenario.ShowText()
+    end
+  end
+end
+
+
+function Scenario.ShowText()
+  local textboxes_seen = Init.tBoxesSeen 
+  local player_section = Game.GetPlayerBlackboardSectionName()
+  local already_seen = Blackboard.GetProp(player_section, "RANDO_START_TEXT") or false
+  if already_seen then return end
+  if Init.iNumRandoTextBoxes == textboxes_seen then
+    Blackboard.SetProp(player_section, "RANDO_START_TEXT", "b", true)
+  elseif Init.iNumRandoTextBoxes - textboxes_seen > 0 then
+    Init.tBoxesSeen = textboxes_seen + 1
+    GUI.LaunchMessage("#RANDO_STARTING_TEXT_" .. Init.tBoxesSeen, "Scenario.ShowText", "")
+  end
+end
