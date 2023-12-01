@@ -14,7 +14,7 @@ from open_samus_returns_rando.misc_patches.text_patches import add_spiderboost_s
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickups.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.pickups.pickup import patch_pickups
-from open_samus_returns_rando.specific_patches import game_patches
+from open_samus_returns_rando.specific_patches import game_patches, tunable_patches
 from open_samus_returns_rando.specific_patches.chozo_seal_patches import patch_chozo_seals
 from open_samus_returns_rando.specific_patches.door_patches import patch_doors
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
@@ -22,7 +22,6 @@ from open_samus_returns_rando.specific_patches.hint_patches import patch_hints
 from open_samus_returns_rando.specific_patches.map_icons import patch_tiles
 from open_samus_returns_rando.specific_patches.metroid_patches import patch_metroids
 from open_samus_returns_rando.specific_patches.static_fixes import apply_static_fixes
-from open_samus_returns_rando.specific_patches.tunable_patches import patch_tunables
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
 
 T = typing.TypeVar("T")
@@ -72,7 +71,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     patch_doors(editor)
 
     # Patch tunables
-    patch_tunables(editor)
+    tunable_patches.patch_tunables(editor, configuration.get("reserves_per_tank", {}))
 
     # Patch metroids
     patch_metroids(editor)
