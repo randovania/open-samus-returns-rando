@@ -136,6 +136,31 @@
             "type": "number",
             "default": 100.0
         },
+        "reserves_per_tank": {
+            "type": "object",
+            "properties": {
+                "life_tank_size": {
+                    "description": "How much Energy is restored when using an Energy Reserve Tank",
+                    "type": "number",
+                    "default": 299.0
+                },
+                "aeion_tank_size": {
+                    "description": "How much Aeion is restored when using an Aeion Reserve Tank",
+                    "type": "number",
+                    "default": 500.0
+                },
+                "missile_tank_size": {
+                    "description": "How many Missiles are restored when using a Missile Reserve Tank",
+                    "type": "number",
+                    "default": 50.0
+                },
+                "super_missile_tank_size": {
+                    "description": "How many Super Missiles are restored when using a Missile Reserve Tank",
+                    "type": "number",
+                    "default": 10.0
+                }
+            }
+        },
         "reveal_map_on_start": {
             "type": "boolean",
             "default": false,
