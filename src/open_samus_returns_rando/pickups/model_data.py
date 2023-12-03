@@ -18,6 +18,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/itemsphere/fx/itemsphereparts.bcptl",
             "maps/textures/chozoartifactor_d.bctex",
             "maps/textures/chozoartifactorbase_d.bctex",
+            "system/fx/textures/haloflame.bctex",
             "system/fx/textures/splat.bctex",
         ),
     ),

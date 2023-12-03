@@ -184,7 +184,7 @@ class ActorPickup(BasePickup):
                 fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
                 fx_create_and_link["Param13"]["value"] = True
             elif model_name == "itemsphere":
-                fx_create_and_link["Param1"]["value"] = "itemsphere"
+                fx_create_and_link["Param1"]["value"] = "itemparts"
                 fx_create_and_link["Param2"]["value"] = "actors/items/itemsphere/fx/itemsphereparts.bcptl"
                 fx_create_and_link["Param8"]["value"] = 20
                 fx_create_and_link["Param13"]["value"] = True
