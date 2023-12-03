@@ -193,8 +193,10 @@ class ActorPickup(BasePickup):
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
                     fx_create_and_link["Param1"]["value"] = "itemparts"
                     fx_create_and_link["Param2"]["value"] = "actors/items/itemsphere/fx/itemsphereparts.bcptl"
-            elif model_name == "babyhatchling" or model_name == "powerup_spiderball":
+            elif model_name in {"babyhatchling", "powerup_spiderball"}:
                 MODELUPDATER["functions"][0]["params"].pop("Param2")
+                bmsad["components"].pop("FX")
+                bmsad["action_sets"] = ListContainer([])
             else:
                 bmsad["components"].pop("FX")
                 bmsad["sound_fx"] = ListContainer([])
