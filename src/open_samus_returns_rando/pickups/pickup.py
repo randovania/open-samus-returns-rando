@@ -174,13 +174,13 @@ class ActorPickup(BasePickup):
                         MODELUPDATER["functions"][0]["params"].pop("Param2")
                         fx_create_and_link["Param1"]["value"] = "orb"
                         fx_create_and_link["Param2"]["value"] = "actors/items/powerup_scanningpulse/fx/orb.bcptl"
-                    if model_name == "powerup_energyshield":
+                    elif model_name == "powerup_energyshield":
                         fx_create_and_link["Param1"]["value"] = "orb"
                         fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energyshield/fx/orb.bcptl"
-                    if model_name == "powerup_energywave":
+                    elif model_name == "powerup_energywave":
                         fx_create_and_link["Param1"]["value"] = "yelloworb"
                         fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energywave/fx/yelloworb.bcptl"
-                    elif model_name == "powerup_phasedisplacement":
+                    else:
                         fx_create_and_link["Param1"]["value"] = "purpleorb"
                         fx_create_and_link["Param2"]["value"] = (
                             "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
@@ -189,7 +189,7 @@ class ActorPickup(BasePickup):
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
                     fx_create_and_link["Param1"]["value"] = "leak"
                     fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
-                elif model_name == "itemsphere":
+                else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
                     fx_create_and_link["Param1"]["value"] = "itemparts"
                     fx_create_and_link["Param2"]["value"] = "actors/items/itemsphere/fx/itemsphereparts.bcptl"
