@@ -196,7 +196,7 @@ class ActorPickup(BasePickup):
             elif model_name in {"babyhatchling", "powerup_spiderball"}:
                 MODELUPDATER["functions"][0]["params"].pop("Param2")
                 bmsad["components"].pop("FX")
-                bmsad["action_sets"] = ListContainer([])
+                bmsad["sound_fx"] = ListContainer([])
             else:
                 bmsad["components"].pop("FX")
                 bmsad["sound_fx"] = ListContainer([])
