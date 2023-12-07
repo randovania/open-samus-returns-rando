@@ -165,6 +165,12 @@ class LuaEditor:
             etanks = inventory.pop("ITEM_ENERGY_TANKS")
             max_life += etanks * energy_per_tank
 
+        # use _MAX if main is unlocked to unlock the ammo too
+        if "ITEM_WEAPON_SUPER_MISSILE" in inventory and "ITEM_SUPER_MISSILE_TANKS" in inventory:
+            inventory["ITEM_WEAPON_SUPER_MISSILE_MAX"] = inventory.pop("ITEM_SUPER_MISSILE_TANKS")
+        if "ITEM_WEAPON_POWER_BOMB" in inventory and "ITEM_POWER_BOMB_TANKS" in inventory:
+            inventory["ITEM_WEAPON_POWER_BOMB_MAX"] = inventory.pop("ITEM_POWER_BOMB_TANKS")
+
         # These fields are required to start the game
         final_inventory = {
             "ITEM_MAX_LIFE": max_life,
