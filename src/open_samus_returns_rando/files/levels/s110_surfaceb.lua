@@ -9,6 +9,7 @@ s110_surfaceb = {
 }
 function s110_surfaceb.main()
   Scenario.InitGUI()
+  Blackboard.SetProp("s000_surface", "s000_surface_discovered", "b", true)
 end
 function s110_surfaceb.SetupDebugGameBlackboard()
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_CURRENT_SPECIAL_ENERGY", "f", 1000)
