@@ -851,14 +851,14 @@ function s100_area10.LaunchMetroidBossPresentation()
   Game.DelSF("s100_area10.ProcessMetroidRadarDistance")
   Game.DisableTrigger("TG_MetroidRadar")
   Game.DisableTrigger("TG_Intro_Larva")
-  -- Game.HUDAvailabilityGoOff(false, true, false, false)
+  Game.HUDAvailabilityGoOff(false, true, false, false)
   Game.SetIgnoreHUDAvailabilityActivationByAbilityComponent(true)
-  -- Game.AddSF(1, "s100_area10.StartMetroidCountIncrement", "")
+  Game.AddSF(1, "s100_area10.StartMetroidCountIncrement", "")
   if Game.GetEntity("SG_Larva_001") ~= nil then
     Game.GetEntity("SG_Larva_001").SPAWNGROUP:EnableSpawnGroup()
   end
   Game.SetSubAreaCurrentSetup("collision_camera_008", "Default", true, true)
-  -- Game.LaunchCutscene("cutscenes/intrometroidboss/takes/01/intrometroidboss01.bmscu")
+  Game.LaunchCutscene("cutscenes/intrometroidboss/takes/01/intrometroidboss01.bmscu")
   if Game.GetEntity("Door010") ~= nil then
     Game.GetEntity("Door010").LIFE:SetInvulnerable(false)
   end
