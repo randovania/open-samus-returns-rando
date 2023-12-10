@@ -207,7 +207,7 @@ function s040_area4.OnEnter_Gamma_001_Dead()
     Game.SetSubAreaCurrentSetup("collision_camera_012", "PostGamma_001", true)
     Game.SetSubAreaCurrentSetup("collision_camera_013", "PostGamma_001", true)
     -- if Game.GetEntity("SpawnGroup019") ~= nil then
-      -- Game.GetEntity("SpawnGroup019").SPAWNGROUP:EnableSpawnGroup()
+    --   Game.GetEntity("SpawnGroup019").SPAWNGROUP:EnableSpawnGroup()
     -- end
     if Game.GetEntity("SpawnGroup020") ~= nil then
       Game.GetEntity("SpawnGroup020").SPAWNGROUP:EnableSpawnGroup()
@@ -215,7 +215,12 @@ function s040_area4.OnEnter_Gamma_001_Dead()
     if Game.GetEntity("SpawnGroup021") ~= nil then
       Game.GetEntity("SpawnGroup021").SPAWNGROUP:EnableSpawnGroup()
     end
+    Game.GetPlayer().vPos = Game.GetEntity("ST_SG_Gamma_001").vPos
+    Game.AddSF(0.5, "s040_area4.DelayedWarp", "")
   end
+end
+function s040_area4.DelayedWarp()
+  Game.GetPlayer().vPos = V3D(1766.0, 4742.0, 0.0)
 end
 s040_area4.tDNAScanLandmarks = {
   SG_Alpha_001 = {
