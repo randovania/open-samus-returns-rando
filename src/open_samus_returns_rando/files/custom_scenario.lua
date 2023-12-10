@@ -82,3 +82,10 @@ function Scenario.ShowText()
     GUI.LaunchMessage("#RANDO_STARTING_TEXT_" .. Init.tBoxesSeen, "Scenario.ShowText", "")
   end
 end
+
+function Scenario.LoadNewScenario(target_scenario, target_spawnpoint)
+  bWaitingForScenarioChange = true
+  Game.FadeOut(0.0)
+  Game.FadeOutStream(0.0)
+  Game.AddPSF(0.1, "Game.LoadScenario", "ssssi", "c10_samus", target_scenario, target_spawnpoint, "", 1)
+end

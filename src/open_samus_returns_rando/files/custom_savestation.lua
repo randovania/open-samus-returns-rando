@@ -6,7 +6,7 @@ end
 function SaveStation.Dummy()
 end
 function SaveStation.WarpToStart()
-  Game.LoadScenario("c10_samus", Init.sStartingScenario, Init.sStartingActor, "samus", 1)
+  Scenario.LoadNewScenario(Init.sStartingScenario, Init.sStartingActor)
 end
 function SaveStation.OnDialogDeclined()
   Usable._oUsableObject.USABLE:OnDialogDeclined()
