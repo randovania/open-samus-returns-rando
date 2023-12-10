@@ -170,6 +170,12 @@ class ActorPickup(BasePickup):
                 if model_name not in {"adn", "itemsphere"}:
                     scanningpulse_bcmdl = "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
                     MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = scanningpulse_bcmdl
+                    bmsad["sound_fx"] = ListContainer([
+                        ListContainer([
+                            "generic/hability_projector.wav",
+                            1
+                        ])
+                    ])
                     if model_name == "powerup_scanningpulse":
                         MODELUPDATER["functions"][0]["params"].pop("Param2")
                         fx_create_and_link["Param1"]["value"] = "orb"
@@ -189,10 +195,22 @@ class ActorPickup(BasePickup):
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
                     fx_create_and_link["Param1"]["value"] = "leak"
                     fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
+                    bmsad["sound_fx"] = ListContainer([
+                        ListContainer([
+                            "actors/samus/samus_dnascan.wav",
+                            1
+                        ])
+                    ])
                 else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
                     fx_create_and_link["Param1"]["value"] = "itemparts"
                     fx_create_and_link["Param2"]["value"] = "actors/items/itemsphere/fx/itemsphereparts.bcptl"
+                    bmsad["sound_fx"] = ListContainer([
+                        ListContainer([
+                            "generic/itemsphere_cracks.wav",
+                            1
+                        ])
+                    ])
             elif model_name in {"babyhatchling", "powerup_spiderball"}:
                 MODELUPDATER["functions"][0]["params"].pop("Param2")
                 bmsad["components"].pop("FX")
