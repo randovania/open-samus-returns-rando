@@ -26,11 +26,13 @@ TANK_MODELS = {
     "item_powerbombtank",
 }
 
-AEION_MODELS = {
+MODELS_WITH_FX = {
     "powerup_scanningpulse",
     "powerup_energyshield",
     "powerup_energywave",
     "powerup_phasedisplacement",
+    "adn",
+    "itemsphere"
 }
 
 MODEL_TO_OFFSET = {
@@ -48,7 +50,7 @@ MODEL_TO_OFFSET = {
     "babyhatchling": 50,
 }
 
-OFFSET =  Container({
+OFFSET = Container({
     "vInitPosWorldOffset": Container({
         "type": "vec3",
         "value": ListContainer([
@@ -139,7 +141,6 @@ class ActorPickup(BasePickup):
             bmsad["header"]["model_name"] = model_data.bcmdl_path
             fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
 
-
             MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
             # tank models
             if model_name in TANK_MODELS:
@@ -159,35 +160,43 @@ class ActorPickup(BasePickup):
                     fx_create_and_link["Param13"]["value"] = True
                 else:
                     bmsad["components"].pop("FX")
-            # aeion abilities
-            elif model_name in AEION_MODELS:
+            # if model uses fx, enable it and adjust position
+            elif model_name in MODELS_WITH_FX:
                 fx_create_and_link["Param8"]["value"] = y_offset
-
-                scanningpulse_bcmdl = "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
-                MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = scanningpulse_bcmdl
                 fx_create_and_link["Param13"]["value"] = True
-                if model_name == "powerup_scanningpulse":
-                    fx_create_and_link["Param1"]["value"] = "orb"
-                    fx_create_and_link["Param2"]["value"] = "actors/items/powerup_scanningpulse/fx/orb.bcptl"
-                if model_name == "powerup_energyshield":
-                    fx_create_and_link["Param1"]["value"] = "orb"
-                    fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energyshield/fx/orb.bcptl"
-                if model_name == "powerup_energywave":
-                    fx_create_and_link["Param1"]["value"] = "yelloworb"
-                    fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energywave/fx/yelloworb.bcptl"
-                elif model_name == "powerup_phasedisplacement":
-                    fx_create_and_link["Param1"]["value"] = "purpleorb"
-                    fx_create_and_link["Param2"]["value"] = "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
-            elif model_name == "adn":
-                fx_create_and_link["Param8"]["value"] = y_offset
-                fx_create_and_link["Param1"]["value"] = "leak"
-                fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
-                fx_create_and_link["Param13"]["value"] = True
-            elif model_name == "itemsphere":
-                fx_create_and_link["Param1"]["value"] = "itemparts"
-                fx_create_and_link["Param2"]["value"] = "actors/items/itemsphere/fx/itemsphereparts.bcptl"
-                fx_create_and_link["Param8"]["value"] = 20
-                fx_create_and_link["Param13"]["value"] = True
+                bmsad["action_sets"] = ListContainer([])
+                bmsad["components"].pop("ANIMATION")
+                # aeion abilities
+                if model_name not in {"adn", "itemsphere"}:
+                    scanningpulse_bcmdl = "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
+                    MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = scanningpulse_bcmdl
+                    if model_name == "powerup_scanningpulse":
+                        MODELUPDATER["functions"][0]["params"].pop("Param2")
+                        fx_create_and_link["Param1"]["value"] = "orb"
+                        fx_create_and_link["Param2"]["value"] = "actors/items/powerup_scanningpulse/fx/orb.bcptl"
+                    elif model_name == "powerup_energyshield":
+                        fx_create_and_link["Param1"]["value"] = "orb"
+                        fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energyshield/fx/orb.bcptl"
+                    elif model_name == "powerup_energywave":
+                        fx_create_and_link["Param1"]["value"] = "yelloworb"
+                        fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energywave/fx/yelloworb.bcptl"
+                    else:
+                        fx_create_and_link["Param1"]["value"] = "purpleorb"
+                        fx_create_and_link["Param2"]["value"] = (
+                            "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
+                        )
+                elif model_name == "adn":
+                    MODELUPDATER["functions"][0]["params"].pop("Param2")
+                    fx_create_and_link["Param1"]["value"] = "leak"
+                    fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
+                else:
+                    MODELUPDATER["functions"][0]["params"].pop("Param2")
+                    fx_create_and_link["Param1"]["value"] = "itemparts"
+                    fx_create_and_link["Param2"]["value"] = "actors/items/itemsphere/fx/itemsphereparts.bcptl"
+            elif model_name in {"babyhatchling", "powerup_spiderball"}:
+                MODELUPDATER["functions"][0]["params"].pop("Param2")
+                bmsad["components"].pop("FX")
+                bmsad["sound_fx"] = ListContainer([])
             else:
                 bmsad["components"].pop("FX")
                 bmsad["sound_fx"] = ListContainer([])
