@@ -556,10 +556,8 @@ function s110_surfaceb.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_
   Game.SetSceneGroupEnabledByName("sg_debris02", false)
   Game.SetSceneGroupEnabledByName("sg_debris03", false)
   if _ARG_0_ == "collision_camera_017" and _ARG_2_ == "collision_camera_000" and Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") < 39 then
-    bWaitingForScenarioChange = true
-    Game.FadeOut(0.0)
-    Game.FadeOutStream(0.0 * 0.8)
-    Game.AddPSF(0.1, "Game.LoadScenario", "ssssi", "c10_samus", "s000_surface", "", "", 1)
+    Game.ForceConvertToSamus()
+    Scenario.LoadNewScenario("s000_surface", "")
     Game.GetPlayer().vPos = V3D(-22800, 4450, 0)
   end
   if _ARG_2_ == "collision_camera_021" and _ARG_0_ == "collision_camera_021" and _ARG_3_ == "RidleyCombat" then
