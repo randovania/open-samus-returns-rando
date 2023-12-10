@@ -113,7 +113,10 @@ class LuaEditor:
             ]
             for resource_list in pickup_resources
         ]
-        sound = SPECIFIC_SOUNDS.get(first_item_id, "streams/music/sphere_jingle_placeholder.wav")
+        if "ITEM_RANDO_DNA" in first_item_id:
+            sound = "streams/music/k_matad_jinchozo.wav"
+        else:
+            sound = SPECIFIC_SOUNDS.get(first_item_id, "streams/music/sphere_jingle_placeholder.wav")
         replacement = {
             "name": class_name,
             "resources": resources,
