@@ -16,6 +16,7 @@ _PROJECT_MEMBERS = {
     ],
     "Logic Database": [
         "Miepee",
+        "Haxaplax",
     ],
     "     ": [
         "With contributions from many others.",
