@@ -8,26 +8,14 @@ from open_samus_returns_rando.logger import LOG
 def patch_with_status_update(input_path: Path, output_path: Path, configuration: dict,
                              status_update: typing.Callable[[float, str], None]):
     from open_samus_returns_rando.samus_returns_patcher import patch_extracted
-    # TODO: Change it when patcher is done and provide better emit function
-    total_logs = 259
+    # messages depends on the layout but it is a good approximation
+    total_logs = 410
 
     class StatusUpdateHandler(logging.Handler):
         count = 0
 
         def emit(self, record: logging.LogRecord) -> None:
             message = self.format(record)
-
-            # Ignore "Writing <...>.pkg" messages, since there's also Updating...
-            if message.startswith("Writing ") and message.endswith(".pkg"):
-                return
-
-            # Encoding a bmsad is quick, skip these
-            if message.endswith(".bmsad"):
-                return
-
-            # These can come up frequently and are benign
-            if message.startswith("Skipping extracted file"):
-                return
 
             self.count += 1
             status_update(self.count / total_logs, message)
