@@ -17,6 +17,10 @@ end
 function Metroid.DelayedDelete(spawnGroupName)
     Game.DeleteEntity(spawnGroupName)
     if spawnGroupName == "SG_Gamma_001_A" then
+        InitialPosition = Game.GetPlayer().vPos
+        Game.GetPlayer().vPos = Game.GetEntity("ST_SG_Gamma_001").vPos
+        Game.SetPlayerInputEnabled(false, true)
+        Game.AddSF(0.5, "s040_area4.DelayedWarp", "")
         CurrentScenario.OnEnter_Gamma_001_Dead()
     elseif spawnGroupName == "SG_Gamma_002_A" then
         CurrentScenario.OnEnter_Gamma_002_Dead()
@@ -42,6 +46,9 @@ function Metroid.RemoveMetroid(_ARG_0_)
             end
             local allDead = "Arena_" .. string.sub(spawnGroupName, 4, -3) .. "_AllDead"
             Scenario.WriteToBlackboard(allDead, "b", true)
+            if spawnGroupName == "SG_Gamma_001_A" then
+                Game.SetPlayerInputEnabled(false, true)
+            end
             Game.AddSF(4.0, "Metroid.DelayedDelete", "s", spawnGroupName)
         -- disable single arena metroid
         else
