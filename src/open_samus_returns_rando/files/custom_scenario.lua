@@ -64,6 +64,7 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
     local rando_initialized = Blackboard.GetProp(player_section, "RANDO_GAME_INITIALIZED") or false
     if not rando_initialized then
       Blackboard.SetProp(player_section, "RANDO_GAME_INITIALIZED", "b", true)
+      Game.HUDIdleScreenLeave()
       Scenario.ShowText()
     end
   end
