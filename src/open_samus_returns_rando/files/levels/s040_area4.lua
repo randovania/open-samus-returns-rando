@@ -220,7 +220,7 @@ end
 function s040_area4.DelayedWarp()
   Game.SetPlayerInputEnabled(false, true)
   Game.FadeIn(2.5)
-  Game.GetPlayer().vPos = initalPosition
+  Game.GetPlayer().vPos = InitialPosition
   Game.AddSF(1.5, "s040_area4.DelayedInput", "")
 end
 function s040_area4.DelayedInput()

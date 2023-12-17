@@ -17,7 +17,7 @@ end
 function Metroid.DelayedDelete(spawnGroupName)
     Game.DeleteEntity(spawnGroupName)
     if spawnGroupName == "SG_Gamma_001_A" then
-        initalPosition = Game.GetPlayer().vPos
+        InitialPosition = Game.GetPlayer().vPos
         Game.GetPlayer().vPos = Game.GetEntity("ST_SG_Gamma_001").vPos
         Game.SetPlayerInputEnabled(false, true)
         Game.AddSF(0.5, "s040_area4.DelayedWarp", "")
