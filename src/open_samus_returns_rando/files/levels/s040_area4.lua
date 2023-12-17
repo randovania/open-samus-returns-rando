@@ -215,12 +215,10 @@ function s040_area4.OnEnter_Gamma_001_Dead()
     if Game.GetEntity("SpawnGroup021") ~= nil then
       Game.GetEntity("SpawnGroup021").SPAWNGROUP:EnableSpawnGroup()
     end
-    Game.GetPlayer().vPos = Game.GetEntity("ST_SG_Gamma_001").vPos
-    Game.AddSF(0.5, "s040_area4.DelayedWarp", "")
   end
 end
 function s040_area4.DelayedWarp()
-  Game.GetPlayer().vPos = V3D(1766.0, 4742.0, 0.0)
+  Game.GetPlayer().vPos = initalPosition
 end
 s040_area4.tDNAScanLandmarks = {
   SG_Alpha_001 = {
