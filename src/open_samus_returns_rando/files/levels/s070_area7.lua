@@ -847,6 +847,8 @@ end
 function s070_area7.LaunchManicMinerBotIntroCutscene()
   if Game.GetEntity("LE_PowerUp_Powerbomb") ~= nil then
     Game.GetEntity("LE_PowerUp_Powerbomb"):Disable()
+    TempPB = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX")
+    Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX", "f", 0)
   end
   s070_area7.SetLowModelsVisibility(true)
   Scenario.WriteToBlackboard("ManicMinerBotIntroCutscenePlayed", "b", true)
@@ -882,6 +884,7 @@ function s070_area7.OnStartManicMinerBotDeathCutscene()
   Game.GetPlayer("Samus").vPos = Game.GetEntity("DoorManicMinerBot").vPos
   if Game.GetEntity("LE_PowerUp_Powerbomb") ~= nil then
     Game.GetEntity("LE_PowerUp_Powerbomb"):Enable()
+    Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX", "f", TempPB)
   end
   if Game.GetEntity("Door024") ~= nil then
     Game.GetEntity("Door024"):Enable()
