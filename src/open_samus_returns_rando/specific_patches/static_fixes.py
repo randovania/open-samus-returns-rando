@@ -65,7 +65,6 @@ def remove_area7_grapple_block(editor: PatcherEditor):
 
 
 def patch_a7_save_screw_blocks(editor: PatcherEditor):
-    # Crumble blocks after Scan Pulse
     area7 = editor.get_file(
         "maps/levels/c10_samus/s090_area9/s090_area9.bmsbk", Bmsbk
     )
