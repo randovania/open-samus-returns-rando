@@ -1,3 +1,4 @@
+from mercury_engine_data_structures.formats import Bmsbk
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 MULTI_ROOM_GAMMAS = [
@@ -63,8 +64,16 @@ def remove_area7_grapple_block(editor: PatcherEditor):
     )
 
 
+def patch_a7_save_screw_blocks(editor: PatcherEditor):
+    area7 = editor.get_file(
+        "maps/levels/c10_samus/s090_area9/s090_area9.bmsbk", Bmsbk
+    )
+    area7.raw["block_groups"][56]["types"][0]["block_type"] = "power_beam"
+
+
 def apply_static_fixes(editor: PatcherEditor):
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
     patch_pickup_position(editor)
     remove_area7_grapple_block(editor)
+    patch_a7_save_screw_blocks(editor)
