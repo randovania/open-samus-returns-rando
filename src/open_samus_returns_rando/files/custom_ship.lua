@@ -6,7 +6,7 @@ end
 function SamusShip.Dummy()
 end
 function SamusShip.WarpToStart()
-  Scenario.LoadNewScenario(Init.sStartingScenario, Init.sStartingActor)
+  Scenario.LoadNewScenario("s025_area2b", "ST_FromArea02A")
 end
 function SamusShip.OnDialogDeclined()
   Usable._oUsableObject.USABLE:OnDialogDeclined()
