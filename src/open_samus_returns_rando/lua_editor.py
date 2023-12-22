@@ -7,10 +7,6 @@ from open_samus_returns_rando.misc_patches.text_patches import patch_text
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 
 
-def _read_powerup_lua() -> bytes:
-    return files_path().joinpath("randomizer_powerup.lua").read_bytes()
-
-
 def _read_level_lua(level_id: str) -> str:
     return files_path().joinpath("levels", f"{level_id}.lua").read_text()
 
@@ -72,7 +68,7 @@ class LuaEditor:
         self._metroid_dict = {}
         self._dna_count_dict = {}
         self._hint_dict = {}
-        self._powerup_script = _read_powerup_lua()
+        self._powerup_script_custom = ""
         self._custom_level_scripts: dict[str, dict] = self._read_levels()
 
     def _read_levels(self) -> dict[str, dict]:
@@ -132,7 +128,7 @@ class LuaEditor:
 
     def add_item_class(self, replacement):
         new_class = lua_util.replace_lua_template("randomizer_item_template.lua", replacement)
-        self._powerup_script += new_class.encode("utf-8")
+        self._powerup_script_custom += new_class
 
     def add_progressive_models(self, pickup: dict, actordef_name: str):
         progressive_models = [
@@ -151,7 +147,7 @@ class LuaEditor:
         }
 
         models = lua_util.replace_lua_template("progressive_model_template.lua", replacement)
-        self._powerup_script += models.encode("utf-8")
+        self._powerup_script_custom += models
 
     def _create_custom_init(self, editor: PatcherEditor, configuration: dict) -> str:
         inventory: dict[str, int] = configuration["starting_items"]
@@ -237,7 +233,16 @@ class LuaEditor:
         )
 
         # replace ensured scripts with the final code
-        editor.replace_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", self._powerup_script)
+        replacement = {
+            "custom_code": self._powerup_script_custom,
+        }
+        powerup_script = lua_util.replace_lua_template("randomizer_powerup.lua", replacement)
+
+
+        editor.replace_asset(
+            "actors/items/randomizer_powerup/scripts/randomizer_powerup.lc",
+            powerup_script.encode("utf-8")
+        )
 
         final_metroid_script = lua_util.replace_lua_template("metroid_template.lua", {"mapping": self._metroid_dict})
         editor.replace_asset("actors/scripts/metroid.lc", final_metroid_script.encode("utf-8"))
