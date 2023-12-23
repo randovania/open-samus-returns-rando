@@ -131,6 +131,38 @@
                 ]
             }
         },
+        "door_patches": {
+            "type": "array",
+            "description": "Changes the door types",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "actor": {
+                        "$ref": "#/$defs/actor_reference_with_layer"
+                    },
+                    "door_type": {
+                        "type": "string",
+                        "enum": [
+                            "frame",
+                            "power_beam",
+                            "charge_beam",
+                            "spazer_beam",
+                            "plasma_beam",
+                            "wave_beam",
+                            "missile",
+                            "super_missile",
+                            "power_bomb"
+                        ]
+                    }
+                },
+                "required": [
+                    "actor",
+                    "door_type"
+                ],
+                "additionalProperties": false
+            },
+            "default": []
+        },
         "energy_per_tank": {
             "description": "How much energy collecting an Energy Tank gives",
             "type": "number",

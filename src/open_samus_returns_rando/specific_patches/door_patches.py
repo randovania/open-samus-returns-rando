@@ -1,8 +1,9 @@
 
 import copy
+from enum import Enum
 
 from construct import Container, ListContainer
-from mercury_engine_data_structures.formats import Bmsad, Lua
+from mercury_engine_data_structures.formats import Bmsad, Bmsld, Lua
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -187,9 +188,150 @@ def _patch_one_way_doors(editor: PatcherEditor):
             properties.components[0]["arguments"][2]["value"] = False
 
 
-def patch_doors(editor: PatcherEditor):
+class ActorData(Enum):
+    """
+    Enum containing data on actors
+
+    actordef: the actordef for the actor
+    minimapData: the MinimapIconData for this type
+    """
+    DOOR_POWER = (["doorpowerpower", "doorpowerclosed", "doorclosedpower"])
+    DOOR_CHARGE = (["doorchargecharge", "doorchargeclosed", "doorclosedcharge"])
+    SHIELD_WAVE_BEAM = (["doorwave"])
+    SHIELD_SPAZER_BEAM = (["doorspazerbeam"])
+    SHIELD_PLASMA_BEAM = (["doorcreature"])
+    SHIELD_MISSILE = (["doorshieldmissile"])
+    SHIELD_SUPER_MISSILE = (["doorshieldsupermissile"])
+    SHIELD_POWER_BOMB = (["doorshieldpowerbomb"])
+
+class DoorType(Enum):
+    """
+    Enum containing info on each door type
+
+    type: the name Randovania calls the door
+    door: the door's ActorData
+    need_shield: whether the actor needs a shield
+    shield: the shield's ActorData
+    """
+    POWER = ("power_beam", ActorData.DOOR_POWER)
+    # s067_area6c
+    CHARGE = ("charge_beam", ActorData.DOOR_CHARGE, False, None, ["actors/props/doorchargecharge",
+                # still not working :-S
+                "actors/props/door/fx", "sounds/props/doorchargecharge"])
+    WAVE_BEAM = ("wave_beam", ActorData.DOOR_POWER, True,
+                 ActorData.SHIELD_WAVE_BEAM,["actors/props/doorwave"])
+    SPAZER_BEAM = ("spazer_beam", ActorData.DOOR_POWER, True,
+                    ActorData.SHIELD_SPAZER_BEAM, ["actors/props/doorspazerbeam"])
+    PLASMA_BEAM = ("plasma_beam", ActorData.DOOR_POWER, True,
+                    ActorData.SHIELD_PLASMA_BEAM, ["actors/props/doorcreature"])
+    # s033_area3b, s036_area3c, s090_area9
+    MISSILE = ("missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_MISSILE, ["actors/props/doorshieldmissile"])
+    SUPER_MISSILE = ("super_missile", ActorData.DOOR_POWER, True,
+                      ActorData.SHIELD_SUPER_MISSILE, ["actors/props/doorshieldsupermissile"])
+    POWER_BOMB = ("power_bomb", ActorData.DOOR_POWER, True,
+                   ActorData.SHIELD_POWER_BOMB, ["actors/props/doorshieldpowerbomb"])
+
+    def __init__(self, rdv_door_type: str, door_data: ActorData, need_shield: bool = False,
+                 shield_data: ActorData = None, additional_asset_folders: list[str] = None):
+        self.type = rdv_door_type
+        self.need_shield = need_shield
+        self.door = door_data
+        self.shield = shield_data
+        self.required_asset_folders = [] if additional_asset_folders is None else additional_asset_folders
+
+    @classmethod
+    def get_type(cls, type: str):
+        for e in cls:
+            if e.type == type:
+                return e
+
+        raise ValueError(f"{type} is not a patchable door!")
+
+class DoorPatcher:
+    def __init__(self, editor: PatcherEditor):
+        self.editor = editor
+        self._example_shield = editor.get_scenario("s000_surface").raw.actors[9]["LE_PlasmaShield_Door_008"]
+        self._index_per_scenario = {}
+
+    def _patch_to_power(self, door_actor: Container, scenario: Bmsld):
+        for life_component in door_actor.components:
+            shield = life_component["arguments"][3]["value"]
+            if shield != "":
+                scenario.remove_actor_from_all_groups(shield)
+                scenario.raw.actors[9].pop(shield)
+        # pop a life component from our static door patches
+        if len(door_actor.components) > 1:
+            door_actor.components.pop()
+        door_actor.components[0]["arguments"][3]["value"] = ""
+        door_actor.type = ActorData.DOOR_POWER.value[0]
+
+    def _create_shield(
+            self, scenario_name: str, position: tuple[float, float, float], shield_name: str, new_type: str
+        ) -> Container:
+        new_actor = self.editor.copy_actor(
+                scenario_name, (position[0], position[1], position[2]),
+                self._example_shield, shield_name, 9
+            )
+
+        new_actor["type"] = new_type
+        return new_actor
+
+    def patch_door(self, actor_ref: dict, door_type_str: str):
+        scenario_name = actor_ref["scenario"]
+        actor_name = actor_ref["actor"]
+        scenario = self.editor.get_scenario(scenario_name)
+        door_actor = scenario.raw.actors[15].get(actor_name, None)
+        index = self._index_per_scenario.get(scenario_name, 0)
+        if door_actor is None:
+            raise ValueError(f"Actor {actor_name} not found in scenario {scenario_name}")
+
+        self._patch_to_power(door_actor, scenario)
+
+        # patch to desired type
+        new_door: DoorType = DoorType.get_type(door_type_str)
+        if not new_door.need_shield:
+            door_actor.type = new_door.door.value[0]
+        # all other use shields
+        else:
+            shield_position = (door_actor["position"][0], door_actor["position"][1],  door_actor["position"][2])
+            new_actor_l = self._create_shield(
+                scenario_name, shield_position, f"Shield_{index}", new_door.shield.value[0]
+            )
+            new_actor_r = self._create_shield(
+                scenario_name, shield_position, f"Shield_{index}_o", new_door.shield.value[0]
+            )
+            new_actor_l["rotation"] = (0.0, 0.0, 0.0)
+            new_actor_r["rotation"] = (0.0, 180.0, 0.0)
+
+            # change life component
+            door_actor.components.append(copy.deepcopy(door_actor.components[0]))
+            door_actor.components[0]["arguments"][3]["value"] = f"Shield_{index}"
+            door_actor.components[1]["arguments"][3]["value"] = f"Shield_{index}_o"
+
+            # add to entity groups
+            entity_groups = [group for group_name, group in scenario.all_actor_groups()
+                if group_name in list(scenario.all_actor_group_names_for_actor(actor_name))]
+            for group in entity_groups:
+                scenario.insert_into_entity_group(group,  f"Shield_{index}")
+                scenario.insert_into_entity_group(group,  f"Shield_{index}_o")
+
+            # ensure required files
+            for folder in new_door.required_asset_folders:
+                for asset in self.editor.get_asset_names_in_folder(folder):
+                    self.editor.ensure_present_in_scenario(scenario_name, asset)
+            self._index_per_scenario[scenario_name] = index + 1
+
+
+def _static_door_patches(editor: PatcherEditor):
     _patch_one_way_doors(editor)
     _patch_missile_covers(editor)
     _patch_beam_bmsads(editor)
     _patch_beam_covers(editor)
     _patch_charge_doors(editor)
+
+def patch_doors(editor: PatcherEditor, door_patches: list[dict]):
+    _static_door_patches(editor)
+
+    door_patcher = DoorPatcher(editor)
+    for door in door_patches:
+        door_patcher.patch_door(door["actor"], door["door_type"])
