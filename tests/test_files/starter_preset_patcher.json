@@ -39,6 +39,7 @@
         "ITEM_MAX_LIFE": 99,
         "ITEM_MAX_SPECIAL_ENERGY": 1000
     },
+    "starting_text": [],
     "pickups": [
         {
             "pickup_type": "actor",
@@ -4037,5 +4038,6 @@
         "GUI_MSG_NEW_GAME_CONFIRMATION_NORMAL": "Spider Chute Spring (X2AIYDO4)",
         "GUI_MSG_NEW_GAME_CONFIRMATION_HARD": "Spider Chute Spring (X2AIYDO4)"
     },
-    "hints": []
+    "hints": [],
+    "configuration_identifier": "X2AIYDO4"
 }
