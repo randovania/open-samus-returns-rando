@@ -44,10 +44,8 @@ def _patch_metroids(editor: PatcherEditor):
         # weird case where some fields are defined two times
         if type(ai_component["fields"]) == ListContainer:
             ai_component["fields"][94]["value"]["value"] = False
-            ai_component["fields"][95]["value"]["value"] = False
         else:
             ai_component["fields"]["bRemovePlayerInputOnDeath"]["value"] = False
-            ai_component["fields"]["bSetPlayerInvulnerableWithReactionOnDeath"]["value"] = False
 
         # script component defines in which lua file the function names from "args" can be found
         script_component = metroid_bmsad.raw["components"]["SCRIPT"]
