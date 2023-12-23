@@ -51,7 +51,6 @@ function Scenario.UpdateDNACounter()
   local scenario = Init.tScenarioMapping[Scenario.CurrentScenarioID]
   local maxDNA = Init.tDNAPerArea[scenario] or 0
   local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
-  
   GUILib.UpdateDNACounter(currentDNA, maxDNA)
 end
 
@@ -102,15 +101,16 @@ end
 local fatal_messages_seen = 0
 local fatal_messages
 function Scenario._ShowNextFatalErrorMessage()
-    fatal_messages_seen = fatal_messages_seen + 1
-    if fatal_messages_seen > #fatal_messages then
-        Scenario.FadeOutAndGoToMainMenu(0.3)
-        return
-    end
-    GUI.LaunchMessage(fatal_messages[fatal_messages_seen], "Scenario._ShowNextFatalErrorMessage", "")
+  fatal_messages_seen = fatal_messages_seen + 1
+  if fatal_messages_seen > #fatal_messages then
+      Scenario.FadeOutAndGoToMainMenu(0.3)
+      return
+  end
+  GUI.LaunchMessage(fatal_messages[fatal_messages_seen], "Scenario._ShowNextFatalErrorMessage", "")
 end
 function Scenario.ShowFatalErrorMessage(messageBoxes)
-    fatal_messages_seen = 0
-    fatal_messages = messageBoxes
-    Game.AddSF(0.8, Scenario._ShowNextFatalErrorMessage, "")
+  Game.HUDIdleScreenLeave()
+  fatal_messages_seen = 0
+  fatal_messages = messageBoxes
+  Game.AddSF(0.8, Scenario._ShowNextFatalErrorMessage, "")
 end
