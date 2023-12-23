@@ -294,13 +294,18 @@
                 ]
             },
             "default": []
+        },
+        "configuration_identifier": {
+            "type": "string",
+            "description": "An unique identifier for this configuration. Only save files created with this identifier can be loaded."
         }
     },
     "required": [
         "starting_location",
         "starting_items",
         "pickups",
-        "hints"
+        "hints",
+        "configuration_identifier"
     ],
     "$defs": {
         "actor_reference_with_layer": {

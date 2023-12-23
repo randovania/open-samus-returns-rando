@@ -61,6 +61,14 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
   local player_section = Game.GetPlayerBlackboardSectionName()
   local current_level = Blackboard.GetProp(player_section, "LevelID") or ""
   if current_level == "c10_samus" then
+    local current_save_identifier = Blackboard.GetProp(player_section, "THIS_RANDO_IDENTIFIER") or ""
+    if current_save_identifier ~= Init.sThisRandoIdentifier then
+      return Scenario.ShowFatalErrorMessage({
+          "This save slot was created using a different Randomizer mod.",
+          "You must start a New Game from a blank save slot. Returning to title screen.",
+      })
+    end
+
     local rando_initialized = Blackboard.GetProp(player_section, "RANDO_GAME_INITIALIZED") or false
     if not rando_initialized then
       Blackboard.SetProp(player_section, "RANDO_GAME_INITIALIZED", "b", true)
@@ -89,4 +97,20 @@ function Scenario.LoadNewScenario(target_scenario, target_spawnpoint)
   Game.FadeOut(0.0)
   Game.FadeOutStream(0.0)
   Game.AddPSF(0.1, "Game.LoadScenario", "ssssi", "c10_samus", target_scenario, target_spawnpoint, "", 1)
+end
+
+local fatal_messages_seen = 0
+local fatal_messages
+function Scenario._ShowNextFatalErrorMessage()
+    fatal_messages_seen = fatal_messages_seen + 1
+    if fatal_messages_seen > #fatal_messages then
+        Scenario.FadeOutAndGoToMainMenu(0.3)
+        return
+    end
+    GUI.LaunchMessage(fatal_messages[fatal_messages_seen], "Scenario._ShowNextFatalErrorMessage", "")
+end
+function Scenario.ShowFatalErrorMessage(messageBoxes)
+    fatal_messages_seen = 0
+    fatal_messages = messageBoxes
+    Game.AddSF(0.8, Scenario._ShowNextFatalErrorMessage, "")
 end
