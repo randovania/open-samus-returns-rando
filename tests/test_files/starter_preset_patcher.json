@@ -2,7 +2,7 @@
     "$schema": "../../src/open_samus_returns_rando/files/schema.json",
     "starting_location": {
         "scenario": "s000_surface",
-        "actor": "StartPoint0"
+        "actor": "ST_SaveStation_004"
     },
     "starting_items": {
         "ITEM_WEAPON_MISSILE_LAUNCHER": 1,
@@ -38,9 +38,36 @@
         "ITEM_RANDO_DNA_38": 1,
         "ITEM_RANDO_DNA_39": 1,
         "ITEM_MAX_LIFE": 99,
+        "ITEM_WEAPON_PLASMA_BEAM": 1,
         "ITEM_MAX_SPECIAL_ENERGY": 1000
     },
     "starting_text": [],
+    "door_patches": [
+        {
+            "actor": {
+                "scenario": "s000_surface",
+                "layer": "default",
+                "actor": "Door001"
+            },
+            "door_type": "power_beam"
+        },
+        {
+            "actor": {
+                "scenario": "s000_surface",
+                "layer": "default",
+                "actor": "Door007"
+            },
+            "door_type": "power_beam"
+        },
+        {
+            "actor": {
+                "scenario": "s000_surface",
+                "layer": "default",
+                "actor": "Door012"
+            },
+            "door_type": "plasma_beam"
+        }
+    ],
     "pickups": [
         {
             "pickup_type": "actor",

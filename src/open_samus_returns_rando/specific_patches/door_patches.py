@@ -186,10 +186,75 @@ def _patch_one_way_doors(editor: PatcherEditor):
             properties.type = "doorpowerpower"
             properties.components[0]["arguments"][2]["value"] = False
 
+def patch_door(editor: PatcherEditor, actor_ref: dict, door_type: str):
+    scenario_name = actor_ref["scenario"]
+    actor_name = actor_ref["actor"]
+    scenario = editor.get_scenario(scenario_name)
+    door_actor = scenario.raw.actors[15].get(actor_name, None)
+    if door_actor is None:
+        raise ValueError(f"Actor {actor_name} not found in scenario {scenario_name}")
 
-def patch_doors(editor: PatcherEditor):
+    #
+    # patch door to doorpowerpower and remove all shields
+    #
+    for life_component in door_actor.components:
+        shield = life_component["arguments"][3]["value"]
+        if shield != "":
+            scenario.remove_actor_from_all_groups(shield)
+            scenario.raw.actors[9].pop(shield)
+    # pop a life component from our static door patches
+    if len(door_actor.components) > 1:
+        door_actor.components.pop()
+    # TODO: Use a mapping for different types?
+    door_actor.type = "doorpowerpower"
+
+    #
+    # patch to desired type
+    #
+    if door_type == "charge_beam":
+        door_actor.type = "doorchargecharge"
+    # all other use shields
+    else:
+        #
+        # TODO: Make the ref dynamic
+        # TODO: Add required models, sounds etc. to scenario
+        # TODO: Either make missile, supers, power bomb double sided or use same "rotate hack"
+        #
+        ref_plasma = scenario.raw.actors[9]["LE_PlasmaShield_Door_008"]
+        index = 0
+        new_actor_l = editor.copy_actor(
+            scenario_name, (door_actor["position"][0], door_actor["position"][1],  door_actor["position"][2]),
+            ref_plasma, f"Shield_{index}", 9
+        )
+        new_actor_r = editor.copy_actor(
+            scenario_name, (door_actor["position"][0], door_actor["position"][1],  door_actor["position"][2]),
+            ref_plasma, f"Shield_{index}_o", 9
+        )
+        new_actor_l["rotation"][0] = 0
+        new_actor_l["rotation"][1] = 0.0
+        new_actor_l["rotation"][2] = 0
+        new_actor_r["rotation"][0] = 0
+        new_actor_r["rotation"][1] = 180.0
+        new_actor_r["rotation"][2] = 0
+        door_actor.components.append(copy.deepcopy(door_actor.components[0]))
+        door_actor.components[0]["arguments"][3]["value"] = f"Shield_{index}"
+        door_actor.components[1]["arguments"][3]["value"] = f"Shield_{index}_o"
+        entity_groups = [group for group_name, group in scenario.all_actor_groups()
+            if group_name in list(scenario.all_actor_group_names_for_actor(actor_name))]
+        for group in entity_groups:
+            scenario.insert_into_entity_group(group,  f"Shield_{index}")
+            scenario.insert_into_entity_group(group,  f"Shield_{index}_o")
+        index = index + 1
+
+
+def _static_door_patches(editor: PatcherEditor):
     _patch_one_way_doors(editor)
     _patch_missile_covers(editor)
     _patch_beam_bmsads(editor)
     _patch_beam_covers(editor)
     _patch_charge_doors(editor)
+
+def patch_doors(editor: PatcherEditor, door_patches: list[dict]):
+    _static_door_patches(editor)
+    for door in door_patches:
+        patch_door(editor, door["actor"], door["door_type"])
