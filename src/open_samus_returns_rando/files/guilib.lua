@@ -78,4 +78,15 @@ if GUILib == nil then
         dna:ForceRedraw()
     end
   end
+
+  function GUILib.UpdateTotalDNAColor()
+    if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") < 39 then
+      local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
+        GUI.SetProperties(dnaCounter, {
+          ColorR = "0.68000",
+          ColorG = "0.83000",
+          ColorB = "0.93000",
+        })
+    end
+  end
 end
