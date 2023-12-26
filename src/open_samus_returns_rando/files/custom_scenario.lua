@@ -96,6 +96,7 @@ function Scenario.LoadNewScenario(target_scenario, target_spawnpoint)
   Game.FadeOut(0.0)
   Game.FadeOutStream(0.0)
   Game.AddPSF(0.1, "Game.LoadScenario", "ssssi", "c10_samus", target_scenario, target_spawnpoint, "", 1)
+  Game.ForceConvertToSamus()
 end
 
 local fatal_messages_seen = 0
