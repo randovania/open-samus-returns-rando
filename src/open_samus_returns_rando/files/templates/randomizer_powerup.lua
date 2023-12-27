@@ -88,6 +88,25 @@ if RandomizerPowerup == nil then
         end
     end
 
+    function RandomizerPowerup.ObjectiveComplete()
+        if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") == 39 then
+            local baby = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_BABY_HATCHLING")
+            local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
+            GUI.SetProperties(dnaCounter, {
+                ColorR = "0.90908",
+                ColorG = "0.88627",
+                ColorB = "0.66274",
+            })
+            if baby > 0 then
+                GUI.LaunchMessage("All Metroid DNA has been collected!\nThe path to Proteus Ridley has been opened in Surface - West!",
+                    "RandomizerPowerup.Dummy", "")
+            elseif baby == 0 then
+                GUI.LaunchMessage("All Metroid DNA has been collected!\nContinue searching for the Baby Metroid!",
+                    "RandomizerPowerup.Dummy", "")
+            end
+        end
+    end
+
     function RandomizerPowerup.HandlePickupResources(progression)
         progression = progression or {}
 
@@ -125,6 +144,7 @@ if RandomizerPowerup == nil then
                             Blackboard.SetProp("GAME", scenario .. "_acquired_dna", "i", currentDNA + 1)
                             Scenario.UpdateDNACounter()
                             RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", resource.quantity)
+                            Game.AddSF(0, "RandomizerPowerup.ObjectiveComplete", "")
                         end
                     end
 

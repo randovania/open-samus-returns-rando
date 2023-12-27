@@ -44,6 +44,7 @@ end
 
 function Scenario.InitGUI()
   GUILib.AddDNACounter()
+  GUILib.UpdateTotalDNAColor()
   Scenario.UpdateDNACounter()
 end
 
