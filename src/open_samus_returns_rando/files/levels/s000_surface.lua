@@ -460,9 +460,7 @@ function s000_surface.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4
     s000_surface.LaunchFirstTimeAlphaPresentation()
   end
   if _ARG_2_ == "collision_camera_017" then
-    Game.ForceConvertToSamus()
-    Scenario.LoadNewScenario("s110_surfaceb", "")
-    Game.GetPlayer().vPos = V3D(-23179.000, 4500, 0)
+    Scenario.LoadNewScenario("s110_surfaceb", "ST_SurfaceB_Connector")
   end
   --if _ARG_0_ == "collision_camera_002" and _ARG_2_ == "collision_camera_003" and not Scenario.ReadFromBlackboard("FirstTimeChozoStatuePlayed", false) then
   --  s000_surface.LaunchFirstTimeChozoStatuePresentation()
