@@ -847,12 +847,14 @@ end
 function s070_area7.LaunchManicMinerBotIntroCutscene()
   if Game.GetEntity("LE_PowerUp_Powerbomb") ~= nil then
     Game.GetEntity("LE_PowerUp_Powerbomb"):Disable()
-    TempPB = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX")
-    Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX", "f", 0)
   end
   s070_area7.SetLowModelsVisibility(true)
   Scenario.WriteToBlackboard("ManicMinerBotIntroCutscenePlayed", "b", true)
   Game.LaunchCutscene("cutscenes/manicminerbotfinalbattle/takes/01/manicminerbotfinalbattle01.bmscu")
+  PBLauncher = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB")
+  PreFightPBMax = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX")
+  Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB", "f", 0)
+  Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX", "f", 0)
 end
 function s070_area7.OnStartManicMinerBotIntroCutscene()
   if Game.GetEntity("DoorManicMinerBot") ~= nil then
@@ -884,7 +886,6 @@ function s070_area7.OnStartManicMinerBotDeathCutscene()
   Game.GetPlayer("Samus").vPos = Game.GetEntity("DoorManicMinerBot").vPos
   if Game.GetEntity("LE_PowerUp_Powerbomb") ~= nil then
     Game.GetEntity("LE_PowerUp_Powerbomb"):Enable()
-    Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX", "f", TempPB)
   end
   if Game.GetEntity("Door024") ~= nil then
     Game.GetEntity("Door024"):Enable()
@@ -892,6 +893,9 @@ function s070_area7.OnStartManicMinerBotDeathCutscene()
   Game.AddEntityToUpdateInCutscene("LE_ManicMinerWall")
   Game.AddEntityToUpdateInCutscene("LE_PowerUp_Powerbomb")
   Scenario.WriteToBlackboard("manicMinerDead", "b", true)
+  local PostFightPBMax = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX")
+  Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB", "f", PBLauncher)
+  Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_WEAPON_POWER_BOMB_MAX", "f", PostFightPBMax + PreFightPBMax)
 end
 function s070_area7.OnEndManicMinerBotDeathCutscene()
   s070_area7.UpdateMinimapItemsphereIcon()
