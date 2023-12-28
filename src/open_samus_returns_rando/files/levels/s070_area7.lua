@@ -896,8 +896,8 @@ function s070_area7.OnStartManicMinerBotDeathCutscene()
   Game.AddEntityToUpdateInCutscene("LE_ManicMinerWall")
   Game.AddEntityToUpdateInCutscene("LE_PowerUp_Powerbomb")
   Scenario.WriteToBlackboard("manicMinerDead", "b", true)
-  if PBLauncher > 0 then
-    Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB", PBLauncher)
+  if PBLauncher + Game.GetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB") > 0 then
+    Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB", 1)
     Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB_MAX", "ITEM_POWER_BOMB_TANKS")
     Game.SetItemAmount(Game.GetPlayerName(), "ITEM_POWER_BOMB_TANKS", 0)
   end
