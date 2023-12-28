@@ -851,6 +851,13 @@ function s070_area7.LaunchManicMinerBotIntroCutscene()
   s070_area7.SetLowModelsVisibility(true)
   Scenario.WriteToBlackboard("ManicMinerBotIntroCutscenePlayed", "b", true)
   Game.LaunchCutscene("cutscenes/manicminerbotfinalbattle/takes/01/manicminerbotfinalbattle01.bmscu")
+  PBLauncher = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB")
+  if PBLauncher > 0 then
+    local PreFightPBMax = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB_MAX")
+    Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB", 0)
+    Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB_MAX", 0)
+    Game.SetItemAmount(Game.GetPlayerName(), "ITEM_POWER_BOMB_TANKS", PreFightPBMax)
+  end
 end
 function s070_area7.OnStartManicMinerBotIntroCutscene()
   if Game.GetEntity("DoorManicMinerBot") ~= nil then
@@ -889,6 +896,12 @@ function s070_area7.OnStartManicMinerBotDeathCutscene()
   Game.AddEntityToUpdateInCutscene("LE_ManicMinerWall")
   Game.AddEntityToUpdateInCutscene("LE_PowerUp_Powerbomb")
   Scenario.WriteToBlackboard("manicMinerDead", "b", true)
+  if PBLauncher ~= 0 and Game.GetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB") == 0 then
+    local locked_pbs = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_POWER_BOMB_TANKS")
+    Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB", 1)
+    Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB_MAX", locked_pbs)
+    Game.SetItemAmount(Game.GetPlayerName(), "ITEM_POWER_BOMB_TANKS", 0)
+  end
 end
 function s070_area7.OnEndManicMinerBotDeathCutscene()
   s070_area7.UpdateMinimapItemsphereIcon()
