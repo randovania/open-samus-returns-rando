@@ -267,10 +267,10 @@ if RandomizerPowerup == nil then
     function RandomizerSuit.OnPickedUp(progression)
         RandomizerPowerup.DisableLiquids()
         RandomizerPowerup.OnPickedUp(progression)
-        if Game.GetEntity("Samus").MODELUPDATER.sModelAlias == "Default" then
-            Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
-        else
+        if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_GRAVITY_SUIT") > 0 then
             Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
+        else
+            Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
         end
         Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
         RandomizerPowerup.EnableLiquids()
