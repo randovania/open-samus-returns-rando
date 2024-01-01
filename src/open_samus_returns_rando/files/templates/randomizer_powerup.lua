@@ -64,27 +64,71 @@ if RandomizerPowerup == nil then
         return granted
     end
 
-    function RandomizerPowerup.DisableLiquids()
+    function RandomizerPowerup.ResetLiquidState()
+        -- When collecting an item in a liquid, the liquid must be disabled if the item is Gravity,
+        -- otherwise Samus' movement is permanently Gravityless, even after exiting the liquid.
+        -- Liquids without items must also be disabled if Gravity is recieved during a multiworld
         if Game.GetPlayer().MODELUPDATER.sModelAlias ~= "Gravity" then
-            if Scenario.CurrentScenarioID == "s010_area1" then
-                Game.GetEntity("Lava_Trigger_001").TRIGGER:DisableTrigger()
-            elseif Scenario.CurrentScenarioID == "s050_area5" then
-                Game.GetEntity("TG_Water_006").TRIGGER:DisableTrigger()
-                Game.GetEntity("TG_Water_009").TRIGGER:DisableTrigger()
-            elseif Scenario.CurrentScenarioID == "s067_area6c" then
-                Game.GetEntity("TG_SP_Water_002").TRIGGER:DisableTrigger()
+            local scenario = Scenario.CurrentScenarioID
+            -- both loops cover repeated/similar actor names that are shared across scenarios
+            if scenario ~= "s000_surface" and scenario ~= "s010_area1" and scenario ~= "s110_surfaceb" then
+                local waterPrefixes = {"TG_Water_", "TG_SP_Water_"}
+                local waterNumbers = {"001", "002", "003", "004", "005", "006", "007", "008", "009", "010", "011", "012",
+                    "013", "014", "015", "016", "017", "018", "019"}
+                for i = 1, 2 do
+                    for j = 1, 19 do
+                        local water = Game.GetEntity(waterPrefixes[i] .. waterNumbers[j])
+                        if water ~= nil and water.TRIGGER:IsPlayerInside() == true then
+                            water.TRIGGER:DisableTrigger()
+                            water.TRIGGER:EnableTrigger()
+                        end
+                    end
+                end
             end
-        end
-    end
-
-    function RandomizerPowerup.EnableLiquids()
-        if Scenario.CurrentScenarioID == "s010_area1" then
-            Game.GetEntity("Lava_Trigger_001").TRIGGER:EnableTrigger()
-        elseif Scenario.CurrentScenarioID == "s050_area5" then
-            Game.GetEntity("TG_Water_006").TRIGGER:EnableTrigger()
-            Game.GetEntity("TG_Water_009").TRIGGER:EnableTrigger()
-        elseif Scenario.CurrentScenarioID == "s067_area6c" then
-            Game.GetEntity("TG_SP_Water_002").TRIGGER:EnableTrigger()
+            for i = 1, 5 do
+                local lavaScenarios = {"s020_area2", "s033_area3b", "s036_area3c", "s040_area4", "s050_area5"}
+                if scenario == lavaScenarios[i] then
+                    for j = 1, 5 do
+                        local lavaNumbers = {"001", "002", "003", "004", "005"}
+                        lava = Game.GetEntity("TG_Lava_" .. lavaNumbers[j])
+                        if lava ~= nil and lava.TRIGGER:IsPlayerInside() == true then
+                            lava.TRIGGER:DisableTrigger()
+                            lava.TRIGGER:EnableTrigger()
+                        end
+                    end
+                end
+            end
+            -- individual scenarios are listed if they have unique actor names
+            local liquids = {}
+            local arrayLength = 0
+            if scenario == "s000_surface" then
+                liquids = {"TG_Water", "TG_Water001"}
+                arrayLength = 2
+            elseif scenario == "s010_area1" then
+                liquids = {"HazardousPuddle_001", "Lava_Trigger_001", "TG_Water_001", "Water_Trigger_002",
+                "Water_Trigger_008", "Water_Trigger_009", "Water_Trigger_010", "Water_Trigger_011"}
+                arrayLength = 8
+            elseif scenario == "s036_area3c" then
+                liquids = {"TG_Water002", "TG_Water003", "TG_LS_Water004"}
+                arrayLength = 3
+            elseif scenario == "s040_area4" then
+                liquids = {"TG_HazardousPuddle_001", "TG_HazardousPuddle_002", "TG_HazardousPuddle_003",
+                    "TG_HazardousPuddle_004", "TG_HazardousPuddle_005"}
+                arrayLength = 5
+            elseif scenario == "s065_area6b" then
+                liquids = {"TG_LS_Water_001"}
+                arrayLength = 1
+            elseif scenario == "s070_area7" then
+                liquids = {"TG_Damage_Hazardous_001", "TG_Damage_Hazardous_002"}
+                arrayLength = 1
+            end
+            for i = 1, arrayLength do
+                local liquid = Game.GetEntity(liquids[i])
+                if liquid.TRIGGER:IsPlayerInside() == true then
+                    Game.GetEntity(liquid[i]).TRIGGER:DisableTrigger()
+                    Game.GetEntity(liquid[i]).TRIGGER:EnableTrigger()
+                end
+            end
         end
     end
 
@@ -135,9 +179,7 @@ if RandomizerPowerup == nil then
 
                 if shouldGrant then
                     for _, resource in ipairs(resource_list) do
-                        RandomizerPowerup.DisableLiquids()
                         RandomizerPowerup.IncreaseItemAmount(resource.item_id, resource.quantity)
-                        RandomizerPowerup.EnableLiquids()
                         if string.sub(resource.item_id, 0, 14) == "ITEM_RANDO_DNA" then
                             local scenario = Init.tScenarioMapping[Scenario.CurrentScenarioID]
                             local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
@@ -265,7 +307,7 @@ if RandomizerPowerup == nil then
     RandomizerSuit = {}
     setmetatable(RandomizerSuit, {__index = RandomizerPowerup})
     function RandomizerSuit.OnPickedUp(progression)
-        RandomizerPowerup.DisableLiquids()
+        RandomizerPowerup.ResetLiquidState()
         RandomizerPowerup.OnPickedUp(progression)
         if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_GRAVITY_SUIT") > 0 then
             Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
@@ -273,7 +315,6 @@ if RandomizerPowerup == nil then
             Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
         end
         Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
-        RandomizerPowerup.EnableLiquids()
     end
 
     RandomizerEnergyTank = {}
