@@ -15,6 +15,8 @@ SPECIFIC_CLASSES = {
     "ITEM_VARIA_SUIT": "RandomizerSuit",
     "ITEM_GRAVITY_SUIT": "RandomizerSuit",
     "ITEM_BABY_HATCHLING": "RandomizerBabyHatchling",
+    "ITEM_WEAPON_MISSILE_LAUNCHER": "RandomizerMissileLauncher",
+    "ITEM_MISSILE_TANKS": "RandomizerMissileTank",
     "ITEM_WEAPON_SUPER_MISSILE": "RandomizerSuperMissile",
     "ITEM_SUPER_MISSILE_TANKS": "RandomizerSuperMissileTank",
     "ITEM_WEAPON_POWER_BOMB": "RandomizerPowerBomb",
@@ -36,9 +38,9 @@ SPECIFIC_SOUNDS = {
     "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "streams/music/special_ability2_32.wav",
     "ITEM_ENERGY_TANKS": "streams/music/tank_jingle.wav",
     "ITEM_MAX_SPECIAL_ENERGY": "streams/music/tank_jingle.wav",
+    "ITEM_MISSILE_TANKS": "streams/music/tank_jingle.wav",
     "ITEM_SUPER_MISSILE_TANKS": "streams/music/tank_jingle.wav",
     "ITEM_POWER_BOMB_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_WEAPON_MISSILE_MAX": "streams/music/tank_jingle.wav",
 }
 
 SCENARIO_MAPPING = {
@@ -166,6 +168,8 @@ class LuaEditor:
             max_life += etanks * energy_per_tank
 
         # use _MAX if main is unlocked to unlock the ammo too
+        if "ITEM_WEAPON_MISSILE_LAUNCHER" in inventory and "ITEM_MISSILE_TANKS" in inventory:
+            inventory["ITEM_WEAPON_MISSILE_MAX"] = inventory.pop("ITEM_MISSILE_TANKS")
         if "ITEM_WEAPON_SUPER_MISSILE" in inventory and "ITEM_SUPER_MISSILE_TANKS" in inventory:
             inventory["ITEM_WEAPON_SUPER_MISSILE_MAX"] = inventory.pop("ITEM_SUPER_MISSILE_TANKS")
         if "ITEM_WEAPON_POWER_BOMB" in inventory and "ITEM_POWER_BOMB_TANKS" in inventory:
