@@ -1,4 +1,4 @@
-from mercury_engine_data_structures.formats import Bmsbk
+from mercury_engine_data_structures.formats import Bmsad, Bmsbk
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 MULTI_ROOM_GAMMAS = [
@@ -71,9 +71,18 @@ def patch_a7_save_screw_blocks(editor: PatcherEditor):
     area7.raw["block_groups"][56]["types"][0]["block_type"] = "power_beam"
 
 
+def shoot_supers_without_missiles(editor: PatcherEditor):
+    samus = editor.get_file(
+        "actors/characters/samus/charclasses/samus.bmsad", Bmsad
+    )
+    gun = samus.raw["components"]["GUN"]["functions"]
+    gun[20]["params"]["Param5"]["value"] = ""
+
+
 def apply_static_fixes(editor: PatcherEditor):
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
     patch_pickup_position(editor)
     remove_area7_grapple_block(editor)
     patch_a7_save_screw_blocks(editor)
+    shoot_supers_without_missiles(editor)
