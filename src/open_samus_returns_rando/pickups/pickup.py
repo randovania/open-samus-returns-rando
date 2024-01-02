@@ -250,6 +250,8 @@ class ActorPickup(BasePickup):
             MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"][1] = y_offset
             if model_name == "powerup_missilelauncher":
                 MODELUPDATER["fields"]["vInitAngWorldOffset"]["value"][0] = -1.6
+            else:
+                MODELUPDATER["fields"]["vInitAngWorldOffset"]["value"][0] = 0.0
 
 
     def patch(self, editor: PatcherEditor):
