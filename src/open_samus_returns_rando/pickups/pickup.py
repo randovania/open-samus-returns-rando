@@ -41,6 +41,7 @@ MODEL_TO_OFFSET = {
     "powerup_energywave": 50,
     "powerup_phasedisplacement": 50,
     "powerup_spiderball": 40,
+    "powerup_missilelauncher": 45,
     "item_energytank": 0,
     "item_senergytank": 0,
     "item_missiletank": 0,
@@ -215,6 +216,9 @@ class ActorPickup(BasePickup):
                 MODELUPDATER["functions"][0]["params"].pop("Param2")
                 bmsad["components"].pop("FX")
                 bmsad["sound_fx"] = ListContainer([])
+            elif model_name == "powerup_missilelauncher":
+                bmsad["header"]["model_scale"] = 1.75
+                bmsad["components"].pop("FX")
             else:
                 bmsad["components"].pop("FX")
                 bmsad["sound_fx"] = ListContainer([])
@@ -244,6 +248,10 @@ class ActorPickup(BasePickup):
         if model_name not in TANK_MODELS:
             MODELUPDATER["fields"] = OFFSET
             MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"][1] = y_offset
+            if model_name == "powerup_missilelauncher":
+                MODELUPDATER["fields"]["vInitAngWorldOffset"]["value"][0] = -1.6
+            else:
+                MODELUPDATER["fields"]["vInitAngWorldOffset"]["value"][0] = 0.0
 
 
     def patch(self, editor: PatcherEditor):
