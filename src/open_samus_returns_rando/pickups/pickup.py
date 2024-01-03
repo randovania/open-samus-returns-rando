@@ -217,7 +217,7 @@ class ActorPickup(BasePickup):
                 bmsad["components"].pop("FX")
                 bmsad["sound_fx"] = ListContainer([])
             elif model_name == "powerup_missilelauncher":
-                bmsad["header"]["unk_2d"] = 1.75
+                bmsad["header"]["model_scale"] = 1.75
                 bmsad["components"].pop("FX")
             else:
                 bmsad["components"].pop("FX")
