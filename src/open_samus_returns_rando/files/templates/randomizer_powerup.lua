@@ -73,11 +73,9 @@ if RandomizerPowerup == nil then
             -- both loops cover repeated/similar actor names that are shared across scenarios
             if scenario ~= "s000_surface" and scenario ~= "s010_area1" and scenario ~= "s110_surfaceb" then
                 local waterPrefixes = {"TG_Water_", "TG_SP_Water_"}
-                local waterNumbers = {"001", "002", "003", "004", "005", "006", "007", "008", "009", "010", "011", "012",
-                    "013", "014", "015", "016", "017", "018", "019"}
                 for i = 1, 2 do
                     for j = 1, 19 do
-                        local water = Game.GetEntity(waterPrefixes[i] .. waterNumbers[j])
+                        local water = Game.GetEntity(waterPrefixes[i] .. string.format("%03d", j))
                         if water ~= nil and water.TRIGGER:IsPlayerInside() == true then
                             water.TRIGGER:DisableTrigger()
                             water.TRIGGER:EnableTrigger()
@@ -89,8 +87,7 @@ if RandomizerPowerup == nil then
                 local lavaScenarios = {"s020_area2", "s033_area3b", "s036_area3c", "s040_area4", "s050_area5"}
                 if scenario == lavaScenarios[i] then
                     for j = 1, 5 do
-                        local lavaNumbers = {"001", "002", "003", "004", "005"}
-                        lava = Game.GetEntity("TG_Lava_" .. lavaNumbers[j])
+                        lava = Game.GetEntity("TG_Lava_" .. string.format("%03d", j))
                         if lava ~= nil and lava.TRIGGER:IsPlayerInside() == true then
                             lava.TRIGGER:DisableTrigger()
                             lava.TRIGGER:EnableTrigger()
@@ -100,29 +97,22 @@ if RandomizerPowerup == nil then
             end
             -- individual scenarios are listed if they have unique actor names
             local liquids = {}
-            local arrayLength = 0
             if scenario == "s000_surface" then
                 liquids = {"TG_Water", "TG_Water001"}
-                arrayLength = 2
             elseif scenario == "s010_area1" then
                 liquids = {"HazardousPuddle_001", "Lava_Trigger_001", "TG_Water_001", "Water_Trigger_002",
                 "Water_Trigger_008", "Water_Trigger_009", "Water_Trigger_010", "Water_Trigger_011"}
-                arrayLength = 8
             elseif scenario == "s036_area3c" then
                 liquids = {"TG_Water002", "TG_Water003", "TG_LS_Water004"}
-                arrayLength = 3
             elseif scenario == "s040_area4" then
                 liquids = {"TG_HazardousPuddle_001", "TG_HazardousPuddle_002", "TG_HazardousPuddle_003",
                     "TG_HazardousPuddle_004", "TG_HazardousPuddle_005"}
-                arrayLength = 5
             elseif scenario == "s065_area6b" then
                 liquids = {"TG_LS_Water_001"}
-                arrayLength = 1
             elseif scenario == "s070_area7" then
                 liquids = {"TG_Damage_Hazardous_001", "TG_Damage_Hazardous_002"}
-                arrayLength = 1
             end
-            for i = 1, arrayLength do
+            for i = 1, #liquids do
                 local liquid = Game.GetEntity(liquids[i])
                 if liquid.TRIGGER:IsPlayerInside() == true then
                     Game.GetEntity(liquid[i]).TRIGGER:DisableTrigger()
