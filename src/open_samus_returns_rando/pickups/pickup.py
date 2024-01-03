@@ -154,10 +154,9 @@ class ActorPickup(BasePickup):
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
                 # Placeholder until custom models/textures are made
                 if item_id in RESERVE_TANK_ITEMS:
-                    fx_create_and_link["Param1"]["value"] = "spenergycloud"
-                    fx_create_and_link["Param2"]["value"] = "actors/props/spenergycloud/fx/specialenergystatue.bcptl"
-                    fx_create_and_link["Param8"]["value"] = 50
-                    fx_create_and_link["Param9"]["value"] = 10
+                    fx_create_and_link["Param1"]["value"] = "spinattack"
+                    fx_create_and_link["Param2"]["value"] = "actors/characters/samus/fx/spinattack.bcptl"
+                    fx_create_and_link["Param8"]["value"] = 55
                     fx_create_and_link["Param13"]["value"] = True
                 else:
                     bmsad["components"].pop("FX")
