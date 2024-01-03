@@ -156,7 +156,7 @@ class ActorPickup(BasePickup):
                 if item_id in RESERVE_TANK_ITEMS:
                     fx_create_and_link["Param1"]["value"] = "spinattack"
                     fx_create_and_link["Param2"]["value"] = "actors/characters/samus/fx/spinattack.bcptl"
-                    fx_create_and_link["Param8"]["value"] = 50
+                    fx_create_and_link["Param8"]["value"] = 55
                     fx_create_and_link["Param13"]["value"] = True
                 else:
                     bmsad["components"].pop("FX")
