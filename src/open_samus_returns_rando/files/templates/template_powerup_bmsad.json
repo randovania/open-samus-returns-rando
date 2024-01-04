@@ -4,13 +4,13 @@
     "name": "randomizer_powerup",
     "header": {
         "model_name": "actors/items/itemsphere/models/itemsphere.bcmdl",
-        "unk_1": 0,
+        "ignore_samus": false,
         "unk_2a": 1.0,
         "unk_2b": 50.0,
         "unk_2c": 0.0,
-        "unk_2d": 1.0,
+        "model_scale": 1.0,
         "unk_2e": 0.0,
-        "unk_2f": [
+        "hitbox_dimensions": [
             100.0,
             100.0,
             100.0
