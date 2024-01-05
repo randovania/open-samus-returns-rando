@@ -2,6 +2,7 @@ name: Python Package
 
 on:
   pull_request:
+  merge_group:
   push:
     branches:
       - '*'
@@ -77,10 +78,37 @@ jobs:
       - name: test
         run: python -m pytest tests
 
+  starter_preset_patcher:
+    runs-on: self-hosted
+    needs:
+      - build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: 'recursive'
+
+      - name: Create venv
+        run: python -m venv venv
+
+      - name: Install Python packages
+        run: venv/bin/python -m pip install --upgrade pip setuptools
+
+      - name: Install
+        run: venv/bin/python -m pip install -e .
+
+      - name: Export
+        run:
+          venv/bin/python -m open_samus_returns_rando --input-path "$SAMUS_RETURNS_PATH" --output-path export/ --input-json tests/test_files/starter_preset_patcher.json
+
+
   pypi:
     runs-on: 'ubuntu-latest'
     needs:
       - test
+      - starter_preset_patcher
 
     steps:
       - name: Download all the dists
