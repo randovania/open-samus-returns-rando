@@ -159,7 +159,8 @@
                     "type": "number",
                     "default": 10.0
                 }
-            }
+            },
+            "default": {}
         },
         "reveal_map_on_start": {
             "type": "boolean",
