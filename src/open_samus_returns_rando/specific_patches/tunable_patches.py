@@ -5,8 +5,7 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor
 def patch_tunables(editor: PatcherEditor, configuration: dict):
     tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
     _patch_scan_pulse(tunables)
-    if "reserves_per_tank" in configuration:
-        _reserves_per_tank(tunables, configuration)
+    _reserves_per_tank(tunables, configuration)
 
 
 def _patch_scan_pulse(tunables: Bmtun):
