@@ -12,11 +12,6 @@ Init.iNumRandoTextBoxes = TEMPLATE("textbox_count")
 Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier")
 Init.tBoxesSeen = 0
 
-Game.LogWarn(0, "Inventory:")
-for k, v in pairs(Init.tNewGameInventory) do
-    Game.LogWarn(0, tostring(k) .. " = " .. tostring(v))
-end
-
 function Init.InitGameBlackboard()
   Blackboard.ResetWithExceptionList({
     "GAME_PROGRESS"
@@ -69,7 +64,6 @@ end
 
 function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
     Init.tBoxesSeen = 0
-    Game.LogWarn(0, string.format("Will start Game - %s / %s / %s / %s", tostring(arg1), tostring(arg2), tostring(arg3), tostring(arg4)))
     Game.LoadScenario("c10_samus", Init.sStartingScenario, Init.sStartingActor, "samus", 1)
     if Init.bRevealMap then
       Game.AddGUISF(0.0, Game.ScanVisitDiscoverEverything, "", "")
@@ -78,4 +72,24 @@ function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
 
 Game.SetForceSkipCutscenes(true)
 
-Game.LogWarn(0, "Finished modded system/init.lc")
+-- Only required for ils test code
+-- ALL_SCENARIOS = {
+--   "s000_surface",
+--   "s010_area1",
+--   "s020_area2",
+--   "s025_area2b",
+--   "s028_area2c",
+--   "s030_area3",
+--   "s033_area3b",
+--   "s036_area3c",
+--   "s040_area4",
+--   "s050_area5",
+--   "s060_area6",
+--   "s065_area6b",
+--   "s067_area6c",
+--   "s070_area7",
+--   "s090_area9",
+--   "s100_area10",
+--   "s110_surfaceb",
+-- }
+-- NextScenario = 1

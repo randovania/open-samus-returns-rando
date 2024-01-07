@@ -1,6 +1,8 @@
 import re
 
+from construct import Container
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
+from mercury_engine_data_structures.formats.lua import Lua
 from open_samus_returns_rando.files import files_path, templates_path
 
 
@@ -57,5 +59,12 @@ def create_script_copy(editor: FileTreeEditor, path: str):
 
 def replace_script(editor: FileTreeEditor, path: str, replacement_path: str):
     create_script_copy(editor, path)
-    editor.replace_asset(path + ".lc", files_path().joinpath(replacement_path).read_bytes())
+    lua_content = files_path().joinpath(replacement_path).read_text()
+    lua_resource = Lua(Container(lua_text=lua_content), editor.target_game)
+    editor.replace_asset(path + ".lc", lua_resource)
+
+def replace_script_with_content(editor: FileTreeEditor, path: str, lua_content: str):
+    create_script_copy(editor, path)
+    lua_resource = Lua(Container(lua_text=lua_content), editor.target_game)
+    editor.replace_asset(path + ".lc", lua_resource)
 

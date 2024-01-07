@@ -42,11 +42,6 @@ def patch_dna_check(editor: PatcherEditor):
     # blinks with all DNA. Looks like it is no problem besides the visual aspect
     systemmechdna.raw["components"]["USABLE"] = save_station_bmsad.raw["components"]["USABLE"]
 
-    editor.add_new_asset(
-        "actors/props/chozoseal/scripts/chozoseal.lc",
-        b'',
-        []
-    )
     editor.replace_asset(file_name, systemmechdna)
 
 

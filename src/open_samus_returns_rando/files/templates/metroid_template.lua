@@ -1,5 +1,3 @@
-Game.ImportLibrary("actors/items/randomizer_powerup/scripts/randomizer_powerup.lua", false)
-
 Metroid = Metroid or {}
 function Metroid.Dummy()
 end

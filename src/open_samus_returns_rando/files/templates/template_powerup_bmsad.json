@@ -1,7 +1,7 @@
 {
     "magic": "MSAD",
     "version": 2883585,
-    "name": "randomizer_powerup",
+    "name": "randomizerpowerup",
     "header": {
         "model_name": "actors/items/itemsphere/models/itemsphere.bcmdl",
         "ignore_samus": false,
@@ -108,7 +108,7 @@
                     "params": {
                         "Param1": {
                             "type": "s",
-                            "value": "actors/items/randomizer_powerup/scripts/randomizer_powerup.lua"
+                            "value": "actors/items/randomizerpowerup/scripts/randomizerpowerup.lua"
                         },
                         "Param2": {
                             "type": "s",

@@ -68,7 +68,6 @@ function s020_area2.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
     Game.DelSF("s020_area2.CloseDoor004")
     Game.AddSF(0.1, "s020_area2.CloseDoor004", "")
   end
-  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s020_area2.CloseDoor004()
   if Game.GetEntity("Door004") ~= nil then

@@ -472,7 +472,6 @@ function s000_surface.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4
   --elseif _ARG_0_ == "collision_camera_014" and _ARG_2_ == "collision_camera_023" and not Scenario.ReadFromBlackboard("IntroMetroidLarvaSurfacePlayed", false) then
   --  s000_surface.LaunchIntroMetroidLarvaSurfacePresentation()
   --end
-  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s000_surface.LaunchFirstTimeChozoStatuePresentation()
   Scenario.WriteToBlackboard("FirstTimeChozoStatuePlayed", "b", true)

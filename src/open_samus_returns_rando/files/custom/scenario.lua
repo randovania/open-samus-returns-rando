@@ -4,6 +4,8 @@ Game.ImportLibrary("system/scripts/guilib.lua", false)
 Scenario = Scenario or {}
 setmetatable(Scenario, {__index = _G})
 
+Scenario.tProgressiveModels = {}
+
 local original_enable =  Scenario.EnableHazarous
 function Scenario.EnableHazarous(_ARG_0_, _ARG_1_)
  if CurrentScenario.OnHazarousPoolDrain ~= nil then
@@ -14,10 +16,11 @@ end
 
 function Scenario._UpdateProgressiveItemModels()
   for name, actordef in pairs(Game.GetEntities()) do
-    local progressive_models = RandomizerPowerup.tProgressiveModels[actordef]
+    local progressive_models = Scenario.tProgressiveModels[actordef]
     if progressive_models ~= nil then
       for index, model in ipairs(progressive_models) do
-        if not RandomizerPowerup.HasItem(model.item) or #progressive_models == index then
+        local has_item = Game.GetItemAmount(Game.GetPlayerName(), model.item) > 0
+        if not has_item or #progressive_models == index then
           local pickup = Game.GetEntity(name)
           pickup.MODELUPDATER.sModelAlias = model.alias
           break
@@ -28,11 +31,7 @@ function Scenario._UpdateProgressiveItemModels()
 end
 
 function Scenario.UpdateProgressiveItemModels()
-  Game.AddSF(0.2, "Scenario._UpdateProgressiveItemModels", "")
-end
-
-function Scenario.OnSubAreaChange(old_subarea, old_actorgroup, new_subarea, new_actorgroup, disable_fade)
-  Scenario.UpdateProgressiveItemModels()
+  Game.AddSF(0.1, "Scenario._UpdateProgressiveItemModels", "")
 end
 
 function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_name, is_multi)
@@ -75,6 +74,18 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
       Game.HUDIdleScreenLeave()
       Scenario.ShowText()
     end
+  
+    Scenario.UpdateProgressiveItemModels()
+    
+    -- Only required for ils test code
+    -- if Scenario.CurrentScenarioID == "s000_surface" then
+    -- local next_number = (NextScenario % 17) + 1
+    --   NextScenario = next_number
+    --   local next_scenario = ALL_SCENARIOS[next_number]
+    --   Game.AddSF(0.5, "Game.LoadScenario", "ssssi", "c10_samus", next_scenario, Init.sStartingActor, "samus", 1)
+    -- else
+    --   Game.AddSF(1.0, "Game.KillPlayer", "")
+    -- end
   end
 end
 

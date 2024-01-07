@@ -273,7 +273,6 @@ end
 function s028_area2c.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
   if _ARG_0_ ~= "collision_camera" or _ARG_2_ ~= "collision_camera_003" or not Scenario.ReadFromBlackboard("CamAreaPresentation", false) then
   end
-  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s028_area2c.LaunchAreaPresentation()
   Scenario.WriteToBlackboard("CamAreaPresentation", "b", true)

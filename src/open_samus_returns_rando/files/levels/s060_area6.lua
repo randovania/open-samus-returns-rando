@@ -354,5 +354,4 @@ function s060_area6.OnExit_ChangeCamera_006()
 end
 
 function s060_area6.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
-  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end

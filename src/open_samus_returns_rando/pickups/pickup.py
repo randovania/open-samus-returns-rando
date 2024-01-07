@@ -4,11 +4,11 @@ import json
 from enum import Enum
 
 from construct import Container, ListContainer
-from mercury_engine_data_structures.formats import Bmsad
+from mercury_engine_data_structures.formats import Bmsad, Lua
 from open_samus_returns_rando.constants import get_package_name
 from open_samus_returns_rando.files import templates_path
 from open_samus_returns_rando.logger import LOG
-from open_samus_returns_rando.lua_editor import LuaEditor
+from open_samus_returns_rando.lua_editor import LuaEditor, ScriptClass
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando.pickups.model_data import get_data
 
@@ -93,9 +93,9 @@ class BasePickup:
         raise NotImplementedError
 
 class ActorPickup(BasePickup):
-    _bmsad_dict = {}
+    _bmsad_dict: dict[str, tuple[str, ScriptClass]] = {}
 
-    def patch_item_pickup(self, bmsad: dict) -> dict:
+    def patch_item_pickup(self, bmsad: dict) -> tuple[dict, ScriptClass]:
         pickable: dict = bmsad["components"]["PICKABLE"]
         script: dict = bmsad["components"]["SCRIPT"]
 
@@ -103,14 +103,15 @@ class ActorPickup(BasePickup):
         set_custom_params["Param1"]["value"] = "ITEM_NONE"
         set_custom_params["Param2"]["value"] = 0
 
-        script["functions"][0]["params"]["Param1"]["value"] = \
-            'actors/items/randomizer_powerup/scripts/randomizer_powerup.lc'
-        script["functions"][0]["params"]["Param2"]["value"] = self.lua_editor.get_script_class(
-            self.pickup, actordef_name=bmsad["name"]
+        script_class = self.lua_editor.create_script_class(
+            self.pickup, actordef_id=bmsad["name"]
         )
-        return bmsad
 
-    def add_new_bmsad(self, editor: PatcherEditor, actordef_id: str, pkgs_for_level: set[str]):
+        script["functions"][0]["params"]["Param1"]["value"] = script_class.get_lua_file_name()
+        script["functions"][0]["params"]["Param2"]["value"] = script_class.class_name
+        return bmsad, script_class
+
+    def add_new_bmsad(self, editor: PatcherEditor, actordef_id: str, pkgs_for_level: set[str]) -> ScriptClass:
         template_bmsad = _read_template_powerup()
         new_template = copy.deepcopy(template_bmsad)
         new_template["name"] = actordef_id
@@ -125,10 +126,11 @@ class ActorPickup(BasePickup):
         pickable["functions"][0]["params"]["Param7"]["value"] = self.pickup["caption"]
 
         # Update given item
-        new_template = self.patch_item_pickup(new_template)
+        new_template, script_class = self.patch_item_pickup(new_template)
 
-        new_path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
+        new_path = script_class.get_bmsad_path()
         editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
+        return script_class
 
 
     def patch_model(self, model_names: list[str], bmsad: dict) -> None:
@@ -268,13 +270,15 @@ class ActorPickup(BasePickup):
         item_id = self.pickup["resources"][0][0]["item_id"]
         cached_bmsad = self._bmsad_dict.get(item_id, None)
         if cached_bmsad is None:
-            actordef_id = f"randomizer_powerup_{self.pickup_id}"
-            self._bmsad_dict[item_id] = actordef_id
-            self.add_new_bmsad(editor, actordef_id, pkgs_for_level)
+            actordef_id = f"randomizerpowerup{self.pickup_id}"
+            script_class = self.add_new_bmsad(editor, actordef_id, pkgs_for_level)
+            script_class.ensure_files(editor)
+            self._bmsad_dict[item_id] = (actordef_id, script_class)
         else:
-            actordef_id = cached_bmsad
-            path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
-            editor.ensure_present_in_scenario(scenario_name, path)
+            actordef_id = cached_bmsad[0]
+            script_class = cached_bmsad[1]
+            bmsad_path = script_class.get_bmsad_path()
+            editor.ensure_present_in_scenario(scenario_name, bmsad_path)
 
         actor.type = actordef_id
 
@@ -288,11 +292,11 @@ class ActorPickup(BasePickup):
             mirrored_actor = next((layer[actor_name] for layer in surface_b.raw.actors if actor_name in layer), None)
             assert mirrored_actor is not None
             mirrored_actor.type = actordef_id
-            # TODO: Code clean up
-            path = f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
+            path = script_class.get_bmsad_path()
             editor.ensure_present_in_scenario(surfaceb_name, path)
             pkgs_for_level.update(set(editor.find_pkgs(path_for_level(surfaceb_name) + ".bmsld")))
 
+        script_class.ensure_files(editor)
 
         # Dependencies
         for level_pkg in pkgs_for_level:
@@ -307,8 +311,9 @@ class ActorPickup(BasePickup):
 
 class MetroidPickup(BasePickup):
     def patch(self, editor: PatcherEditor):
-        lua_class = self.lua_editor.get_script_class(self.pickup)
-        self.lua_editor.add_metroid_pickup(self.pickup["metroid_callback"], lua_class)
+        script_class = self.lua_editor.create_script_class(self.pickup, f"metroid_{self.pickup_id}")
+        script_class.ensure_files(editor)
+        self.lua_editor.add_metroid_pickup(self.pickup["metroid_callback"], script_class)
 
     def get_scenario(self):
         return self.pickup["metroid_callback"]["scenario"]
@@ -340,7 +345,11 @@ def count_dna(lua_scripts: LuaEditor, pickup_object: BasePickup):
 
 def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
     ActorPickup._bmsad_dict = {}
-    editor.add_new_asset("actors/items/randomizer_powerup/scripts/randomizer_powerup.lc", b'', [])
+    editor.add_new_asset(
+        "actors/items/randomizerpowerup/scripts/randomizerpowerup.lc",
+        Lua(Container(lua_text=templates_path().joinpath("randomizerpowerup.lua").read_text()), editor.target_game),
+        []
+    )
     editor.add_new_asset("actors/scripts/metroid.lc", b'', [])
     ensure_base_models(editor)
 
