@@ -215,21 +215,21 @@ class DoorType(Enum):
     """
     POWER = ("power_beam", ActorData.DOOR_POWER)
     # s067_area6c
-    CHARGE = ("charge_beam", ActorData.DOOR_CHARGE, False, None, ["actors/props/doorchargecharge",
+    CHARGE = ("charge_beam", ActorData.DOOR_CHARGE, False, None,
                 # still not working :-S
-                "actors/props/door/fx", "sounds/props/doorchargecharge"])
-    WAVE_BEAM = ("wave_beam", ActorData.DOOR_POWER, True,
-                 ActorData.SHIELD_WAVE_BEAM,["actors/props/doorwave"])
-    SPAZER_BEAM = ("spazer_beam", ActorData.DOOR_POWER, True,
-                    ActorData.SHIELD_SPAZER_BEAM, ["actors/props/doorspazerbeam"])
-    PLASMA_BEAM = ("plasma_beam", ActorData.DOOR_POWER, True,
-                    ActorData.SHIELD_PLASMA_BEAM, ["actors/props/doorcreature"])
-    # s033_area3b, s036_area3c, s090_area9
-    MISSILE = ("missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_MISSILE, ["actors/props/doorshieldmissile"])
-    SUPER_MISSILE = ("super_missile", ActorData.DOOR_POWER, True,
-                      ActorData.SHIELD_SUPER_MISSILE, ["actors/props/doorshieldsupermissile"])
-    POWER_BOMB = ("power_bomb", ActorData.DOOR_POWER, True,
-                   ActorData.SHIELD_POWER_BOMB, ["actors/props/doorshieldpowerbomb"])
+              ["actors/props/doorchargecharge", "actors/props/door/fx", "sounds/props/doorchargecharge"])
+    WAVE_BEAM = ("wave_beam", ActorData.DOOR_POWER, True, ActorData.SHIELD_WAVE_BEAM,
+                 ["actors/props/doorwave", "sounds/props/doorwave", "system/fx/textures"])
+    SPAZER_BEAM = ("spazer_beam", ActorData.DOOR_POWER, True, ActorData.SHIELD_SPAZER_BEAM,
+                   ["actors/props/doorspazerbeam", "sounds/props/spazerdoor"])
+    PLASMA_BEAM = ("plasma_beam", ActorData.DOOR_POWER, True, ActorData.SHIELD_PLASMA_BEAM,
+                   ["actors/props/doorcreature", "sounds/props/creaturedoor"])
+    MISSILE = ("missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_MISSILE,
+               ["actors/props/doorshieldmissile", "actors/props/doorshield", "sounds/props/doorchargecharge"])
+    SUPER_MISSILE = ("super_missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_SUPER_MISSILE,
+                     ["actors/props/doorshieldsupermissile", "sounds/props/doorchargecharge"])
+    POWER_BOMB = ("power_bomb", ActorData.DOOR_POWER, True, ActorData.SHIELD_POWER_BOMB,
+                  ["actors/props/doorshieldpowerbomb", "sounds/props/doorchargecharge"])
 
     def __init__(self, rdv_door_type: str, door_data: ActorData, need_shield: bool = False,
                  shield_data: ActorData = None, additional_asset_folders: list[str] = None):
