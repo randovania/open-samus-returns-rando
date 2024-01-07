@@ -34,6 +34,8 @@ def patch_tiles(editor: PatcherEditor):
                             icons[0]["icon"] = "itemenabledheat"
                         else:
                             icons[0]["icon"] = "itemenabled"
+                    if len(icons) > 1 and "tank" in icons[1]["icon"]:
+                        icons[1]["icon"] = "itemenabled"
 
                     # Doors
                     door_tile = icons[0] if len(icons) == 1 else icons[1]
