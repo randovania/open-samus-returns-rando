@@ -258,6 +258,7 @@ class DoorPatcher:
         # pop a life component from our static door patches
         if len(door_actor.components) > 1:
             door_actor.components.pop()
+        door_actor.components[0]["arguments"][3]["value"] = ""
         door_actor.type = ActorData.DOOR_POWER.value[0]
 
     def _create_shield(
