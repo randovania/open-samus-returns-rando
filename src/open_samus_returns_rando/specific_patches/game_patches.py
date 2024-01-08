@@ -1,3 +1,4 @@
+from construct import Container
 from mercury_engine_data_structures.formats import Bmsad, Bmsbk
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -43,6 +44,18 @@ def _remove_pb_weaknesses(editor: PatcherEditor, configuration: dict):
                     func_wp.params.Param1.value = "PLASMA_BEAM"
             if func_s.params.Param1.value:
                 func_s.params.Param1.value = "SPAZER_BEAM"
+
+    # Blobthrowers/Blockingplants
+    if configuration["plant_buff"]:
+        PLANT_FILES = [
+            "actors/characters/blobthrower/charclasses/blobthrower.bmsad",
+            "actors/props/blockingplant/charclasses/blockingplant.bmsad",
+        ]
+        for plants in PLANT_FILES:
+            plant = editor.get_file(plants, Bmsad)
+            plant.raw["components"]["LIFE"]["fields"][
+                "bShouldDieWithPowerBomb"
+            ] = Container({"type": "bool", "value": False})
 
 
 def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
