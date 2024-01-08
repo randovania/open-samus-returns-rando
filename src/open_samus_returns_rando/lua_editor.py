@@ -314,7 +314,9 @@ class LuaEditor:
             self._metroid_dict[scenario] = {}
         scenario_list = self._metroid_dict[scenario]
         scenario_list[spawngroup] = script_class.class_name
-        self._metroid_imports.append(script_class.get_lua_file_name())
+        lua_file_name = script_class.get_lua_file_name()
+        if lua_file_name not in self._metroid_imports:
+            self._metroid_imports.append(script_class.get_lua_file_name())
 
     def add_hint(self, hint: dict) -> None:
         actor_ref = hint["accesspoint_actor"]
