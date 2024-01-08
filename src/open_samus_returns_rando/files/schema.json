@@ -183,7 +183,7 @@
                 "plant_buff": {
                     "type": "boolean",
                     "description": "Remove the Power Bomb weakness from Blobthowers/Blockingplants to make Power Bombs less overpowered.",
-                    "default": true
+                    "default": false
                 },
                 "remove_elevator_grapple_blocks": {
                     "type": "boolean",
