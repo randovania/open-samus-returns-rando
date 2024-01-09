@@ -79,6 +79,18 @@ def shoot_supers_without_missiles(editor: PatcherEditor):
     gun[20]["params"]["Param5"]["value"] = ""
 
 
+def nerf_ridley_fight(editor: PatcherEditor):
+    # Power Beam: 3 (25 * 0.12)
+    # Ice: 10
+    # Wave: 14 (50 * 0.28)
+    # Spazer: 25,2 (210 * 0.12)
+    # Plasma: 36 (default of 300 * 0.12 in tunable of ridley)
+    ridley_bmsad = editor.get_file("actors/characters/ridley/charclasses/ridley.bmsad", Bmsad)
+    ridley_bmsad.components["LIFE"].raw["fields"]["fPowerBeamFactor"]["value"] = 0.12
+    ridley_bmsad.components["LIFE"].raw["fields"]["fWaveBeamFactor"]["value"] = 0.28
+    ridley_bmsad.components["LIFE"].raw["fields"]["fSpazerBeamFactor"]["value"] = 0.12
+
+
 def apply_static_fixes(editor: PatcherEditor):
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
@@ -86,3 +98,4 @@ def apply_static_fixes(editor: PatcherEditor):
     remove_area7_grapple_block(editor)
     patch_a7_save_screw_blocks(editor)
     shoot_supers_without_missiles(editor)
+    nerf_ridley_fight(editor)
