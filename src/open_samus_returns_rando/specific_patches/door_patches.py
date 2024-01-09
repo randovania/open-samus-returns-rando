@@ -214,13 +214,17 @@ class DoorType(Enum):
     shield: the shield's ActorData
     """
     POWER = ("power_beam", ActorData.DOOR_POWER)
-    CHARGE = ("charge_beam", ActorData.DOOR_CHARGE)
+    # s067_area6c
+    CHARGE = ("charge_beam", ActorData.DOOR_CHARGE, False, None, ["actors/props/doorchargecharge",
+                # still not working :-S
+                "actors/props/door/fx", "sounds/props/doorchargecharge"])
     WAVE_BEAM = ("wave_beam", ActorData.DOOR_POWER, True,
-                 ActorData.SHIELD_WAVE_BEAM, ["actors/props/doorwave"])
+                 ActorData.SHIELD_WAVE_BEAM,["actors/props/doorwave"])
     SPAZER_BEAM = ("spazer_beam", ActorData.DOOR_POWER, True,
                     ActorData.SHIELD_SPAZER_BEAM, ["actors/props/doorspazerbeam"])
     PLASMA_BEAM = ("plasma_beam", ActorData.DOOR_POWER, True,
                     ActorData.SHIELD_PLASMA_BEAM, ["actors/props/doorcreature"])
+    # s033_area3b, s036_area3c, s090_area9
     MISSILE = ("missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_MISSILE, ["actors/props/doorshieldmissile"])
     SUPER_MISSILE = ("super_missile", ActorData.DOOR_POWER, True,
                       ActorData.SHIELD_SUPER_MISSILE, ["actors/props/doorshieldsupermissile"])
