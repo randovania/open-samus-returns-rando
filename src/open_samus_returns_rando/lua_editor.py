@@ -189,7 +189,7 @@ class LuaEditor:
             "progressive_models": progressive_models,
         }
 
-        models = lua_util.replace_lua_template("progressive_model_template.lua", replacement)  # noqa: F841
+        models = lua_util.replace_lua_template("progressive_model_template.lua", replacement)
         self._progressive_models += models
 
     def _create_custom_init(self, editor: PatcherEditor, configuration: dict) -> str:

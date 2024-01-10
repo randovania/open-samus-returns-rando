@@ -1,3 +1,4 @@
+Game.ImportLibrary("actors/items/randomizerpowerup/scripts/randomizerpowerup.lc", false)
 RandomizerEnergyShield = RandomizerEnergyShield or {}
 function RandomizerEnergyShield.main()
 end
