@@ -11,7 +11,7 @@ def _get_spawnpoint(editor: PatcherEditor):
     return spawnpoint
 
 
-def _create_surface_east_spawn(editor: PatcherEditor):
+def _surface_east_connector(editor: PatcherEditor):
     name_of_scenario = "s000_surface"
     scenario_surface = editor.get_scenario(name_of_scenario)
     name_of_spawnpoint = "ST_Surface_Connector"
@@ -25,7 +25,7 @@ def _create_surface_east_spawn(editor: PatcherEditor):
     scenario_surface.add_actor_to_entity_groups("collision_camera_000", name_of_spawnpoint)
 
 
-def _create_surface_west_spawn(editor: PatcherEditor):
+def _surface_west_connector(editor: PatcherEditor):
     name_of_scenario = "s110_surfaceb"
     scenario_surfaceb = editor.get_scenario(name_of_scenario)
     name_of_spawnpoint = "ST_SurfaceB_Connector"
@@ -41,6 +41,21 @@ def _create_surface_west_spawn(editor: PatcherEditor):
     spawnpoint_actor["rotation"][1] = -90
 
 
+def _diggernaut_chase_respawn(editor: PatcherEditor):
+    name_of_scenario = "s050_area5"
+    scenario_area5 = editor.get_scenario(name_of_scenario)
+    name_of_spawnpoint = "ST_Diggernaut_Chase_Respawn"
+
+    spawnpoint = _get_spawnpoint(editor)
+
+    editor.copy_actor(
+        name_of_scenario, (-2100.0, -4800.0, 0.0), spawnpoint, name_of_spawnpoint, 5,
+    )
+
+    scenario_area5.add_actor_to_entity_groups("collision_camera_AfterChase_001", name_of_spawnpoint)
+
+
 def patch_custom_spawn_points(editor: PatcherEditor):
-    _create_surface_east_spawn(editor)
-    _create_surface_west_spawn(editor)
+    _surface_east_connector(editor)
+    _surface_west_connector(editor)
+    _diggernaut_chase_respawn(editor)
