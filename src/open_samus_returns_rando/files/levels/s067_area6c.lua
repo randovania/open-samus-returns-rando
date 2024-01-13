@@ -420,4 +420,5 @@ function s067_area6c.LaunchSpecialEvent06c()
   Game.DisableTrigger("TG_Event_06c01")
 end
 function s067_area6c.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
+  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end

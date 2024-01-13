@@ -285,6 +285,7 @@ function s100_area10.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_
     s100_area10.LaunchQueenIntro()
   end
   Game.BossCheckPointManagerForceUnlockDoors()
+  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s100_area10.OnPlayerDead(_ARG_0_)
   s100_area10.SetLowModelsVisibility(false)

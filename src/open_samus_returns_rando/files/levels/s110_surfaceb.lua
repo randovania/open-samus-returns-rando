@@ -592,6 +592,7 @@ function s110_surfaceb.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_
     s110_surfaceb.LaunchPostCreditsCutscene()
     s110_surfaceb.bAfterCredits = false
   end
+  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s110_surfaceb.OnPostCreditsEnd()
   if s110_surfaceb.bFirstTimeCompleted then

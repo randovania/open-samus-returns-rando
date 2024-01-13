@@ -723,6 +723,7 @@ function s010_area1.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
   if _ARG_0_ == "collision_camera_042" and _ARG_2_ == "collision_camera_049" and Scenario.ReadFromBlackboard("TG_Intro_TeleporterArea01_TRIGGER__DefaultOnEnter_Done", false) == false and Game.GetPlayer() ~= nil then
     --Game.GetPlayer().MOVEMENT:StartForcedAnalogInput(1, 0)
   end
+  Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
 function s010_area1.OnEnter_MinimapSecretUncover_001()
   Game.MinimapUncoverSpecifiedCellSecretRight(31, 19)
