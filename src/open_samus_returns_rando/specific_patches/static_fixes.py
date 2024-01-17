@@ -81,28 +81,26 @@ def shoot_supers_without_missiles(editor: PatcherEditor):
 
 def nerf_ridley_fight(editor: PatcherEditor):
     '''
-    Beams also include previous stage beams and factors (excluding Ice)
-    Power Beam: 3 (25 * 0.12)
+    All beams (except Ice) will use the same factor as Plasma which is 0.12
+    Power Beam: 25 -> 3
     Ice: 10
-    Wave: 13.98 (50 * 2.33)
-    Spazer: 25.25 (210 * 0.43)
-    Plasma: 36.07 (default is 36 with 300 * 0.12 in tunable of ridley)
+    Wave: 50 -> 6
+    Spazer: 210 -> 25.2
+    Plasma: 36 (default from ridley tunable)
     '''
     ridley_bmsad = editor.get_file("actors/characters/ridley/charclasses/ridley.bmsad", Bmsad)
     ridley_bmsad.components["LIFE"].raw["fields"]["fPowerBeamFactor"]["value"] = 0.12
-    ridley_bmsad.components["LIFE"].raw["fields"]["fWaveBeamFactor"]["value"] = 2.33
-    ridley_bmsad.components["LIFE"].raw["fields"]["fSpazerBeamFactor"]["value"] = 0.43
 
     tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
     ridley_tunables = tunables.raw["classes"]["Ridley|CTunableCharClassRidleyAIComponent"]["tunables"]
     ridley_tunables["fPlasmaBeam"]["value"] = 1.0
     ridley_tunables["fPlasmaBeamCharge"]["value"] = 1.0
-    ridley_tunables["fPlasmaBeamWeaponBoost"]["value"] = 1.08
-    ridley_tunables["fPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.08
+    ridley_tunables["fPlasmaBeamWeaponBoost"]["value"] = 1.1
+    ridley_tunables["fPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
     ridley_tunables["fGrabPlasmaBeam"]["value"] = 1.0
     ridley_tunables["fGrabPlasmaBeamCharge"]["value"] = 1.0
-    ridley_tunables["fGrabPlasmaBeamWeaponBoost"]["value"] = 1.08
-    ridley_tunables["fGrabPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.08
+    ridley_tunables["fGrabPlasmaBeamWeaponBoost"]["value"] = 1.1
+    ridley_tunables["fGrabPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
 
 def apply_static_fixes(editor: PatcherEditor):
     patch_multi_room_gammas(editor)
