@@ -1,5 +1,5 @@
-T__name__T = {}
-setmetatable(T__name__T, {__index = TEMPLATE("parent")})
+Game.ImportLibrary(TEMPLATE("parent_lua"), false)
+T__name__T = T__name__T or {}
 function T__name__T.main()
 end
 function T__name__T.OnPickedUp()

@@ -1,5 +1,8 @@
 import itertools
 
+from construct import Container
+from mercury_engine_data_structures.formats.lua import Lua
+
 from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.misc_patches import lua_util
@@ -9,7 +12,6 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_leve
 
 def _read_level_lua(level_id: str) -> str:
     return files_path().joinpath("levels", f"{level_id}.lua").read_text()
-
 
 SPECIFIC_CLASSES = {
     "ITEM_VARIA_SUIT": "RandomizerSuit",
@@ -63,6 +65,43 @@ SCENARIO_MAPPING = {
     "s110_surfaceb": "s00",
 }
 
+class ScriptClass:
+    def __init__(
+            self,
+            class_name: str,
+            actor_def_id: str,
+            lua_content: str,
+            lua_parent: str,
+    ):
+        self.class_name = class_name
+        self.actor_def_name = actor_def_id
+        self.lua_content = lua_content
+        self.lua_parent =  lua_parent
+
+    def get_lua_file_name(self) -> str:
+        actor_def_lower = self.actor_def_name.lower()
+        return f"actors/items/{actor_def_lower}/scripts/{actor_def_lower}.lc"
+
+    def get_lua_parent_file_name(self) -> str:
+        parent_lower = self.lua_parent.lower()
+        return f"actors/items/{parent_lower}/scripts/{parent_lower}.lc"
+
+    def get_bmsad_path(self) -> str:
+        return f"actors/items/{self.actor_def_name}/charclasses/{self.actor_def_name}.bmsad"
+
+    def ensure_files(self, editor: PatcherEditor) -> None:
+        # ensure file itself
+        lua_file_name = self.get_lua_file_name()
+        # files are added to RomFS without package to make them globally accessible
+        if not editor.does_asset_exists(lua_file_name):
+            editor.add_new_asset(lua_file_name, Lua(Container(lua_text=self.lua_content), editor.target_game), [])
+
+        # ensure parent file
+        parent_file_name = self.get_lua_parent_file_name()
+        if not editor.does_asset_exists(parent_file_name):
+            parent_content = files_path().joinpath("pickups", f"{self.lua_parent.lower()}.lua").read_text()
+            editor.add_new_asset(parent_file_name, Lua(Container(lua_text=parent_content), editor.target_game), [])
+
 
 class LuaEditor:
     def __init__(self):
@@ -70,8 +109,9 @@ class LuaEditor:
         self._metroid_dict = {}
         self._dna_count_dict = {}
         self._hint_dict = {}
-        self._powerup_script_custom = ""
+        self._progressive_models = ""
         self._custom_level_scripts: dict[str, dict] = self._read_levels()
+        self._metroid_imports = []
 
     def _read_levels(self) -> dict[str, dict]:
         return {
@@ -82,13 +122,14 @@ class LuaEditor:
     def get_parent_for(self, item_id) -> str:
         return SPECIFIC_CLASSES.get(item_id, "RandomizerPowerup")
 
-    def get_script_class(self, pickup: dict, actordef_name: str = "") -> str:
+    def create_script_class(self, pickup: dict, actordef_id: str = "") -> ScriptClass:
         pickup_resources = pickup["resources"]
         first_item_id = pickup_resources[0][0]["item_id"]
         parent = self.get_parent_for(first_item_id)
+        model_array = pickup.get("model", None)
 
-        if actordef_name and len(pickup["model"]) > 1:
-            self.add_progressive_models(pickup, actordef_name)
+        if actordef_id and model_array and len(model_array) > 1:
+            self.add_progressive_models(pickup, actordef_id)
 
         hashable_progression = "_".join([
             f'{pickup["item_id"]}_{pickup["quantity"]}'
@@ -115,22 +156,22 @@ class LuaEditor:
             sound = "streams/music/k_matad_jinchozo.wav"
         else:
             sound = SPECIFIC_SOUNDS.get(first_item_id, "streams/music/sphere_jingle_placeholder.wav")
+
+        parent_file_name = f"actors/items/{parent.lower()}/scripts/{parent.lower()}.lc"
         replacement = {
             "name": class_name,
             "resources": resources,
             "parent": parent,
+            "parent_lua": lua_util.wrap_string(parent_file_name),
             "caption": lua_util.wrap_string(pickup["caption"].replace("\n", "\\n")),
             "sound": lua_util.wrap_string(sound),
         }
 
-        self.add_item_class(replacement)
-        self._item_classes[hashable_progression] = class_name
+        lua_content = lua_util.replace_lua_template("randomizer_item_template.lua", replacement)
+        new_script_class = ScriptClass(class_name, actordef_id, lua_content, parent)
+        self._item_classes[hashable_progression] = new_script_class
 
-        return class_name
-
-    def add_item_class(self, replacement):
-        new_class = lua_util.replace_lua_template("randomizer_item_template.lua", replacement)
-        self._powerup_script_custom += new_class
+        return new_script_class
 
     def add_progressive_models(self, pickup: dict, actordef_name: str):
         progressive_models = [
@@ -149,7 +190,7 @@ class LuaEditor:
         }
 
         models = lua_util.replace_lua_template("progressive_model_template.lua", replacement)
-        self._powerup_script_custom += models
+        self._progressive_models += models
 
     def _create_custom_init(self, editor: PatcherEditor, configuration: dict) -> str:
         inventory: dict[str, int] = configuration["starting_items"]
@@ -217,16 +258,21 @@ class LuaEditor:
     def _add_replacement_files(self, editor: PatcherEditor, configuration: dict):
         # Update init.lc
         lua_util.create_script_copy(editor, "system/scripts/init")
+
+        init_script = self._create_custom_init(editor, configuration)
         editor.replace_asset(
             "system/scripts/init.lc",
-            self._create_custom_init(editor, configuration).encode("ascii"),
+            Lua(Container(lua_text=init_script), editor.target_game)
         )
 
         # Add custom lua files
-        lua_util.replace_script(editor, "system/scripts/scenario", "custom_scenario.lua")
-        lua_util.replace_script(editor, "actors/props/samusship/scripts/samusship", "custom_ship.lua")
-        lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom_savestation.lua")
-        lua_util.replace_script(editor, "actors/props/heatzone/scripts/heatzone", "custom_heatzone.lua")
+        scenario_lua_content = files_path().joinpath("custom/scenario.lua").read_text()
+        scenario_lua_content += "\n" + self._progressive_models
+        lua_util.replace_script_with_content(editor, "system/scripts/scenario", scenario_lua_content)
+
+        lua_util.replace_script(editor, "actors/props/samusship/scripts/samusship", "custom/ship.lua")
+        lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom/savestation.lua")
+        lua_util.replace_script(editor, "actors/props/heatzone/scripts/heatzone", "custom/heatzone.lua")
 
     def save_modifications(self, editor: PatcherEditor, configuration: dict):
         self._add_replacement_files(editor, configuration)
@@ -234,39 +280,43 @@ class LuaEditor:
         # add new system script
         editor.add_new_asset(
             "system/scripts/guilib.lc",
-            files_path().joinpath("guilib.lua").read_bytes(),
+            Lua(Container(lua_text=files_path().joinpath("custom", "guilib.lua").read_text()), editor.target_game),
             []
         )
 
         # replace ensured scripts with the final code
-        replacement = {
-            "custom_code": self._powerup_script_custom,
-        }
-        powerup_script = lua_util.replace_lua_template("randomizer_powerup.lua", replacement)
-
-
+        final_metroid_script = lua_util.replace_lua_template("metroid_template.lua", {"mapping": self._metroid_dict})
+        imports_in_metroid = [f'Game.ImportLibrary("{a_import}", false)' for a_import in self._metroid_imports]
+        final_metroid_script = "\n".join(imports_in_metroid) + "\n" + final_metroid_script
         editor.replace_asset(
-            "actors/items/randomizer_powerup/scripts/randomizer_powerup.lc",
-            powerup_script.encode("utf-8")
+            "actors/scripts/metroid.lc",
+            Lua(Container(lua_text=final_metroid_script), editor.target_game)
         )
 
-        final_metroid_script = lua_util.replace_lua_template("metroid_template.lua", {"mapping": self._metroid_dict})
-        editor.replace_asset("actors/scripts/metroid.lc", final_metroid_script.encode("utf-8"))
-
         final_chozo_seal_script = lua_util.replace_lua_template("chozoseal_template.lua", {"mapping": self._hint_dict})
-        editor.replace_asset("actors/props/chozoseal/scripts/chozoseal.lc", final_chozo_seal_script.encode("utf-8"))
+        editor.add_new_asset(
+            "actors/props/chozoseal/scripts/chozoseal.lc",
+            Lua(Container(lua_text=final_chozo_seal_script), editor.target_game),
+            []
+        )
 
         # replace all levels files with the custom ones
         for scenario, script in self._custom_level_scripts.items():
-            editor.replace_asset(path_for_level(scenario) + ".lc", script["script"].encode("utf-8"))
+            editor.replace_asset(
+                path_for_level(scenario) + ".lc",
+                Lua(Container(lua_text=script["script"]), editor.target_game)
+            )
 
-    def add_metroid_pickup(self, metroid_callback: dict, lua_class: str) -> None:
+    def add_metroid_pickup(self, metroid_callback: dict, script_class: ScriptClass) -> None:
         scenario = metroid_callback["scenario"]
         spawngroup = metroid_callback["spawngroup"]
         if scenario not in self._metroid_dict:
             self._metroid_dict[scenario] = {}
         scenario_list = self._metroid_dict[scenario]
-        scenario_list[spawngroup] = lua_class
+        scenario_list[spawngroup] = script_class.class_name
+        lua_file_name = script_class.get_lua_file_name()
+        if lua_file_name not in self._metroid_imports:
+            self._metroid_imports.append(script_class.get_lua_file_name())
 
     def add_hint(self, hint: dict) -> None:
         actor_ref = hint["accesspoint_actor"]
