@@ -1,4 +1,4 @@
-from mercury_engine_data_structures.formats import Bmsad, Bmsbk
+from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmtun
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 MULTI_ROOM_GAMMAS = [
@@ -80,16 +80,27 @@ def shoot_supers_without_missiles(editor: PatcherEditor):
 
 
 def nerf_ridley_fight(editor: PatcherEditor):
-    # Power Beam: 3 (25 * 0.12)
-    # Ice: 10
-    # Wave: 14 (50 * 0.28)
-    # Spazer: 25,2 (210 * 0.12)
-    # Plasma: 36 (default of 300 * 0.12 in tunable of ridley)
+    '''
+    All beams (except Ice) will use the same factor as Plasma which is 0.12
+    Power Beam: 25 -> 3
+    Ice: 10
+    Wave: 50 -> 6
+    Spazer: 210 -> 25.2
+    Plasma: 36 (default from ridley tunable)
+    '''
     ridley_bmsad = editor.get_file("actors/characters/ridley/charclasses/ridley.bmsad", Bmsad)
     ridley_bmsad.components["LIFE"].raw["fields"]["fPowerBeamFactor"]["value"] = 0.12
-    ridley_bmsad.components["LIFE"].raw["fields"]["fWaveBeamFactor"]["value"] = 0.28
-    ridley_bmsad.components["LIFE"].raw["fields"]["fSpazerBeamFactor"]["value"] = 0.12
 
+    tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
+    ridley_tunables = tunables.raw["classes"]["Ridley|CTunableCharClassRidleyAIComponent"]["tunables"]
+    ridley_tunables["fPlasmaBeam"]["value"] = 1.0
+    ridley_tunables["fPlasmaBeamCharge"]["value"] = 1.0
+    ridley_tunables["fPlasmaBeamWeaponBoost"]["value"] = 1.1
+    ridley_tunables["fPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
+    ridley_tunables["fGrabPlasmaBeam"]["value"] = 1.0
+    ridley_tunables["fGrabPlasmaBeamCharge"]["value"] = 1.0
+    ridley_tunables["fGrabPlasmaBeamWeaponBoost"]["value"] = 1.1
+    ridley_tunables["fGrabPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
 
 def apply_static_fixes(editor: PatcherEditor):
     patch_multi_room_gammas(editor)
