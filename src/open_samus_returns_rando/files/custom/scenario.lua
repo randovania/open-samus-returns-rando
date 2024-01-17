@@ -46,16 +46,17 @@ function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_nam
 end
 
 function Scenario.InitGUI()
-  GUILib.AddDNACounter()
+  GUILib.AddDNACounterHUD()
   GUILib.UpdateTotalDNAColor()
-  Scenario.UpdateDNACounter()
+  Scenario.UpdateDNACounters()
 end
 
-function Scenario.UpdateDNACounter()
+function Scenario.UpdateDNACounters()
   local scenario = Init.tScenarioMapping[Scenario.CurrentScenarioID]
   local maxDNA = Init.tDNAPerArea[scenario] or 0
   local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
-  GUILib.UpdateDNACounter(currentDNA, maxDNA)
+  GUILib.UpdateDNACounterHUD(currentDNA, maxDNA)
+  GUILib.UpdateDNACounterMap(currentDNA, maxDNA)
 end
 
 local original_init = Scenario.InitScenario
