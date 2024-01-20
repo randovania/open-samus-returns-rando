@@ -102,6 +102,65 @@ def nerf_ridley_fight(editor: PatcherEditor):
     ridley_tunables["fGrabPlasmaBeamWeaponBoost"]["value"] = 1.1
     ridley_tunables["fGrabPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
 
+
+def increase_pb_drop_chance(editor: PatcherEditor):
+    ACTOR_FILES = [
+        "alpha",
+        "alphaevolved",
+        "alphanewborn",
+        "autoad",
+        "autoadblack",
+        "autrack",
+        "autrackblack",
+        "chuteleech",
+        "drivel",
+        "drivelstronger",
+        "gamma",
+        "gammaevolved",
+        "gawron",
+        "glowfly",
+        "glowflypuzzle",
+        "gravitt",
+        "gravittadamant",
+        "gullugg",
+        "gulluggelectric",
+        "gulluggstronger",
+        "gunzoo",
+        "halzyn",
+        "hornoad",
+        "hornoadstronger",
+        "moheek",
+        "moheekwall",
+        "moto",
+        "motostronger",
+        "omega",
+        "omegaevolved",
+        "ramulken",
+        "ramulkenstronger",
+        "rockicicle",
+        "tsumuri",
+        "tsumurialternative",
+        "wallfirefireball",
+        "wallfirefireballblack",
+        "wallfireflame",
+        "wallfireflameblack",
+        "zeta",
+        "zetaevolved",
+    ]
+    for actor in ACTOR_FILES:
+        actor_bmsad = editor.get_file(f"actors/characters/{actor}/charclasses/{actor}.bmsad", Bmsad)
+        drop = actor_bmsad.raw["components"]["DROP"]["fields"]
+        # Gamma is special as its DROP component is laid out differently
+        if actor in ["gamma", "gammaevolved"]:
+            drop[8]["value"]["value"] = 0.1
+        # The rest of the Metroids
+        elif drop["fPowerBombProbability"]["value"] == 0.0:
+            drop["fPowerBombProbability"]["value"] = 0.1
+        # All other enemies excluding Blobthrower
+        else:
+            drop["fPowerBombProbability"]["value"] *= 2
+
+
 def apply_static_fixes(editor: PatcherEditor):
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
@@ -110,3 +169,4 @@ def apply_static_fixes(editor: PatcherEditor):
     patch_a7_save_screw_blocks(editor)
     shoot_supers_without_missiles(editor)
     nerf_ridley_fight(editor)
+    increase_pb_drop_chance(editor)
