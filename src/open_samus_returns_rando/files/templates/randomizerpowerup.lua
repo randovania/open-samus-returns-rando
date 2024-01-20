@@ -59,9 +59,9 @@ function RandomizerPowerup.ObjectiveComplete()
         local baby = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_BABY_HATCHLING")
         local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
         GUI.SetProperties(dnaCounter, {
-            ColorR = "0.90908",
-            ColorG = "0.88627",
-            ColorB = "0.66274",
+            ColorR = "0.60392",
+            ColorG = "0.61569",
+            ColorB = "0.04314",
         })
         if baby > 0 then
             GUI.LaunchMessage("All Metroid DNA has been collected!\nThe path to Proteus Ridley has been opened in Surface - West!",
