@@ -150,12 +150,12 @@ def increase_pb_drop_chance(editor: PatcherEditor):
     for actor in ACTOR_FILES:
         actor_bmsad = editor.get_file(f"actors/characters/{actor}/charclasses/{actor}.bmsad", Bmsad)
         drop = actor_bmsad.raw["components"]["DROP"]["fields"]
-        # Gamma is special as it's DROP component is laid out differently
+        # Gamma is special as its DROP component is laid out differently
         if actor in ["gamma", "gammaevolved"]:
-            drop[8]["value"]["value"] = 0.10000000149011612
+            drop[8]["value"]["value"] = 0.1
         # The rest of the Metroids
         elif drop["fPowerBombProbability"]["value"] == 0.0:
-            drop["fPowerBombProbability"]["value"] = 0.10000000149011612
+            drop["fPowerBombProbability"]["value"] = 0.1
         # All other enemies excluding Blobthrower
         else:
             drop["fPowerBombProbability"]["value"] *= 2
