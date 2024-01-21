@@ -46,7 +46,7 @@ function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_nam
 end
 
 function Scenario.InitGUI()
-  GUILib.AddDNACounterHUD()
+  GUILib.AddDNACounter()
   GUILib.UpdateTotalDNAColor()
   Scenario.UpdateDNACounters()
 end

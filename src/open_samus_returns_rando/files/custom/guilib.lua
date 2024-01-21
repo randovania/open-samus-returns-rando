@@ -1,7 +1,7 @@
 
 GUILib = GUILib or {}
 
-function GUILib.AddDNACounterHUD()
+function GUILib.AddDNACounter()
   local randoUI = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNAMechIconRando")
   if randoUI ~= nil then
     return
@@ -66,9 +66,7 @@ function GUILib.AddDNACounterHUD()
     Enabled = false,
     Visible = false
   })
-end
 
-function GUILib.AddDNACounterMap()
   local mapDNA = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.PercentComposition")
   mapDNA:AddChild((GUI.CreateDisplayObjectEx("MapDNABase", "CSprite", {
     X = "0.73963",
