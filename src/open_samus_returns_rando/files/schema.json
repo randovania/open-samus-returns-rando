@@ -301,6 +301,48 @@
             },
             "default": []
         },
+        "cosmetics": {
+            "type": "object",
+            "properties": {
+                "laser_locked_color": {
+                    "type": "array", 
+                    "description": "Change the color of the locked laser aim.",
+                    "default": [
+                        1.0,
+                        0.0,
+                        0.0
+                    ]
+                },
+                "laser_unlocked_color": {
+                    "type": "array", 
+                    "description": "Change the color of the unlocked laser aim.",
+                    "default": [
+                        1.0,
+                        0.5,
+                        0.0
+                    ]
+                },
+                "grapple_laser_locked_color": {
+                    "type": "array", 
+                    "description": "Change the color of the locked grapple laser aim.",
+                    "default": [
+                        1.0,
+                        1.0,
+                        0.0
+                    ]
+                },
+                "grapple_laser_unlocked_color": {
+                    "type": "array", 
+                    "description": "Change the color of the unlocked grapple laser aim.",
+                    "default": [
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            },
+            "default": {}
+        },
         "configuration_identifier": {
             "type": "string",
             "description": "An unique identifier for this configuration. Only save files created with this identifier can be loaded."
