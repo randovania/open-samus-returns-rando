@@ -7,10 +7,12 @@ function GUIColor.ChangeEnergyTanksHUDColor()
         ColorG = TEMPLATE("energy_counter_g"),
         ColorB = TEMPLATE("energy_counter_b"),
     })
-    local tank1 = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.UpperComposition.StatusComposition.EnergyTanksContainerComposition.Tank1")
-    GUI.SetProperties(tank1, {
-        ColorR = "0.08000",
-        ColorG = "0.80000",
-        ColorB = "0.93000",
-    })
+    for tank = 1, 10 do
+        local energyTank = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.UpperComposition.StatusComposition.EnergyTanksContainerComposition.Tank" .. tank)
+        GUI.SetProperties(energyTank, {
+            ColorR = TEMPLATE("energy_tank_r"),
+            ColorG = TEMPLATE("energy_tank_g"),
+            ColorB = TEMPLATE("energy_tank_b"),
+        })
+    end
 end

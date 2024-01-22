@@ -342,7 +342,16 @@
                 },
                 "energy_counter_color":{
                     "type": "array",
-                    "description": "Change the color of the Energy Tank counter text.",
+                    "description": "Change the color of the Energy counter.",
+                    "default": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
+                },
+                "energy_tank_color":{
+                    "type": "array",
+                    "description": "Change the color of Energy Tanks.",
                     "default": [
                         1.0,
                         1.0,

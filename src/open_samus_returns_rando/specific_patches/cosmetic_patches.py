@@ -19,9 +19,14 @@ def _tunable_cosmetics(tunables: Bmtun, configuration: dict):
 
 def _lua_cosmetics(configuration: dict) -> str:
     replacement = {
+        # Energy Counter Color
         "energy_counter_r": lua_util.wrap_string(configuration["energy_counter_color"][0]),
         "energy_counter_g": lua_util.wrap_string(configuration["energy_counter_color"][1]),
         "energy_counter_b": lua_util.wrap_string(configuration["energy_counter_color"][2]),
+        # Energy Tank Color
+        "energy_tank_r": lua_util.wrap_string(configuration["energy_tank_color"][0]),
+        "energy_tank_g": lua_util.wrap_string(configuration["energy_tank_color"][1]),
+        "energy_tank_b": lua_util.wrap_string(configuration["energy_tank_color"][2]),
     }
 
     return lua_util.replace_lua_template("guicolor.lua", replacement)
