@@ -8,6 +8,7 @@ from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.misc_patches.text_patches import patch_text
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
+from open_samus_returns_rando.specific_patches import cosmetic_patches
 
 
 def _read_level_lua(level_id: str) -> str:
@@ -282,6 +283,18 @@ class LuaEditor:
             "system/scripts/guilib.lc",
             Lua(Container(lua_text=files_path().joinpath("custom", "guilib.lua").read_text()), editor.target_game),
             []
+        )
+
+        editor.add_new_asset(
+            "system/scripts/guicolor.lc",
+            Lua(Container(lua_text=files_path().joinpath("templates", "guicolor.lua").read_text()), editor.target_game),
+            []
+        )
+
+        guicolor_script = cosmetic_patches._lua_cosmetics(configuration)
+        editor.replace_asset(
+            "system/scripts/guicolor.lc",
+            Lua(Container(lua_text=guicolor_script), editor.target_game)
         )
 
         # replace ensured scripts with the final code

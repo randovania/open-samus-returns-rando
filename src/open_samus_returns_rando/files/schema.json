@@ -301,7 +301,7 @@
             },
             "default": []
         },
-        "cosmetics": {
+        "cosmetic_patches": {
             "type": "object",
             "properties": {
                 "laser_locked_color": {
@@ -337,6 +337,15 @@
                     "default": [
                         0.0,
                         0.0,
+                        1.0
+                    ]
+                },
+                "energy_counter_color":{
+                    "type": "array",
+                    "description": "Change the color of the Energy Tank counter text.",
+                    "default": [
+                        1.0,
+                        1.0,
                         1.0
                     ]
                 }

@@ -1,5 +1,6 @@
 Game.ImportLibrary("system/scripts/scenario_original.lua")
 Game.ImportLibrary("system/scripts/guilib.lua", false)
+Game.ImportLibrary("system/scripts/guicolor.lua", false)
 
 Scenario = Scenario or {}
 setmetatable(Scenario, {__index = _G})
@@ -48,6 +49,7 @@ end
 function Scenario.InitGUI()
   GUILib.AddDNACounter()
   GUILib.UpdateTotalDNAColor()
+  GUIColor.ChangeEnergyTanksHUDColor()
   Scenario.UpdateDNACounter()
 end
 

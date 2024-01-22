@@ -76,7 +76,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     tunable_patches.patch_tunables(editor, configuration.get("reserves_per_tank", {}))
 
     # Patch cosmetics
-    cosmetic_patches.patch_cosmetics(editor, configuration.get("cosmetics", {}))
+    cosmetic_patches.patch_cosmetics(editor, configuration.get("cosmetic_patches", {}))
 
     # Patch metroids
     patch_metroids(editor)
