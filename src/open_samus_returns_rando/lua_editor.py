@@ -291,7 +291,7 @@ class LuaEditor:
             []
         )
 
-        guicolor_script = cosmetic_patches._lua_cosmetics(configuration)
+        guicolor_script = cosmetic_patches._lua_cosmetics(configuration["cosmetic_patches"])
         editor.replace_asset(
             "system/scripts/guicolor.lc",
             Lua(Container(lua_text=guicolor_script), editor.target_game)
