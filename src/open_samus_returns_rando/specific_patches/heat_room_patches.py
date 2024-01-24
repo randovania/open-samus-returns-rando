@@ -106,6 +106,8 @@ def _patch_area_4(editor: PatcherEditor):
     editor.copy_actor(name_of_scenario, (1000.0, 1000.0, 0.0), heat_actor, "TG_Heat_003", 2)
 
     scenario_4.add_actor_to_entity_groups("collision_camera_005", "TG_Heat_003", True)
+    scenario_4.add_actor_to_entity_groups("PostGamma_001", "TG_Heat_003", True)
+    
 
 def _patch_area_5_1(editor: PatcherEditor):
     name_of_scenario = "s050_area5"
@@ -164,6 +166,8 @@ def _patch_area_5_2(editor: PatcherEditor):
     scenario_5.add_actor_to_entity_groups("collision_camera_009", "TG_Heat_033", True)
     scenario_5.add_actor_to_entity_groups("collision_camera_015", "TG_Heat_033", True)
     scenario_5.add_actor_to_entity_groups("collision_camera_017", "TG_Heat_033", True)
+    scenario_5.add_actor_to_entity_groups("017_PostGamma_002", "TG_Heat_033", True)
+    scenario_5.add_actor_to_entity_groups("PostGamma_002", "TG_Heat_033", True)
 
 def _patch_area_6_b(editor: PatcherEditor):
     name_of_scenario = "s065_area6b"
@@ -193,6 +197,7 @@ def _patch_area_6_b(editor: PatcherEditor):
     scenario_6b.add_actor_to_entity_groups("collision_camera_014", "TG_Heat_003", True)
     scenario_6b.add_actor_to_entity_groups("collision_camera_017", "TG_Heat_003", True)
     scenario_6b.add_actor_to_entity_groups("collision_camera_018", "TG_Heat_003", True)
+    scenario_6b.add_actor_to_entity_groups("PostGamma_002", "TG_Heat_003", True)
 
 
 def _patch_area_6_c(editor: PatcherEditor):
@@ -221,6 +226,7 @@ def _patch_area_6_c(editor: PatcherEditor):
     editor.copy_actor(name_of_scenario, (1000.0, 2000.0, 0.0), heat_actor, "TG_Heat_003", 2)
 
     scenario_6c.add_actor_to_entity_groups("collision_camera_022", "TG_Heat_003", True)
+    scenario_6c.add_actor_to_entity_groups("PostGamma_001", "TG_Heat_003", True)
 
 def patch_heat_rooms(editor: PatcherEditor):
     _patch_area_2b(editor)
