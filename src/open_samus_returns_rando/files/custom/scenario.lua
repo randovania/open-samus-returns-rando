@@ -1,6 +1,6 @@
 Game.ImportLibrary("system/scripts/scenario_original.lua")
 Game.ImportLibrary("system/scripts/guilib.lua", false)
-Game.ImportLibrary("system/scripts/guicolor.lua", false)
+Game.ImportLibrary("system/scripts/cosmetics.lua", false)
 
 Scenario = Scenario or {}
 setmetatable(Scenario, {__index = _G})
@@ -47,9 +47,9 @@ function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_nam
 end
 
 function Scenario.InitGUI()
+  Cosmetics.UpdateGUI()
   GUILib.AddDNACounter()
   GUILib.UpdateTotalDNAColor()
-  GUIColor.ChangeEnergyTanksHUDColor()
   Scenario.UpdateDNACounter()
 end
 

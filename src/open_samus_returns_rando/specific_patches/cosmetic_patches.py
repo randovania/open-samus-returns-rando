@@ -27,6 +27,10 @@ def _lua_cosmetics(configuration: dict) -> str:
         "energy_tank_r": lua_util.wrap_string(configuration["energy_tank_color"][0]),
         "energy_tank_g": lua_util.wrap_string(configuration["energy_tank_color"][1]),
         "energy_tank_b": lua_util.wrap_string(configuration["energy_tank_color"][2]),
+        # Special Energy Bar Color
+        "special_energy_bar_r": lua_util.wrap_string(configuration["special_energy_bar_color"][0]),
+        "special_energy_bar_g": lua_util.wrap_string(configuration["special_energy_bar_color"][1]),
+        "special_energy_bar_b": lua_util.wrap_string(configuration["special_energy_bar_color"][2]),
     }
 
-    return lua_util.replace_lua_template("guicolor.lua", replacement)
+    return lua_util.replace_lua_template("cosmetics.lua", replacement)

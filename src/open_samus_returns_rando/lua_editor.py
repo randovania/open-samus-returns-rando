@@ -286,15 +286,16 @@ class LuaEditor:
         )
 
         editor.add_new_asset(
-            "system/scripts/guicolor.lc",
-            Lua(Container(lua_text=files_path().joinpath("templates", "guicolor.lua").read_text()), editor.target_game),
+            "system/scripts/cosmetics.lc",
+            Lua(Container(lua_text=files_path().joinpath("templates", "cosmetics.lua").read_text()),
+                editor.target_game),
             []
         )
 
-        guicolor_script = cosmetic_patches._lua_cosmetics(configuration["cosmetic_patches"])
+        cosmetics_script = cosmetic_patches._lua_cosmetics(configuration["cosmetic_patches"])
         editor.replace_asset(
-            "system/scripts/guicolor.lc",
-            Lua(Container(lua_text=guicolor_script), editor.target_game)
+            "system/scripts/cosmetics.lc",
+            Lua(Container(lua_text=cosmetics_script), editor.target_game)
         )
 
         # replace ensured scripts with the final code
