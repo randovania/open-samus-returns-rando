@@ -107,7 +107,7 @@ def _patch_area_4(editor: PatcherEditor):
 
     scenario_4.add_actor_to_entity_groups("collision_camera_005", "TG_Heat_003", True)
     scenario_4.add_actor_to_entity_groups("PostGamma_001", "TG_Heat_003", True)
-    
+
 
 def _patch_area_5_1(editor: PatcherEditor):
     name_of_scenario = "s050_area5"
