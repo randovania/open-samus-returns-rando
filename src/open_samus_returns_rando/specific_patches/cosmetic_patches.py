@@ -19,18 +19,18 @@ def _tunable_cosmetics(tunables: Bmtun, configuration: dict):
 
 def _lua_cosmetics(configuration: dict) -> str:
     replacement = {
-        # Energy Counter Color
-        "energy_counter_r": lua_util.wrap_string(configuration["energy_counter_color"][0]),
-        "energy_counter_g": lua_util.wrap_string(configuration["energy_counter_color"][1]),
-        "energy_counter_b": lua_util.wrap_string(configuration["energy_counter_color"][2]),
         # Energy Tank Color
         "energy_tank_r": lua_util.wrap_string(configuration["energy_tank_color"][0]),
         "energy_tank_g": lua_util.wrap_string(configuration["energy_tank_color"][1]),
         "energy_tank_b": lua_util.wrap_string(configuration["energy_tank_color"][2]),
-        # Special Energy Bar Color
-        "special_energy_bar_r": lua_util.wrap_string(configuration["special_energy_bar_color"][0]),
-        "special_energy_bar_g": lua_util.wrap_string(configuration["special_energy_bar_color"][1]),
-        "special_energy_bar_b": lua_util.wrap_string(configuration["special_energy_bar_color"][2]),
+        # Aeion Bar Color
+        "aeion_bar_r": lua_util.wrap_string(configuration["aeion_bar_color"][0]),
+        "aeion_bar_g": lua_util.wrap_string(configuration["aeion_bar_color"][1]),
+        "aeion_bar_b": lua_util.wrap_string(configuration["aeion_bar_color"][2]),
+        # Ammo HUD Color
+        "ammo_hud_r": lua_util.wrap_string(configuration["ammo_hud_color"][0]),
+        "ammo_hud_g": lua_util.wrap_string(configuration["ammo_hud_color"][1]),
+        "ammo_hud_b": lua_util.wrap_string(configuration["ammo_hud_color"][2]),
     }
 
     return lua_util.replace_lua_template("cosmetics.lua", replacement)

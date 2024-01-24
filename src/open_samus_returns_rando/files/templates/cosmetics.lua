@@ -1,18 +1,9 @@
 Cosmetics = Cosmetics or {}
 
 function Cosmetics.UpdateGUI()
-    Cosmetics.ChangeEnergyCounterColor()
     Cosmetics.ChangeEnergyTanksColor()
     Cosmetics.ChangeSpecialEnergyBarColor()
-end
-
-function Cosmetics.ChangeEnergyCounterColor()
-    local energyCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.UpperComposition.StatusComposition.EnergyCounter")
-    GUI.SetProperties(energyCounter, {
-        ColorR = TEMPLATE("energy_counter_r"),
-        ColorG = TEMPLATE("energy_counter_g"),
-        ColorB = TEMPLATE("energy_counter_b"),
-    })
+    Cosmetics.ChangeAmmoSelectionColor()
 end
 
 function Cosmetics.ChangeEnergyTanksColor()
@@ -29,8 +20,20 @@ end
 function Cosmetics.ChangeSpecialEnergyBarColor()
     local specialEnergy = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.UpperComposition.StatusComposition.SpecialEnergyBarComponents")
     GUI.SetProperties(specialEnergy, {
-        ColorR = TEMPLATE("special_energy_bar_r"),
-        ColorG = TEMPLATE("special_energy_bar_g"),
-        ColorB = TEMPLATE("special_energy_bar_b"),
+        ColorR = TEMPLATE("aeion_bar_r"),
+        ColorG = TEMPLATE("aeion_bar_g"),
+        ColorB = TEMPLATE("aeion_bar_b"),
     })
+end
+
+function Cosmetics.ChangeAmmoSelectionColor()
+    local hudElements = {"MissilesSelection", "SGI_Missile", "SuperMissilesSelection", "SGI_SuperMissile", "PowerBombsSelection", "SGI_PowerBomb"}
+    for i = 1, 6 do
+        local hud = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.UpperComposition.StatusComposition." .. hudElements[i])
+        GUI.SetProperties(hud, {
+            ColorR = TEMPLATE("ammo_hud_r"),
+            ColorG = TEMPLATE("ammo_hud_g"),
+            ColorB = TEMPLATE("ammo_hud_b"),
+        })
+    end
 end
