@@ -285,17 +285,11 @@ class LuaEditor:
             []
         )
 
+        cosmetics_script = cosmetic_patches.lua_cosmetics(configuration["cosmetic_patches"])
         editor.add_new_asset(
             "system/scripts/cosmetics.lc",
-            Lua(Container(lua_text=files_path().joinpath("templates", "cosmetics.lua").read_text()),
-                editor.target_game),
+            Lua(Container(lua_text=cosmetics_script), editor.target_game),
             []
-        )
-
-        cosmetics_script = cosmetic_patches._lua_cosmetics(configuration["cosmetic_patches"])
-        editor.replace_asset(
-            "system/scripts/cosmetics.lc",
-            Lua(Container(lua_text=cosmetics_script), editor.target_game)
         )
 
         # replace ensured scripts with the final code
