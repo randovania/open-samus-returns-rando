@@ -15,7 +15,7 @@ from open_samus_returns_rando.misc_patches.text_patches import add_spiderboost_s
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickups.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.pickups.pickup import patch_pickups
-from open_samus_returns_rando.specific_patches import game_patches, tunable_patches
+from open_samus_returns_rando.specific_patches import cosmetic_patches, game_patches, tunable_patches
 from open_samus_returns_rando.specific_patches.chozo_seal_patches import patch_chozo_seals
 from open_samus_returns_rando.specific_patches.door_patches import patch_doors
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
@@ -74,6 +74,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     # Patch tunables
     tunable_patches.patch_tunables(editor, configuration.get("reserves_per_tank", {}))
+
+    # Patch cosmetics
+    cosmetic_patches.patch_cosmetics(editor, configuration.get("cosmetic_patches", {}))
 
     # Patch metroids
     patch_metroids(editor)
