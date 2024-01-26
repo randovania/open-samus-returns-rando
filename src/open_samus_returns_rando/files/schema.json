@@ -180,9 +180,9 @@
                     "description": "Remove the Power Bomb weakness from Beam Doors to make Power Bombs less overpowered.",
                     "default": true
                 },
-                "plant_buff": {
+                "beam_burst_buff": {
                     "type": "boolean",
-                    "description": "Remove the Power Bomb weakness from Blobthowers/Blockingplants to make Power Bombs less overpowered.",
+                    "description": "Remove the Power Bomb weakness from Blobthowers/Steel Orbs to make Power Bombs less overpowered.",
                     "default": false
                 },
                 "remove_elevator_grapple_blocks": {
