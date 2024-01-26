@@ -45,7 +45,7 @@ def _remove_pb_weaknesses(editor: PatcherEditor, configuration: dict):
             if func_s.params.Param1.value:
                 func_s.params.Param1.value = "SPAZER_BEAM"
 
-    # Blobthrowers/Blockingplants
+    # Blobthrowers/Steel Orbs
     if configuration["beam_burst_buff"]:
         PLANT_FILES = [
             "actors/characters/blobthrower/charclasses/blobthrower.bmsad",
