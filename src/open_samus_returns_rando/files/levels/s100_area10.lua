@@ -76,7 +76,7 @@ function s100_area10.InitFromBlackboard()
   Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
   Game.DisableEntity("LE_Baby_Hatchling")
   Game.DisableTrigger("TG_MetroidRadar")
-  Game.GetEntity("LE_RandoDNA").USABLE:Activate(false)
+  Game.GetEntity("LE_RandoDNA_002").USABLE:Activate(false)
   if Game.GetEntity("LE_ValveQueen") ~= nil then
     if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
       Game.GetEntity("LE_ValveQueen").MODELUPDATER:SetMeshVisible("Valve", false)
@@ -273,7 +273,7 @@ function s100_area10.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_
     Game.SetSceneGroupEnabledByName("sg_egg01", false)
     Game.SetSceneGroupEnabledByName("sg_egg02", true)
     Game.EnableEntity("LE_Baby_Hatchling")
-    Game.GetEntity("LE_RandoDNA").USABLE:Activate(true)
+    Game.GetEntity("LE_RandoDNA_002").USABLE:Activate(true)
   end
   if _ARG_2_ == "collision_camera_020" then
     s100_area10.fSafeFarPlaneFactor = Game.GetSafeFarPlaneFactor()
