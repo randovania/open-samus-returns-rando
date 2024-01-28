@@ -125,7 +125,7 @@ def _patch_beam_covers(editor: PatcherEditor):
             actor = scenario.raw.actors[9][cover_name]
             new_actor_name = f"{cover_name}_o"
             new_actor = editor.copy_actor(
-                scenario_name, (actor["position"][0], actor["position"][1],  actor["position"][2]),
+                scenario_name, (actor["position"][0], actor["position"][1], actor["position"][2]),
                 actor, new_actor_name, 9
             )
             new_actor["rotation"][0] = 0
@@ -145,7 +145,6 @@ def _patch_beam_covers(editor: PatcherEditor):
                     if group_name in list(scenario.all_actor_group_names_for_actor(cover_name))]
             for group in entity_groups:
                 scenario.insert_into_entity_group(group, new_actor_name)
-
 
 
 def _patch_charge_doors(editor: PatcherEditor):
@@ -175,7 +174,9 @@ def _patch_one_way_doors(editor: PatcherEditor):
         "s030_area3": ["Door005", "Door006"],
         # Chozo Seal Spazer Door
         "s040_area4": ["Door001"],
-        # Plasma Room Plasma and Missile doors, Gravity Room Missile Door
+        # Super Missile Room Super Door
+        "s050_area5": ["Door005"],
+        # Plasma Room Plasma and Missile Doors, Gravity Room Missile Door
         "s067_area6c": ["Door005", "Door006", "Door009"]
     }
 

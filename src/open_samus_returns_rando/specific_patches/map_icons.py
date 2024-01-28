@@ -12,6 +12,7 @@ def patch_tiles(editor: PatcherEditor):
         "s028_area2c": ["Door001", "Door007"],
         "s030_area3": ["Door002", "Door005", "Door006", "Door008"],
         "s040_area4": ["Door001", "Door006", "Door014"],
+        "s050_area5": ["Door005"],
         "s060_area6": ["Door001"],
         "s067_area6c": ["Door005", "Door006", "Door009"],
         "s090_area9": ["Door012"],
@@ -42,7 +43,8 @@ def patch_tiles(editor: PatcherEditor):
                     for door in doors:
                         if door in door_tile["actor_name"]:
                             door_tile["clear_condition"] = ""
-                            if "left" in door_tile["icon"]:
-                                door_tile["icon"] = "doorpowerleft"
-                            else:
-                                door_tile["icon"] = "doorpowerright"
+                            if "closed" in door_tile["icon"]:
+                                if "left" in door_tile["icon"]:
+                                    door_tile["icon"] = "doorpowerleft"
+                                else:
+                                    door_tile["icon"] = "doorpowerright"
