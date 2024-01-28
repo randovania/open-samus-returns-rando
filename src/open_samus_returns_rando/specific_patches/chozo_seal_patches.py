@@ -1,3 +1,5 @@
+import typing
+
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad, Bmsmsd
 from open_samus_returns_rando.patcher_editor import PatcherEditor
@@ -45,122 +47,76 @@ def patch_dna_check(editor: PatcherEditor):
     editor.replace_asset(file_name, systemmechdna)
 
 
-def add_chozo_seals(editor: PatcherEditor):
-    SCENARIOS = {
-        "s033_area3b": [[-3800.0, -16800.0, 0.0]],
-        "s050_area5": [[12250.0, 6700.0, 0.0]],
-        "s065_area6b": [[-300.0, 5700.0, 0.0]],
-        "s100_area10": [[-1000.0, -5100.0, 0.0], [-4100.0, 11200.0, 0.0]],
-        "s110_surfaceb": [[-28150.0, 300.0, 0.0]],
-    }
-    for scenario, actor_coordinates in SCENARIOS.items():
-        template_ap = editor.get_scenario("s000_surface").raw.actors[16]["LE_ChozoUnlockAreaDNA"]
-        template_platform = editor.get_scenario("s000_surface").raw.actors[10]["LE_Platform_ChozoUnlockAreaDNA"]
+class NewChozoSeal(typing.NamedTuple):
+    scenario: str
+    ap_coordinates: tuple[(float, float, float)]
+    platform_coordinates: tuple[(float, float, float)]
+    tile_index: int
+    entity_groups: list[str]
+    ap_name: str = "LE_RandoDNA"
+    platform_name: str = "LE_Platform_RandoDNA"
 
-        scenario_name = scenario
-        scenario_file = editor.get_scenario(scenario_name)
+new_seals = [
+    NewChozoSeal(
+        "s033_area3b", [-3800.0, -16800.0, 0.0], [-3800.0, -16800.0, 0.0], 22, ["collision_camera_033", "PostGamma_004"]
+    ),
+    NewChozoSeal(
+        "s050_area5", [12250.0, 6700.0, 20.0], [12250.0, 6700.0, 0.0], 238,
+        ["collision_camera_017", "017_PostGamma_002", "PostGamma_002"]
+    ),
+    NewChozoSeal(
+        "s065_area6b", [-300.0, 5700.0, 25.0], [-300.0, 5700.0, 0.0], 216, ["collision_camera_002"]
+    ),
+    NewChozoSeal(
+        "s100_area10", [-1000.0, -5125.0, 0.0], [-1000.0, -5100.0, 0.0], 94,
+        ["collision_camera_010"], "LE_RandoDNA_001", "LE_Platform_RandoDNA_001"
+    ),
+    NewChozoSeal(
+        "s100_area10", [-4100.0, 11200.0, 0.0], [-4100.0, 11200.0, 0.0], 253,
+        ["collision_camera_022", "collision_camera_024"], "LE_RandoDNA_002", "LE_Platform_RandoDNA_002"
+    ),
+    NewChozoSeal(
+        "s110_surfaceb", [-28150.0, 300.0, 0.0], [-28150.0, 300.0, 0.0], 145, ["collision_camera_017"]
+    ),
+]
 
-        if scenario == "s110_surfaceb":
-            scenario_map = editor.get_file("gui/minimaps/c10_samus/s000_surface.bmsmsd", Bmsmsd)
-        else:
-            scenario_map = editor.get_file(f"gui/minimaps/c10_samus/{scenario}.bmsmsd", Bmsmsd)
+def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal):
+    template_ap = editor.get_scenario("s000_surface").raw.actors[16]["LE_ChozoUnlockAreaDNA"]
+    template_platform = editor.get_scenario("s000_surface").raw.actors[10]["LE_Platform_ChozoUnlockAreaDNA"]
 
-        # Dependencies
-        editor.ensure_present_in_scenario(scenario, "maps/textures/dnaemptyfx_d.bctex")
-        for asset in editor.get_asset_names_in_folder("actors/props/systemmechdna"):
-            editor.ensure_present_in_scenario(scenario, asset)
+    CHOZO_SEAL_ICON = Container({
+        "actor_name": new_seal.ap_name,
+        "clear_condition": "",
+        "icon": "systemmechdna",
+        "icon_priority": 4,
+        "coordinates": ListContainer(new_seal.ap_coordinates),
+    })
 
-        if scenario != "s100_area10":
-            new_ap = "LE_RandoDNA"
-            new_platform = "LE_Platform_RandoDNA"
-            for position in actor_coordinates:
-                coordinates = position
-                CHOZO_SEAL_ICON = Container({
-                    "actor_name": "LE_RandoDNA",
-                    "clear_condition": "",
-                    "icon": "systemmechdna",
-                    "icon_priority": 4,
-                    "coordinates": ListContainer(coordinates),
-                })
-                editor.copy_actor(scenario, coordinates, template_platform, new_platform, 10)
-                # Scenarios that need to adjust the position of the Chozo Seal are listed first
-                if scenario == "s050_area5":
-                    editor.copy_actor(scenario, (12250.0, 6700.0, 20.0), template_ap, new_ap, 16)
-                elif scenario == "s065_area6b":
-                    editor.copy_actor(scenario, (-300.0, 5700.0, 25.0), template_ap, new_ap, 16)
-                else:
-                    editor.copy_actor(scenario, coordinates, template_ap, new_ap, 16)
+    scenario_name = new_seal.scenario
+    scenario_file = editor.get_scenario(scenario_name)
 
-                scenario_file.raw.actors[10][new_platform]["components"][0]["arguments"][4]["value"] = new_ap
+    editor.copy_actor(new_seal.scenario, new_seal.ap_coordinates, template_ap, new_seal.ap_name, 16)
+    editor.copy_actor(new_seal.scenario, new_seal.platform_coordinates, template_platform, new_seal.platform_name, 10)
+    scenario_file.raw.actors[10][new_seal.platform_name]["components"][0]["arguments"][4]["value"] = new_seal.ap_name
 
-                if scenario == "s033_area3b":
-                    scenario_map.raw["tiles"][22]["icons"] = ListContainer([CHOZO_SEAL_ICON])
-                    scenario_file.add_actor_to_entity_groups("collision_camera_033", new_ap)
-                    scenario_file.add_actor_to_entity_groups("PostGamma_004", new_ap)
-                    scenario_file.add_actor_to_entity_groups("collision_camera_033", new_platform)
-                    scenario_file.add_actor_to_entity_groups("PostGamma_004", new_platform)
-                if scenario == "s050_area5":
-                    scenario_map.raw["tiles"][238]["icons"] = ListContainer([CHOZO_SEAL_ICON])
-                    scenario_file.add_actor_to_entity_groups("collision_camera_017", new_ap, True)
-                    scenario_file.add_actor_to_entity_groups("017_PostGamma_002", new_ap, True)
-                    scenario_file.add_actor_to_entity_groups("PostGamma_002", new_ap, True)
-                    scenario_file.add_actor_to_entity_groups("collision_camera_017", new_platform, True)
-                    scenario_file.add_actor_to_entity_groups("017_PostGamma_002", new_platform, True)
-                    scenario_file.add_actor_to_entity_groups("PostGamma_002", new_platform, True)
-                if scenario == "s065_area6b":
-                    scenario_map.raw["tiles"][216]["icons"] = ListContainer([CHOZO_SEAL_ICON])
-                    scenario_file.add_actor_to_entity_groups("collision_camera_002", new_ap, True)
-                    scenario_file.add_actor_to_entity_groups("collision_camera_002", new_platform, True)
-                if scenario == "s110_surfaceb":
-                    scenario_map.raw["tiles"][145]["icons"] = ListContainer([CHOZO_SEAL_ICON])
-                    scenario_file.add_actor_to_entity_groups("collision_camera_017", new_ap)
-                    scenario_file.add_actor_to_entity_groups("collision_camera_017", new_platform)
-        else:
-            # Area 8 is separate due to having two new seals
-            new_ap_001 = "LE_RandoDNA_001"
-            new_platform_001 = "LE_Platform_RandoDNA_001"
-            new_ap_002 = "LE_RandoDNA_002"
-            new_platform_002 = "LE_Platform_RandoDNA_002"
+    if new_seal.scenario == "s110_surfaceb":
+        scenario_map = editor.get_file("gui/minimaps/c10_samus/s000_surface.bmsmsd", Bmsmsd)
+    else:
+        scenario_map = editor.get_file(f"gui/minimaps/c10_samus/{new_seal.scenario}.bmsmsd", Bmsmsd)
 
-            coordinates_001 = actor_coordinates[0]
-            coordinates_002 = actor_coordinates[1]
+    scenario_map.raw["tiles"][new_seal.tile_index]["icons"] = ListContainer([CHOZO_SEAL_ICON])
 
-            editor.copy_actor(scenario, (-1000.0, -5125.0, 0.0), template_ap, new_ap_001, 16)
-            editor.copy_actor(scenario, coordinates_001, template_platform, new_platform_001, 10)
-            editor.copy_actor(scenario, coordinates_002, template_ap, new_ap_002, 16)
-            editor.copy_actor(scenario, coordinates_002, template_platform, new_platform_002, 10)
+    for entity_group in new_seal.entity_groups:
+        scenario_file.add_actor_to_entity_groups(entity_group, new_seal.ap_name, True)
+        scenario_file.add_actor_to_entity_groups(entity_group, new_seal.platform_name, True)
 
-            scenario_file.raw.actors[10][new_platform_001]["components"][0]["arguments"][4]["value"] = new_ap_001
-            scenario_file.raw.actors[10][new_platform_002]["components"][0]["arguments"][4]["value"] = new_ap_002
-
-            scenario_file.add_actor_to_entity_groups("collision_camera_010", new_ap_001, True)
-            scenario_file.add_actor_to_entity_groups("collision_camera_010", new_platform_001, True)
-            scenario_file.add_actor_to_entity_groups("collision_camera_022", new_ap_002)
-            scenario_file.add_actor_to_entity_groups("collision_camera_024", new_ap_002)
-            scenario_file.add_actor_to_entity_groups("collision_camera_022", new_platform_002)
-            scenario_file.add_actor_to_entity_groups("collision_camera_024", new_platform_002)
-
-            scenario_map.raw["tiles"][94]["icons"] = ListContainer([
-                Container({
-                    "actor_name": "LE_RandoDNA_001",
-                    "clear_condition": "",
-                    "icon": "systemmechdna",
-                    "icon_priority": 4,
-                    "coordinates": ListContainer(coordinates_001),
-                })
-            ])
-
-            scenario_map.raw["tiles"][253]["icons"] = ListContainer([
-                Container({
-                    "actor_name": "LE_RandoDNA_002",
-                    "clear_condition": "",
-                    "icon": "systemmechdna",
-                    "icon_priority": 4,
-                    "coordinates": ListContainer(coordinates_002),
-                })
-            ])
+    # Dependencies
+    editor.ensure_present_in_scenario(new_seal.scenario, "maps/textures/dnaemptyfx_d.bctex")
+    for asset in editor.get_asset_names_in_folder("actors/props/systemmechdna"):
+        editor.ensure_present_in_scenario(new_seal.scenario, asset)
 
 
 def patch_chozo_seals(editor: PatcherEditor):
     patch_dna_check(editor)
-    add_chozo_seals(editor)
+    for new_seal in new_seals:
+        add_chozo_seals(editor, new_seal)
