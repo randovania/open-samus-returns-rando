@@ -95,14 +95,14 @@ def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal):
     scenario_name = new_seal.scenario
     scenario_file = editor.get_scenario(scenario_name)
 
-    editor.copy_actor(new_seal.scenario, new_seal.ap_coordinates, template_ap, new_seal.ap_name, 16)
-    editor.copy_actor(new_seal.scenario, new_seal.platform_coordinates, template_platform, new_seal.platform_name, 10)
+    editor.copy_actor(scenario_name, new_seal.ap_coordinates, template_ap, new_seal.ap_name, 16)
+    editor.copy_actor(scenario_name, new_seal.platform_coordinates, template_platform, new_seal.platform_name, 10)
     scenario_file.raw.actors[10][new_seal.platform_name]["components"][0]["arguments"][4]["value"] = new_seal.ap_name
 
-    if new_seal.scenario == "s110_surfaceb":
+    if scenario_name == "s110_surfaceb":
         scenario_map = editor.get_file("gui/minimaps/c10_samus/s000_surface.bmsmsd", Bmsmsd)
     else:
-        scenario_map = editor.get_file(f"gui/minimaps/c10_samus/{new_seal.scenario}.bmsmsd", Bmsmsd)
+        scenario_map = editor.get_file(f"gui/minimaps/c10_samus/{scenario_name}.bmsmsd", Bmsmsd)
 
     scenario_map.raw["tiles"][new_seal.tile_index]["icons"] = ListContainer([CHOZO_SEAL_ICON])
 
@@ -111,9 +111,9 @@ def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal):
         scenario_file.add_actor_to_entity_groups(entity_group, new_seal.platform_name, True)
 
     # Dependencies
-    editor.ensure_present_in_scenario(new_seal.scenario, "maps/textures/dnaemptyfx_d.bctex")
+    editor.ensure_present_in_scenario(scenario_name, "maps/textures/dnaemptyfx_d.bctex")
     for asset in editor.get_asset_names_in_folder("actors/props/systemmechdna"):
-        editor.ensure_present_in_scenario(new_seal.scenario, asset)
+        editor.ensure_present_in_scenario(scenario_name, asset)
 
 
 def patch_chozo_seals(editor: PatcherEditor):
