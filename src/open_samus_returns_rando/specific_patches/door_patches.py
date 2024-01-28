@@ -175,7 +175,9 @@ def _patch_one_way_doors(editor: PatcherEditor):
         "s030_area3": ["Door005", "Door006"],
         # Chozo Seal Spazer Door
         "s040_area4": ["Door001"],
-        # Plasma Room Plasma and Missile doors, Gravity Room Missile Door
+        # Super Missile Room Super Door
+        "s050_area5": ["Door005"],
+        # Plasma Room Plasma and Missile Doors, Gravity Room Missile Door
         "s067_area6c": ["Door005", "Door006", "Door009"]
     }
 
