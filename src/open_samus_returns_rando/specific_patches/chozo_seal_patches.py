@@ -49,8 +49,8 @@ def patch_dna_check(editor: PatcherEditor):
 
 class NewChozoSeal(typing.NamedTuple):
     scenario: str
-    ap_coordinates: tuple[(float, float, float)]
-    platform_coordinates: tuple[(float, float, float)]
+    ap_coordinates: list[float]
+    platform_coordinates: list[float]
     tile_index: int
     entity_groups: list[str]
     ap_name: str = "LE_RandoDNA"
