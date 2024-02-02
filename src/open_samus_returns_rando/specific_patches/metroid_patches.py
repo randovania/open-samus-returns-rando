@@ -18,7 +18,7 @@ def _patch_metroids(editor: PatcherEditor):
     ]
 
     for metroid_file in METROID_FILES:
-        metroid_bmsad = editor.get_parsed_asset(metroid_file, type_hint=Bmsad)
+        metroid_bmsad = editor.get_file(metroid_file, Bmsad)
         animations = metroid_bmsad.action_sets[0].raw["animations"]
 
         for animation in animations:
@@ -51,8 +51,6 @@ def _patch_metroids(editor: PatcherEditor):
         script_component = metroid_bmsad.raw["components"]["SCRIPT"]
         script_component["functions"][0]["params"]["Param1"]["value"] = "actors/scripts/metroid.lc"
         script_component["functions"][0]["params"]["Param2"]["value"] = "Metroid"
-
-        editor.replace_asset(metroid_file, metroid_bmsad)
 
 
 def _get_trigger(editor: PatcherEditor):
