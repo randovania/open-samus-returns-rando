@@ -29,22 +29,17 @@ SCRIPT_COMPONENT = Container({
     "dependencies": None,
 })
 
+
 def patch_dna_check(editor: PatcherEditor):
     file_name = "actors/props/systemmechdna/charclasses/systemmechdna.bmsad"
     save_station_name = "actors/props/savestation/charclasses/savestation.bmsad"
-    systemmechdna = editor.get_parsed_asset(
-        file_name, type_hint=Bmsad
-    )
-    save_station_bmsad = editor.get_parsed_asset(
-        save_station_name, type_hint=Bmsad
-    )
+    systemmechdna = editor.get_file(file_name, Bmsad)
+    save_station_bmsad = editor.get_file(save_station_name, Bmsad)
 
     systemmechdna.raw["components"]["SCRIPT"] = SCRIPT_COMPONENT
     # Changing the usable to a savestation works for the hints but now the chozo seal
     # blinks with all DNA. Looks like it is no problem besides the visual aspect
     systemmechdna.raw["components"]["USABLE"] = save_station_bmsad.raw["components"]["USABLE"]
-
-    editor.replace_asset(file_name, systemmechdna)
 
 
 class NewChozoSeal(typing.NamedTuple):
