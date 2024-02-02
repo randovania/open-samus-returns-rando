@@ -76,7 +76,7 @@ def _patch_beam_bmsads(editor: PatcherEditor):
         "actors/props/doorwave/charclasses/doorwave.bmsad",
     ]
     for i, creature_bmsad_file in enumerate(creature_bmsad_files):
-        cr_bmsad = editor.get_parsed_asset(creature_bmsad_file, type_hint=Bmsad)
+        cr_bmsad = editor.get_file(creature_bmsad_file, Bmsad)
         # add the script component, which defines the lua file where it finds functions
         cr_bmsad.raw["components"]["SCRIPT"] = SCRIPT_COMPONENT
         # add the callback to the first animation (which is "death" for the bmsad's)
@@ -93,7 +93,6 @@ def _patch_beam_bmsads(editor: PatcherEditor):
             # Param9 and Param10 are a rectangular
             cr_bmsad.components["COLLISION"].functions[1].params["Param9"].value = 370.0
             cr_bmsad.components["COLLISION"].functions[1].params["Param10"].value = 300.0
-        editor.replace_asset(creature_bmsad_file, cr_bmsad)
 
     editor.add_new_asset(
         "actors/props/doors/scripts/doors.lc",
