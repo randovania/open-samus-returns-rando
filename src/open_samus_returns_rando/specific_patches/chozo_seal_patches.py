@@ -53,7 +53,7 @@ class NewChozoSeal(typing.NamedTuple):
 
 new_seals = [
     NewChozoSeal(
-        "s010_area1", [450.0, -700.0, 0.0], [450.0, -700.0, 0.0], 216, ["collision_camera_023"]
+        "s010_area1", [450.0, -700.0, 0.0], [450.0, -700.0, 0.0], 28, ["collision_camera_023"]
     ),
     NewChozoSeal(
         "s020_area2", [-10900.0, -8210.0, 0.0], [-10900.0, -8200.0, 0.0], 20, ["collision_camera_032"]
