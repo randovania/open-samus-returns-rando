@@ -53,6 +53,12 @@ class NewChozoSeal(typing.NamedTuple):
 
 new_seals = [
     NewChozoSeal(
+        "s010_area1", [450.0, -700.0, 0.0], [450.0, -700.0, 0.0], 216, ["collision_camera_023"]
+    ),
+    NewChozoSeal(
+        "s020_area2", [-10900.0, -8210.0, 0.0], [-10900.0, -8200.0, 0.0], 216, ["collision_camera_032"]
+    ),
+    NewChozoSeal(
         "s033_area3b", [-3800.0, -16800.0, 0.0], [-3800.0, -16800.0, 0.0], 22, ["collision_camera_033", "PostGamma_004"]
     ),
     NewChozoSeal(
@@ -63,6 +69,12 @@ new_seals = [
         "s065_area6b", [-300.0, 5700.0, 25.0], [-300.0, 5700.0, 0.0], 216, ["collision_camera_002"]
     ),
     NewChozoSeal(
+        "s070_area7", [-7100.0, -9550.0, 0.0], [-7100.0, -9500.0, 0.0], 12, ["collision_camera_042"]
+    ),
+    NewChozoSeal(
+        "s090_area9", [-5550.0, -3000.0, 0.0], [-5550.0, -3000.0, 0.0], 206, ["collision_camera_016"]
+    ),
+    NewChozoSeal(
         "s100_area10", [-1000.0, -5125.0, 0.0], [-1000.0, -5100.0, 0.0], 94,
         ["collision_camera_010"], "LE_RandoDNA_001", "LE_Platform_RandoDNA_001"
     ),
@@ -70,9 +82,10 @@ new_seals = [
         "s100_area10", [-4100.0, 11200.0, 0.0], [-4100.0, 11200.0, 0.0], 253,
         ["collision_camera_022", "collision_camera_024"], "LE_RandoDNA_002", "LE_Platform_RandoDNA_002"
     ),
-    NewChozoSeal(
-        "s110_surfaceb", [-28150.0, 300.0, 0.0], [-28150.0, 300.0, 0.0], 145, ["collision_camera_017"]
-    ),
+    # Currently breaks Ridley if added :(
+    # NewChozoSeal(
+    #     "s110_surfaceb", [-28150.0, 300.0, 0.0], [-28150.0, 300.0, 0.0], 145, ["collision_camera_017"]
+    # ),
 ]
 
 def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal):
