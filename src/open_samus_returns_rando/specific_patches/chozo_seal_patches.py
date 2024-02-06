@@ -69,18 +69,19 @@ new_seals = [
         "s065_area6b", [-300.0, 5700.0, 25.0], [-300.0, 5700.0, 0.0], 216, ["collision_camera_002"]
     ),
     NewChozoSeal(
-        "s070_area7", [-7100.0, -9550.0, 0.0], [-7100.0, -9500.0, 0.0], 12, ["collision_camera_042"]
+        "s070_area7", [-7100.0, -9550.0, 0.0], [-7100.0, -9500.0, 0.0], 12,
+        ["collision_camera_042"], "LE_RandoDNA_001", "LE_Platform_RandoDNA_001"
+    ),
+    NewChozoSeal(
+        "s070_area7", [-6550.0, 6900.0, 0.0], [-6550.0, 6900.0, 0.0], 304,
+        ["collision_camera_038"], "LE_RandoDNA_002", "LE_Platform_RandoDNA_002"
     ),
     NewChozoSeal(
         "s090_area9", [-5550.0, -3000.0, 0.0], [-5550.0, -3000.0, 0.0], 206, ["collision_camera_016"]
     ),
     NewChozoSeal(
-        "s100_area10", [-1000.0, -5125.0, 0.0], [-1000.0, -5100.0, 0.0], 94,
-        ["collision_camera_010"], "LE_RandoDNA_001", "LE_Platform_RandoDNA_001"
-    ),
-    NewChozoSeal(
         "s100_area10", [-4100.0, 11200.0, 0.0], [-4100.0, 11200.0, 0.0], 253,
-        ["collision_camera_022", "collision_camera_024"], "LE_RandoDNA_002", "LE_Platform_RandoDNA_002"
+        ["collision_camera_022", "collision_camera_024"]
     ),
     # Currently breaks Ridley if added :(
     # NewChozoSeal(
