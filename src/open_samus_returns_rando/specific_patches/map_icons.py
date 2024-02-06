@@ -43,7 +43,7 @@ def patch_tiles(editor: PatcherEditor):
                     for door in doors:
                         if door in door_tile["actor_name"]:
                             door_tile["clear_condition"] = ""
-                            if "closed" in door_tile["icon"]:
+                            if "closed" in door_tile["icon"] or "charge" in door_tile["icon"]:
                                 if "left" in door_tile["icon"]:
                                     door_tile["icon"] = "doorpowerleft"
                                 else:
