@@ -326,9 +326,9 @@
                     "type": "array", 
                     "description": "Change the color of the locked grapple laser aim.",
                     "default": [
+                        0.0,
                         1.0,
-                        1.0,
-                        0.0
+                        1.0
                     ]
                 },
                 "grapple_laser_unlocked_color": {
