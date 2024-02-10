@@ -37,6 +37,12 @@ end
 
 function Scenario.OnSubAreaChange(old_subarea, old_actorgroup, new_subarea, new_actorgroup, disable_fade)
   Scenario.UpdateProgressiveItemModels()
+  if new_subarea == "collision_camera_000" then
+    new_subarea = "Landing Site"
+  elseif new_subarea == "collision_camera_016" then
+    new_subarea = "Hornoad Hallway"
+  end
+  Scenario.UpdateRoomName(new_subarea)
 end
 
 function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_name, is_multi)
@@ -51,6 +57,8 @@ function Scenario.InitGUI()
   GUILib.AddDNACounter()
   GUILib.UpdateTotalDNAColor()
   Scenario.UpdateDNACounter()
+  Scenario.AddRoomName()
+  Scenario.UpdateRoomName()
 end
 
 function Scenario.UpdateDNACounter()
@@ -132,4 +140,47 @@ function Scenario.ShowFatalErrorMessage(messageBoxes)
   fatal_messages_seen = 0
   fatal_messages = messageBoxes
   Game.AddSF(0.8, Scenario._ShowNextFatalErrorMessage, "")
+end
+
+function Scenario.AddRoomName()
+  local lowerInfo =  GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition")
+
+  lowerInfo:AddChild((GUI.CreateDisplayObjectEx("RoomNameText", "CText", {
+    X = "0.14688",
+    Y = "-0.06500",
+    SizeX = "0.12499",
+    SizeY = "0.05833",
+    ScaleX = "1.00000",
+    ScaleY = "1.00000",
+    Angle = "0.00000",
+    FlipX = false,
+    FlipY = false,
+    ColorR = "0.68000",
+    ColorG = "0.83000",
+    ColorB = "0.93000",
+    ColorA = "1.00000",
+    Enabled = true,
+    Visible = true,
+    SkinItemType = "",
+    Text = "Room Name",
+    Font = "digital_medium",
+    TextAlignment = "Center",
+    Autosize = true,
+    Outline = true,
+    EmbeddedSpritesSuffix = "",
+    BlinkColorR = "1.00000",
+    BlinkColorG = "1.00000",
+    BlinkColorB = "1.00000",
+    BlinkAlpha = "1.00000",
+    Blink = "-1.00000"
+  })))
+end
+
+function Scenario.UpdateRoomName(room)
+  local name = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.RoomNameText")
+  if name ~= nil then
+      GUI.SetTextText(name, tostring(room))
+      name:ForceRedraw()
+  end
+end
 end
