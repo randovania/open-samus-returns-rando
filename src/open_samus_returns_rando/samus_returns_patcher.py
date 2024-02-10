@@ -8,6 +8,7 @@ from mercury_engine_data_structures.file_tree_editor import OutputFormat
 from open_samus_returns_rando.debug import debug_custom_pickups, debug_spawn_points
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
+from open_samus_returns_rando.misc_patches.collision_camera_table import create_collision_camera_table
 from open_samus_returns_rando.misc_patches.credits import patch_credits
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.misc_patches.spawn_points import patch_custom_spawn_points
@@ -93,6 +94,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
         apply_text_patches(editor, configuration["text_patches"])
     patch_credits(editor, configuration["spoiler_log"])
     add_spiderboost_status(editor)
+
+     # Update cc_to_room_name.lua
+    create_collision_camera_table(editor, configuration)
 
     out_romfs = output_path.joinpath("romfs")
     out_exefs = output_path.joinpath("exefs")

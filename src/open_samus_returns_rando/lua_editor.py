@@ -3,7 +3,7 @@ import itertools
 from construct import Container
 from mercury_engine_data_structures.formats.lua import Lua
 
-from open_samus_returns_rando.constants import ALL_SCENARIOS
+from open_samus_returns_rando.constants import ALL_SCENARIOS, FadeTimes
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.misc_patches.text_patches import patch_text
@@ -194,6 +194,7 @@ class LuaEditor:
         self._progressive_models += models
 
     def _create_custom_init(self, editor: PatcherEditor, configuration: dict) -> str:
+        cosmetic_options: dict = configuration["cosmetic_patches"]
         inventory: dict[str, int] = configuration["starting_items"]
         starting_location: dict = configuration["starting_location"]
         starting_text: list[str] = configuration.get("starting_text", [])
@@ -252,6 +253,10 @@ class LuaEditor:
             "scenario_mapping": {key: lua_util.wrap_string(value) for key, value in SCENARIO_MAPPING.items()},
             "textbox_count": textboxes,
             "configuration_identifier": lua_util.wrap_string(configuration_identifier),
+            "enable_room_ids": False if cosmetic_options["enable_room_name_display"] == "NEVER" else True,
+            "room_id_fade_time": FadeTimes.NO_FADE if (
+                cosmetic_options["enable_room_name_display"] != "WITH_FADE"
+                ) else FadeTimes.ROOM_FADE,
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)

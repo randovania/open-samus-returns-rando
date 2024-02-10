@@ -366,6 +366,33 @@
                         1.0,
                         1.0
                     ]
+                },
+                "enable_room_name_display": {
+                    "type": "string",
+                    "enum": [
+                        "NEVER",
+                        "ALWAYS",
+                        "WITH_FADE"
+                    ],
+                    "default": "ALWAYS",
+                    "description": "Configures how the room name is displayed on the HUD. Defaults to disabled."
+                },
+                "camera_names_dict": {
+                    "type": "object",
+                    "description": "A dictionary of dictionaries mapping scenario and collision camera to room name in the database",
+                    "additionalProperties": false,
+                    "default": {},
+                    "patternProperties": {
+                        ".*": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "patternProperties": {
+                                ".*": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
                 }
             },
             "default": {}

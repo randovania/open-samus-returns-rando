@@ -1,5 +1,6 @@
-# constant data, including "magic numbers" and common data that many modules use
+from construct import Enum
 
+# constant data, including "magic numbers" and common data that many modules use
 
 # list of all scenarios
 ALL_SCENARIOS = [
@@ -31,3 +32,8 @@ def get_package_name(package_name: str, file_name: str):
 
 def lua_pkgs(pkgs: list[str]):
     return [get_package_name(level_pkg, "lc") for level_pkg in pkgs]
+
+# fade in/out values (in seconds) for room name GUI
+class FadeTimes(Enum):
+    NO_FADE = -1
+    ROOM_FADE = 3
