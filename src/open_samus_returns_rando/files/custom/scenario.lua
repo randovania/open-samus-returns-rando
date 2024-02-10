@@ -37,10 +37,13 @@ end
 
 function Scenario.OnSubAreaChange(old_subarea, old_actorgroup, new_subarea, new_actorgroup, disable_fade)
   Scenario.UpdateProgressiveItemModels()
-  if new_subarea == "collision_camera_000" then
-    new_subarea = "Landing Site"
-  elseif new_subarea == "collision_camera_016" then
-    new_subarea = "Hornoad Hallway"
+  local scenario = Scenario.CurrentScenarioID
+  if scenario == "s000_surface" then
+    if new_subarea == "collision_camera_000" then
+      new_subarea = "Landing Site"
+    elseif new_subarea == "collision_camera_016" then
+      new_subarea = "Hornoad Hallway"
+    end
   end
   Scenario.UpdateRoomName(new_subarea)
 end
@@ -163,7 +166,7 @@ function Scenario.AddRoomName()
     Visible = true,
     SkinItemType = "",
     Text = "Room Name",
-    Font = "digital_medium",
+    Font = "digital_small",
     TextAlignment = "Center",
     Autosize = true,
     Outline = true,
@@ -182,5 +185,4 @@ function Scenario.UpdateRoomName(room)
       GUI.SetTextText(name, tostring(room))
       name:ForceRedraw()
   end
-end
 end
