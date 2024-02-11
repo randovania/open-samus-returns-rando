@@ -12,7 +12,6 @@ Init.iNumRandoTextBoxes = TEMPLATE("textbox_count")
 Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier")
 Init.tBoxesSeen = 0
 Init.bEnableRoomIds = TEMPLATE("enable_room_ids")
-Init.bRoomIdFadeTime = TEMPLATE("room_id_fade_time")
 
 function Init.InitGameBlackboard()
   Blackboard.ResetWithExceptionList({

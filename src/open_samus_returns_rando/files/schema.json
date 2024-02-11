@@ -371,10 +371,9 @@
                     "type": "string",
                     "enum": [
                         "NEVER",
-                        "ALWAYS",
-                        "WITH_FADE"
+                        "ALWAYS"
                     ],
-                    "default": "ALWAYS",
+                    "default": "NEVER",
                     "description": "Configures how the room name is displayed on the HUD. Defaults to disabled."
                 },
                 "camera_names_dict": {

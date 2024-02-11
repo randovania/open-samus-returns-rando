@@ -3,13 +3,11 @@ Game.DoFile("system/scripts/cc_to_room_name.lc")
 RoomNameGui = RoomNameGui or {
     ui = nil,
     cameraDict = RANDO_CC_DICTIONARY,
-    -- fadeTime = Init.bRoomIdFadeTime,
-    -- fadeOutSFID = nil,
 }
 
 function RoomNameGui.GetRoomName(camera)
     local dict = RoomNameGui.cameraDict
-    local scenario = Game.CurrentScenarioID()
+    local scenario = Scenario.CurrentScenarioID
     if dict == nil then
         Game.LogWarn(0, "No camera dict present!")
         return
@@ -33,7 +31,7 @@ function RoomNameGui.Init()
 
     local hud = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition")
 
-    hud:AddChild((GUI.CreateDisplayObjectEx("RoomNameText", "CText", {
+    local ui = hud:AddChild((GUI.CreateDisplayObjectEx("RoomNameText", "CText", {
         X = "0.14688",
         Y = "-0.06500",
         SizeX = "0.12499",
@@ -65,14 +63,12 @@ function RoomNameGui.Init()
 
     RoomNameGui.ui = ui
 
-    local current_cc = Game.GetScenarioBlackboardSectionID()
+    local current_cc = Game.GetCurrentSubAreaId()
 
     RoomNameGui.Update(current_cc)
 end
 
 function RoomNameGui.Update(new_cc)
-    -- RoomNameGui.Fade("1.0")
-
     if type(new_cc) ~= "string" then
         GUI.LogWarn(0, "collision camera is not string")
         return
@@ -81,17 +77,10 @@ function RoomNameGui.Update(new_cc)
     local hud_text = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.RoomNameText")
     local room_name = RoomNameGui.GetRoomName(new_cc)
     if room_name == nil then
-        Game.LogWarn(0, string.format("Couldn't find name for %s/%s", Game.GetScenarioBlackboardSectionID(), new_cc))
+        Game.LogWarn(0, string.format("Couldn't find name for %s/%s", "", new_cc))
         GUI.SetTextText(hud_text, tostring(new_cc))
     else
         GUI.SetTextText(hud_text, tostring(room_name))
     end
     hud_text:ForceRedraw()
-
---     -- if RoomNameGui.fadeTime ~= nil and RoomNameGui.fadeTime ~= -1 then
---     --     if RoomNameGui.fadeOutSFID ~= nil then
---     --         Game.DelSFByID(RoomNameGui.fadeOutSFID)
---     --     end
---     --     RoomNameGui.fadeOutSFID = Game.AddGUISF(RoomNameGui.fadeTime, "RoomNameGui.Fade", "s", "0.0")
---     -- end
 end
