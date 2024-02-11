@@ -283,7 +283,7 @@ class LuaEditor:
     def save_modifications(self, editor: PatcherEditor, configuration: dict):
         self._add_replacement_files(editor, configuration)
 
-        # add new system script
+        # add new system scripts
         editor.add_new_asset(
             "system/scripts/guilib.lc",
             Lua(Container(lua_text=files_path().joinpath("custom", "guilib.lua").read_text()), editor.target_game),
@@ -294,6 +294,12 @@ class LuaEditor:
         editor.add_new_asset(
             "system/scripts/cosmetics.lc",
             Lua(Container(lua_text=cosmetics_script), editor.target_game),
+            []
+        )
+
+        editor.add_new_asset(
+            "system/scripts/room_names.lc",
+            Lua(Container(lua_text=files_path().joinpath("custom", "room_names.lua").read_text()), editor.target_game),
             []
         )
 
