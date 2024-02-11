@@ -9,18 +9,14 @@ function RoomNameGui.GetRoomName(camera)
     local dict = RoomNameGui.cameraDict
     local scenario = Scenario.CurrentScenarioID
     if dict == nil then
-        Game.LogWarn(0, "No camera dict present!")
         return
     end
 
-    local scenario_dict = dict[scenario]
-    if scenario_dict == nil then
-        Game.LogWarn(0, scenario .. " has nil dict!")
+    if dict[scenario] == nil then
         return nil
     end
 
-    local rando_name = scenario_dict[camera]
-    return rando_name
+    return dict[scenario][camera]
 end
 
 function RoomNameGui.Init()
@@ -35,55 +31,28 @@ function RoomNameGui.Init()
         Y = "-0.05900",
         SizeX = "0.12499",
         SizeY = "0.05833",
-        ScaleX = "1.00000",
-        ScaleY = "1.00000",
-        Angle = "0.00000",
-        FlipX = false,
-        FlipY = false,
         ColorR = "0.68000",
         ColorG = "0.83000",
         ColorB = "0.93000",
-        ColorA = "1.00000",
-        Enabled = true,
-        Visible = true,
-        SkinItemType = "",
-        Text = "Room Name",
+        Text = "",
         Font = "digital_small",
         TextAlignment = "Center",
-        Autosize = true,
-        Outline = true,
-        EmbeddedSpritesSuffix = "",
-        BlinkColorR = "1.00000",
-        BlinkColorG = "1.00000",
-        BlinkColorB = "1.00000",
-        BlinkAlpha = "1.00000",
-        Blink = "-1.00000"
     })))
 
     RoomNameGui.ui = ui
-
-    local current_cc = ""
-
-    RoomNameGui.Update(current_cc)
+    RoomNameGui.Update()
 end
 
 function RoomNameGui.Update(new_cc)
     if type(new_cc) ~= "string" then
-        GUI.LogWarn(0, "collision camera is not string")
         return
     end
 
     local hud_text = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.RoomNameText")
     local room_name = RoomNameGui.GetRoomName(new_cc)
 
-    -- This cc isn't in the db so this simulates the room dict
-    if Scenario.CurrentScenarioID == "s000_surface" and new_cc == "collision_camera_017" then
-        room_name = "Transport to Area 8"
-    end
-
     if room_name == nil then
-        Game.LogWarn(0, string.format("Couldn't find name for %s/%s", "", new_cc))
-        GUI.SetTextText(hud_text, tostring(new_cc))
+        GUI.SetTextText(hud_text, tostring(""))
     else
         GUI.SetTextText(hud_text, tostring(room_name))
     end
