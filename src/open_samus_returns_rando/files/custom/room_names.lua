@@ -30,10 +30,9 @@ function RoomNameGui.Init()
     end
 
     local hud = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition")
-
     local ui = hud:AddChild((GUI.CreateDisplayObjectEx("RoomNameText", "CText", {
-        X = "0.14688",
-        Y = "-0.06500",
+        X = "0.14400",
+        Y = "-0.05900",
         SizeX = "0.12499",
         SizeY = "0.05833",
         ScaleX = "1.00000",
@@ -63,7 +62,7 @@ function RoomNameGui.Init()
 
     RoomNameGui.ui = ui
 
-    local current_cc = Game.GetCurrentSubAreaId()
+    local current_cc = ""
 
     RoomNameGui.Update(current_cc)
 end
@@ -76,6 +75,12 @@ function RoomNameGui.Update(new_cc)
 
     local hud_text = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.RoomNameText")
     local room_name = RoomNameGui.GetRoomName(new_cc)
+
+    -- This cc isn't in the db so this simulates the room dict
+    if Scenario.CurrentScenarioID == "s000_surface" and new_cc == "collision_camera_017" then
+        room_name = "Transport to Area 8"
+    end
+
     if room_name == nil then
         Game.LogWarn(0, string.format("Couldn't find name for %s/%s", "", new_cc))
         GUI.SetTextText(hud_text, tostring(new_cc))
