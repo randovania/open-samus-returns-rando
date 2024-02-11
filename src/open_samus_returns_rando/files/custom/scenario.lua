@@ -142,5 +142,5 @@ function Scenario.ShowFatalErrorMessage(messageBoxes)
 end
 
 function Scenario.UpdateRoomName(new_subarea)
-  RoomNameGui.Update(new_subarea)
+  Game.AddSF(0.0, "RoomNameGui.Update", "s", new_subarea)
 end

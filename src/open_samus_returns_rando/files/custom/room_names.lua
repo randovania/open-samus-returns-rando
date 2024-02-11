@@ -26,7 +26,7 @@ function RoomNameGui.Init()
     end
 
     local hud = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition")
-    local ui = hud:AddChild((GUI.CreateDisplayObjectEx("RoomNameText", "CText", {
+    local ui = GUI.CreateDisplayObjectEx("RoomNameText", "CText", {
         X = "0.14400",
         Y = "-0.05900",
         SizeX = "0.12499",
@@ -37,22 +37,22 @@ function RoomNameGui.Init()
         Text = "",
         Font = "digital_small",
         TextAlignment = "Center",
-    })))
+    })
+    hud:AddChild(ui)
 
     RoomNameGui.ui = ui
-    RoomNameGui.Update()
 end
 
 function RoomNameGui.Update(new_cc)
-    if type(new_cc) ~= "string" then
+    if type(new_cc) ~= "string" or RoomNameGui.ui == nil then
         return
     end
 
-    local hud_text = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.RoomNameText")
+    local hud_text = RoomNameGui.ui
     local room_name = RoomNameGui.GetRoomName(new_cc)
 
     if room_name == nil then
-        GUI.SetTextText(hud_text, tostring(""))
+        GUI.SetTextText(hud_text, "")
     else
         GUI.SetTextText(hud_text, tostring(room_name))
     end
