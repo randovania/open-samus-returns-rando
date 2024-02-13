@@ -10,7 +10,7 @@ def replace_lua_template(file: str, replacement: dict[str, str], wrap_strings: b
     code = templates_path().joinpath(file).read_text()
     for key, content in replacement.items():
         # Replace `TEMPLATE("key")`-style replacements
-        code = code.replace(f'TEMPLATE("{key}")', lua_convert(content))
+        code = code.replace(f'TEMPLATE("{key}")', lua_convert(content, wrap_strings))
         # Replace `T__key__T`-style replacements
         code = code.replace(f'T__{key}__T', lua_convert(content, wrap_strings))
 

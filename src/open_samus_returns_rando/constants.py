@@ -1,6 +1,5 @@
 # constant data, including "magic numbers" and common data that many modules use
 
-
 # list of all scenarios
 ALL_SCENARIOS = [
     "s000_surface",

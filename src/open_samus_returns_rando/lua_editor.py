@@ -194,6 +194,7 @@ class LuaEditor:
         self._progressive_models += models
 
     def _create_custom_init(self, editor: PatcherEditor, configuration: dict) -> str:
+        cosmetic_options: dict = configuration["cosmetic_patches"]
         inventory: dict[str, int] = configuration["starting_items"]
         starting_location: dict = configuration["starting_location"]
         starting_text: list[str] = configuration.get("starting_text", [])
@@ -252,6 +253,7 @@ class LuaEditor:
             "scenario_mapping": {key: lua_util.wrap_string(value) for key, value in SCENARIO_MAPPING.items()},
             "textbox_count": textboxes,
             "configuration_identifier": lua_util.wrap_string(configuration_identifier),
+            "enable_room_ids": False if cosmetic_options["enable_room_name_display"] == "NEVER" else True,
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)
@@ -278,7 +280,7 @@ class LuaEditor:
     def save_modifications(self, editor: PatcherEditor, configuration: dict):
         self._add_replacement_files(editor, configuration)
 
-        # add new system script
+        # add new system scripts
         editor.add_new_asset(
             "system/scripts/guilib.lc",
             Lua(Container(lua_text=files_path().joinpath("custom", "guilib.lua").read_text()), editor.target_game),
@@ -289,6 +291,12 @@ class LuaEditor:
         editor.add_new_asset(
             "system/scripts/cosmetics.lc",
             Lua(Container(lua_text=cosmetics_script), editor.target_game),
+            []
+        )
+
+        editor.add_new_asset(
+            "system/scripts/room_names.lc",
+            Lua(Container(lua_text=files_path().joinpath("custom", "room_names.lua").read_text()), editor.target_game),
             []
         )
 

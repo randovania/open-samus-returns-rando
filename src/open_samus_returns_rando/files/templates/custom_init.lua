@@ -11,6 +11,7 @@ Init.tScenarioMapping = TEMPLATE("scenario_mapping")
 Init.iNumRandoTextBoxes = TEMPLATE("textbox_count")
 Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier")
 Init.tBoxesSeen = 0
+Init.bEnableRoomIds = TEMPLATE("enable_room_ids")
 
 function Init.InitGameBlackboard()
   Blackboard.ResetWithExceptionList({

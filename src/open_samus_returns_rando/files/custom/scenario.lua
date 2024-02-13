@@ -2,6 +2,8 @@ Game.ImportLibrary("system/scripts/scenario_original.lua")
 Game.ImportLibrary("system/scripts/guilib.lua", false)
 Game.ImportLibrary("system/scripts/cosmetics.lua", false)
 
+Game.DoFile("system/scripts/room_names.lua")
+
 Scenario = Scenario or {}
 setmetatable(Scenario, {__index = _G})
 
@@ -37,6 +39,7 @@ end
 
 function Scenario.OnSubAreaChange(old_subarea, old_actorgroup, new_subarea, new_actorgroup, disable_fade)
   Scenario.UpdateProgressiveItemModels()
+  Scenario.UpdateRoomName(new_subarea)
 end
 
 function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_name, is_multi)
@@ -51,6 +54,10 @@ function Scenario.InitGUI()
   GUILib.AddDNACounter()
   GUILib.UpdateTotalDNAColor()
   Scenario.UpdateDNACounter()
+
+  if Init.bEnableRoomIds then
+    RoomNameGui.Init()
+  end
 end
 
 function Scenario.UpdateDNACounter()
@@ -132,4 +139,8 @@ function Scenario.ShowFatalErrorMessage(messageBoxes)
   fatal_messages_seen = 0
   fatal_messages = messageBoxes
   Game.AddSF(0.8, Scenario._ShowNextFatalErrorMessage, "")
+end
+
+function Scenario.UpdateRoomName(new_subarea)
+  Game.AddSF(0.0, "RoomNameGui.Update", "s", new_subarea)
 end
