@@ -52,7 +52,7 @@ function RoomNameGui.Update(new_cc)
     local room_name = RoomNameGui.GetRoomName(new_cc)
 
     if room_name == nil then
-        GUI.SetTextText(hud_text, "")
+        GUI.SetTextText(hud_text, tostring(new_cc))
     else
         GUI.SetTextText(hud_text, tostring(room_name))
     end
