@@ -6,6 +6,7 @@ from pathlib import Path
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
 from open_samus_returns_rando.debug import debug_custom_pickups, debug_spawn_points
+from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches.collision_camera_table import create_collision_camera_table
@@ -49,6 +50,12 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     editor = PatcherEditor(input_path)
     lua_scripts = LuaEditor()
+
+    # TODO: Move me somewhere!
+    missile_tex = files_path().joinpath("missile_e.bctex").read_bytes()
+    missile_model = files_path().joinpath("powerup_randomissile.bcmdl").read_bytes()
+    editor.add_new_asset("actors/items/powerup_randomissile/models/powerup_randomissile.bcmdl", missile_model, [])
+    editor.add_new_asset("actors/items/powerup_randomissile/models/textures/missile_e.bctex", missile_tex, [])
 
     # Apply fixes
     apply_static_fixes(editor)

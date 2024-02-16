@@ -285,16 +285,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         ),
     ),
     "powerup_missilelauncher": ModelData(
-        bcmdl_path="actors/weapons/missile/models/missile.bcmdl",
+        bcmdl_path="actors/items/powerup_randomissile/models/powerup_randomissile.bcmdl",
         dependencies=(
-            "actors/weapons/missile/models/missile.bcmdl",
-            "actors/weapons/missile/models/burstmodel.bcmdl",
-            "actors/weapons/missile/animations/blownaway.bcskla",
-            "actors/weapons/missile/animations/bounce.bcskla",
-            "actors/weapons/missile/animations/relax.bcskla",
-            "actors/weapons/missile/fx/burst.bcptl",
-            "actors/weapons/missile/fx/explosion.bcptl",
-            "actors/weapons/missile/fx/ignition.bcptl",
+            "actors/items/powerup_randomissile/models/powerup_randomissile.bcmdl",
+            "actors/items/powerup_randomissile/models/textures/missile_e.bctex",
         ),
     ),
 }
