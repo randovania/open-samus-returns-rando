@@ -40,7 +40,13 @@ def add_custom_files(editor: PatcherEditor):
             continue
         relative = child.relative_to(custom_romfs).as_posix()
         LOG.info("Adding custom asset %s", relative)
-        editor.add_new_asset(str(relative), child.read_bytes(), [])
+        asset_name = str(relative)
+        raw_bytes = child.read_bytes()
+        try:
+            editor.add_new_asset(asset_name, raw_bytes, [])
+        except ValueError:
+            editor.replace_asset(asset_name, raw_bytes)
+
 
 def patch_exefs(exefs_patches: Path):
     exefs_patches.mkdir(parents=True, exist_ok=True)
