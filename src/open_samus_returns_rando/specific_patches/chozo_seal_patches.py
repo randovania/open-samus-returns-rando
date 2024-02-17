@@ -44,9 +44,9 @@ def patch_dna_check(editor: PatcherEditor):
 
 
 def update_seal_texture(editor: PatcherEditor):
-    dna_bg_tex = files_path().joinpath("actors/props/systemmechdna/models/textures/dna_d.bctex").read_bytes()
+    dna_bg_tex = files_path().joinpath("romfs/actors/props/systemmechdna/models/textures/dna_d.bctex").read_bytes()
     dna_actor_tex = files_path().joinpath(
-        "actors/props/systemmechdna/models/textures/chozodnareceivergold_d.bctex"
+        "romfs/actors/props/systemmechdna/models/textures/chozodnareceivergold_d.bctex"
         ).read_bytes()
     editor.replace_asset("actors/props/systemmechdna/models/textures/dna_d.bctex", dna_bg_tex)
     editor.replace_asset("actors/props/systemmechdna/models/textures/chozodnareceivergold_d.bctex", dna_actor_tex)
