@@ -6,6 +6,7 @@ from pathlib import Path
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
 from open_samus_returns_rando.debug import debug_custom_pickups, debug_spawn_points
+from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches.collision_camera_table import create_collision_camera_table
@@ -32,6 +33,14 @@ def _read_schema():
     with Path(__file__).parent.joinpath("files", "schema.json").open() as f:
         return json.load(f)
 
+def add_custom_files(editor: PatcherEditor):
+    custom_romfs = files_path().joinpath("romfs")
+    for child in custom_romfs.rglob("*"):
+        if not child.is_file():
+            continue
+        relative = child.relative_to(custom_romfs).as_posix()
+        LOG.info("Adding custom asset %s", relative)
+        editor.add_new_asset(str(relative), child.read_bytes(), [])
 
 def patch_exefs(exefs_patches: Path):
     exefs_patches.mkdir(parents=True, exist_ok=True)
@@ -49,6 +58,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     editor = PatcherEditor(input_path)
     lua_scripts = LuaEditor()
+
+    # Add all custom files from RomFS
+    add_custom_files(editor)
 
     # Apply fixes
     apply_static_fixes(editor)
