@@ -285,10 +285,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         ),
     ),
     "powerup_missilelauncher": ModelData(
-        bcmdl_path="actors/items/powerup_randomissile/models/powerup_randomissile.bcmdl",
+        bcmdl_path="actors/items/powerup_missilelauncher/models/powerup_missilelauncher.bcmdl",
         dependencies=(
-            "actors/items/powerup_randomissile/models/powerup_randomissile.bcmdl",
-            "actors/items/powerup_randomissile/models/textures/missile_e.bctex",
+            "actors/items/powerup_missilelauncher/models/powerup_missilelauncher.bcmdl",
+            "actors/items/powerup_missilelauncher/models/textures/missile_e.bctex",
         ),
     ),
 }

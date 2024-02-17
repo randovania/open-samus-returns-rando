@@ -33,6 +33,14 @@ def _read_schema():
     with Path(__file__).parent.joinpath("files", "schema.json").open() as f:
         return json.load(f)
 
+def add_custom_files(editor: PatcherEditor):
+    custom_romfs = files_path().joinpath("romfs")
+    for child in custom_romfs.rglob("*"):
+        if not child.is_file():
+            continue
+        relative = child.relative_to(custom_romfs).as_posix()
+        LOG.info("Adding custom asset %s", relative)
+        editor.add_new_asset(str(relative), child.read_bytes(), [])
 
 def patch_exefs(exefs_patches: Path):
     exefs_patches.mkdir(parents=True, exist_ok=True)
@@ -51,11 +59,8 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     editor = PatcherEditor(input_path)
     lua_scripts = LuaEditor()
 
-    # TODO: Move me somewhere!
-    missile_tex = files_path().joinpath("missile_e.bctex").read_bytes()
-    missile_model = files_path().joinpath("powerup_randomissile.bcmdl").read_bytes()
-    editor.add_new_asset("actors/items/powerup_randomissile/models/powerup_randomissile.bcmdl", missile_model, [])
-    editor.add_new_asset("actors/items/powerup_randomissile/models/textures/missile_e.bctex", missile_tex, [])
+    # Add all custom files from RomFS
+    add_custom_files(editor)
 
     # Apply fixes
     apply_static_fixes(editor)
