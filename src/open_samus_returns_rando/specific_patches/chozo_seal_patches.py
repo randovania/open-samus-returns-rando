@@ -2,6 +2,7 @@ import typing
 
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad, Bmsmsd
+from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 SCRIPT_COMPONENT = Container({
@@ -40,6 +41,15 @@ def patch_dna_check(editor: PatcherEditor):
     # Changing the usable to a savestation works for the hints but now the chozo seal
     # blinks with all DNA. Looks like it is no problem besides the visual aspect
     systemmechdna.raw["components"]["USABLE"] = save_station_bmsad.raw["components"]["USABLE"]
+
+
+def update_seal_texture(editor: PatcherEditor):
+    dna_bg_tex = files_path().joinpath("actors/props/systemmechdna/models/textures/dna_d.bctex").read_bytes()
+    dna_actor_tex = files_path().joinpath(
+        "actors/props/systemmechdna/models/textures/chozodnareceivergold_d.bctex"
+        ).read_bytes()
+    editor.replace_asset("actors/props/systemmechdna/models/textures/dna_d.bctex", dna_bg_tex)
+    editor.replace_asset("actors/props/systemmechdna/models/textures/chozodnareceivergold_d.bctex", dna_actor_tex)
 
 
 class NewChozoSeal(typing.NamedTuple):
@@ -127,5 +137,6 @@ def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal):
 
 def patch_chozo_seals(editor: PatcherEditor):
     patch_dna_check(editor)
+    update_seal_texture(editor)
     for new_seal in new_seals:
         add_chozo_seals(editor, new_seal)

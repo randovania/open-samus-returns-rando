@@ -6,7 +6,6 @@ from pathlib import Path
 from mercury_engine_data_structures.file_tree_editor import OutputFormat
 
 from open_samus_returns_rando.debug import debug_custom_pickups, debug_spawn_points
-from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches.collision_camera_table import create_collision_camera_table
@@ -50,10 +49,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
     editor = PatcherEditor(input_path)
     lua_scripts = LuaEditor()
-
-    # TODO: Move me somewhere!
-    dna_bg_tex = files_path().joinpath("dna_d.bctex").read_bytes()
-    editor.replace_asset("actors/props/systemmechdna/models/textures/dna_d.bctex", dna_bg_tex)
 
     # Apply fixes
     apply_static_fixes(editor)
