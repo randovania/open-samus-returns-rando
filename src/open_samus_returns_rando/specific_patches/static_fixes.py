@@ -72,14 +72,6 @@ def patch_a7_save_screw_blocks(editor: PatcherEditor):
     area7.raw["block_groups"][56]["types"][0]["block_type"] = "power_beam"
 
 
-def shoot_supers_without_missiles(editor: PatcherEditor):
-    samus = editor.get_file(
-        "actors/characters/samus/charclasses/samus.bmsad", Bmsad
-    )
-    gun = samus.raw["components"]["GUN"]["functions"]
-    gun[20]["params"]["Param5"]["value"] = ""
-
-
 def nerf_ridley_fight(editor: PatcherEditor):
     '''
     All beams (except Ice) will use the same factor as Plasma which is 0.12
@@ -194,7 +186,6 @@ def apply_static_fixes(editor: PatcherEditor):
     patch_pickup_position(editor)
     remove_area7_grapple_block(editor)
     patch_a7_save_screw_blocks(editor)
-    shoot_supers_without_missiles(editor)
     nerf_ridley_fight(editor)
     increase_pb_drop_chance(editor)
     fix_area2b_hp_item_001_deletion(editor)
