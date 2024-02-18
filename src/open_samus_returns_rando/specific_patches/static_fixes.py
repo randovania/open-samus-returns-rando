@@ -1,3 +1,4 @@
+from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmtun
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -161,6 +162,32 @@ def increase_pb_drop_chance(editor: PatcherEditor):
             drop["fPowerBombProbability"]["value"] *= 2
 
 
+def fix_area2b_hp_item_001_deletion(editor: PatcherEditor):
+    # HP_Item_001 is deleted if block is broken from another cc, so a fix is necessary
+    BOMB_BLOCK = Container({
+        "pos": ListContainer([
+            -10350.0,
+            -1850.0,
+            0.0,
+        ]),
+        "unk2": 0,
+        "unk3": 0,
+        "respawn_time": 0.0,
+        "name1": "sg_casca38",
+        "name2": ""
+    })
+
+    scenario = editor.get_scenario("s025_area2b")
+    # Make actor freestanding
+    scenario.raw.actors[17]["HP_Item_001"]["components"][0]["arguments"][0]["value"] = ""
+
+    area2b = editor.get_file(
+        "maps/levels/c10_samus/s025_area2b/s025_area2b.bmsbk", Bmsbk
+    )
+    # Create custom Bomb block to simulate the pickup being inside the block
+    area2b.raw["block_groups"][8]["types"][0]["blocks"].append(BOMB_BLOCK)
+
+
 def apply_static_fixes(editor: PatcherEditor):
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
@@ -170,3 +197,4 @@ def apply_static_fixes(editor: PatcherEditor):
     shoot_supers_without_missiles(editor)
     nerf_ridley_fight(editor)
     increase_pb_drop_chance(editor)
+    fix_area2b_hp_item_001_deletion(editor)
