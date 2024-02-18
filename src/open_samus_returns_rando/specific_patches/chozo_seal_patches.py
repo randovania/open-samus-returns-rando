@@ -125,7 +125,30 @@ def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal):
         editor.ensure_present_in_scenario(scenario_name, asset)
 
 
+def update_item_seals(editor:PatcherEditor):
+    CHOZO_SEALS = {
+        "s000_surface": ["LE_ChozoUnlockAreaDNA"],
+        "s010_area1": ["LE_ChozoUnlockAreaDNA"],
+        "s028_area2c": ["LE_ChozoUnlockAreaDNA"],
+        "s030_area3": ["LE_ChozoUnlockAreaDNA"],
+        "s040_area4": ["LE_ChozoUnlockAreaDNA_001", "LE_ChozoUnlockAreaDNA_002"],
+        "s060_area6": ["LE_ChozoUnlockAreaDNA"],
+        "s070_area7": ["LE_ChozoUnlockAreaDNA_001", "LE_ChozoUnlockAreaDNA_002"],
+        "s090_area9": ["LE_ChozoUnlockAreaDNA"],
+    }
+
+    for scenario_name, chozo_seal in CHOZO_SEALS.items():
+        scenario = editor.get_scenario(scenario_name)
+        for seal in chozo_seal:
+            scenario.raw.actors[16][seal]["type"] = "chozoseal"
+
+        # Dependencies
+        for asset in editor.get_asset_names_in_folder("actors/props/chozoseal"):
+            editor.ensure_present_in_scenario(scenario_name, asset)
+
+
 def patch_chozo_seals(editor: PatcherEditor):
     patch_dna_check(editor)
+    update_item_seals(editor)
     for new_seal in new_seals:
         add_chozo_seals(editor, new_seal)
