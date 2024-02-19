@@ -30,16 +30,38 @@ SCRIPT_COMPONENT = Container({
 })
 
 
-def patch_dna_check(editor: PatcherEditor):
-    file_name = "actors/props/systemmechdna/charclasses/systemmechdna.bmsad"
+def patch_seals(editor: PatcherEditor):
+    systemmechdna_name = "actors/props/systemmechdna/charclasses/systemmechdna.bmsad"
     save_station_name = "actors/props/savestation/charclasses/savestation.bmsad"
-    systemmechdna = editor.get_file(file_name, Bmsad)
-    save_station_bmsad = editor.get_file(save_station_name, Bmsad)
+    chozoseal_name = "actors/props/chozoseal/charclasses/chozoseal.bmsad"
+    chozoseal_model_name = "actors/props/chozoseal/models/chozoseal.bcmdl"
 
+    # metroid seals
+    systemmechdna = editor.get_file(systemmechdna_name, Bmsad)
+    save_station_bmsad = editor.get_file(save_station_name, Bmsad)
     systemmechdna.raw["components"]["SCRIPT"] = SCRIPT_COMPONENT
     # Changing the usable to a savestation works for the hints but now the chozo seal
     # blinks with all DNA. Looks like it is no problem besides the visual aspect
     systemmechdna.raw["components"]["USABLE"] = save_station_bmsad.raw["components"]["USABLE"]
+
+    # item seals
+    systemmechdna_raw = editor.get_raw_asset(systemmechdna_name)
+    editor.add_new_asset(chozoseal_name, systemmechdna_raw, [])
+    chozoseal = editor.get_file(chozoseal_name, Bmsad)
+    chozoseal.raw["components"]["SCRIPT"] = SCRIPT_COMPONENT
+    chozoseal.raw["components"]["USABLE"] = save_station_bmsad.raw["components"]["USABLE"]
+    chozoseal.name = "chozoseal"
+    chozoseal.raw["header"]["model_name"] = chozoseal_model_name
+    chozoseal.components["MODELUPDATER"].functions[0].params["Param1"]["value"] = chozoseal_model_name
+    # ensure copy of assets
+    assets_to_copy = [
+        "actors/props/systemmechdna/models/textures/cristaldna_d.bctex",
+        "actors/props/systemmechdna/models/textures/dnaempty_d.bctex",
+        "actors/props/systemmechdna/models/textures/dna_bg.bctex",
+        "actors/props/systemmechdna/models/systemmechdna.bcmdl",
+    ]
+    for asset_name in assets_to_copy:
+        editor.add_new_asset(asset_name.replace("systemmechdna", "chozoseal"), editor.get_raw_asset(asset_name), [])
 
 
 class NewChozoSeal(typing.NamedTuple):
@@ -148,7 +170,7 @@ def update_item_seals(editor:PatcherEditor):
 
 
 def patch_chozo_seals(editor: PatcherEditor):
-    patch_dna_check(editor)
-    update_item_seals(editor)
+    patch_seals(editor)
     for new_seal in new_seals:
         add_chozo_seals(editor, new_seal)
+    update_item_seals(editor)
