@@ -197,7 +197,6 @@ class LuaEditor:
     def _create_custom_init(self, editor: PatcherEditor, configuration: dict) -> str:
         cosmetic_options: dict = configuration["cosmetic_patches"]
         inventory: dict[str, int] = configuration["starting_items"]
-        reserves_per_tank: dict = configuration["reserves_per_tank"]["missile_tank_size"]
         starting_location: dict = configuration["starting_location"]
         starting_text: list[str] = configuration.get("starting_text", [])
         configuration_identifier: str = configuration["configuration_identifier"]
@@ -216,8 +215,8 @@ class LuaEditor:
         if "ITEM_WEAPON_MISSILE_LAUNCHER" in inventory and "ITEM_MISSILE_TANKS" in inventory:
             inventory["ITEM_WEAPON_MISSILE_MAX"] = inventory.pop("ITEM_MISSILE_TANKS")
         else:
-            # FIXME: Current implementation of shuffled launcher prevents missile reserve tank from restoring missiles
-            inventory["ITEM_MISSILE_CHECK"] = reserves_per_tank
+            # For the gun component to work without launcher, any value is sufficient
+            inventory["ITEM_MISSILE_CHECK"] = 1
             samus_bmsad = editor.get_file(
                 "actors/characters/samus/charclasses/samus.bmsad", Bmsad
             )

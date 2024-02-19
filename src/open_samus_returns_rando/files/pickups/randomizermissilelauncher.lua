@@ -10,11 +10,10 @@ function RandomizerMissileLauncher.OnPickedUp(progression)
             if inner.item_id == "ITEM_MISSILE_TANKS" then
                 inner.item_id = "ITEM_WEAPON_MISSILE_MAX"
                 inner.quantity = inner.quantity + locked_missiles
-                -- Update the min amount refilled by the reserve tank
-                RandomizerPowerup.SetItemAmount("ITEM_MISSILE_CHECK", inner.quantity)
             end
         end
     end
     RandomizerPowerup.OnPickedUp(progression)
     RandomizerPowerup.SetItemAmount("ITEM_MISSILE_TANKS", 0)
+    RandomizerPowerup.IncreaseMissileCheckValue()
 end

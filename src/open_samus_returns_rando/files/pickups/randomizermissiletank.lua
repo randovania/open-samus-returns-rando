@@ -17,6 +17,5 @@ function RandomizerMissileTank.OnPickedUp(progression)
         end
     end
     RandomizerPowerup.OnPickedUp(progression)
-    -- Update the min amount refilled by the reserve tank
-    RandomizerPowerup.SetItemAmount("ITEM_MISSILE_CHECK", RandomizerPowerup.GetItemAmount(new_item_id))
+    RandomizerPowerup.IncreaseMissileCheckValue()
 end
