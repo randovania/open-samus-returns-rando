@@ -215,7 +215,7 @@ class LuaEditor:
         if "ITEM_WEAPON_MISSILE_LAUNCHER" in inventory and "ITEM_MISSILE_TANKS" in inventory:
             inventory["ITEM_WEAPON_MISSILE_MAX"] = inventory.pop("ITEM_MISSILE_TANKS")
         else:
-            # For the gun component to work without launcher, any value is sufficient
+            # For the gun component to work without launcher, any value > 0 is sufficient
             inventory["ITEM_MISSILE_CHECK"] = 1
             samus_bmsad = editor.get_file(
                 "actors/characters/samus/charclasses/samus.bmsad", Bmsad

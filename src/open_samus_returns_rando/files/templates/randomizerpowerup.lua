@@ -144,7 +144,7 @@ function RandomizerPowerup.IncreaseAmmo(resource)
 end
 
 function RandomizerPowerup.IncreaseMissileCheckValue()
-    -- Update the min refill amount of the missile reserve tank
+    -- Update the min missile reserve tank refill value (capped by config)
     if RandomizerPowerup.GetItemAmount("ITEM_MISSILE_CHECK") ~= nil then
         RandomizerPowerup.SetItemAmount("ITEM_MISSILE_CHECK", RandomizerPowerup.GetItemAmount("ITEM_WEAPON_MISSILE_MAX"))
     end
