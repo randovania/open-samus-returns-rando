@@ -197,6 +197,7 @@ class LuaEditor:
     def _create_custom_init(self, editor: PatcherEditor, configuration: dict) -> str:
         cosmetic_options: dict = configuration["cosmetic_patches"]
         inventory: dict[str, int] = configuration["starting_items"]
+        reserves_per_tank: dict = configuration["reserves_per_tank"]["missile_tank_size"]
         starting_location: dict = configuration["starting_location"]
         starting_text: list[str] = configuration.get("starting_text", [])
         configuration_identifier: str = configuration["configuration_identifier"]
@@ -216,10 +217,11 @@ class LuaEditor:
             inventory["ITEM_WEAPON_MISSILE_MAX"] = inventory.pop("ITEM_MISSILE_TANKS")
         else:
             # FIXME: Current implementation of shuffled launcher prevents missile reserve tank from restoring missiles
+            inventory["ITEM_MISSILE_CHECK"] = reserves_per_tank
             samus_bmsad = editor.get_file(
                 "actors/characters/samus/charclasses/samus.bmsad", Bmsad
             )
-            samus_bmsad.raw["components"]["GUN"]["functions"][20]["params"]["Param5"]["value"] = ""
+            samus_bmsad.raw["components"]["GUN"]["functions"][20]["params"]["Param5"]["value"] = "ITEM_MISSILE_CHECK"
         if "ITEM_WEAPON_SUPER_MISSILE" in inventory and "ITEM_SUPER_MISSILE_TANKS" in inventory:
             inventory["ITEM_WEAPON_SUPER_MISSILE_MAX"] = inventory.pop("ITEM_SUPER_MISSILE_TANKS")
         if "ITEM_WEAPON_POWER_BOMB" in inventory and "ITEM_POWER_BOMB_TANKS" in inventory:

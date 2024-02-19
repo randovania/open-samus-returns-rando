@@ -10,6 +10,7 @@ function RandomizerMissileLauncher.OnPickedUp(progression)
             if inner.item_id == "ITEM_MISSILE_TANKS" then
                 inner.item_id = "ITEM_WEAPON_MISSILE_MAX"
                 inner.quantity = inner.quantity + locked_missiles
+                RandomizerPowerup.SetItemAmount("ITEM_MISSILE_CHECK", inner.quantity)
             end
         end
     end
