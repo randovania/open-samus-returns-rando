@@ -227,6 +227,7 @@ class LuaEditor:
             "ITEM_WEAPON_POWER_BOMB_MAX": 0,
             "ITEM_METROID_COUNT": 0,
             "ITEM_METROID_TOTAL_COUNT": 40,
+            "ITEM_MISSILE_CHECK": max(1, inventory.get("ITEM_WEAPON_MISSILE_MAX", 0)),
         }
         final_inventory.update(inventory)
 

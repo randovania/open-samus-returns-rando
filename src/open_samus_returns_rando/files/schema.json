@@ -152,7 +152,7 @@
                 "missile_tank_size": {
                     "description": "How many Missiles are restored when using a Missile Reserve Tank",
                     "type": "number",
-                    "default": 50.0
+                    "default": 30.0
                 },
                 "super_missile_tank_size": {
                     "description": "How many Super Missiles are restored when using a Missile Reserve Tank",

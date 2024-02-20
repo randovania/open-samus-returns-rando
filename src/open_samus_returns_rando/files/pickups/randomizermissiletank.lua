@@ -17,4 +17,5 @@ function RandomizerMissileTank.OnPickedUp(progression)
         end
     end
     RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.IncreaseMissileCheckValue()
 end

@@ -73,11 +73,10 @@ def patch_a7_save_screw_blocks(editor: PatcherEditor):
 
 
 def shoot_supers_without_missiles(editor: PatcherEditor):
-    samus = editor.get_file(
+    samus_bmsad = editor.get_file(
         "actors/characters/samus/charclasses/samus.bmsad", Bmsad
     )
-    gun = samus.raw["components"]["GUN"]["functions"]
-    gun[20]["params"]["Param5"]["value"] = ""
+    samus_bmsad.raw["components"]["GUN"]["functions"][20]["params"]["Param5"]["value"] = "ITEM_MISSILE_CHECK"
 
 
 def nerf_ridley_fight(editor: PatcherEditor):
