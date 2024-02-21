@@ -16,4 +16,7 @@ function RandomizerMissileLauncher.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
     RandomizerPowerup.SetItemAmount("ITEM_MISSILE_TANKS", 0)
     RandomizerPowerup.IncreaseMissileCheckValue()
+    if RandomizerPowerup.GetItemAmount("ITEM_RESERVE_TANK_MISSILE") > 0 then
+        RandomizerPowerup.EnableMissileReserveTank()
+    end
 end
