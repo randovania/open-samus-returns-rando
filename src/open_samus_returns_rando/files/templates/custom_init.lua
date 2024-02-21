@@ -24,10 +24,7 @@ function Init.InitGameBlackboard()
       Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", current_amount + 1)
     end
     if string.sub(_FORV_3_, 1, 17) == "ITEM_RESERVE_TANK" then
-      if _FORV_3_ == "ITEM_RESERVE_TANK_MISSILE" and Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_WEAPON_MISSILE_LAUNCHER") then
-        Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_ACTIVE", "b", true)
-        Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_FULL", "b", true)
-      elseif _FORV_3_ ~= "ITEM_RESERVE_TANK_MISSILE" then
+      if (_FORV_3_ == "ITEM_RESERVE_TANK_MISSILE" and Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_WEAPON_MISSILE_LAUNCHER")) or _FORV_3_ ~= "ITEM_RESERVE_TANK_MISSILE" then
         Blackboard.SetProp("GAME", _FORV_3_ .. "_ACTIVE", "b", true)
         Blackboard.SetProp("GAME", _FORV_3_ .. "_FULL", "b", true)
       end
