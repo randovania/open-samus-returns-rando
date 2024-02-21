@@ -149,3 +149,10 @@ function RandomizerPowerup.IncreaseMissileCheckValue()
         RandomizerPowerup.SetItemAmount("ITEM_MISSILE_CHECK", RandomizerPowerup.GetItemAmount("ITEM_WEAPON_MISSILE_MAX"))
     end
 end
+
+function RandomizerPowerup.EnableMissileReserveTank()
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_ACTIVE", "b", true)
+    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_FULL", "b", true)
+    Game.AddSF(0.0, "Game.HUDIdleScreenGo", "")
+    Game.AddSF(0.5, "Game.HUDIdleScreenLeave", "")
+end

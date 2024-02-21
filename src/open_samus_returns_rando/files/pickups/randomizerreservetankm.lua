@@ -5,8 +5,7 @@ end
 
 function RandomizerReserveTankM.OnPickedUp(progression)
     RandomizerPowerup.OnPickedUp(progression)
-    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_ACTIVE", "b", true)
-    Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_MISSILE_FULL", "b", true)
-    Game.AddSF(0.0, "Game.HUDIdleScreenGo", "")
-    Game.AddSF(0.5, "Game.HUDIdleScreenLeave", "")
+    if RandomizerPowerup.GetItemAmount("ITEM_WEAPON_MISSILE_LAUNCHER") > 0 then
+        RandomizerPowerup.EnableMissileReserveTank()
+    end
 end
