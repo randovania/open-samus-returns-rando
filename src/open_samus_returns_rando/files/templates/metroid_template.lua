@@ -13,7 +13,8 @@ function Metroid.DisableSpawnGroup(spawnGroupName)
 end
 
 function Metroid.DelayedDelete(spawnGroupName)
-    Game.DeleteEntity(spawnGroupName)
+    Game.DisableEntity(spawnGroupName)
+    Game.MetroidRadarForceStateOnBegin(0, 0, false, false)
     if spawnGroupName == "SG_Gamma_001_A" then
         InitialPosition = Game.GetPlayer().vPos
         Game.GetPlayer().vPos = Game.GetEntity("ST_SG_Gamma_001").vPos
@@ -26,8 +27,6 @@ function Metroid.DelayedDelete(spawnGroupName)
         CurrentScenario.OnEnter_Gamma_004_Dead()
     elseif spawnGroupName == "SG_Gamma_005_C" then
         CurrentScenario.OnEnter_Gamma_005_Dead()
-    elseif spawnGroupName == "SG_Gamma_007_A" then
-        CurrentScenario.OnEnter_Gamma_007_Dead()
     end
     -- TODO: Add proper checkpoints
 end
