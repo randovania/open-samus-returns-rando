@@ -322,13 +322,7 @@ function s036_area3c.OnGamma_007_B_Generated(_ARG_0_, _ARG_1_)
   end
 end
 function s036_area3c.OnEnter_Gamma_007_Dead()
-  if Scenario.ReadFromBlackboard("Arena_Gamma_007_AllDead", false) then
-    Game.SetSubAreaCurrentSetup("collision_camera_013", "PostGamma_007", true)
-    Game.SetSubAreaCurrentSetup("collision_camera_027", "PostGamma_007", true)
-    if Game.GetEntity("SpawnGroup008") ~= nil then
-      Game.GetEntity("SpawnGroup008").SPAWNGROUP:EnableSpawnGroup()
-    end
-  end
+  s036_area3c.OnSubAreaChange()
 end
 function s036_area3c.OnGenericCrawler_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then
@@ -467,6 +461,15 @@ end
 function s036_area3c.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
   if _ARG_0_ == "collision_camera_018" then
     s036_area3c.DeactivateEvents()
+  end
+  if _ARG_2_ == "collision_camera_023" then
+    if Scenario.ReadFromBlackboard("Arena_Gamma_007_AllDead", false) then
+      Game.SetSubAreaCurrentSetup("collision_camera_013", "PostGamma_007", true)
+      Game.SetSubAreaCurrentSetup("collision_camera_027", "PostGamma_007", true)
+      if Game.GetEntity("SpawnGroup008") ~= nil then
+        Game.GetEntity("SpawnGroup008").SPAWNGROUP:EnableSpawnGroup()
+      end
+    end
   end
   Scenario.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
 end
