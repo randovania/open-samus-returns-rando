@@ -65,11 +65,16 @@ def remove_area7_grapple_block(editor: PatcherEditor):
     )
 
 
-def patch_a7_save_screw_blocks(editor: PatcherEditor):
-    area7 = editor.get_file(
-        "maps/levels/c10_samus/s090_area9/s090_area9.bmsbk", Bmsbk
+def patch_breakable_blocks(editor: PatcherEditor):
+    # Area 7 Screw Attack blocks above center Save Station
+    area9 = editor.get_file("maps/levels/c10_samus/s090_area9/s090_area9.bmsbk", Bmsbk)
+    area9.raw["block_groups"][56]["types"][0]["block_type"] = "power_beam"
+
+    # Area 3 Factory Interior Gamma Access Crumble block
+    area3c = editor.get_file(
+        "maps/levels/c10_samus/s036_area3c/s036_area3c.bmsbk", Bmsbk
     )
-    area7.raw["block_groups"][56]["types"][0]["block_type"] = "power_beam"
+    area3c.raw["block_groups"][8]["types"][0]["blocks"][0]["respawn_time"] = 0.0
 
 
 def shoot_supers_without_missiles(editor: PatcherEditor):
@@ -192,7 +197,7 @@ def apply_static_fixes(editor: PatcherEditor):
     patch_pickup_rotation(editor)
     patch_pickup_position(editor)
     remove_area7_grapple_block(editor)
-    patch_a7_save_screw_blocks(editor)
+    patch_breakable_blocks(editor)
     shoot_supers_without_missiles(editor)
     nerf_ridley_fight(editor)
     increase_pb_drop_chance(editor)
