@@ -204,7 +204,7 @@ function s036_area3c.OnGamma_006_Generated(_ARG_0_, _ARG_1_)
   end
 end
 function s036_area3c.OnEnter_Gamma_006_Dead()
-  if 0 < Scenario.ReadFromBlackboard("entity_SG_Gamma_006_deaths", 0) then
+  if 0 < Scenario.ReadFromBlackboard("entity_SG_Gamma_006_deaths", 0) and Scenario.ReadFromBlackboard("Arena_Gamma_007_AllDead", false) then
     Game.SetSubAreaCurrentSetup("collision_camera_023", "PostGamma_006", true)
     Game.SetSubAreaCurrentSetup("collision_camera_030", "PostGamma_006", true)
     if Game.GetEntity("SpawnGroup007") ~= nil then
