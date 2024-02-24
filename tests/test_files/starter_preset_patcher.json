@@ -1,27 +1,12 @@
 {
     "$schema": "../../src/open_samus_returns_rando/files/schema.json",
     "starting_location": {
-        "scenario": "s036_area3c",
-        "actor": "ST_SaveStation"
+        "scenario": "s000_surface",
+        "actor": "StartPoint0"
     },
     "starting_items": {
-        "ITEM_VARIA_SUIT": 1,
-        "ITEM_GRAVITY_SUIT": 1,
-        "ITEM_MORPH_BALL": 1,
-        "ITEM_HIGH_JUMP_BOOTS": 1,
-        "ITEM_SPACE_JUMP": 1,
-        "ITEM_SPIDER_BALL": 1,
-        "ITEM_WEAPON_CHARGE_BEAM": 1,
-        "ITEM_WEAPON_BOMB": 1,
-        "ITEM_WEAPON_SUPER_MISSILE": 1,
-        "ITEM_WEAPON_POWER_BOMB": 1,
-        "ITEM_WEAPON_POWER_BOMB_MAX": 20,
-        "ITEM_SUPER_MISSILE_TANKS": 50,
-        "ITEM_WEAPON_SPAZER_BEAM": 1,
-        "ITEM_WEAPON_WAVE_BEAM": 1,
-        "ITEM_WEAPON_PLASMA_BEAM": 1,
         "ITEM_WEAPON_MISSILE_LAUNCHER": 1,
-        "ITEM_MISSILE_TANKS": 50,
+        "ITEM_MISSILE_TANKS": 24,
         "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": 1,
         "ITEM_RANDO_DNA_11": 1,
         "ITEM_RANDO_DNA_12": 1,
@@ -52,7 +37,7 @@
         "ITEM_RANDO_DNA_37": 1,
         "ITEM_RANDO_DNA_38": 1,
         "ITEM_RANDO_DNA_39": 1,
-        "ITEM_MAX_LIFE": 999,
+        "ITEM_MAX_LIFE": 99,
         "ITEM_MAX_SPECIAL_ENERGY": 1000
     },
     "starting_text": [],
