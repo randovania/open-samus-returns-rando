@@ -13,7 +13,7 @@ function Metroid.DisableSpawnGroup(spawnGroupName)
 end
 
 function Metroid.DelayedDelete(spawnGroupName)
-    Game.DeleteEntity(spawnGroupName)
+    Game.DisableEntity(spawnGroupName)
     if spawnGroupName == "SG_Gamma_001_A" then
         InitialPosition = Game.GetPlayer().vPos
         Game.GetPlayer().vPos = Game.GetEntity("ST_SG_Gamma_001").vPos
@@ -50,6 +50,10 @@ function Metroid.RemoveMetroid(_ARG_0_)
             Game.AddSF(4.0, "Metroid.DelayedDelete", "s", spawnGroupName)
         -- disable single arena metroid
         else
+            -- TODO: This should not be hard coded (and is also wrong for all metroids except 007)
+            local allDead = "Arena_" .. string.sub(spawnGroupName, 4, -3) .. "_AllDead"
+            Game.DisableTrigger("TG_Gamma_007_A")
+            Scenario.WriteToBlackboard(allDead, "b", true)
             Metroid.DisableSpawnGroup(spawnGroupName)
         end
 

@@ -13,6 +13,8 @@ MULTI_ROOM_GAMMAS = [
     {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_Intro_C"},
     {"scenario": "s036_area3c", "layer": 4, "actor": "SP_Gamma_007_B"},
     {"scenario": "s036_area3c", "layer": 4, "actor": "SP_Gamma_007_Intro_B"},
+    {"scenario": "s036_area3c", "layer": 3, "actor": "SG_Gamma_007_B"},
+    {"scenario": "s036_area3c", "layer": 0, "actor": "TG_Gamma_007_B"},
     {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_B"},
     {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_Intro_B"},
     {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_C"},
@@ -197,3 +199,10 @@ def apply_static_fixes(editor: PatcherEditor):
     nerf_ridley_fight(editor)
     increase_pb_drop_chance(editor)
     fix_area2b_hp_item_001_deletion(editor)
+    scenario = editor.get_scenario("s036_area3c")
+    # remove the gamma name ¯\_(ツ)_/¯
+    scenario.raw["actors"][3]["SG_Gamma_007_A"]["components"][0]["arguments"][27]["value"] = ""
+    # ¯\_(ツ)_/¯
+    scenario.raw["actors"][4]["SP_Gamma_007_Intro_A"]["components"][0]["arguments"][11]["value"] = True
+    # make the trigger active
+    scenario.raw["actors"][0]["TG_Gamma_007_A"]["components"][0]["arguments"][0]["value"] = True
