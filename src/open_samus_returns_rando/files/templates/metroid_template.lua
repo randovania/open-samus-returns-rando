@@ -2,59 +2,25 @@ Metroid = Metroid or {}
 function Metroid.Dummy()
 end
 
-function Metroid.DisableSpawnGroup(spawnGroupName)
-    local spawnGroup = Game.GetEntity(spawnGroupName)
-    if spawnGroup ~= nil and spawnGroup.SPAWNGROUP ~= nil then
-        spawnGroup.SPAWNGROUP:DisableSpawnGroup()
-        Scenario.WriteToBlackboard("entity_" .. spawnGroupName .. "_dead", "b", true)
-        Scenario.WriteToBlackboard("entity_" .. spawnGroupName .. "_deaths", "i", 1)
-        Scenario.WriteToBlackboard("entity_" .. spawnGroupName .. "_enabled", "b", false)
-    end
-end
-
-function Metroid.DelayedDelete(spawnGroupName)
-    Game.DisableEntity(spawnGroupName)
-    if spawnGroupName == "SG_Gamma_001_A" then
-        InitialPosition = Game.GetPlayer().vPos
-        Game.GetPlayer().vPos = Game.GetEntity("ST_SG_Gamma_001").vPos
-        Game.SetPlayerInputEnabled(false, true)
-        Game.AddSF(0.5, "s040_area4.DelayedWarp", "")
-        CurrentScenario.OnEnter_Gamma_001_Dead()
-    elseif spawnGroupName == "SG_Gamma_002_A" then
-        CurrentScenario.OnEnter_Gamma_002_Dead()
-    elseif spawnGroupName == "SG_Gamma_004_B" then
-        CurrentScenario.OnEnter_Gamma_004_Dead()
-    elseif spawnGroupName == "SG_Gamma_005_C" then
-        CurrentScenario.OnEnter_Gamma_005_Dead()
-    elseif spawnGroupName == "SG_Gamma_007_A" then
-        CurrentScenario.OnEnter_Gamma_007_Dead()
-    end
-    -- TODO: Add proper checkpoints
-end
-
 function Metroid.RemoveMetroid(_ARG_0_)
     local spawnGroupName = CurrentScenario.currentMetroidSpawngroup
     if spawnGroupName ~= nil then
-        -- disable all spawn groups in case of multi arena gamma
-        if CurrentScenario.isMultiGamma then
-            local endingLetters = {"A", "B", "C"}
-            for index, letter in pairs(endingLetters) do
-                local otherSpawnGroupName = string.sub(spawnGroupName, 0, -2) .. letter
-                Metroid.DisableSpawnGroup(otherSpawnGroupName)
-            end
+        -- disable multi arena gamma spawngroups
+        if #spawnGroupName == 14 then
             local allDead = "Arena_" .. string.sub(spawnGroupName, 4, -3) .. "_AllDead"
-            Scenario.WriteToBlackboard(allDead, "b", true)
-            if spawnGroupName == "SG_Gamma_001_A" then
-                Game.SetPlayerInputEnabled(false, true)
+            local gamma = string.sub(spawnGroupName, 10, 14)
+            if spawnGroupName == "SG_Gamma_" .. gamma then
+                Game.DisableTrigger("TG_Gamma_" .. gamma)
             end
-            Game.AddSF(4.0, "Metroid.DelayedDelete", "s", spawnGroupName)
-        -- disable single arena metroid
-        else
-            -- TODO: This should not be hard coded (and is also wrong for all metroids except 007)
-            local allDead = "Arena_" .. string.sub(spawnGroupName, 4, -3) .. "_AllDead"
-            Game.DisableTrigger("TG_Gamma_007_A")
             Scenario.WriteToBlackboard(allDead, "b", true)
-            Metroid.DisableSpawnGroup(spawnGroupName)
+        end
+
+        local spawnGroup = Game.GetEntity(spawnGroupName)
+        if spawnGroup ~= nil and spawnGroup.SPAWNGROUP ~= nil then
+            spawnGroup.SPAWNGROUP:DisableSpawnGroup()
+            Scenario.WriteToBlackboard("entity_" .. spawnGroupName .. "_dead", "b", true)
+            Scenario.WriteToBlackboard("entity_" .. spawnGroupName .. "_deaths", "i", 1)
+            Scenario.WriteToBlackboard("entity_" .. spawnGroupName .. "_enabled", "b", false)
         end
 
         local count = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_METROID_COUNT") + 1
@@ -69,7 +35,8 @@ function Metroid.RemoveMetroid(_ARG_0_)
             Metroid.Pickups[scenario][spawnGroupName].OnPickedUp()
         end
         Game.SetInGameMusicState("RELAX")
-        if not CurrentScenario.isMultiGamma then
+        -- FIXME: reloading from checkpoint respawns the gamma so ignore
+        if #spawnGroupName ~= 14 then
             Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
         end
         if scenario == "s000_surface" then

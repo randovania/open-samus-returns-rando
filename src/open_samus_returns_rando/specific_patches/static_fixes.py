@@ -3,24 +3,40 @@ from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmtun
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 MULTI_ROOM_GAMMAS = [
+    {"scenario": "s030_area3", "layer": 0, "actor": "TG_Gamma_005_A"},
+    {"scenario": "s030_area3", "layer": 3, "actor": "SG_Gamma_005_A"},
     {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_A"},
     {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_Intro_A"},
+    {"scenario": "s030_area3", "layer": 0, "actor": "TG_Gamma_005_B"},
+    {"scenario": "s030_area3", "layer": 3, "actor": "SG_Gamma_005_B"},
     {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_B"},
     {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_Intro_B"},
+    {"scenario": "s033_area3b", "layer": 0, "actor": "TG_Gamma_004_A"},
+    {"scenario": "s033_area3b", "layer": 3, "actor": "SG_Gamma_004_A"},
     {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_A"},
     {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_Intro_A"},
+    {"scenario": "s033_area3b", "layer": 0, "actor": "TG_Gamma_004_C"},
+    {"scenario": "s033_area3b", "layer": 3, "actor": "SG_Gamma_004_C"},
     {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_C"},
     {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_Intro_C"},
+    {"scenario": "s036_area3c", "layer": 0, "actor": "TG_Gamma_007_B"},
+    {"scenario": "s036_area3c", "layer": 3, "actor": "SG_Gamma_007_B"},
     {"scenario": "s036_area3c", "layer": 4, "actor": "SP_Gamma_007_B"},
     {"scenario": "s036_area3c", "layer": 4, "actor": "SP_Gamma_007_Intro_B"},
-    {"scenario": "s036_area3c", "layer": 3, "actor": "SG_Gamma_007_B"},
-    {"scenario": "s036_area3c", "layer": 0, "actor": "TG_Gamma_007_B"},
+    {"scenario": "s040_area4", "layer": 0, "actor": "TG_Gamma_001_B"},
+    {"scenario": "s040_area4", "layer": 3, "actor": "SG_Gamma_001_B"},
     {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_B"},
     {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_Intro_B"},
+    {"scenario": "s040_area4", "layer": 0, "actor": "TG_Gamma_001_C"},
+    {"scenario": "s040_area4", "layer": 3, "actor": "SG_Gamma_001_C"},
     {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_C"},
     {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_Intro_C"},
+    {"scenario": "s050_area5", "layer": 0, "actor": "TG_Gamma_002_B"},
+    {"scenario": "s050_area5", "layer": 3, "actor": "SG_Gamma_002_B"},
     {"scenario": "s050_area5", "layer": 4, "actor": "Gamma_002_B"},
     {"scenario": "s050_area5", "layer": 4, "actor": "Gamma_002_Intro_B"},
+    {"scenario": "s050_area5", "layer": 0, "actor": "TG_Gamma_002_C"},
+    {"scenario": "s050_area5", "layer": 3, "actor": "SG_Gamma_002_C"},
     {"scenario": "s050_area5", "layer": 4, "actor": "Gamma_002_C"},
     {"scenario": "s050_area5", "layer": 4, "actor": "Gamma_002_Intro_C"},
 ]
@@ -29,6 +45,23 @@ MULTI_ROOM_GAMMAS = [
 def patch_multi_room_gammas(editor: PatcherEditor):
     for reference in MULTI_ROOM_GAMMAS:
         editor.remove_entity(reference)
+
+    gamma_actors = [
+        ("s030_area3", "SG_Gamma_005_C", "SP_Gamma_005_C", "TG_Gamma_005_C"),
+        ("s033_area3b", "SG_Gamma_004_B", "Gamma_004_Intro_B", "TG_Gamma_004_B"),
+        ("s036_area3c", "SG_Gamma_007_A", "SP_Gamma_007_Intro_A", "TG_Gamma_007_A"),
+        ("s040_area4", "SG_Gamma_001_A", "SP_Gamma_001_Intro_A", "TG_Gamma_001_A"),
+        ("s050_area5", "SG_Gamma_002_A", "Gamma_002_Intro_A", "TG_Gamma_002_A"),
+    ]
+
+    for scenario_name, spawngroup, spawnpoint, trigger in gamma_actors:
+        scenario = editor.get_scenario(scenario_name)
+        # remove the gamma name ¯\_(ツ)_/¯
+        scenario.raw["actors"][3][spawngroup]["components"][0]["arguments"][27]["value"] = ""
+        # ¯\_(ツ)_/¯
+        scenario.raw["actors"][4][spawnpoint]["components"][0]["arguments"][11]["value"] = True
+        # make the trigger active
+        scenario.raw["actors"][0][trigger]["components"][0]["arguments"][0]["value"] = True
 
 
 def patch_pickup_rotation(editor: PatcherEditor):
@@ -199,10 +232,3 @@ def apply_static_fixes(editor: PatcherEditor):
     nerf_ridley_fight(editor)
     increase_pb_drop_chance(editor)
     fix_area2b_hp_item_001_deletion(editor)
-    scenario = editor.get_scenario("s036_area3c")
-    # remove the gamma name ¯\_(ツ)_/¯
-    scenario.raw["actors"][3]["SG_Gamma_007_A"]["components"][0]["arguments"][27]["value"] = ""
-    # ¯\_(ツ)_/¯
-    scenario.raw["actors"][4]["SP_Gamma_007_Intro_A"]["components"][0]["arguments"][11]["value"] = True
-    # make the trigger active
-    scenario.raw["actors"][0]["TG_Gamma_007_A"]["components"][0]["arguments"][0]["value"] = True
