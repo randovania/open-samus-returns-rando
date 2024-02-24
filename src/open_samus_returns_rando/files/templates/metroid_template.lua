@@ -47,7 +47,6 @@ function Metroid.RemoveMetroid(_ARG_0_)
         GUI.LaunchMessage("Oops 2", "Metroid.Dummy", "")
     end
     CurrentScenario.currentMetroidSpawngroup = nil
-    CurrentScenario.isMultiGamma = nil
 end
 
 Metroid.Pickups = TEMPLATE("mapping")

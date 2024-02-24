@@ -45,7 +45,6 @@ end
 function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_name, is_multi)
   if created_actor ~= nil and created_actor.sName ~= nil then
     CurrentScenario.currentMetroidSpawngroup = group_name
-    CurrentScenario.isMultiGamma = is_multi or false
   end
 end
 
