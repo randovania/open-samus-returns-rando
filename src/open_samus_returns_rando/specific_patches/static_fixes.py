@@ -52,7 +52,7 @@ def patch_multi_room_gammas(editor: PatcherEditor):
         ("s033_area3b", "SG_Gamma_004_B", "Gamma_004_Intro_B", "TG_Gamma_004_B"),
         ("s036_area3c", "SG_Gamma_007_A", "SP_Gamma_007_Intro_A", "TG_Gamma_007_A"),
         ("s040_area4", "SG_Gamma_001_A", "SP_Gamma_001_Intro_A", "TG_Gamma_001_A"),
-        ("s050_area5", "SG_Gamma_002_A", "Gamma_002_Intro_A", "TG_Gamma_002_A"),
+        ("s050_area5", "SG_Gamma_002_A", "Gamma_002_A", "TG_Gamma_002_A"),
     ]
 
     for scenario_name, spawngroup, spawnpoint, trigger in gamma_actors:
@@ -63,6 +63,9 @@ def patch_multi_room_gammas(editor: PatcherEditor):
         scenario.raw["actors"][4][spawnpoint]["components"][0]["arguments"][11]["value"] = True
         # make the trigger active
         scenario.raw["actors"][0][trigger]["components"][0]["arguments"][0]["value"] = True
+        # move Gamma_002_A so it doesn't just poof into existence when is spawns in
+        if scenario_name == "s050_area5":
+            scenario.raw["actors"][4]["Gamma_002_A"]["position"][0] = 17100.0
 
 
 def patch_pickup_rotation(editor: PatcherEditor):
