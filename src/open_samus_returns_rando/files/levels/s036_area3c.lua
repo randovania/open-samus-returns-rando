@@ -204,7 +204,7 @@ function s036_area3c.OnGamma_006_Generated(_ARG_0_, _ARG_1_)
   end
 end
 function s036_area3c.OnEnter_Gamma_006_Dead()
-  if 0 < Scenario.ReadFromBlackboard("entity_SG_Gamma_006_deaths", 0) and Scenario.ReadFromBlackboard("Arena_Gamma_007_AllDead", false) then
+  if 0 < Scenario.ReadFromBlackboard("entity_SG_Gamma_006_deaths", 0) then
     Game.SetSubAreaCurrentSetup("collision_camera_023", "PostGamma_006", true)
     Game.SetSubAreaCurrentSetup("collision_camera_030", "PostGamma_006", true)
     if Game.GetEntity("SpawnGroup007") ~= nil then
@@ -213,19 +213,21 @@ function s036_area3c.OnEnter_Gamma_006_Dead()
   end
 end
 function s036_area3c.OnGamma_007_A_Trigger()
-  Gamma.OnMultiArenaTrigger("Gamma_007", "A")
+  if Game.GetEntity("SG_Gamma_007_A") ~= nil and Scenario.ReadFromBlackboard("entity_TG_Gamma_007_A_enabled", true) then
+    Game.GetEntity("SG_Gamma_007_A").SPAWNGROUP:EnableSpawnGroup()
+  end
 end
 function s036_area3c.OnGamma_007_Intro_A_Generated(_ARG_0_, _ARG_1_)
-  if Game.GetEntity("LE_Valve_Gamma_007_Intro_A") ~= nil then
-    Game.GetEntity("LE_Valve_Gamma_007_Intro_A").ANIMATION:SetAction("spawn")
-  end
+  -- if Game.GetEntity("LE_Valve_Gamma_007_Intro_A") ~= nil then
+  --   Game.GetEntity("LE_Valve_Gamma_007_Intro_A").ANIMATION:SetAction("spawn")
+  -- end
   s036_area3c.OnGamma_007_A_Generated(_ARG_0_, _ARG_1_)
 end
 function s036_area3c.OnEnter_SetCheckpoint_001_Gamma_007()
-  Game.SetBossCheckPointNames("ST_SG_Gamma_007", "ST_SG_Gamma_007", "SG_Gamma_007_A", "SG_Gamma_007_B", "SG_Gamma_007_C")
+  Game.SetBossCheckPointNames("ST_SG_Gamma_007", "ST_SG_Gamma_007", "SG_Gamma_007_A", "", "")
 end
 function s036_area3c.OnGamma_007_A_Generated(_ARG_0_, _ARG_1_)
-  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_007_A", true)
+  Scenario.SetMetroidSpawngroupOnCurrentScenario(_ARG_0_, "SG_Gamma_007_A")
   if _ARG_1_ ~= nil then
     -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door006")
     _ARG_1_.AI.bPlaceholder = false
@@ -270,57 +272,57 @@ function s036_area3c.OnGamma_007_A_Generated(_ARG_0_, _ARG_1_)
     -- end
   end
 end
-function s036_area3c.OnGamma_007_B_Trigger()
-  Gamma.OnMultiArenaTrigger("Gamma_007", "B")
-end
-function s036_area3c.OnGamma_007_Intro_B_Generated(_ARG_0_, _ARG_1_)
-  if Game.GetEntity("LE_Valve_Gamma_007_Intro_B") ~= nil then
-    Game.GetEntity("LE_Valve_Gamma_007_Intro_B").ANIMATION:SetAction("spawn")
-  end
-  s036_area3c.OnGamma_007_B_Generated(_ARG_0_, _ARG_1_)
-end
-function s036_area3c.OnGamma_007_B_Generated(_ARG_0_, _ARG_1_)
-  if _ARG_1_ ~= nil then
-    -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door006")
-    _ARG_1_.AI.bPlaceholder = false
-    _ARG_1_.AI:AddBossCamera("CAM_Gamma")
-    _ARG_1_.AI:AddBossCameraCeilingLandmark("LM_Gamma_007B_Ceiling")
-    _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma007_B_001")
-    _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma007_B_002")
-    _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma007_B_003")
-    _ARG_1_.AI:AddPresetLogicPath(1, "PATH_Gamma007_B_001")
-    _ARG_1_.AI:AddPresetLogicPath(1, "PATH_Gamma007_B_002")
-    _ARG_1_.AI:AddPresetLogicPath(1, "PATH_Gamma007_B_003")
-    _ARG_1_.AI:AddPresetLogicPath(2, "PATH_Gamma007_B_001")
-    _ARG_1_.AI:AddPresetLogicPath(2, "PATH_Gamma007_B_002")
-    _ARG_1_.AI:AddPresetLogicPath(2, "PATH_Gamma007_B_003")
-    _ARG_1_.AI:AddElectricMinesLogicPath(0, "PATH_Gamma007_B_mines_001")
-    _ARG_1_.AI:AddElectricMinesLogicPath(0, "PATH_Gamma007_B_mines_002")
-    _ARG_1_.AI:AddElectricMinesLogicPath(0, "PATH_Gamma007_B_mines_003")
-    _ARG_1_.AI:AddElectricMinesLogicPath(1, "PATH_Gamma007_B_mines_001")
-    _ARG_1_.AI:AddElectricMinesLogicPath(1, "PATH_Gamma007_B_mines_002")
-    _ARG_1_.AI:AddElectricMinesLogicPath(1, "PATH_Gamma007_B_mines_003")
-    _ARG_1_.AI:AddElectricMinesLogicPath(2, "PATH_Gamma007_B_mines_001")
-    _ARG_1_.AI:AddElectricMinesLogicPath(2, "PATH_Gamma007_B_mines_002")
-    _ARG_1_.AI:AddElectricMinesLogicPath(2, "PATH_Gamma007_B_mines_003")
-    _ARG_1_.AI:AddIdleLogicPath("PATH_Gamma007_B_Idle")
-    Gamma.SetArenaLife(_ARG_0_, _ARG_1_)
-    if Gamma.GetNumValveUsed(_ARG_0_) == 0 then
-      _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_B_001")
-      _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_B_002")
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveLifePct", 0.6)
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveTime", 60)
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveSamusLife", 99)
-    end
-    if Gamma.GetNumValveUsed(_ARG_0_) == 1 then
-      _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_B_001")
-      _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_B_002")
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveLifePct", 0.3)
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveTime", 90)
-      _ARG_1_.AI:AddBlackboardParam("fGotoValveSamusLife", 99)
-    end
-  end
-end
+-- function s036_area3c.OnGamma_007_B_Trigger()
+--   Gamma.OnMultiArenaTrigger("Gamma_007", "B")
+-- end
+-- function s036_area3c.OnGamma_007_Intro_B_Generated(_ARG_0_, _ARG_1_)
+--   if Game.GetEntity("LE_Valve_Gamma_007_Intro_B") ~= nil then
+--     Game.GetEntity("LE_Valve_Gamma_007_Intro_B").ANIMATION:SetAction("spawn")
+--   end
+--   s036_area3c.OnGamma_007_B_Generated(_ARG_0_, _ARG_1_)
+-- end
+-- function s036_area3c.OnGamma_007_B_Generated(_ARG_0_, _ARG_1_)
+--   if _ARG_1_ ~= nil then
+--     -- _ARG_1_.AI:AddBossDoorUnlockedOnDeath("Door006")
+--     _ARG_1_.AI.bPlaceholder = false
+--     _ARG_1_.AI:AddBossCamera("CAM_Gamma")
+--     _ARG_1_.AI:AddBossCameraCeilingLandmark("LM_Gamma_007B_Ceiling")
+--     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma007_B_001")
+--     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma007_B_002")
+--     _ARG_1_.AI:AddPresetLogicPath(0, "PATH_Gamma007_B_003")
+--     _ARG_1_.AI:AddPresetLogicPath(1, "PATH_Gamma007_B_001")
+--     _ARG_1_.AI:AddPresetLogicPath(1, "PATH_Gamma007_B_002")
+--     _ARG_1_.AI:AddPresetLogicPath(1, "PATH_Gamma007_B_003")
+--     _ARG_1_.AI:AddPresetLogicPath(2, "PATH_Gamma007_B_001")
+--     _ARG_1_.AI:AddPresetLogicPath(2, "PATH_Gamma007_B_002")
+--     _ARG_1_.AI:AddPresetLogicPath(2, "PATH_Gamma007_B_003")
+--     _ARG_1_.AI:AddElectricMinesLogicPath(0, "PATH_Gamma007_B_mines_001")
+--     _ARG_1_.AI:AddElectricMinesLogicPath(0, "PATH_Gamma007_B_mines_002")
+--     _ARG_1_.AI:AddElectricMinesLogicPath(0, "PATH_Gamma007_B_mines_003")
+--     _ARG_1_.AI:AddElectricMinesLogicPath(1, "PATH_Gamma007_B_mines_001")
+--     _ARG_1_.AI:AddElectricMinesLogicPath(1, "PATH_Gamma007_B_mines_002")
+--     _ARG_1_.AI:AddElectricMinesLogicPath(1, "PATH_Gamma007_B_mines_003")
+--     _ARG_1_.AI:AddElectricMinesLogicPath(2, "PATH_Gamma007_B_mines_001")
+--     _ARG_1_.AI:AddElectricMinesLogicPath(2, "PATH_Gamma007_B_mines_002")
+--     _ARG_1_.AI:AddElectricMinesLogicPath(2, "PATH_Gamma007_B_mines_003")
+--     _ARG_1_.AI:AddIdleLogicPath("PATH_Gamma007_B_Idle")
+--     Gamma.SetArenaLife(_ARG_0_, _ARG_1_)
+--     if Gamma.GetNumValveUsed(_ARG_0_) == 0 then
+--       _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_B_001")
+--       _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_B_002")
+--       _ARG_1_.AI:AddBlackboardParam("fGotoValveLifePct", 0.6)
+--       _ARG_1_.AI:AddBlackboardParam("fGotoValveTime", 60)
+--       _ARG_1_.AI:AddBlackboardParam("fGotoValveSamusLife", 99)
+--     end
+--     if Gamma.GetNumValveUsed(_ARG_0_) == 1 then
+--       _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_B_001")
+--       _ARG_1_.AI:AddValve("LE_Valve_Gamma_007_B_002")
+--       _ARG_1_.AI:AddBlackboardParam("fGotoValveLifePct", 0.3)
+--       _ARG_1_.AI:AddBlackboardParam("fGotoValveTime", 90)
+--       _ARG_1_.AI:AddBlackboardParam("fGotoValveSamusLife", 99)
+--     end
+--   end
+-- end
 function s036_area3c.OnEnter_Gamma_007_Dead()
   if Scenario.ReadFromBlackboard("Arena_Gamma_007_AllDead", false) then
     Game.SetSubAreaCurrentSetup("collision_camera_013", "PostGamma_007", true)

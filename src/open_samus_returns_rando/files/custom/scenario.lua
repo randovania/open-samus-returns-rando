@@ -42,10 +42,9 @@ function Scenario.OnSubAreaChange(old_subarea, old_actorgroup, new_subarea, new_
   Scenario.UpdateRoomName(new_subarea)
 end
 
-function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_name, is_multi)
+function Scenario.SetMetroidSpawngroupOnCurrentScenario(created_actor, group_name)
   if created_actor ~= nil and created_actor.sName ~= nil then
     CurrentScenario.currentMetroidSpawngroup = group_name
-    CurrentScenario.isMultiGamma = is_multi or false
   end
 end
 
