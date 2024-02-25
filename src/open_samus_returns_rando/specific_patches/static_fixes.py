@@ -161,8 +161,8 @@ def increase_pb_drop_chance(editor: PatcherEditor):
             drop["fPowerBombProbability"]["value"] *= 2
 
 
-def fix_area2b_hp_item_001_deletion(editor: PatcherEditor):
-    # HP_Item_001 is deleted if block is broken from another cc, so a fix is necessary
+def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
+    # Prevents hidden item actors from being deleted when its block is broken from an adjacent cc
     BOMB_BLOCK = Container({
         "pos": ListContainer([
             -10350.0,
@@ -175,16 +175,21 @@ def fix_area2b_hp_item_001_deletion(editor: PatcherEditor):
         "name1": "sg_casca38",
         "name2": ""
     })
-
-    scenario = editor.get_scenario("s025_area2b")
-    # Make actor freestanding
-    scenario.raw.actors[17]["HP_Item_001"]["components"][0]["arguments"][0]["value"] = ""
-
-    area2b = editor.get_file(
-        "maps/levels/c10_samus/s025_area2b/s025_area2b.bmsbk", Bmsbk
-    )
-    # Create custom Bomb block to simulate the pickup being inside the block
-    area2b.raw["block_groups"][8]["types"][0]["blocks"].append(BOMB_BLOCK)
+    scenarios = ["s025_area2b", "s067_area6c"]
+    for scenario_name in scenarios:
+        scenario = editor.get_scenario(scenario_name)
+        if scenario_name == "s025_area2b":
+            # HP_Item_001 can be accessed without a reload, so create a custom Bomb block to avoid visual issues
+            # Make actor freestanding
+            scenario.raw.actors[17]["HP_Item_001"]["components"][0]["arguments"][0]["value"] = ""
+            # Add custom Bomb block
+            area2b = editor.get_file(
+                "maps/levels/c10_samus/s025_area2b/s025_area2b.bmsbk", Bmsbk
+            )
+            area2b.raw["block_groups"][8]["types"][0]["blocks"].append(BOMB_BLOCK)
+        else:
+            # HiddenPowerup002 can only be accessed with a reload, so just add it to cc5 group to prevent deletion
+            scenario.add_actor_to_entity_groups("collision_camera_005", "HiddenPowerup002")
 
 
 def apply_static_fixes(editor: PatcherEditor):
@@ -196,4 +201,4 @@ def apply_static_fixes(editor: PatcherEditor):
     shoot_supers_without_missiles(editor)
     nerf_ridley_fight(editor)
     increase_pb_drop_chance(editor)
-    fix_area2b_hp_item_001_deletion(editor)
+    fix_wrong_cc_actor_deletions(editor)
