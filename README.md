@@ -10,7 +10,7 @@ Currently supports patching the following:
 ## Installation and Usage
 `pip install open-samus-returns-rando`
 
-You will need to provide JSON data matching the [JSON schema](https://github.com/randovania/src/open-samus-returns-rando/blob/main/open_samus_returns_rando/files/schema.json) in order to successfully patch the game.
+You will need to provide JSON data matching the [JSON schema](https://github.com/randovania/open-samus-returns-rando/blob/main/src/open_samus_returns_rando/files/schema.json) in order to successfully patch the game.
 
 The patcher expects a path to an extracted romfs directory of Metroid: Samus Returns as well as the desired output directory. Output files are in a format compatible with either Luma3DS or Citra.
 
