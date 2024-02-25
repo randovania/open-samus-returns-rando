@@ -213,7 +213,7 @@ function s036_area3c.OnEnter_Gamma_006_Dead()
   end
 end
 function s036_area3c.OnGamma_007_A_Trigger()
-  if Game.GetEntity("SG_Gamma_007_A") ~= nil then
+  if Game.GetEntity("SG_Gamma_007_A") ~= nil and Scenario.ReadFromBlackboard("entity_TG_Gamma_007_A_enabled", true) then
     Game.GetEntity("SG_Gamma_007_A").SPAWNGROUP:EnableSpawnGroup()
   end
 end

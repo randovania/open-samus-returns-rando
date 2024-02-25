@@ -10,7 +10,7 @@ function Metroid.RemoveMetroid(_ARG_0_)
             local allDead = "Arena_" .. string.sub(spawnGroupName, 4, -3) .. "_AllDead"
             local gamma = string.sub(spawnGroupName, 10, 14)
             if spawnGroupName == "SG_Gamma_" .. gamma then
-                Game.DisableTrigger("TG_Gamma_" .. gamma)
+                Scenario.WriteToBlackboard("entity_" .. "TG_Gamma_" .. gamma .."_enabled", "b", false)
             end
             Scenario.WriteToBlackboard(allDead, "b", true)
         end
@@ -35,14 +35,11 @@ function Metroid.RemoveMetroid(_ARG_0_)
             Metroid.Pickups[scenario][spawnGroupName].OnPickedUp()
         end
         Game.SetInGameMusicState("RELAX")
-        -- FIXME: reloading from checkpoint respawns the gamma so ignore
-        if #spawnGroupName ~= 14 then
-            Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
-        end
         if scenario == "s000_surface" then
             Game.DisableEntity("TG_Intro_Alpha")
             Scenario.WriteToBlackboard("alpha_killed", "b", true)
         end
+        Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
     else
         GUI.LaunchMessage("Oops 2", "Metroid.Dummy", "")
     end

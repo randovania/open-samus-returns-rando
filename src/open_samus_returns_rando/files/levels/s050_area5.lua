@@ -118,7 +118,7 @@ function s050_area5.OnEnter_SetCheckpoint_Gamma_002()
   Game.SetBossCheckPointNames("ST_SG_Gamma_002", "ST_SG_Gamma_002", "SG_Gamma_002_A", "", "")
 end
 function s050_area5.OnGamma_002_A_Trigger()
-  if Game.GetEntity("SG_Gamma_002_A") ~= nil then
+  if Game.GetEntity("SG_Gamma_002_A") ~= nil and Scenario.ReadFromBlackboard("entity_TG_Gamma_002_A_enabled", true) then
     Game.GetEntity("SG_Gamma_002_A").SPAWNGROUP:EnableSpawnGroup()
   end
 end

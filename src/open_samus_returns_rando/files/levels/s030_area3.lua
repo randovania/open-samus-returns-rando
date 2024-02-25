@@ -116,7 +116,7 @@ end
 --   end
 -- end
 function s030_area3.OnGamma_005_C_Trigger()
-  if Game.GetEntity("SG_Gamma_005_C") ~= nil then
+  if Game.GetEntity("SG_Gamma_005_C") ~= nil and Scenario.ReadFromBlackboard("entity_TG_Gamma_005_C_enabled", true) then
     Game.GetEntity("SG_Gamma_005_C").SPAWNGROUP:EnableSpawnGroup()
   end
 end
