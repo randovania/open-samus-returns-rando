@@ -63,7 +63,7 @@ def patch_multi_room_gammas(editor: PatcherEditor):
         scenario.raw["actors"][4][spawnpoint]["components"][0]["arguments"][11]["value"] = True
         # make the trigger active
         scenario.raw["actors"][0][trigger]["components"][0]["arguments"][0]["value"] = True
-        # move Gamma_002_A so it doesn't just poof into existence when is spawns in
+        # move Gamma_002_A so it doesn't just poof into existence when it spawns
         if scenario_name == "s050_area5":
             scenario.raw["actors"][4]["Gamma_002_A"]["position"][0] = 17100.0
 
