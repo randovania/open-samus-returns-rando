@@ -105,10 +105,9 @@ new_seals = [
         "s100_area10", [-4100.0, 11200.0, 0.0], [-4100.0, 11200.0, 0.0], 253,
         ["collision_camera_022", "collision_camera_024"]
     ),
-    # Currently breaks Ridley if added :(
-    # NewChozoSeal(
-    #     "s110_surfaceb", [-28150.0, 300.0, 0.0], [-28150.0, 300.0, 0.0], 145, ["collision_camera_017"]
-    # ),
+    NewChozoSeal(
+        "s110_surfaceb", [-28150.0, 300.0, 0.0], [-28150.0, 300.0, 0.0], 145, ["collision_camera_017"]
+    ),
 ]
 
 def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal):
