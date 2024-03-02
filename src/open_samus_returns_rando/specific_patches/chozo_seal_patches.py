@@ -2,6 +2,7 @@ import typing
 
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad, Bmsmsd
+from open_samus_returns_rando.constants import get_package_name
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 SCRIPT_COMPONENT = Container({
@@ -165,8 +166,9 @@ def update_item_seals(editor:PatcherEditor):
             scenario.raw.actors[16][seal]["type"] = "chozoseal"
 
         # Dependencies
-        for asset in editor.get_asset_names_in_folder("actors/props/chozoseal"):
-            editor.ensure_present_in_scenario(scenario_name, asset)
+        for level_pkg in editor.get_all_level_pkgs():
+            for asset in editor.get_asset_names_in_folder("actors/props/chozoseal"):
+                editor.ensure_present(get_package_name(level_pkg, asset), asset)
 
 
 def patch_chozo_seals(editor: PatcherEditor):
