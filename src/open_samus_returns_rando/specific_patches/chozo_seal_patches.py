@@ -166,7 +166,7 @@ def update_item_seals(editor:PatcherEditor):
             scenario.raw.actors[16][seal]["type"] = "chozoseal"
 
         # Dependencies
-        for level_pkg in editor.get_all_level_pkgs():
+        for level_pkg in editor.get_level_pkgs(scenario_name):
             for asset in editor.get_asset_names_in_folder("actors/props/chozoseal"):
                 editor.ensure_present(get_package_name(level_pkg, asset), asset)
 
