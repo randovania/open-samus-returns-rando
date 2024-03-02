@@ -7,7 +7,7 @@ from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
 from mercury_engine_data_structures.formats import BaseResource, Bmsld
 from mercury_engine_data_structures.game_check import Game
 
-from open_samus_returns_rando.constants import ALL_SCENARIOS
+from open_samus_returns_rando.constants import ALL_SCENARIOS, get_package_name
 
 T = typing.TypeVar("T")
 
@@ -39,7 +39,7 @@ class PatcherEditor(FileTreeEditor):
 
     def ensure_present_in_scenario(self, scenario: str, asset):
         for pkg in self.get_level_pkgs(scenario):
-            self.ensure_present(pkg, asset)
+            self.ensure_present(get_package_name(pkg, asset), asset)
 
     def get_scenario(self, name: str) -> Bmsld:
         return self.get_file(path_for_level(name) + ".bmsld", Bmsld)
