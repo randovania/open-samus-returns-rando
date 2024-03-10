@@ -214,25 +214,27 @@ class DoorType(Enum):
     shield: the shield's ActorData
     """
     POWER = ("power_beam", ActorData.DOOR_POWER)
-    # s067_area6c
-    CHARGE = ("charge_beam", ActorData.DOOR_CHARGE, False, None, ["actors/props/doorchargecharge",
-                # still not working :-S
-                "actors/props/door/fx", "sounds/props/doorchargecharge"])
+    CHARGE = ("charge_beam", ActorData.DOOR_CHARGE, False, None, [
+        "actors/props/doorchargecharge", "actors/props/door/fx", "sounds/props/doorchargecharge"
+    ])
     WAVE_BEAM = ("wave_beam", ActorData.DOOR_POWER, True,
                  ActorData.SHIELD_WAVE_BEAM,["actors/props/doorwave"])
     SPAZER_BEAM = ("spazer_beam", ActorData.DOOR_POWER, True,
                     ActorData.SHIELD_SPAZER_BEAM, ["actors/props/doorspazerbeam"])
     PLASMA_BEAM = ("plasma_beam", ActorData.DOOR_POWER, True,
                     ActorData.SHIELD_PLASMA_BEAM, ["actors/props/doorcreature"])
-    # s033_area3b, s036_area3c, s090_area9
-    MISSILE = ("missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_MISSILE, ["actors/props/doorshieldmissile"])
-    SUPER_MISSILE = ("super_missile", ActorData.DOOR_POWER, True,
-                      ActorData.SHIELD_SUPER_MISSILE, ["actors/props/doorshieldsupermissile"])
-    POWER_BOMB = ("power_bomb", ActorData.DOOR_POWER, True,
-                   ActorData.SHIELD_POWER_BOMB, ["actors/props/doorshieldpowerbomb"])
+    MISSILE = ("missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_MISSILE, [
+        "actors/props/doorshield", "actors/props/doorshieldmissile"
+    ])
+    SUPER_MISSILE = ("super_missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_SUPER_MISSILE, [
+        "actors/props/doorshield", "actors/props/doorshieldsupermissile"
+    ])
+    POWER_BOMB = ("power_bomb", ActorData.DOOR_POWER, True, ActorData.SHIELD_POWER_BOMB, [
+        "actors/props/doorshield", "actors/props/doorshieldpowerbomb"
+    ])
 
     def __init__(self, rdv_door_type: str, door_data: ActorData, need_shield: bool = False,
-                 shield_data: ActorData = None, additional_asset_folders: list[str] = None):
+                 shield_data: ActorData | None = None, additional_asset_folders: list[str] | None = None):
         self.type = rdv_door_type
         self.need_shield = need_shield
         self.door = door_data
@@ -262,6 +264,7 @@ class DoorPatcher:
         # pop a life component from our static door patches
         if len(door_actor.components) > 1:
             door_actor.components.pop()
+        door_actor.components[0]["arguments"][2]["value"] = False
         door_actor.components[0]["arguments"][3]["value"] = ""
         door_actor.type = ActorData.DOOR_POWER.value[0]
 
@@ -314,12 +317,12 @@ class DoorPatcher:
             for group in entity_groups:
                 scenario.insert_into_entity_group(group,  f"Shield_{index}")
                 scenario.insert_into_entity_group(group,  f"Shield_{index}_o")
-
-            # ensure required files
-            for folder in new_door.required_asset_folders:
-                for asset in self.editor.get_asset_names_in_folder(folder):
-                    self.editor.ensure_present_in_scenario(scenario_name, asset)
             self._index_per_scenario[scenario_name] = index + 1
+
+        # ensure required files
+        for folder in new_door.required_asset_folders:
+            for asset in self.editor.get_asset_names_in_folder(folder):
+                self.editor.ensure_present_in_scenario(scenario_name, asset)
 
 
 def _static_door_patches(editor: PatcherEditor):
