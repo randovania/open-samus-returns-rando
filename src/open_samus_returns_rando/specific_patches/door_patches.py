@@ -217,20 +217,26 @@ class DoorType(Enum):
     CHARGE = ("charge_beam", ActorData.DOOR_CHARGE, False, None, [
         "actors/props/doorchargecharge", "actors/props/door/fx", "sounds/props/doorchargecharge"
     ])
-    WAVE_BEAM = ("wave_beam", ActorData.DOOR_POWER, True,
-                 ActorData.SHIELD_WAVE_BEAM,["actors/props/doorwave"])
-    SPAZER_BEAM = ("spazer_beam", ActorData.DOOR_POWER, True,
-                    ActorData.SHIELD_SPAZER_BEAM, ["actors/props/doorspazerbeam"])
-    PLASMA_BEAM = ("plasma_beam", ActorData.DOOR_POWER, True,
-                    ActorData.SHIELD_PLASMA_BEAM, ["actors/props/doorcreature"])
+    WAVE_BEAM = ("wave_beam", ActorData.DOOR_POWER, True, ActorData.SHIELD_WAVE_BEAM, [
+        "actors/props/doorwave", "sounds/props/doorwave"
+    ])
+    SPAZER_BEAM = ("spazer_beam", ActorData.DOOR_POWER, True, ActorData.SHIELD_SPAZER_BEAM, [
+        "actors/props/doorspazerbeam", "sounds/props/spazerdoor"
+    ])
+    PLASMA_BEAM = ("plasma_beam", ActorData.DOOR_POWER, True, ActorData.SHIELD_PLASMA_BEAM, [
+        "actors/props/doorcreature", "sounds/props/creaturedoor"
+    ])
     MISSILE = ("missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_MISSILE, [
-        "actors/props/doorshield", "actors/props/doorshieldmissile"
+        "actors/props/doorshield", "actors/props/doorshieldmissile",
+        "sounds/props/doorchargecharge/missiledoor_hum.bcwav"
     ])
     SUPER_MISSILE = ("super_missile", ActorData.DOOR_POWER, True, ActorData.SHIELD_SUPER_MISSILE, [
-        "actors/props/doorshield", "actors/props/doorshieldsupermissile"
+        "actors/props/doorshield", "actors/props/doorshieldsupermissile",
+        "sounds/props/doorchargecharge/smissiledoor_hum.bcwav"
     ])
     POWER_BOMB = ("power_bomb", ActorData.DOOR_POWER, True, ActorData.SHIELD_POWER_BOMB, [
-        "actors/props/doorshield", "actors/props/doorshieldpowerbomb"
+        "actors/props/doorshield", "actors/props/doorshieldpowerbomb",
+        "sounds/props/doorchargecharge/powerbombdoor_hum.bcwav"
     ])
 
     def __init__(self, rdv_door_type: str, door_data: ActorData, need_shield: bool = False,
