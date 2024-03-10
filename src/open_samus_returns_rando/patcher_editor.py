@@ -44,13 +44,6 @@ class PatcherEditor(FileTreeEditor):
     def get_scenario(self, name: str) -> Bmsld:
         return self.get_file(path_for_level(name) + ".bmsld", Bmsld)
 
-    def get_asset_names_in_folder(self, folder: str) -> typing.Iterator[str]:
-        yield from (
-            name
-            for name in self._name_for_asset_id.values()
-            if name.startswith(folder) and self.does_asset_exists(name)
-        )
-
     def resolve_actor_reference(self, ref: dict) -> Container:
         scenario = self.get_scenario(ref["scenario"])
         # FIXME: There is no "default" as layer in SR
@@ -82,4 +75,9 @@ class PatcherEditor(FileTreeEditor):
         scenario.remove_actor_from_all_groups(actor_name)
 
     def get_asset_names_in_folder(self, folder: str) -> typing.Iterator[str]:
-        yield from (name for name in self._name_for_asset_id.values() if name.startswith(folder))
+        yield from (
+            name
+            for name in self._name_for_asset_id.values()
+            if name.startswith(folder) and self.does_asset_exists(name)
+        )
+
