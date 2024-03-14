@@ -1,7 +1,18 @@
 Game.ImportLibrary("system/scripts/init_original.lua")
 
-Init.tNewGameInventory = TEMPLATE("new_game_inventory")
+RL = RL or { 
+  -- defined by exlaunch
+  Init = function() end,
+  Update = function() end,
+  SendLog = function(message) end,
+  SendInventory = function(message) end
+}
 
+-- stub for UpdateRDVClient, which will be redefined by bootstrap code of randovania
+function RL.UpdateRDVClient(new_scenario)
+end
+
+Init.tNewGameInventory = TEMPLATE("new_game_inventory")
 Init.bRevealMap = TEMPLATE("reveal_map_on_start")
 Init.sStartingScenario = TEMPLATE("starting_scenario")
 Init.sStartingActor = TEMPLATE("starting_actor")
@@ -12,6 +23,17 @@ Init.iNumRandoTextBoxes = TEMPLATE("textbox_count")
 Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier")
 Init.tBoxesSeen = 0
 Init.bEnableRoomIds = TEMPLATE("enable_room_ids")
+Init.sLayoutUUID = TEMPLATE("layout_uuid")
+
+local orig_log = Game.LogWarn
+if TEMPLATE("enable_remote_lua") then
+    RL.Init()
+    function Game.LogWarn(_, message)
+        orig_log(_, message)
+        RL.SendLog(message)
+    end
+end
+
 
 function Init.InitGameBlackboard()
   Blackboard.ResetWithExceptionList({

@@ -50,7 +50,7 @@ function RandomizerPowerup.OnPickedUp(resources)
     end
 
     Scenario.UpdateProgressiveItemModels()
-
+    RL.UpdateRDVClient(false)
     return granted
 end
 
