@@ -227,7 +227,9 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
             )
             area2b.raw["block_groups"][8]["types"][0]["blocks"].append(BOMB_BLOCK)
         else:
-            # HiddenPowerup002 can only be accessed with a reload, so just add it to cc5 group to prevent deletion
+            # HiddenPowerup002 can only be accessed with a reload, so just add to adjacent cc groups to prevent deletion
+            # Can also cause issues in door lock rando if the door connecting cc2 and cc5 a PB door
+            scenario.add_actor_to_entity_groups("collision_camera_002", "HiddenPowerup002")
             scenario.add_actor_to_entity_groups("collision_camera_005", "HiddenPowerup002")
 
 
