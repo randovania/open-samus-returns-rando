@@ -218,7 +218,7 @@ class DoorType(Enum):
         "actors/props/doorchargecharge", "actors/props/door/fx", "sounds/props/doorchargecharge"
     ])
     WAVE_BEAM = ("wave_beam", ActorData.DOOR_POWER, True, ActorData.SHIELD_WAVE_BEAM, [
-        "actors/props/doorwave", "sounds/props/doorwave"
+        "actors/props/doorwave", "sounds/props/doorwave", "system/fx/textures/blood_gray.bctex",
     ])
     SPAZER_BEAM = ("spazer_beam", ActorData.DOOR_POWER, True, ActorData.SHIELD_SPAZER_BEAM, [
         "actors/props/doorspazerbeam", "sounds/props/spazerdoor"
