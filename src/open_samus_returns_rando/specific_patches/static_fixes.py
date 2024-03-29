@@ -1,3 +1,5 @@
+import copy
+
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmtun
 from open_samus_returns_rando.patcher_editor import PatcherEditor
@@ -214,23 +216,54 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
         "name1": "sg_casca38",
         "name2": ""
     })
-    scenarios = ["s025_area2b", "s067_area6c"]
-    for scenario_name in scenarios:
+    BOMB_GROUP = Container(
+        unk_bool=True,
+        types=ListContainer([Container(block_type='bomb', blocks=ListContainer([]))])
+    )
+
+    scenario_powerup_eg = {
+        "s010_area1": [
+            {"powerup_name": "HiddenPowerup001", "cc": "collision_camera_018"},
+        ],
+        "s025_area2b": [
+            {"powerup_name": "HP_Item_001", "cc": "collision_camera012"},
+        ],
+        "s050_area5": [
+            {"powerup_name": "HiddenPowerup002", "cc": "collision_camera_001"},
+        ],
+        "s067_area6c": [
+            {"powerup_name": "HiddenPowerup002", "cc": "collision_camera_007"},
+            {"powerup_name": "HiddenPowerup003", "cc": "collision_camera_011"},
+        ]
+    }
+
+    for scenario_name, powerup_objs in scenario_powerup_eg.items():
         scenario = editor.get_scenario(scenario_name)
-        if scenario_name == "s025_area2b":
-            # HP_Item_001 can be accessed without a reload, so create a custom Bomb block to avoid visual issues
-            # Make actor freestanding
-            scenario.raw.actors[17]["HP_Item_001"]["components"][0]["arguments"][0]["value"] = ""
-            # Add custom Bomb block
-            area2b = editor.get_file(
-                "maps/levels/c10_samus/s025_area2b/s025_area2b.bmsbk", Bmsbk
+        for powerup_obj in powerup_objs:
+            powerup_name = powerup_obj["powerup_name"]
+            cc_name = powerup_obj["cc"]
+
+            powerup_actor = next(
+                actor for layer, actor_name, actor in scenario.all_actors() if actor_name == powerup_name
             )
-            area2b.raw["block_groups"][8]["types"][0]["blocks"].append(BOMB_BLOCK)
-        else:
-            # HiddenPowerup002 can only be accessed with a reload, so just add to adjacent cc groups to prevent deletion
-            # Can also cause issues in door lock rando if the door connecting cc2 and cc5 a PB door
-            scenario.add_actor_to_entity_groups("collision_camera_002", "HiddenPowerup002")
-            scenario.add_actor_to_entity_groups("collision_camera_005", "HiddenPowerup002")
+            # Make actor freestanding
+            powerup_actor["components"][0]["arguments"][0]["value"] = ""
+
+            # add block on top of item
+            bmsbk = editor.get_file(
+                f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmsbk", Bmsbk
+            )
+            sg_casca = powerup_actor.components[0].arguments[2].value
+            pos = powerup_actor.position
+            new_group = copy.deepcopy(BOMB_GROUP)
+            new_block = copy.deepcopy(BOMB_BLOCK)
+            new_block.pos = pos
+            new_block.name1 = sg_casca
+            new_group.types[0].blocks.append(new_block)
+            bmsbk.raw.block_groups.append(new_group)
+            bmsbk_cc_obj = next(cc_obj for cc_obj in bmsbk.raw.collision_cameras if cc_name in cc_obj.name)
+            bmsbk_cc_obj.entries.append(len(bmsbk.raw.block_groups) - 1)
+
 
 
 def apply_static_fixes(editor: PatcherEditor):
