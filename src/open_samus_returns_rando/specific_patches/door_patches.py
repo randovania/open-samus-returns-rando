@@ -1,5 +1,6 @@
 
 import copy
+import re
 from enum import Enum
 
 from construct import Container, ListContainer
@@ -295,15 +296,85 @@ class DoorPatcher:
         index = self._index_per_scenario.get(scenario_name, 0)
         left_shield_name = f"Shield_{index}"
         right_shield_name = f"Shield_{index}_o"
+        new_door: DoorType = DoorType.get_type(door_type_str)
 
+        self.patch_actor(
+            new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
+        )
+        self.patch_minimap(editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door)
 
+    def patch_minimap(self, editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door):
+        scenario_minimap = editor.get_file(f"gui/minimaps/c10_samus/{scenario_name}.bmsmsd", Bmsmsd)
+        tiles = scenario_minimap.raw["tiles"]
+
+        # find left and right tile
+        tiles_for_door = [
+            x
+            for x in tiles
+            if len(x.icons) and next((y for y in x.icons if actor_name in y.actor_name), 0)
+        ]
+
+        # single sided shields can have different names.
+        # if we only found the left or right tile, get the left / right one manually by using the coordinates
+        if len(tiles_for_door) == 1:
+            l_or_r_tile = tiles_for_door[0]
+            if next((x for x in l_or_r_tile.icons if "left" in x.actor_name), False):
+                right_x_coordinates = [l_or_r_tile.tile_coordinates[0] + 1, l_or_r_tile.tile_coordinates[1]]
+                right_tile = next((x for x in tiles if x.tile_coordinates == right_x_coordinates), None)
+                tiles_for_door.append(right_tile)
+            elif next((x for x in l_or_r_tile.icons if "right" in x.actor_name), False):
+                left_x_coordinates = [l_or_r_tile.tile_coordinates[0] - 1, l_or_r_tile.tile_coordinates[1]]
+                left_tile = next((x for x in tiles if x.tile_coordinates == left_x_coordinates), None)
+                tiles_for_door.insert(0, left_tile)
+            else:
+                raise ValueError("Cannot find other side of the door")
+
+        # two Shields have mismatched names in both cases the first object needs to be removed
+        if len(tiles_for_door) == 3:
+            tiles_for_door.remove(tiles_for_door[0])
+        elif len(tiles_for_door) != 2:
+            raise ValueError("Found not exactly two tiles")
+
+        # find the icons of the tile
+        left_tile_icon =  next(
+            (y for y in tiles_for_door[0].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
+        )
+        right_tile_icon =  next(
+            (y for y in tiles_for_door[1].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
+        )
+
+        if not left_tile_icon:
+            raise ValueError("No matching left icon found")
+        if not right_tile_icon:
+            raise ValueError("No matching right icon found")
+
+        # change the icons to their new door type
+        left_tile_icon.icon = f"{new_door.minimap_name}left"
+        right_tile_icon.icon = f"{new_door.minimap_name}right"
+        if not new_door.need_shield:
+            left_tile_icon.actor_name = f"{actor_name}left"
+            left_tile_icon.icon_priority = IconPriority.DOOR
+            right_tile_icon.actor_name = f"{actor_name}right"
+            right_tile_icon.icon_priority = IconPriority.DOOR
+        else:
+            left_tile_icon.actor_name = left_shield_name
+            left_tile_icon.icon_priority = IconPriority.ACTOR
+            right_tile_icon.actor_name = right_shield_name
+            right_tile_icon.icon_priority = IconPriority.ACTOR
+
+        # bad special case to force DoorManiMinerBot to doorclosed...
+        if actor_name == "DoorManicMinerBot":
+            left_tile_icon.icon = 'doorclosedleft'
+
+    def patch_actor(
+            self, new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
+        ):
         if door_actor is None:
             raise ValueError(f"Actor {actor_name} not found in scenario {scenario_name}")
 
         self._patch_to_power(door_actor, scenario)
 
         # patch to desired type
-        new_door: DoorType = DoorType.get_type(door_type_str)
         if not new_door.need_shield:
             door_actor.type = new_door.door.value[0]
         # all other use shields
@@ -331,65 +402,14 @@ class DoorPatcher:
                 scenario.insert_into_entity_group(group,  right_shield_name)
             self._index_per_scenario[scenario_name] = index + 1
 
+        # bad special case to force DoorManiMinerBot to doorclosed...
+        if actor_name == "DoorManicMinerBot":
+            door_actor.type = re.sub("(doorpower|doorcharge)", "doorclosed", door_actor.type)
+
         # ensure required files
         for folder in new_door.required_asset_folders:
             for asset in self.editor.get_asset_names_in_folder(folder):
                 self.editor.ensure_present_in_scenario(scenario_name, asset)
-
-        # TODO: Move this mess to own function + refactor (maybe make it usable for non door lock
-        # to fix our double sided doors on minimap)
-        # patch minimap
-        scenario_minimap = editor.get_file(f"gui/minimaps/c10_samus/{scenario_name}.bmsmsd", Bmsmsd)
-        tiles = scenario_minimap.raw["tiles"]
-        tiles_for_door = [
-            x
-            for x in tiles
-            if len(x.icons) and next((y for y in x.icons if actor_name in y.actor_name), 0)
-        ]
-        if len(tiles_for_door) == 1:
-            l_or_r_tile = tiles_for_door[0]
-            if next((x for x in l_or_r_tile.icons if "left" in x.actor_name), False):
-                right_x_coordinates = [l_or_r_tile.tile_coordinates[0] + 1, l_or_r_tile.tile_coordinates[1]]
-                right_tile = next((x for x in tiles if x.tile_coordinates == right_x_coordinates), None)
-                tiles_for_door.append(right_tile)
-            elif next((x for x in l_or_r_tile.icons if "right" in x.actor_name), False):
-                left_x_coordinates = [l_or_r_tile.tile_coordinates[0] - 1, l_or_r_tile.tile_coordinates[1]]
-                left_tile = next((x for x in tiles if x.tile_coordinates == left_x_coordinates), None)
-                tiles_for_door.insert(0, left_tile)
-            else:
-                raise ValueError("oops")
-
-        # two Shields have mismatched names in both cases the first object needs to be removed
-        if len(tiles_for_door) == 3:
-            tiles_for_door.remove(tiles_for_door[0])
-        elif len(tiles_for_door) != 2:
-            raise ValueError("Found not exactly two tiles")
-
-        left_tile_icon =  next(
-            (y for y in tiles_for_door[0].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
-        )
-        right_tile_icon =  next(
-            (y for y in tiles_for_door[1].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
-        )
-
-        if not left_tile_icon:
-            raise ValueError("No matching left icon found")
-        if not right_tile_icon:
-            raise ValueError("No matching right icon found")
-        if not new_door.need_shield:
-            left_tile_icon.actor_name = f"{actor_name}left"
-            left_tile_icon.icon = f"{new_door.minimap_name}left"
-            left_tile_icon.icon_priority = IconPriority.DOOR
-            right_tile_icon.actor_name = f"{actor_name}right"
-            right_tile_icon.icon = f"{new_door.minimap_name}right"
-            right_tile_icon.icon_priority = IconPriority.DOOR
-        else:
-            left_tile_icon.actor_name = left_shield_name
-            left_tile_icon.icon = f"{new_door.minimap_name}left"
-            left_tile_icon.icon_priority = IconPriority.ACTOR
-            right_tile_icon.actor_name = right_shield_name
-            right_tile_icon.icon = f"{new_door.minimap_name}right"
-            right_tile_icon.icon_priority = IconPriority.ACTOR
 
 
 def _static_door_patches(editor: PatcherEditor):
@@ -404,7 +424,7 @@ def patch_doors(editor: PatcherEditor, door_patches: list[dict]):
 
     door_patcher = DoorPatcher(editor)
 
-    # TODO: or not TODO ?
+    # small hack to eliminate duplicates (randovania exports everything duplicated)
     import json
     set_of_jsons = {json.dumps(d, sort_keys=True) for d in door_patches}
     door_patches_set = [json.loads(t) for t in set_of_jsons]
