@@ -195,7 +195,6 @@ class ActorData(Enum):
     Enum containing data on actors
 
     actordef: the actordef for the actor
-    minimapData: the MinimapIconData for this type
     """
     DOOR_POWER = (["doorpowerpower", "doorpowerclosed", "doorclosedpower"])
     DOOR_CHARGE = (["doorchargecharge", "doorchargeclosed", "doorclosedcharge"])
@@ -221,13 +220,13 @@ class DoorType(Enum):
     ])
     WAVE_BEAM = ("wave_beam", ActorData.DOOR_POWER, "doorwave", True, ActorData.SHIELD_WAVE_BEAM, [
         "actors/props/doorwave", "sounds/props/doorwave", "system/fx/textures/blood_gray.bctex",
-    ])
+    ], 180.0)
     SPAZER_BEAM = ("spazer_beam", ActorData.DOOR_POWER, "doorspazer", True, ActorData.SHIELD_SPAZER_BEAM, [
         "actors/props/doorspazerbeam", "sounds/props/spazerdoor"
     ])
     PLASMA_BEAM = ("plasma_beam", ActorData.DOOR_POWER, "doorplasma", True, ActorData.SHIELD_PLASMA_BEAM, [
-        "actors/props/doorcreature", "sounds/props/creaturedoor"
-    ])
+        "actors/props/doorcreature", "sounds/props/creaturedoor", "system/fx/textures/blood_gray.bctex",
+    ], 180.0)
     MISSILE = ("missile", ActorData.DOOR_POWER, "doormissile", True, ActorData.SHIELD_MISSILE, [
         "actors/props/doorshield", "actors/props/doorshieldmissile",
         "sounds/props/doorchargecharge/missiledoor_hum.bcwav"
@@ -241,14 +240,16 @@ class DoorType(Enum):
         "sounds/props/doorchargecharge/powerbombdoor_hum.bcwav"
     ])
 
-    def __init__(self, rdv_door_type: str, door_data: ActorData, minimap_name: str, need_shield: bool = False,
-                 shield_data: ActorData | None = None, additional_asset_folders: list[str] | None = None):
+    def __init__(self, rdv_door_type: str, door_data: ActorData, minimap_name: str,
+                 need_shield: bool = False, shield_data: ActorData | None = None,
+                 additional_asset_folders: list[str] | None = None, rotation: float = 0):
         self.type = rdv_door_type
         self.need_shield = need_shield
         self.door = door_data
         self.shield = shield_data
         self.required_asset_folders = [] if additional_asset_folders is None else additional_asset_folders
         self.minimap_name = minimap_name
+        self.rotation = rotation
 
     @classmethod
     def get_type(cls, type: str):
@@ -350,7 +351,9 @@ class DoorPatcher:
 
         # change the icons to their new door type
         left_tile_icon.icon = f"{new_door.minimap_name}left"
+        left_tile_icon.clear_condition = ""
         right_tile_icon.icon = f"{new_door.minimap_name}right"
+        right_tile_icon.clear_condition = ""
         if not new_door.need_shield:
             left_tile_icon.actor_name = f"{actor_name}left"
             left_tile_icon.icon_priority = IconPriority.DOOR
@@ -367,7 +370,8 @@ class DoorPatcher:
             left_tile_icon.icon = 'doorclosedleft'
 
     def patch_actor(
-            self, new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
+            self, new_door: DoorType, scenario_name: str, actor_name: str, scenario: Bmsld,
+            door_actor, index: int, left_shield_name: str, right_shield_name: str
         ):
         if door_actor is None:
             raise ValueError(f"Actor {actor_name} not found in scenario {scenario_name}")
@@ -386,8 +390,8 @@ class DoorPatcher:
             new_actor_r = self._create_shield(
                 scenario_name, shield_position, right_shield_name, new_door.shield.value[0]
             )
-            new_actor_l["rotation"] = (0.0, 0.0, 0.0)
-            new_actor_r["rotation"] = (0.0, 180.0, 0.0)
+            new_actor_l["rotation"] = (0.0, new_door.rotation, 0.0)
+            new_actor_r["rotation"] = (0.0, 0.0 if new_door.rotation > 0 else 180.0, 0.0)
 
             # change life component
             door_actor.components.append(copy.deepcopy(door_actor.components[0]))
