@@ -1,5 +1,18 @@
 Game.ImportLibrary("system/scripts/init_original.lua")
 
+RL = RL or { 
+  -- defined by remote connector
+  Init = function() end,
+  Update = function() end,
+  SendLog = function(message) end,
+  SendInventory = function(message) end,
+  SendIndices = function(message) end
+}
+
+-- stub for UpdateRDVClient, which will be redefined by bootstrap code of randovania
+function RL.UpdateRDVClient(new_scenario)
+end
+
 Init.tNewGameInventory = TEMPLATE("new_game_inventory")
 
 Init.bRevealMap = TEMPLATE("reveal_map_on_start")
