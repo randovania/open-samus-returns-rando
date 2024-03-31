@@ -3,8 +3,8 @@ RandomizerReserveTankA = RandomizerReserveTankA or {}
 function RandomizerReserveTankA.main()
 end
 
-function RandomizerReserveTankA.OnPickedUp(progression)
-    RandomizerPowerup.OnPickedUp(progression)
+function RandomizerReserveTankA.OnPickedUp(progression, actorOrName)
+    RandomizerPowerup.OnPickedUp(progression, actorOrName)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_ACTIVE", "b", true)
     Blackboard.SetProp("GAME", "ITEM_RESERVE_TANK_SPECIAL_ENERGY_FULL", "b", true)
     Game.AddSF(0.0, "Game.HUDIdleScreenGo", "")

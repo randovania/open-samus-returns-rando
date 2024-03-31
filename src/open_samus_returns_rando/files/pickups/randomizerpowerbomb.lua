@@ -3,7 +3,7 @@ RandomizerPowerBomb = RandomizerPowerBomb or {}
 function RandomizerPowerBomb.main()
 end
 
-function RandomizerPowerBomb.OnPickedUp(progression)
+function RandomizerPowerBomb.OnPickedUp(progression, actorOrName)
     local locked_pbs = RandomizerPowerup.GetItemAmount("ITEM_POWER_BOMB_TANKS")
     for _, outer in ipairs(progression) do
         for _, inner in ipairs(outer) do
@@ -13,6 +13,6 @@ function RandomizerPowerBomb.OnPickedUp(progression)
             end
         end
     end
-    RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression, actorOrName)
     RandomizerPowerup.SetItemAmount("ITEM_POWER_BOMB_TANKS", 0)
 end

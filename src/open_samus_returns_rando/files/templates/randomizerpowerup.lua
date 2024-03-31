@@ -42,7 +42,7 @@ function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
     end
 end
 
-function RandomizerPowerup.OnPickedUp(resources)
+function RandomizerPowerup.OnPickedUp(resources, actorOrName)
     local granted = RandomizerPowerup.HandlePickupResources(resources)
 
     for _, resource in ipairs(granted) do
@@ -50,6 +50,7 @@ function RandomizerPowerup.OnPickedUp(resources)
     end
 
     Scenario.UpdateProgressiveItemModels()
+    RandomizerPowerup.MarkLocationCollected(actorOrName)
     RandomizerPowerup.IncrementInventoryIndex()
     RL.UpdateRDVClient(false)
     return granted
@@ -63,6 +64,29 @@ function RandomizerPowerup.IncrementInventoryIndex()
     Blackboard.SetProp(playerSection, propName, "f", currentIndex)
 end
 
+function RandomizerPowerup.PropertyForLocation(actorOrName)
+    return "c_" .. actorOrName
+end
+
+function RandomizerPowerup.MarkLocationCollected(actorOrName)
+    local name
+    -- normal pickups
+    if actorOrName.sName ~= nil then
+        name = actorOrName.sName
+    -- metroids
+    else
+        name = actorOrName
+    end
+    -- remote pickups from other worlds
+    if name == nil then
+        Game.LogWarn(0, "Skip location collected")
+        return
+    end
+    local playerSection = Game.GetPlayerBlackboardSectionName()
+    local propName = RandomizerPowerup.PropertyForLocation(string.format("%s_%s", Scenario.CurrentScenarioID, name))
+    Game.LogWarn(0, propName)
+    Blackboard.SetProp(playerSection, propName, "b", true)
+end
 
 function RandomizerPowerup.ObjectiveComplete()
     if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") == 39 then
