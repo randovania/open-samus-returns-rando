@@ -7,6 +7,7 @@ RL = RL or {
   SendLog = function(message) end,
   SendInventory = function(message) end,
   SendIndices = function(message) end,
+  SendReceivedPickups = function(message) end,
   SendNewGameState = function(message) end,
   Connected = function() return true end
 }
