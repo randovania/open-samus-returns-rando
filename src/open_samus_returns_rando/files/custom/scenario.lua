@@ -1,6 +1,7 @@
 Game.ImportLibrary("system/scripts/scenario_original.lua")
 Game.ImportLibrary("system/scripts/guilib.lua", false)
 Game.ImportLibrary("system/scripts/cosmetics.lua", false)
+Game.ImportLibrary("system/scripts/disconnect_gui.lua", false)
 
 Game.DoFile("system/scripts/room_names.lua")
 Game.DoFile("system/scripts/elevators.lua")
@@ -9,6 +10,8 @@ Scenario = Scenario or {}
 setmetatable(Scenario, {__index = _G})
 
 Scenario.tProgressiveModels = {}
+
+Scenario.INVALID_UUID = "00000000-0000-1111-0000-000000000000"
 
 local original_enable =  Scenario.EnableHazarous
 function Scenario.EnableHazarous(_ARG_0_, _ARG_1_)
@@ -87,6 +90,16 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
       Game.HUDIdleScreenLeave()
       Scenario.ShowText()
     end
+
+  -- INVALID_UUID = no multiworld => no need to schedule the check
+    if Init.sLayoutUUID ~= Scenario.INVALID_UUID then
+      DisconnectGui.Init()
+      if Scenario.checkConnectionSFID ~= nil then
+        Game.DelSFByID(Scenario.checkConnectionSFID)
+      end
+      Scenario.checkConnectionSFID = Game.AddGUISF(2, "Scenario.CheckConnectionState", "")
+    end
+  
   
     Scenario.UpdateProgressiveItemModels()
     
@@ -124,6 +137,11 @@ function Scenario.LoadNewScenario(target_scenario, target_spawnpoint)
   Game.FadeOutStream(0.0)
   Game.AddPSF(0.1, "Game.LoadScenario", "ssssi", "c10_samus", target_scenario, target_spawnpoint, "", 1)
   Game.ForceConvertToSamus()
+end
+
+function Scenario.CheckConnectionState()
+  DisconnectGui.Update(not RL.Connected())
+  Scenario.checkConnectionSFID = Game.AddGUISF(2, "Scenario.CheckConnectionState", "")
 end
 
 local fatal_messages_seen = 0

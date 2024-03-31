@@ -7,7 +7,8 @@ RL = RL or {
   SendLog = function(message) end,
   SendInventory = function(message) end,
   SendIndices = function(message) end,
-  SendNewGameState = function(message) end
+  SendNewGameState = function(message) end,
+  Connected = function() return true end
 }
 
 -- stub for UpdateRDVClient, which will be redefined by bootstrap code of randovania
@@ -27,9 +28,20 @@ Init.fEnergyPerTank = TEMPLATE("energy_per_tank")
 Init.tDNAPerArea = TEMPLATE("dna_per_area")
 Init.tScenarioMapping = TEMPLATE("scenario_mapping")
 Init.iNumRandoTextBoxes = TEMPLATE("textbox_count")
-Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier")
+Init.sLayoutUUID = TEMPLATE("layout_uuid")
+Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier") .. Init.sLayoutUUID
 Init.tBoxesSeen = 0
 Init.bEnableRoomIds = TEMPLATE("enable_room_ids")
+
+local orig_log = Game.LogWarn
+if TEMPLATE("enable_remote_lua") then
+    RL.Init()
+    function Game.LogWarn(_, message)
+        orig_log(_, message)
+        RL.SendLog(message)
+    end
+end
+
 
 function Init.InitGameBlackboard()
   Blackboard.ResetWithExceptionList({
