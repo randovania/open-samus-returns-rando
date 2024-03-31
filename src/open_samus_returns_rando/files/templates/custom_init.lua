@@ -6,11 +6,16 @@ RL = RL or {
   Update = function() end,
   SendLog = function(message) end,
   SendInventory = function(message) end,
-  SendIndices = function(message) end
+  SendIndices = function(message) end,
+  SendNewGameState = function(message) end
 }
 
 -- stub for UpdateRDVClient, which will be redefined by bootstrap code of randovania
 function RL.UpdateRDVClient(new_scenario)
+end
+
+-- stub for GetGameStateAndSend, which will be redefined by bootstrap code of randovania
+function RL.GetGameStateAndSend()
 end
 
 Init.tNewGameInventory = TEMPLATE("new_game_inventory")

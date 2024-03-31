@@ -99,6 +99,8 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
     -- else
     --   Game.AddSF(1.0, "Game.KillPlayer", "")
     -- end
+  else
+    RL.GetGameStateAndSend()
   end
 end
 
