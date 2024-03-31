@@ -23,8 +23,9 @@ function Init.InitGameBlackboard()
       local current_amount = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_ADN") or 0
       Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", current_amount + 1)
     end
-    if string.sub(_FORV_3_, 1, 17) == "ITEM_RESERVE_TANK" then
-      if _FORV_3_ ~= "ITEM_RESERVE_TANK_MISSILE" or Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_WEAPON_MISSILE_LAUNCHER") then
+    if string.sub(_FORV_3_, 1, 17) == "ITEM_RESERVE_TANK" and _FORV_4_ > 0 then
+      local missile_launcher = Init.tNewGameInventory["ITEM_WEAPON_MISSILE_LAUNCHER"]
+      if _FORV_3_ ~= "ITEM_RESERVE_TANK_MISSILE" or (missile_launcher ~= nil and missile_launcher > 0) then
         Blackboard.SetProp("GAME", _FORV_3_ .. "_ACTIVE", "b", true)
         Blackboard.SetProp("GAME", _FORV_3_ .. "_FULL", "b", true)
       end
@@ -71,6 +72,7 @@ function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
     if Init.bRevealMap then
       Game.AddGUISF(0.0, Game.ScanVisitDiscoverEverything, "", "")
     end
+    Game.SaveGame("savedata", "", Init.sStartingActor, true)
   end
 
 Game.SetForceSkipCutscenes(true)

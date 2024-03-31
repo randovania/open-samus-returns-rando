@@ -211,6 +211,7 @@ class LuaEditor:
             max_life += etanks * energy_per_tank
 
         # use _MAX if main is unlocked to unlock the ammo too
+        # FIXME: These checks are kinda wrong if you use something like `"ITEM_WEAPON_MISSILE_LAUNCHER": 0`
         if "ITEM_WEAPON_MISSILE_LAUNCHER" in inventory and "ITEM_MISSILE_TANKS" in inventory:
             inventory["ITEM_WEAPON_MISSILE_MAX"] = inventory.pop("ITEM_MISSILE_TANKS")
         if "ITEM_WEAPON_SUPER_MISSILE" in inventory and "ITEM_SUPER_MISSILE_TANKS" in inventory:
