@@ -50,9 +50,19 @@ function RandomizerPowerup.OnPickedUp(resources)
     end
 
     Scenario.UpdateProgressiveItemModels()
-
+    RandomizerPowerup.IncrementInventoryIndex()
+    RL.UpdateRDVClient(false)
     return granted
 end
+
+function RandomizerPowerup.IncrementInventoryIndex()
+    local playerSection = Game.GetPlayerBlackboardSectionName()
+    local propName = "InventoryIndex"
+    local currentIndex = Blackboard.GetProp(playerSection, propName) or 0
+    currentIndex = currentIndex + 1
+    Blackboard.SetProp(playerSection, propName, "f", currentIndex)
+end
+
 
 function RandomizerPowerup.ObjectiveComplete()
     if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") == 39 then
