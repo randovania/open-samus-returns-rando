@@ -370,7 +370,7 @@ class DoorPatcher:
             right_tile_icon.actor_name = right_shield_name
             right_tile_icon.icon_priority = IconPriority.ACTOR
 
-        # bad special case to force DoorManiMinerBot to doorclosed...
+        # bad special case to force DoorManicMinerBot to doorclosed...
         if actor_name == "DoorManicMinerBot":
             left_tile_icon.icon = 'doorclosedleft'
 
@@ -411,7 +411,7 @@ class DoorPatcher:
                 scenario.insert_into_entity_group(group,  right_shield_name)
             self._index_per_scenario[scenario_name] = index + 1
 
-        # bad special case to force DoorManiMinerBot to doorclosed...
+        # bad special case to force DoorManicMinerBot to doorclosed...
         if actor_name == "DoorManicMinerBot":
             door_actor.type = re.sub("(doorpower|doorcharge)", "doorclosed", door_actor.type)
 
