@@ -441,6 +441,17 @@
         "configuration_identifier": {
             "type": "string",
             "description": "An unique identifier for this configuration. Only save files created with this identifier can be loaded."
+        },
+        "layout_uuid": {
+            "description": "An UUID exposed via a global lua variable",
+            "default":"00000000-0000-1111-0000-000000000000",
+            "type": "string",
+            "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        "enable_remote_lua": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, the game will start a socket that receives lua code to run"
         }
     },
     "required": [
@@ -448,7 +459,9 @@
         "starting_items",
         "pickups",
         "hints",
-        "configuration_identifier"
+        "configuration_identifier",
+        "enable_remote_lua",
+        "layout_uuid"
     ],
     "$defs": {
         "actor_reference_with_layer": {
