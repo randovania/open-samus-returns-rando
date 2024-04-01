@@ -75,4 +75,9 @@ class PatcherEditor(FileTreeEditor):
         scenario.remove_actor_from_all_groups(actor_name)
 
     def get_asset_names_in_folder(self, folder: str) -> typing.Iterator[str]:
-        yield from (name for name in self._name_for_asset_id.values() if name.startswith(folder))
+        yield from (
+            name
+            for name in self._name_for_asset_id.values()
+            if name.startswith(folder) and self.does_asset_exists(name)
+        )
+
