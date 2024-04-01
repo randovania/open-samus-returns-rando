@@ -50,7 +50,9 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName)
     end
 
     Scenario.UpdateProgressiveItemModels()
-    RandomizerPowerup.MarkLocationCollected(actorOrName)
+    if actorOrName ~= nil then
+        RandomizerPowerup.MarkLocationCollected(actorOrName)
+    end
     RandomizerPowerup.IncrementInventoryIndex()
     RL.UpdateRDVClient(false)
     return granted
@@ -79,12 +81,10 @@ function RandomizerPowerup.MarkLocationCollected(actorOrName)
     end
     -- remote pickups from other worlds
     if name == nil then
-        Game.LogWarn(0, "Skip location collected")
         return
     end
     local playerSection = Game.GetPlayerBlackboardSectionName()
     local propName = RandomizerPowerup.PropertyForLocation(string.format("%s_%s", Scenario.CurrentScenarioID, name))
-    Game.LogWarn(0, propName)
     Blackboard.SetProp(playerSection, propName, "b", true)
 end
 

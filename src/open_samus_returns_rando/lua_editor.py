@@ -66,6 +66,9 @@ SCENARIO_MAPPING = {
     "s110_surfaceb": "s00",
 }
 
+def get_parent_for(item_id) -> str:
+    return SPECIFIC_CLASSES.get(item_id, "RandomizerPowerup")
+
 class ScriptClass:
     def __init__(
             self,
@@ -120,13 +123,10 @@ class LuaEditor:
             for scenario in ALL_SCENARIOS
         }
 
-    def get_parent_for(self, item_id) -> str:
-        return SPECIFIC_CLASSES.get(item_id, "RandomizerPowerup")
-
     def create_script_class(self, pickup: dict, actordef_id: str = "") -> ScriptClass:
         pickup_resources = pickup["resources"]
         first_item_id = pickup_resources[0][0]["item_id"]
-        parent = self.get_parent_for(first_item_id)
+        parent = get_parent_for(first_item_id)
         model_array = pickup.get("model", None)
 
         if actordef_id and model_array and len(model_array) > 1:
@@ -303,9 +303,9 @@ class LuaEditor:
         )
 
         editor.add_new_asset(
-            "system/scripts/disconnect_gui.lc",
+            "system/scripts/message_gui.lc",
             Lua(
-                Container(lua_text=files_path().joinpath("custom", "disconnect_gui.lua").read_text()),
+                Container(lua_text=files_path().joinpath("custom", "message_gui.lua").read_text()),
                 editor.target_game
             ),
             []

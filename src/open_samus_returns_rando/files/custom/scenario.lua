@@ -1,7 +1,7 @@
 Game.ImportLibrary("system/scripts/scenario_original.lua")
 Game.ImportLibrary("system/scripts/guilib.lua", false)
 Game.ImportLibrary("system/scripts/cosmetics.lua", false)
-Game.ImportLibrary("system/scripts/disconnect_gui.lua", false)
+Game.ImportLibrary("system/scripts/message_gui.lua", false)
 
 Game.DoFile("system/scripts/room_names.lua")
 Game.DoFile("system/scripts/elevators.lua")
@@ -61,6 +61,23 @@ function Scenario.InitGUI()
   if Init.bEnableRoomIds then
     RoomNameGui.Init()
   end
+
+    -- INVALID_UUID = no multiworld => no need to schedule the check
+  if Init.sLayoutUUID ~= Scenario.INVALID_UUID then
+    MessageGUI.Init()
+    if Scenario.checkConnectionSFID ~= nil then
+      Game.DelSFByID(Scenario.checkConnectionSFID)
+    end
+    Scenario.checkConnectionSFID = Game.AddGUISF(2, "Scenario.CheckConnectionState", "")
+  end
+
+  -- delete all SF functions
+  if Scenario.hideSFID ~= nil then
+      Game.DelSFByID(Scenario.hideSFID)
+      -- hide old popup
+      Scenario.HideAsyncPopup()
+  end
+
 end
 
 function Scenario.UpdateDNACounter()
@@ -90,16 +107,6 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
       Game.HUDIdleScreenLeave()
       Scenario.ShowText()
     end
-
-  -- INVALID_UUID = no multiworld => no need to schedule the check
-    if Init.sLayoutUUID ~= Scenario.INVALID_UUID then
-      DisconnectGui.Init()
-      if Scenario.checkConnectionSFID ~= nil then
-        Game.DelSFByID(Scenario.checkConnectionSFID)
-      end
-      Scenario.checkConnectionSFID = Game.AddGUISF(2, "Scenario.CheckConnectionState", "")
-    end
-  
   
     Scenario.UpdateProgressiveItemModels()
     
@@ -140,7 +147,7 @@ function Scenario.LoadNewScenario(target_scenario, target_spawnpoint)
 end
 
 function Scenario.CheckConnectionState()
-  DisconnectGui.Update(not RL.Connected())
+  MessageGUI.UpdateConnected(not RL.Connected())
   Scenario.checkConnectionSFID = Game.AddGUISF(2, "Scenario.CheckConnectionState", "")
 end
 
@@ -173,4 +180,14 @@ function Scenario.RandoOnElevatorUse(from_actor, _ARG_1_, _ARG_2_)
     Game.AddGUISF(0.5, GUI.ElevatorStartUseActionStep2InterArea, "")
   end
   Elevator.Use("c10_samus", destination.scenario, destination.actor, _ARG_2_)
+end
+
+function Scenario.ShowAsyncPopup(text, time)
+    MessageGUI.UpdateMultiworld(true, text)
+    Scenario.hideSFID = Game.AddGUISF(time, "Scenario.HideAsyncPopup", "")
+end
+
+function Scenario.HideAsyncPopup()
+    MessageGUI.UpdateMultiworld(false, "")
+    Scenario.hideSFID = nil
 end
