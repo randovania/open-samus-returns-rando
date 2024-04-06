@@ -21,7 +21,6 @@ function RL.GetGameStateAndSend()
 end
 
 Init.tNewGameInventory = TEMPLATE("new_game_inventory")
-
 Init.bRevealMap = TEMPLATE("reveal_map_on_start")
 Init.sStartingScenario = TEMPLATE("starting_scenario")
 Init.sStartingActor = TEMPLATE("starting_actor")

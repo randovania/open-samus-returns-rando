@@ -199,6 +199,7 @@ class LuaEditor:
         starting_location: dict = configuration["starting_location"]
         starting_text: list[str] = configuration.get("starting_text", [])
         configuration_identifier: str = configuration["configuration_identifier"]
+        enable_remote_lua: bool = configuration.get("enable_remote_lua", False)
 
         energy_per_tank = configuration["energy_per_tank"]
         max_life = inventory.pop("ITEM_MAX_LIFE")
@@ -245,6 +246,10 @@ class LuaEditor:
             patch_text(editor, f"RANDO_STARTING_TEXT_{textboxes}", box_text)
 
 
+        layout_uuid = None
+        if "layout_uuid" in configuration:
+            layout_uuid = lua_util.wrap_string(configuration["layout_uuid"])
+
         replacement = {
             "new_game_inventory": final_inventory,
             "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
@@ -256,6 +261,8 @@ class LuaEditor:
             "textbox_count": textboxes,
             "configuration_identifier": lua_util.wrap_string(configuration_identifier),
             "enable_room_ids": False if cosmetic_options["enable_room_name_display"] == "NEVER" else True,
+            "layout_uuid": layout_uuid,
+            "enable_remote_lua": enable_remote_lua,
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)

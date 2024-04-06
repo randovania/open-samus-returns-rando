@@ -109,7 +109,7 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
     end
   
     Scenario.UpdateProgressiveItemModels()
-    
+    RL.UpdateRDVClient(true)
     -- Only required for ils test code
     -- if Scenario.CurrentScenarioID == "s000_surface" then
     -- local next_number = (NextScenario % 17) + 1
