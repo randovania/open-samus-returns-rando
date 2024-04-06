@@ -7,20 +7,19 @@ from mercury_engine_data_structures.formats import Txt
 if typing.TYPE_CHECKING:
     from open_samus_returns_rando.patcher_editor import PatcherEditor
 
-# may want to edit all the localization files?
 ALL_TEXT_FILES = {
-    # "eu_dutch.txt",
+    "eu_dutch.txt",
     "eu_english.txt",
-    # "eu_french.txt",
-    # "eu_german.txt",
-    # "eu_italian.txt",
-    # "eu_portuguese.txt",
-    # "eu_spanish.txt",
-    # "japanese.txt",
-    # "mse_english.txt",
+    "eu_french.txt",
+    "eu_german.txt",
+    "eu_italian.txt",
+    "eu_portuguese.txt",
+    "eu_spanish.txt",
+    "japanese.txt",
+    "mse_english.txt",
     "us_english.txt",
-    # "us_french.txt",
-    # "us_spanish.txt"
+    "us_french.txt",
+    "us_spanish.txt"
 }
 
 
