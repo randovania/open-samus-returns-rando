@@ -64,7 +64,7 @@ function RandomizerPowerup.ObjectiveComplete()
             ColorB = "0.04314",
         })
         if baby > 0 then
-            GUI.LaunchMessage("All Metroid DNA has been collected!\nThe path to Proteus Ridley has been opened in Surface - West!",
+            GUI.LaunchMessage("All Metroid DNA has been collected!\nThe path to Proteus Ridley has been opened in Surface West!",
                 "RandomizerPowerup.Dummy", "")
         elseif baby == 0 then
             GUI.LaunchMessage("All Metroid DNA has been collected!\nContinue searching for the Baby Metroid!",
