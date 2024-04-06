@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.lua_editor import get_parent_for
 from open_samus_returns_rando.misc_patches.lua_util import lua_convert
@@ -29,5 +31,26 @@ def get_lua_for_item(progression: list[list[dict[str, str | int]]]):
     return f'{parent_content}\nMultiworldPickup.OnPickedUp({progression_as_lua}, nil)'.replace("\n", "\\\n")
 
 
-# get_lua_for_item([[{'item_id': 'ITEM_RANDO_DNA_12', 'quantity': 1}]])
-# get_lua_for_item([[{'item_id': 'ITEM_POWER_BOMB_TANKS', 'quantity': 1}]])
+def create_exefs_patches(output_exefs: Path, out_exheader: Path, input_exheader: Path, enabled: bool):
+    if not enabled:
+        return
+
+    import shutil
+
+    import ips
+
+    # Citra and Luma don't support patching the exheader. User needs to provide it as input and
+    # here the patch is just applied
+    exheader_ips_path = files_path().joinpath("exefs_patches", "exheader.ips")
+    with (
+          Path.open(exheader_ips_path, "rb") as exheader_ips,
+          Path.open(input_exheader, "rb") as original,
+          Path.open(out_exheader, "wb") as result
+        ):
+        content = exheader_ips.read()
+        patch = ips.Patch.load(content)
+        patch.apply(original, result)
+
+    # copy bps patch (don't ask me why the patch does not work as IPS format)
+    output_exefs.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(files_path().joinpath("exefs_patches", "code.bps"), output_exefs.joinpath("code.bps"))
