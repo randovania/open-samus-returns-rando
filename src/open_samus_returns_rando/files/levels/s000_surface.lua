@@ -249,6 +249,7 @@ end
 function s000_surface.OnEnter_Alpha_001_Dead()
   if 0 < Scenario.ReadFromBlackboard("entity_SG_Alpha_001_deaths", 0) then
     Game.SetSubAreaCurrentSetup("collision_camera_010", "PostAlpha_001", true)
+    Game.DisableEntity("TG_Intro_Alpha")
   end
 end
 function s000_surface.OnGenericCrawler_Generated(_ARG_0_, _ARG_1_)
