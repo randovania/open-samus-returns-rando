@@ -3,6 +3,7 @@ Game.ImportLibrary("system/scripts/guilib.lua", false)
 Game.ImportLibrary("system/scripts/cosmetics.lua", false)
 
 Game.DoFile("system/scripts/room_names.lua")
+Game.DoFile("system/scripts/elevators.lua")
 
 Scenario = Scenario or {}
 setmetatable(Scenario, {__index = _G})
@@ -142,4 +143,14 @@ end
 
 function Scenario.UpdateRoomName(new_subarea)
   Game.AddSF(0.0, "RoomNameGui.Update", "s", new_subarea)
+end
+
+function Scenario.RandoOnElevatorUse(from_actor, _ARG_1_, _ARG_2_)
+  local destination = ElevatorDestinations[Scenario.CurrentScenarioID][from_actor.sName]
+  if Scenario.CurrentScenario == destination.scenario then
+    Game.AddGUISF(0.5, GUI.ElevatorStartUseActionStep2InnerArea, "")
+  else
+    Game.AddGUISF(0.5, GUI.ElevatorStartUseActionStep2InterArea, "")
+  end
+  Elevator.Use("c10_samus", destination.scenario, destination.actor, _ARG_2_)
 end
