@@ -76,7 +76,7 @@ function s000_surface.InitFromBlackboard()
     Game.SaturateSpawnGroup("SpawnGroup008")
   end
   if Scenario.ReadFromBlackboard("AlphaIntroPlayed", false) then
-    Game.DisableEntity("TG_Intro_Alpha")
+    Game.DisableTrigger("TG_Intro_Alpha")
   end
   -- if not Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") or not (Blackboard.GetProp("DEFEATED_ENEMIES", "Queen") > 0) then
   Game.DisableEntity("LE_Queen_Door")
@@ -524,7 +524,6 @@ function s000_surface.LaunchMeleeTutoCutscene()
 end
 function s000_surface.OnDnaAbsorbAnimation()
   Game.SetInGameMusicState("DEATH")
-  Game.DisableEntity("TG_Intro_Alpha")
   Scenario.WriteToBlackboard("alpha_killed", "b", true)
 end
 function s000_surface.OnMeleeTutoButtonPressed()
