@@ -147,10 +147,6 @@ end
 
 function Scenario.RandoOnElevatorUse(from_actor, _ARG_1_, _ARG_2_)
   local destination = ElevatorDestinations[Scenario.CurrentScenarioID][from_actor.sName]
-  if Scenario.CurrentScenario == destination.scenario then
-    Game.AddGUISF(0.5, GUI.ElevatorStartUseActionStep2InnerArea, "")
-  else
-    Game.AddGUISF(0.5, GUI.ElevatorStartUseActionStep2InterArea, "")
-  end
+  Game.AddGUISF(0.5, GUI.ElevatorStartUseActionStep2InterArea, "")
   Elevator.Use("c10_samus", destination.scenario, destination.actor, _ARG_2_)
 end
