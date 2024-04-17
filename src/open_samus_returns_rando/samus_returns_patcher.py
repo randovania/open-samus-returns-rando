@@ -11,6 +11,7 @@ from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches.collision_camera_table import create_collision_camera_table
 from open_samus_returns_rando.misc_patches.credits import patch_credits
+from open_samus_returns_rando.misc_patches.elevators import patch_elevators
 from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.misc_patches.spawn_points import patch_custom_spawn_points
 from open_samus_returns_rando.misc_patches.text_patches import add_spiderboost_status, apply_text_patches
@@ -115,6 +116,9 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
 
      # Update cc_to_room_name.lua
     create_collision_camera_table(editor, configuration)
+
+    # Patch elevator destinations
+    patch_elevators(editor, configuration)
 
     out_romfs = output_path.joinpath("romfs")
     out_exefs = output_path.joinpath("exefs")

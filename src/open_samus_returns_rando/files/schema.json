@@ -114,22 +114,33 @@
             }
         },
         "elevators": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "teleporter": {
-                        "$ref": "#/$defs/actor_reference_with_layer"
-                    },
-                    "destination": {
-                        "$ref": "#/$defs/actor_reference"
+            "type": "object",
+            "description": "A dictionary of dictionaries mapping scenario and elevator actor to a connecting elevator",
+            "patternProperties": {
+                ".*": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "default": {},
+                    "patternProperties": {
+                        ".*": {
+                            "type": "object",
+                            "properties": {
+                                "scenario": {
+                                    "$ref": "#/$defs/scenario_name"
+                                },
+                                "actor": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "scenario",
+                                "actor"
+                            ]
+                        }
                     }
-                },
-                "required": [
-                    "teleporter",
-                    "destination"
-                ]
-            }
+                }
+            },
+            "default": {}
         },
         "door_patches": {
             "type": "array",

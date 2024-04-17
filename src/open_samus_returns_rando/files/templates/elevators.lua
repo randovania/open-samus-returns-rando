@@ -1,0 +1,1 @@
+ElevatorDestinations = TEMPLATE("elevator_dict")
