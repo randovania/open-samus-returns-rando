@@ -139,7 +139,8 @@
                         }
                     }
                 }
-            }
+            },
+            "default": {}
         },
         "door_patches": {
             "type": "array",

@@ -36,7 +36,7 @@ function Metroid.RemoveMetroid(_ARG_0_)
         end
         Game.SetInGameMusicState("RELAX")
         if scenario == "s000_surface" then
-            Game.DisableEntity("TG_Intro_Alpha")
+            Game.DisableTrigger("TG_Intro_Alpha")
             Scenario.WriteToBlackboard("alpha_killed", "b", true)
         end
         Game.SaveGame("checkpoint", "AfterNewAbilityAcquired", "", true)
