@@ -127,10 +127,8 @@ def add_startpoints(editor: PatcherEditor, new_startpoint: NewStartPoint):
         scenario_file.raw.actors[5][new_startpoint.st_name]["rotation"][1] = new_startpoint.st_rotation
         if new_startpoint.st_out_name is not None:
             scenario_file.raw.actors[5][new_startpoint.st_out_name]["rotation"][1] = (
-            -abs(new_startpoint.st_rotation)
-            if new_startpoint.st_rotation == 90
-            else abs(new_startpoint.st_rotation)
-        )
+                -90 if new_startpoint.st_rotation == 90 else 90
+            )
     # Edge case where startpoint actors aren't being added but startpoint_out actors are
     if new_startpoint.st_out_name == "ST_SG_Omega_001_Out":
         scenario_file.raw.actors[5][new_startpoint.st_out_name]["rotation"][1] = new_startpoint.st_rotation
