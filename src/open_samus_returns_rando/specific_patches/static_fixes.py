@@ -204,7 +204,7 @@ def increase_pb_drop_chance(editor: PatcherEditor):
 
 def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
     # Prevents hidden item actors from being deleted when its block is broken from an adjacent cc
-    BOMB_BLOCK = Container({
+    CUSTOM_BLOCK = Container({
         "pos": ListContainer([
             -10350.0,
             -1850.0,
@@ -220,8 +220,15 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
         unk_bool=True,
         types=ListContainer([Container(block_type='bomb', blocks=ListContainer([]))])
     )
+    BEAM_GROUP = Container(
+        unk_bool=True,
+        types=ListContainer([Container(block_type='powerbeam', blocks=ListContainer([]))])
+    )
 
     scenario_powerup_eg = {
+        "s000_surface": [
+            {"powerup_name": "HiddenPowerup001", "cc": "collision_camera_023"},
+        ],
         "s010_area1": [
             {"powerup_name": "HiddenPowerup001", "cc": "collision_camera_018"},
         ],
@@ -255,8 +262,9 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
             )
             sg_casca = powerup_actor.components[0].arguments[2].value
             pos = powerup_actor.position
-            new_group = copy.deepcopy(BOMB_GROUP)
-            new_block = copy.deepcopy(BOMB_BLOCK)
+            # Edge case for the beam block in Surface
+            new_group = copy.deepcopy(BOMB_GROUP) if scenario != "s000_surface" else copy.deepcopy(BEAM_GROUP)
+            new_block = copy.deepcopy(CUSTOM_BLOCK)
             new_block.pos = pos
             new_block.name1 = sg_casca
             new_group.types[0].blocks.append(new_block)
