@@ -224,6 +224,9 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
         unk_bool=True,
         types=ListContainer([Container(block_type='powerbeam', blocks=ListContainer([]))])
     )
+    BMSBK_GROUP = Container(
+        name="bg_SubArea_collision_camera_023", entries=ListContainer([])
+    )
 
     scenario_powerup_eg = {
         "s000_surface": [
@@ -256,14 +259,19 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
             # Make actor freestanding
             powerup_actor["components"][0]["arguments"][0]["value"] = ""
 
-            # add block on top of item
+            # Add block on top of item
             bmsbk = editor.get_file(
                 f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmsbk", Bmsbk
             )
             sg_casca = powerup_actor.components[0].arguments[2].value
             pos = powerup_actor.position
             # Edge case for the beam block in Surface
-            new_group = copy.deepcopy(BOMB_GROUP) if scenario != "s000_surface" else copy.deepcopy(BEAM_GROUP)
+            if scenario_name == "s000_surface":
+                new_group = copy.deepcopy(BEAM_GROUP)
+                # Add the missing collision_camera entry
+                bmsbk.raw.collision_cameras.append(BMSBK_GROUP)
+            else:
+                new_group = copy.deepcopy(BOMB_GROUP)
             new_block = copy.deepcopy(CUSTOM_BLOCK)
             new_block.pos = pos
             new_block.name1 = sg_casca
@@ -271,7 +279,6 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
             bmsbk.raw.block_groups.append(new_group)
             bmsbk_cc_obj = next(cc_obj for cc_obj in bmsbk.raw.collision_cameras if cc_name in cc_obj.name)
             bmsbk_cc_obj.entries.append(len(bmsbk.raw.block_groups) - 1)
-
 
 
 def apply_static_fixes(editor: PatcherEditor):
