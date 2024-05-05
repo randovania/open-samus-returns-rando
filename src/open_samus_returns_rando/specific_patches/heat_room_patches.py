@@ -12,22 +12,11 @@ def _patch_area_2b(editor: PatcherEditor):
     scenario_2b.add_actor_to_entity_groups("collision_camera013", heat_trigger_2b["actor"])
 
 
-def _get_new_logic_shape(editor: PatcherEditor, points: int) -> Container:
-    scenario_2b = editor.get_scenario("s025_area2b")
-    ls_copy = copy.deepcopy(scenario_2b.raw["objects_c"]["LS_Heat_001"])
-    example_point = ls_copy["data"]["polys"][0]["points"][0]
-    ls_copy["data"]["polys"][0]["points"].clear()
-    for i in range(points):
-        ls_copy["data"]["polys"][0]["points"].append(copy.deepcopy(example_point))
-    ls_copy["data"]["polys"][0]["num_points"] = points
-    return ls_copy
-
-
 class NewHeatActor(typing.NamedTuple):
     scenario: str
     position: list[float]
     total_boundings: list[float]
-    points: list[float]
+    points: list[tuple[float, float]]
     entity_groups: list[str]
     trigger_name: str = "TG_Heat_Rando_001"
     logic_shape_name: str = "LS_Heat_Rando_001"
@@ -71,6 +60,21 @@ new_heat_actors = [
     ),
 ]
 
+
+def _get_new_logic_shape(editor: PatcherEditor, new_actor: NewHeatActor) -> Container:
+    scenario_2b = editor.get_scenario("s025_area2b")
+    ls_copy = copy.deepcopy(scenario_2b.raw["objects_c"]["LS_Heat_001"])
+    example_point = ls_copy["data"]["polys"][0]["points"][0]
+    ls_copy["data"]["polys"][0]["points"].clear()
+    for point in new_actor.points:
+        new_point = copy.deepcopy(example_point)
+        new_point["x"] = point[0]
+        new_point["y"] = point[1]
+        ls_copy["data"]["polys"][0]["points"].append(new_point)
+    ls_copy["data"]["polys"][0]["num_points"] = len(new_actor.points)
+    return ls_copy
+
+
 def add_heat_actors(editor: PatcherEditor, new_heat_actor: NewHeatActor):
     template_ht = editor.get_scenario("s010_area1").raw.actors[2]["TG_Heat_001"]
 
@@ -78,20 +82,9 @@ def add_heat_actors(editor: PatcherEditor, new_heat_actor: NewHeatActor):
     scenario_file = editor.get_scenario(scenario_name)
 
     total_boundings = ListContainer(new_heat_actor.total_boundings)
-    new_logic_shape = _get_new_logic_shape(editor, 4)
+    new_logic_shape = _get_new_logic_shape(editor, new_heat_actor)
     new_logic_shape["data"]["total_boundings"] = total_boundings
     new_logic_shape["data"]["polys"][0]["boundings"] = total_boundings
-    points = new_logic_shape["data"]["polys"][0]["points"]
-    point = new_heat_actor.points
-
-    points[0]["x"] = point[0][0]
-    points[0]["y"] = point[0][1]
-    points[1]["x"] = point[1][0]
-    points[1]["y"] = point[1][1]
-    points[2]["x"] = point[2][0]
-    points[2]["y"] = point[2][1]
-    points[3]["x"] = point[3][0]
-    points[3]["y"] = point[3][1]
 
     scenario_file.raw["objects_c"][new_heat_actor.logic_shape_name] = new_logic_shape
 
