@@ -1,11 +1,14 @@
 # Open Samus Returns Rando
 Open Source randomizer patcher for Metroid: Samus Returns. Intended for use in [Randovania](https://github.com/randovania).
 Currently supports patching the following:
-- Starting items
-- Starting location
-- Pickups
+- Starting Items
+- Starting Location
+- Pickups (Vanilla and Custom)
 - Items on Metroids
-- Shuffled DNA/Baby Metroid
+- Shuffled DNA
+- Shuffled Baby Metroid
+- Elevator Destinations
+- Door Types
 
 ## Installation and Usage
 `pip install open-samus-returns-rando`
