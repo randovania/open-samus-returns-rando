@@ -128,16 +128,21 @@ def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, c
     # Patch elevator destinations
     patch_elevators(editor, configuration)
 
-    out_romfs = output_path.joinpath("romfs")
     out_exefs = output_path.joinpath("exefs")
+    out_romfs = output_path.joinpath("romfs")
+    out_code = output_path.joinpath("code.bps")
     out_exheader = output_path.joinpath("exheader.bin")
     shutil.rmtree(out_romfs, ignore_errors=True)
-    shutil.rmtree(out_exefs, ignore_errors=True)
+    shutil.rmtree(out_code, ignore_errors=True)
     shutil.rmtree(out_exheader, ignore_errors=True)
+    # this is just to clean up old version
+    shutil.rmtree(out_exefs, ignore_errors=True)
 
     # Create Exefs patches for multiworld
     LOG.info("Creating exefs patches")
-    create_exefs_patches(out_exefs, out_exheader, input_exheader, configuration["enable_remote_lua"])
+    create_exefs_patches(
+        out_code, out_exheader, input_exheader, configuration["enable_remote_lua"], configuration["region"]
+    )
 
     LOG.info("Saving modified lua scripts")
     lua_scripts.save_modifications(editor, configuration)

@@ -31,7 +31,7 @@ def get_lua_for_item(progression: list[list[dict[str, str | int]]]):
     return f'{parent_content}\nMultiworldPickup.OnPickedUp({progression_as_lua}, nil)'.replace("\n", "\\\n")
 
 
-def create_exefs_patches(output_exefs: Path, out_exheader: Path, input_exheader: Path, enabled: bool):
+def create_exefs_patches(out_code: Path, out_exheader: Path, input_exheader: Path, enabled: bool, region: str):
     if not enabled:
         return
 
@@ -52,5 +52,4 @@ def create_exefs_patches(output_exefs: Path, out_exheader: Path, input_exheader:
         patch.apply(original, result)
 
     # copy bps patch (don't ask me why the patch does not work as IPS format)
-    output_exefs.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(files_path().joinpath("exefs_patches", "code.bps"), output_exefs.joinpath("code.bps"))
+    shutil.copyfile(files_path().joinpath("exefs_patches", f"code_{region}.bps"), out_code)

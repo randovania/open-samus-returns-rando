@@ -5,7 +5,7 @@ from pathlib import Path
 from open_samus_returns_rando.logger import LOG
 
 
-def patch_with_status_update(input_path: Path, output_path: Path, configuration: dict,
+def patch_with_status_update(input_path: Path, input_exheader: Path, output_path: Path, configuration: dict,
                              status_update: typing.Callable[[float, str], None]):
     from open_samus_returns_rando.samus_returns_patcher import patch_extracted
     # messages depends on the layout but it is a good approximation
@@ -32,7 +32,7 @@ def patch_with_status_update(input_path: Path, output_path: Path, configuration:
         LOG.handlers.insert(0, new_handler)
         LOG.propagate = False
 
-        patch_extracted(input_path, output_path, configuration)
+        patch_extracted(input_path, input_exheader, output_path, configuration)
         if new_handler.count < total_logs:
             status_update(1, f"Done was {new_handler.count}")
 

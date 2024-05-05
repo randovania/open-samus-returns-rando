@@ -453,6 +453,15 @@
             "type": "boolean",
             "default": false,
             "description": "When true, the game will start a socket that receives lua code to run"
+        },
+        "region": {
+            "type": "string",
+            "enum": [
+                "ntsc",
+                "pal"
+            ],
+            "default": "pal",
+            "description": "This is only required if enable_remote_lua is true to copy the NTSC or PAL bps patch."
         }
     },
     "required": [
