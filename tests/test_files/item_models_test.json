@@ -671,6 +671,25 @@
             "model": [
                 "powerup_missilelauncher"
             ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Sent [Item] to [Player].",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_OFFWORLD",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "another_pickup34"
+            },
+            "model": [
+                "item_offworld"
+            ]
         }
     ],
     "energy_per_tank": 100,
@@ -1082,6 +1101,18 @@
             },
             "location": {
                 "x": -7100.0,
+                "y": 2100.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup34",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -7000.0,
                 "y": 2100.0,
                 "z": 0.0
             },
