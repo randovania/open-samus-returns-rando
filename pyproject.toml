@@ -65,3 +65,19 @@ target-version = "py39"
 # Flag errors (`C901`) whenever the complexity level exceeds 25.
 # Defaults to 10, but we're being very flexible right now
 max-complexity = 25
+
+[project.optional-dependencies]
+typing = [
+    "types-jsonschema",
+    "construct-typing",
+    "types-pyinstaller",
+    "mypy"
+]
+
+[tool.mypy]
+files = [
+    "src/"
+]
+follow_imports = "silent"
+disallow_untyped_defs = true
+local_partial_types = true

@@ -30,7 +30,7 @@ SCRIPT_COMPONENT = Container({
 })
 
 
-def patch_seals(editor: PatcherEditor):
+def patch_seals(editor: PatcherEditor) -> None:
     systemmechdna_name = "actors/props/systemmechdna/charclasses/systemmechdna.bmsad"
     save_station_name = "actors/props/savestation/charclasses/savestation.bmsad"
     chozoseal_name = "actors/props/chozoseal/charclasses/chozoseal.bmsad"
@@ -110,7 +110,7 @@ new_seals = [
     ),
 ]
 
-def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal):
+def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal) -> None:
     template_ap = editor.get_scenario("s000_surface").raw.actors[16]["LE_ChozoUnlockAreaDNA"]
     template_platform = editor.get_scenario("s000_surface").raw.actors[10]["LE_Platform_ChozoUnlockAreaDNA"]
 
@@ -146,7 +146,7 @@ def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal):
         editor.ensure_present_in_scenario(scenario_name, asset)
 
 
-def update_item_seals(editor:PatcherEditor):
+def update_item_seals(editor:PatcherEditor) -> None:
     CHOZO_SEALS = {
         "s000_surface": ["LE_ChozoUnlockAreaDNA"],
         "s010_area1": ["LE_ChozoUnlockAreaDNA"],
@@ -168,7 +168,7 @@ def update_item_seals(editor:PatcherEditor):
             editor.ensure_present_in_scenario(scenario_name, asset)
 
 
-def patch_chozo_seals(editor: PatcherEditor):
+def patch_chozo_seals(editor: PatcherEditor) -> None:
     patch_seals(editor)
     for new_seal in new_seals:
         add_chozo_seals(editor, new_seal)

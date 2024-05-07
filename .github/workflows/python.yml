@@ -103,6 +103,46 @@ jobs:
         run:
           venv/bin/python -m open_samus_returns_rando --input-path "$SAMUS_RETURNS_PATH" --output-path export/ --input-json tests/test_files/starter_preset_patcher.json
 
+  mypy:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Workaround for worktree config
+        run: git config --unset-all extensions.worktreeConfig || true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python packages
+        run: python -m pip install .[typing]
+
+      - name: Mypy on modified files
+        uses: tsuyoshicho/action-mypy@v4
+        with:
+          github_token: ${{ secrets.github_token }}
+          # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
+          reporter: github-check
+          setup_method: install
+          fail_on_error: false
+
+      - name: Mypy on required files
+        uses: tsuyoshicho/action-mypy@v4
+        with:
+          github_token: ${{ secrets.github_token }}
+          # Change reviewdog reporter if you need [github-pr-check,github-check,github-pr-review].
+          reporter: github-check
+          setup_method: install
+          target: --config-file=pyproject.toml
+          fail_on_error: true
+
 
   pypi:
     runs-on: 'ubuntu-latest'

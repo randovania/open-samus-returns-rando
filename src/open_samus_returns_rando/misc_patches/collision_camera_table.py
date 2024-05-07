@@ -4,7 +4,7 @@ from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
-def create_collision_camera_table(editor: PatcherEditor, configuration: dict):
+def create_collision_camera_table(editor: PatcherEditor, configuration: dict) -> None:
     py_dict: dict = configuration["cosmetic_patches"]["camera_names_dict"]
 
     # Surface

@@ -7,7 +7,7 @@ from pathlib import Path
 from open_samus_returns_rando import samus_returns_patcher
 
 
-def create_parser():
+def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input-path", required=True, type=Path,
                         help="Path to where the extracted Metroid: Samus Returns romfs to randomize can be found.")
@@ -18,7 +18,7 @@ def create_parser():
     return parser
 
 
-def setup_logging():
+def setup_logging() -> None:
     handlers = {
         'default': {
             'level': 'DEBUG',
@@ -49,7 +49,7 @@ def setup_logging():
     logging.info("Hello world.")
 
 
-def main():
+def main() -> None:
     setup_logging()
     parser = create_parser()
     args = parser.parse_args()

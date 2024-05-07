@@ -1,6 +1,7 @@
 
 import copy
 import re
+import typing
 from enum import Enum
 
 from construct import Container, ListContainer
@@ -39,7 +40,7 @@ ON_DEAD_CB = Container({
     "unk2": 1,
     "unk3": 0,
     "args": Container({
-        601445949: Container({
+        "601445949": Container({
             "type": "s",
             "value": "RemoveDoors",
         }),
@@ -47,7 +48,7 @@ ON_DEAD_CB = Container({
 })
 
 
-def _patch_missile_covers(editor: PatcherEditor):
+def _patch_missile_covers(editor: PatcherEditor) -> None:
     ALL_MISSILE_SHIELDS = {
         "s000_surface": ["LE_MissileShield_Door_002", "LE_MissileShield_Door_006"],
         "s010_area1": ["LE_DoorShieldMissile", "LE_DoorShieldMissile001"],
@@ -72,7 +73,7 @@ def _patch_missile_covers(editor: PatcherEditor):
             actor["rotation"][1] = 90
 
 
-def _patch_beam_bmsads(editor: PatcherEditor):
+def _patch_beam_bmsads(editor: PatcherEditor) -> None:
     creature_bmsad_files = [
         "actors/props/doorspazerbeam/charclasses/doorspazerbeam.bmsad",
         "actors/props/doorcreature/charclasses/doorcreature.bmsad",
@@ -92,10 +93,10 @@ def _patch_beam_bmsads(editor: PatcherEditor):
         # modify doorwave collision
         if i == 2:
             # Param6 and Param7 seems to be a position
-            cr_bmsad.components["COLLISION"].functions[1].params["Param7"].value = 148.0
+            cr_bmsad.components["COLLISION"].functions[1].params["Param7"].value = 148.0 # type: ignore
             # Param9 and Param10 are a rectangular
-            cr_bmsad.components["COLLISION"].functions[1].params["Param9"].value = 370.0
-            cr_bmsad.components["COLLISION"].functions[1].params["Param10"].value = 300.0
+            cr_bmsad.components["COLLISION"].functions[1].params["Param9"].value = 370.0 # type: ignore
+            cr_bmsad.components["COLLISION"].functions[1].params["Param10"].value = 300.0 # type: ignore
 
     editor.add_new_asset(
         "actors/props/doors/scripts/doors.lc",
@@ -104,7 +105,7 @@ def _patch_beam_bmsads(editor: PatcherEditor):
     )
 
 
-def _patch_beam_covers(editor: PatcherEditor):
+def _patch_beam_covers(editor: PatcherEditor) -> None:
     ALL_BEAM_COVERS = {
         "s000_surface": ["LE_PlasmaShield_Door_008"],
         "s010_area1": ["LE_DoorShieldWave008", "LE_SpazerShield_Door007"],
@@ -127,7 +128,7 @@ def _patch_beam_covers(editor: PatcherEditor):
             actor = scenario.raw.actors[9][cover_name]
             new_actor_name = f"{cover_name}_o"
             new_actor = editor.copy_actor(
-                scenario_name, (actor["position"][0], actor["position"][1], actor["position"][2]),
+                scenario_name, [actor["position"][0], actor["position"][1], actor["position"][2]],
                 actor, new_actor_name, 9
             )
             new_actor["rotation"][0] = 0
@@ -149,7 +150,7 @@ def _patch_beam_covers(editor: PatcherEditor):
                 scenario.insert_into_entity_group(group, new_actor_name)
 
 
-def _patch_charge_doors(editor: PatcherEditor):
+def _patch_charge_doors(editor: PatcherEditor) -> None:
     CHARGE_DOORS = {
         "s000_surface": ["Door004", "Door011"],
         "s010_area1": ["Door002"],
@@ -166,7 +167,7 @@ def _patch_charge_doors(editor: PatcherEditor):
             scenario.raw.actors[15][door].type = "doorpowerpower"
 
 
-def _patch_one_way_doors(editor: PatcherEditor):
+def _patch_one_way_doors(editor: PatcherEditor) -> None:
     ONE_WAY_DOORS = {
         # Bombs, Right Exterior Door -> Interior, Exterior Alpha
         "s010_area1": ["Door004", "Door012", "Door016"],
@@ -252,7 +253,7 @@ class DoorType(Enum):
         self.rotation = rotation
 
     @classmethod
-    def get_type(cls, type: str):
+    def get_type(cls, type: str) -> typing.Self:
         for e in cls:
             if e.type == type:
                 return e
@@ -263,9 +264,9 @@ class DoorPatcher:
     def __init__(self, editor: PatcherEditor):
         self.editor = editor
         self._example_shield = editor.get_scenario("s000_surface").raw.actors[9]["LE_PlasmaShield_Door_008"]
-        self._index_per_scenario = {}
+        self._index_per_scenario: dict[str, int] = {}
 
-    def _patch_to_power(self, door_actor: Container, scenario: Bmsld):
+    def _patch_to_power(self, door_actor: Container, scenario: Bmsld) -> None:
         for life_component in door_actor.components:
             shield = life_component["arguments"][3]["value"]
             if shield != "":
@@ -276,20 +277,20 @@ class DoorPatcher:
             door_actor.components.pop()
         door_actor.components[0]["arguments"][2]["value"] = False
         door_actor.components[0]["arguments"][3]["value"] = ""
-        door_actor.type = ActorData.DOOR_POWER.value[0]
+        door_actor["type"] = ActorData.DOOR_POWER.value[0]
 
     def _create_shield(
             self, scenario_name: str, position: tuple[float, float, float], shield_name: str, new_type: str
         ) -> Container:
         new_actor = self.editor.copy_actor(
-                scenario_name, (position[0], position[1], position[2]),
+                scenario_name, [position[0], position[1], position[2]],
                 self._example_shield, shield_name, 9
             )
 
         new_actor["type"] = new_type
         return new_actor
 
-    def patch_door(self, editor: PatcherEditor, actor_ref: dict, door_type_str: str):
+    def patch_door(self, editor: PatcherEditor, actor_ref: dict, door_type_str: str) -> None:
         scenario_name = actor_ref["scenario"]
         actor_name = actor_ref["actor"]
         scenario = self.editor.get_scenario(scenario_name)
@@ -304,7 +305,10 @@ class DoorPatcher:
         )
         self.patch_minimap(editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door)
 
-    def patch_minimap(self, editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door):
+    def patch_minimap(
+            self, editor: PatcherEditor, scenario_name:str, actor_name:str,
+            left_shield_name:str, right_shield_name:str, new_door: DoorType
+            ) -> None:
         scenario_minimap = editor.get_file(f"gui/minimaps/c10_samus/{scenario_name}.bmsmsd", Bmsmsd)
         tiles = scenario_minimap.raw["tiles"]
 
@@ -376,8 +380,8 @@ class DoorPatcher:
 
     def patch_actor(
             self, new_door: DoorType, scenario_name: str, actor_name: str, scenario: Bmsld,
-            door_actor, index: int, left_shield_name: str, right_shield_name: str
-        ):
+            door_actor: Container, index: int, left_shield_name: str, right_shield_name: str
+        ) -> None:
         if door_actor is None:
             raise ValueError(f"Actor {actor_name} not found in scenario {scenario_name}")
 
@@ -385,9 +389,10 @@ class DoorPatcher:
 
         # patch to desired type
         if not new_door.need_shield:
-            door_actor.type = new_door.door.value[0]
+            door_actor["type"] = new_door.door.value[0]
         # all other use shields
         else:
+            assert new_door.shield is not None
             shield_position = (door_actor["position"][0], door_actor["position"][1],  door_actor["position"][2])
             new_actor_l = self._create_shield(
                 scenario_name, shield_position, left_shield_name, new_door.shield.value[0]
@@ -413,7 +418,7 @@ class DoorPatcher:
 
         # bad special case to force DoorManicMinerBot to doorclosed...
         if actor_name == "DoorManicMinerBot":
-            door_actor.type = re.sub("(doorpower|doorcharge)", "doorclosed", door_actor.type)
+            door_actor["type"] = re.sub("(doorpower|doorcharge)", "doorclosed", door_actor.type)
 
         # ensure required files
         for folder in new_door.required_asset_folders:
@@ -421,14 +426,14 @@ class DoorPatcher:
                 self.editor.ensure_present_in_scenario(scenario_name, asset)
 
 
-def _static_door_patches(editor: PatcherEditor):
+def _static_door_patches(editor: PatcherEditor) -> None:
     _patch_one_way_doors(editor)
     _patch_missile_covers(editor)
     _patch_beam_bmsads(editor)
     _patch_beam_covers(editor)
     _patch_charge_doors(editor)
 
-def patch_doors(editor: PatcherEditor, door_patches: list[dict]):
+def patch_doors(editor: PatcherEditor, door_patches: list[dict]) -> None:
     _static_door_patches(editor)
 
     door_patcher = DoorPatcher(editor)

@@ -6,7 +6,7 @@ from open_samus_returns_rando.logger import LOG
 
 
 def patch_with_status_update(input_path: Path, output_path: Path, configuration: dict,
-                             status_update: typing.Callable[[float, str], None]):
+                             status_update: typing.Callable[[float, str], None]) -> None:
     from open_samus_returns_rando.samus_returns_patcher import patch_extracted
     # messages depends on the layout but it is a good approximation
     total_logs = 410

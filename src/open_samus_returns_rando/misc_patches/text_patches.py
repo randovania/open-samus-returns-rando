@@ -23,7 +23,7 @@ ALL_TEXT_FILES = {
 }
 
 
-def patch_text(editor: PatcherEditor, key: str, value: str):
+def patch_text(editor: PatcherEditor, key: str, value: str) -> None:
     for text_file in ALL_TEXT_FILES:
         text = editor.get_file(f"system/localization/{text_file}", Txt)
         text.strings[key] = value
@@ -34,12 +34,12 @@ def get_text(editor: PatcherEditor, key: str, text_file: str = "us_english.txt")
     return text.strings[key]
 
 
-def apply_text_patches(editor: PatcherEditor, patches: dict[str, str]):
+def apply_text_patches(editor: PatcherEditor, patches: dict[str, str]) -> None:
     for k, v in patches.items():
         patch_text(editor, k, v)
 
 
-def add_spiderboost_status(editor: PatcherEditor):
+def add_spiderboost_status(editor: PatcherEditor) -> None:
     status = "GUI_STATUS_POWERBOMB"
     original = get_text(editor, status)
     new = original.replace(
