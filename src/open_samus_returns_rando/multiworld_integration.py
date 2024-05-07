@@ -42,6 +42,7 @@ def create_exefs_patches(out_code: Path, out_exheader: Path, input_exheader: Pat
     # Citra and Luma don't support patching the exheader. User needs to provide it as input and
     # here the patch is just applied
     exheader_ips_path = files_path().joinpath("exefs_patches", "exheader.ips")
+    out_exheader.parent.mkdir(parents=True, exist_ok=True)
     with (
           Path.open(exheader_ips_path, "rb") as exheader_ips,
           Path.open(input_exheader, "rb") as original,
