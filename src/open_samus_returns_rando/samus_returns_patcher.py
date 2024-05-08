@@ -50,7 +50,7 @@ def add_custom_files(editor: PatcherEditor) -> None:
 
 
 
-def validate(configuration: dict, input_exheader: Path | None):
+def validate(configuration: dict, input_exheader: Path | None) -> None:
     # validate patcher json with the schema.json
     DefaultValidatingDraft7Validator(_read_schema()).validate(configuration)
 
@@ -66,7 +66,7 @@ def validate(configuration: dict, input_exheader: Path | None):
 
 
 
-def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, configuration: dict):
+def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, configuration: dict) -> None:
     LOG.info("Will patch files from %s", input_path)
 
     validate(configuration, input_exheader)

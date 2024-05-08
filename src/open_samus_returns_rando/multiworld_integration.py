@@ -5,7 +5,7 @@ from open_samus_returns_rando.lua_editor import get_parent_for
 from open_samus_returns_rando.misc_patches.lua_util import lua_convert
 
 
-def get_lua_for_item(progression: list[list[dict[str, str | int]]]):
+def get_lua_for_item(progression: list[list[dict[str, str | int]]]) -> str:
     generic_pickup = """
     Game.ImportLibrary("actors/items/randomizerpowerup/scripts/randomizerpowerup.lc", false)
     MultiworldPickup = MultiworldPickup or {}
@@ -33,13 +33,13 @@ def get_lua_for_item(progression: list[list[dict[str, str | int]]]):
     )
 
 
-def create_exefs_patches(out_code: Path, out_exheader: Path, input_exheader: Path, enabled: bool, region: str):
+def create_exefs_patches(out_code: Path, out_exheader: Path, input_exheader: Path, enabled: bool, region: str) -> None:
     if not enabled:
         return
 
     import shutil
 
-    import ips
+    import ips  # type: ignore
 
     # Citra and Luma don't support patching the exheader. User needs to provide it as input and
     # here the patch is just applied

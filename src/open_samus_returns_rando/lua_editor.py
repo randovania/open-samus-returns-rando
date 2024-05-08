@@ -67,7 +67,7 @@ SCENARIO_MAPPING = {
     "s110_surfaceb": "s00",
 }
 
-def get_parent_for(item_id) -> str:
+def get_parent_for(item_id: str) -> str:
     return SPECIFIC_CLASSES.get(item_id, "RandomizerPowerup")
 
 class ScriptClass:
