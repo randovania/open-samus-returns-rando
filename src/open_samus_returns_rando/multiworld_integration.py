@@ -28,7 +28,9 @@ def get_lua_for_item(progression: list[list[dict[str, str | int]]]):
         parent_content = parent_content.replace(parent, "MultiworldPickup")
 
     progression_as_lua = lua_convert(progression, True)
-    return f'{parent_content}\nMultiworldPickup.OnPickedUp({progression_as_lua}, nil)'.replace("\n", "\\\n")
+    return (f'{parent_content}\nMultiworldPickup.OnPickedUp({progression_as_lua}, nil)'
+            .replace("\n", "\\\n").replace("'", "\\'")
+    )
 
 
 def create_exefs_patches(out_code: Path, out_exheader: Path, input_exheader: Path, enabled: bool, region: str):
