@@ -134,10 +134,12 @@ class LuaEditor:
             self.add_progressive_models(pickup, actordef_id)
 
         hashable_progression = "_".join([
-            f'{pickup["item_id"]}_{pickup["quantity"]}'
-            for res in pickup_resources
-            for pickup in res
-        ]).replace("-", "MINUS")
+            str(
+                hash(f'{item_quantity["item_id"]}_{item_quantity["quantity"]}_{pickup["caption"]}')
+            ).replace("-", "MINUS")
+            for progressive_stage in pickup_resources
+            for item_quantity in progressive_stage
+        ])
 
         if hashable_progression in self._item_classes.keys():
             return self._item_classes[hashable_progression]

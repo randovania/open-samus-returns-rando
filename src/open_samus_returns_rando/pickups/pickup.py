@@ -92,7 +92,7 @@ class BasePickup:
         raise NotImplementedError
 
 class ActorPickup(BasePickup):
-    _bmsad_dict: dict[str, tuple[str, ScriptClass]] = {}
+    _bmsad_dict: dict[int, tuple[str, ScriptClass]] = {}
 
     def patch_item_pickup(self, bmsad: dict) -> tuple[dict, ScriptClass]:
         pickable: dict = bmsad["components"]["PICKABLE"]
@@ -261,12 +261,14 @@ class ActorPickup(BasePickup):
             raise KeyError(f"No actor named '{actor_name}' found in {scenario_name}")
 
         item_id = self.pickup["resources"][0][0]["item_id"]
-        cached_bmsad = self._bmsad_dict.get(item_id, None)
+        caption = self.pickup["caption"]
+        key_for_dict = hash(f"{item_id}{caption}")
+        cached_bmsad = self._bmsad_dict.get(key_for_dict, None)
         if cached_bmsad is None:
             actordef_id = f"randomizerpowerup{self.pickup_id}"
             script_class = self.add_new_bmsad(editor, actordef_id, pkgs_for_level)
             script_class.ensure_files(editor)
-            self._bmsad_dict[item_id] = (actordef_id, script_class)
+            self._bmsad_dict[key_for_dict] = (actordef_id, script_class)
         else:
             actordef_id = cached_bmsad[0]
             script_class = cached_bmsad[1]
