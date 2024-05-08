@@ -18,4 +18,5 @@ function RandomizerMissileTank.OnPickedUp(progression, actorOrName)
     end
     RandomizerPowerup.OnPickedUp(progression, actorOrName)
     RandomizerPowerup.IncreaseMissileCheckValue()
+    hud.UpdatePlayerInfo(true)
 end
