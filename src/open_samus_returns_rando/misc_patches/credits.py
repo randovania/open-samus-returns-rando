@@ -23,7 +23,7 @@ _PROJECT_MEMBERS = {
     ]
 }
 
-def _create_randomizer_credits(spoiler_log: dict[str, str]):
+def _create_randomizer_credits(spoiler_log: dict[str, str])  -> tuple[list[tuple[str, str]], int, int, int]:
     rando_credits: list[tuple[str, str]] = [
         ("Randomizer Credits", "CREDIT_TITLE"),
     ]
@@ -46,7 +46,7 @@ def _create_randomizer_credits(spoiler_log: dict[str, str]):
     amount_subtitle = 0
     amount_credit = 0
 
-    def new_sort(prefix: str, item) -> tuple[str, str]:
+    def new_sort(prefix: str, item: str) -> tuple[str, str]:
         nonlocal amount_title
         nonlocal amount_subtitle
         nonlocal amount_credit
@@ -67,7 +67,7 @@ def _create_randomizer_credits(spoiler_log: dict[str, str]):
     return rando_credits, amount_title, amount_subtitle, amount_credit
 
 
-def patch_credits(editor: PatcherEditor, spoiler_log: dict[str, str]):
+def patch_credits(editor: PatcherEditor, spoiler_log: dict[str, str]) -> None:
     english_files = [
         "system/localization/mse_english.txt",
     ]

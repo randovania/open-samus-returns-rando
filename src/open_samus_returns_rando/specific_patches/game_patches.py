@@ -3,7 +3,7 @@ from mercury_engine_data_structures.formats import Bmsad, Bmsbk
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
-def apply_game_patches(editor: PatcherEditor, configuration: dict):
+def apply_game_patches(editor: PatcherEditor, configuration: dict) -> None:
     # Weapon patches
     _remove_pb_weaknesses(editor, configuration)
 
@@ -16,7 +16,7 @@ def apply_game_patches(editor: PatcherEditor, configuration: dict):
     _patch_reverse_area8(editor, configuration)
 
 
-def _remove_pb_weaknesses(editor: PatcherEditor, configuration: dict):
+def _remove_pb_weaknesses(editor: PatcherEditor, configuration: dict) -> None:
     # Charge Door
     if configuration["charge_door_buff"]:
         for door in ["doorchargecharge", "doorclosedcharge"]:
@@ -58,7 +58,7 @@ def _remove_pb_weaknesses(editor: PatcherEditor, configuration: dict):
             ] = Container({"type": "bool", "value": False})
 
 
-def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
+def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict) -> None:
     ELEVATOR_GRAPPLE_BLOCKS = {
         # Area 4 West to Area 4 East
         "s040_area4": ["LE_GrappleMov_001"],
@@ -84,7 +84,7 @@ def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict):
         )
 
 
-def _remove_super_missile_weakness(editor: PatcherEditor):
+def _remove_super_missile_weakness(editor: PatcherEditor) -> None:
     missile_door = editor.get_file(
         "actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad", Bmsad
     )
@@ -93,7 +93,7 @@ def _remove_super_missile_weakness(editor: PatcherEditor):
         func.params.Param1.value = "MISSILE"
 
 
-def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict):
+def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict) -> None:
     # Crumble blocks after Scan Pulse
     if configuration["patch_surface_crumbles"]:
         surface = editor.get_file(
@@ -119,7 +119,7 @@ def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict):
         area1_chozo_seal_crumbles["types"][0]["blocks"][4]["respawn_time"] = 0.0
 
 
-def _patch_reverse_area8(editor: PatcherEditor, configuration: dict):
+def _patch_reverse_area8(editor: PatcherEditor, configuration: dict) -> None:
     if configuration["reverse_area8"]:
         editor.remove_entity(
             {"scenario": "s100_area10", "layer": 9, "actor": "LE_ValveQueen"}

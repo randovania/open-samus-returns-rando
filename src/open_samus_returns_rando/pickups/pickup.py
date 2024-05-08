@@ -70,7 +70,7 @@ OFFSET = Container({
 })
 
 @functools.cache
-def _read_template_powerup():
+def _read_template_powerup() -> dict:
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
         return json.load(f)
 
@@ -85,10 +85,10 @@ class BasePickup:
         self.pickup_id = pickup_id
         self.configuration = configuration
 
-    def patch(self, editor: PatcherEditor):
+    def patch(self, editor: PatcherEditor) -> None:
         raise NotImplementedError
 
-    def get_scenario(self):
+    def get_scenario(self) -> str:
         raise NotImplementedError
 
 class ActorPickup(BasePickup):
@@ -128,7 +128,7 @@ class ActorPickup(BasePickup):
         new_template, script_class = self.patch_item_pickup(new_template)
 
         new_path = script_class.get_bmsad_path()
-        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)
+        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level) # type: ignore
         return script_class
 
 
@@ -248,7 +248,7 @@ class ActorPickup(BasePickup):
             MODELUPDATER["fields"]["vInitAngWorldOffset"]["value"][0] = 0.0
 
 
-    def patch(self, editor: PatcherEditor):
+    def patch(self, editor: PatcherEditor) -> None:
         actor_reference = self.pickup["pickup_actor"]
         actor_name = actor_reference["actor"]
         model_names: list[str] = self.pickup["model"]
@@ -298,17 +298,17 @@ class ActorPickup(BasePickup):
                 for dep in model_data.dependencies:
                     editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
-    def get_scenario(self):
+    def get_scenario(self) -> str:
         return self.pickup["pickup_actor"]["scenario"]
 
 
 class MetroidPickup(BasePickup):
-    def patch(self, editor: PatcherEditor):
+    def patch(self, editor: PatcherEditor) -> None:
         script_class = self.lua_editor.create_script_class(self.pickup, f"metroid_{self.pickup_id}")
         script_class.ensure_files(editor)
         self.lua_editor.add_metroid_pickup(self.pickup["metroid_callback"], script_class)
 
-    def get_scenario(self):
+    def get_scenario(self) -> str:
         return self.pickup["metroid_callback"]["scenario"]
 
 
@@ -330,13 +330,15 @@ def ensure_base_models(editor: PatcherEditor) -> None:
         for dep in model_data.dependencies:
             editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
-def count_dna(lua_scripts: LuaEditor, pickup_object: BasePickup):
+def count_dna(lua_scripts: LuaEditor, pickup_object: BasePickup) -> None:
     item_id = pickup_object.pickup["resources"][0][0]["item_id"]
     if item_id.startswith("ITEM_RANDO_DNA"):
         scenario: str = pickup_object.get_scenario()
         lua_scripts.add_dna(scenario)
 
-def patch_pickups(editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict):
+def patch_pickups(
+        editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict
+        ) -> None:
     ActorPickup._bmsad_dict = {}
     editor.add_new_asset(
         "actors/items/randomizerpowerup/scripts/randomizerpowerup.lc",

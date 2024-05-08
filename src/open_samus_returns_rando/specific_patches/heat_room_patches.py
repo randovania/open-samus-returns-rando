@@ -5,7 +5,7 @@ from construct import Container, ListContainer
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
-def _patch_area_2b(editor: PatcherEditor):
+def _patch_area_2b(editor: PatcherEditor) -> None:
     # area2b => shape is already correct but ms forgot to add one room
     heat_trigger_2b = {"scenario": "s025_area2b", "layer": "2", "actor": "TG_SP_Heat_001"}
     scenario_2b = editor.get_scenario(heat_trigger_2b["scenario"])
@@ -75,7 +75,7 @@ def _get_new_logic_shape(editor: PatcherEditor, new_actor: NewHeatActor) -> Cont
     return ls_copy
 
 
-def add_heat_actors(editor: PatcherEditor, new_heat_actor: NewHeatActor):
+def add_heat_actors(editor: PatcherEditor, new_heat_actor: NewHeatActor)-> None:
     template_ht = editor.get_scenario("s010_area1").raw.actors[2]["TG_Heat_001"]
 
     scenario_name = new_heat_actor.scenario
@@ -95,7 +95,7 @@ def add_heat_actors(editor: PatcherEditor, new_heat_actor: NewHeatActor):
         scenario_file.add_actor_to_entity_groups(entity_group, new_heat_actor.trigger_name, True)
 
 
-def patch_heat_rooms(editor: PatcherEditor):
+def patch_heat_rooms(editor: PatcherEditor)-> None:
     _patch_area_2b(editor)
     for new_heat_actor in new_heat_actors:
         add_heat_actors(editor, new_heat_actor)

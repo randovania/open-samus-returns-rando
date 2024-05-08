@@ -21,12 +21,12 @@ ALL_SCENARIOS = [
     "s110_surfaceb",
 ]
 
-def get_package_name(package_name: str, file_name: str):
+def get_package_name(package_name: str, file_name: str) -> str:
     without = ["bcmdl", "bcwav", "bctex", "bcskla", "bcptl"]
     for ending in without:
         if file_name.endswith(ending):
             return package_name.replace("_discardables", "")
     return package_name
 
-def lua_pkgs(pkgs: list[str]):
+def lua_pkgs(pkgs: list[str]) -> list[str]:
     return [get_package_name(level_pkg, "lc") for level_pkg in pkgs]

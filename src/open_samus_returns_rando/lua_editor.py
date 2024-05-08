@@ -1,4 +1,5 @@
 import itertools
+from collections.abc import Iterable
 
 from construct import Container
 from mercury_engine_data_structures.formats.lua import Lua
@@ -105,14 +106,14 @@ class ScriptClass:
 
 
 class LuaEditor:
-    def __init__(self):
-        self._item_classes = {}
-        self._metroid_dict = {}
-        self._dna_count_dict = {}
-        self._hint_dict = {}
+    def __init__(self) -> None:
+        self._item_classes: dict[str, ScriptClass] = {}
+        self._metroid_dict: dict[str, dict[str, str]] = {}
+        self._dna_count_dict: dict[str, int] = {}
+        self._hint_dict: dict[str, dict[str, list[str]]] = {}
         self._progressive_models = ""
         self._custom_level_scripts: dict[str, dict] = self._read_levels()
-        self._metroid_imports = []
+        self._metroid_imports: list[str] = []
 
     def _read_levels(self) -> dict[str, dict]:
         return {
@@ -120,7 +121,7 @@ class LuaEditor:
             for scenario in ALL_SCENARIOS
         }
 
-    def get_parent_for(self, item_id) -> str:
+    def get_parent_for(self, item_id: str) -> str:
         return SPECIFIC_CLASSES.get(item_id, "RandomizerPowerup")
 
     def create_script_class(self, pickup: dict, actordef_id: str = "") -> ScriptClass:
@@ -174,7 +175,7 @@ class LuaEditor:
 
         return new_script_class
 
-    def add_progressive_models(self, pickup: dict, actordef_name: str):
+    def add_progressive_models(self, pickup: dict, actordef_name: str) -> None:
         progressive_models = [
             {
                 "item": lua_util.wrap_string(resource["item_id"]),
@@ -233,7 +234,7 @@ class LuaEditor:
         final_inventory.update(inventory)
 
         # Use itertools batched when upgrading to python 3.12
-        def chunks(array: list[str], n: int):
+        def chunks(array: list[str], n: int) -> Iterable[list[str]]:
             for i in range(0, len(array), n):
                 yield array[i:i + n]
 
@@ -260,7 +261,7 @@ class LuaEditor:
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)
 
-    def _add_replacement_files(self, editor: PatcherEditor, configuration: dict):
+    def _add_replacement_files(self, editor: PatcherEditor, configuration: dict) -> None:
         # Update init.lc
         lua_util.create_script_copy(editor, "system/scripts/init")
 
@@ -280,7 +281,7 @@ class LuaEditor:
         lua_util.replace_script(editor, "actors/props/heatzone/scripts/heatzone", "custom/heatzone.lua")
         lua_util.replace_script(editor, "gui/scripts/sprites_splashes", "custom/sprites_splashes.lua")
 
-    def save_modifications(self, editor: PatcherEditor, configuration: dict):
+    def save_modifications(self, editor: PatcherEditor, configuration: dict) -> None:
         self._add_replacement_files(editor, configuration)
 
         # add new system scripts

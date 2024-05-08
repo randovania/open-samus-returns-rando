@@ -5,7 +5,7 @@ from mercury_engine_data_structures.formats import Bmsad
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
-def _patch_metroids(editor: PatcherEditor):
+def _patch_metroids(editor: PatcherEditor) -> None:
     METROID_FILES = [
         "actors/characters/alpha/charclasses/alpha.bmsad",
         "actors/characters/alphaevolved/charclasses/alphaevolved.bmsad",
@@ -56,12 +56,12 @@ def _patch_metroids(editor: PatcherEditor):
 
 class NewStartPoint(typing.NamedTuple):
     scenario: str
-    tg_name: str
-    tg_position: list[float]
-    st_name: str
+    tg_name: str | None
+    tg_position: list[float] | None
+    st_name: str | None
     st_position: list[float]
     st_rotation: int
-    st_out_name: str
+    st_out_name: str | None
     entity_groups: list[str]
 
 
@@ -101,7 +101,7 @@ new_startpoints = [
 ]
 
 
-def add_startpoints(editor: PatcherEditor, new_startpoint: NewStartPoint):
+def add_startpoints(editor: PatcherEditor, new_startpoint: NewStartPoint)  -> None:
     template_tg = editor.get_scenario("s025_area2b").raw.actors[0]["TG_SetCheckpoint_001_Gamma_001"]
     template_st = editor.get_scenario("s025_area2b").raw.actors[5]["ST_SG_Gamma_001"]
 
@@ -109,7 +109,7 @@ def add_startpoints(editor: PatcherEditor, new_startpoint: NewStartPoint):
     scenario_file = editor.get_scenario(scenario_name)
 
     # Copy the actors
-    if new_startpoint.tg_name is not None:
+    if new_startpoint.tg_name is not None and new_startpoint.tg_position is not None :
         editor.copy_actor(scenario_name, new_startpoint.tg_position, template_tg, new_startpoint.tg_name, 0)
     if new_startpoint.st_name is not None:
         editor.copy_actor(scenario_name, new_startpoint.st_position, template_st, new_startpoint.st_name, 5)
@@ -140,7 +140,7 @@ def add_startpoints(editor: PatcherEditor, new_startpoint: NewStartPoint):
         ][3]["value"] = ("CurrentScenario.OnEnter_" + new_startpoint.tg_name[3:])
 
 
-def patch_metroids(editor: PatcherEditor):
+def patch_metroids(editor: PatcherEditor) -> None:
     _patch_metroids(editor)
     for new_startpoint in new_startpoints:
         add_startpoints(editor, new_startpoint)

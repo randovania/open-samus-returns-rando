@@ -12,7 +12,6 @@ from open_samus_returns_rando.lua_editor import LuaEditor
 from open_samus_returns_rando.misc_patches.collision_camera_table import create_collision_camera_table
 from open_samus_returns_rando.misc_patches.credits import patch_credits
 from open_samus_returns_rando.misc_patches.elevators import patch_elevators
-from open_samus_returns_rando.misc_patches.exefs import DSPatch
 from open_samus_returns_rando.misc_patches.spawn_points import patch_custom_spawn_points
 from open_samus_returns_rando.misc_patches.text_patches import add_spiderboost_status, apply_text_patches
 from open_samus_returns_rando.patcher_editor import PatcherEditor
@@ -30,11 +29,11 @@ from open_samus_returns_rando.validator_with_default import DefaultValidatingDra
 
 T = typing.TypeVar("T")
 
-def _read_schema():
+def _read_schema() -> dict:
     with Path(__file__).parent.joinpath("files", "schema.json").open() as f:
         return json.load(f)
 
-def add_custom_files(editor: PatcherEditor):
+def add_custom_files(editor: PatcherEditor) -> None:
     custom_romfs = files_path().joinpath("romfs")
     for child in custom_romfs.rglob("*"):
         if not child.is_file():
@@ -49,16 +48,10 @@ def add_custom_files(editor: PatcherEditor):
             editor.replace_asset(asset_name, raw_bytes)
 
 
-def patch_exefs(exefs_patches: Path):
-    exefs_patches.mkdir(parents=True, exist_ok=True)
-    patch = DSPatch()
-    # file needs to be named code.ips for Citra
-    exefs_patches.joinpath("code.ips").write_bytes(bytes(patch))
-
-def validate(configuration: dict):
+def validate(configuration: dict) -> None:
     DefaultValidatingDraft7Validator(_read_schema()).validate(configuration)
 
-def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
+def patch_extracted(input_path: Path, output_path: Path, configuration: dict) -> None:
     LOG.info("Will patch files from %s", input_path)
 
     validate(configuration)
@@ -124,10 +117,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict):
     out_exefs = output_path.joinpath("exefs")
     shutil.rmtree(out_romfs, ignore_errors=True)
     shutil.rmtree(out_exefs, ignore_errors=True)
-
-    # Create Exefs patches (currently there are none)
-    LOG.info("Creating exefs patches")
-    patch_exefs(out_exefs)
 
     LOG.info("Saving modified lua scripts")
     lua_scripts.save_modifications(editor, configuration)

@@ -24,7 +24,7 @@ new_spawnpoints = [
 ]
 
 
-def add_spawnpoints(editor: PatcherEditor, new_spawnpoint: NewSpawnPoint):
+def add_spawnpoints(editor: PatcherEditor, new_spawnpoint: NewSpawnPoint) -> None:
     template_sp = editor.get_scenario("s000_surface").raw.actors[5]["ST_SG_Alpha_001"]
 
     scenario_name = new_spawnpoint.scenario
@@ -38,6 +38,6 @@ def add_spawnpoints(editor: PatcherEditor, new_spawnpoint: NewSpawnPoint):
         scenario_file.add_actor_to_entity_groups(entity_group, new_spawnpoint.name, True)
 
 
-def patch_custom_spawn_points(editor: PatcherEditor):
+def patch_custom_spawn_points(editor: PatcherEditor) -> None:
     for new_spawnpoint in new_spawnpoints:
         add_spawnpoints(editor, new_spawnpoint)

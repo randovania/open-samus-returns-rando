@@ -23,21 +23,21 @@ class PatcherEditor(FileTreeEditor):
         super().__init__(root, Game.SAMUS_RETURNS)
         self.memory_files = {}
 
-    def get_file(self, path: str, type_hint: type[T] = BaseResource) -> T:
+    def get_file(self, path: str, type_hint: type[T] = BaseResource) -> T: # type: ignore
         if path not in self.memory_files:
-            self.memory_files[path] = self.get_parsed_asset(path, type_hint=type_hint)
-        return self.memory_files[path]
+            self.memory_files[path] = self.get_parsed_asset(path, type_hint=type_hint) # type: ignore
+        return self.memory_files[path] # type: ignore
 
     def get_level_pkgs(self, name: str) -> set[str]:
         return set(self.find_pkgs(path_for_level(name) + ".bmsld"))
 
     def get_all_level_pkgs(self) -> list[str]:
-        def get_nested_list():
+        def get_nested_list() -> typing.Iterable[set[str]]:
             for scenario in ALL_SCENARIOS:
                 yield self.get_level_pkgs(scenario)
         return [pkg for all_level_pkgs in get_nested_list() for pkg in all_level_pkgs]
 
-    def ensure_present_in_scenario(self, scenario: str, asset):
+    def ensure_present_in_scenario(self, scenario: str, asset: str) -> None:
         for pkg in self.get_level_pkgs(scenario):
             self.ensure_present(get_package_name(pkg, asset), asset)
 
@@ -50,13 +50,13 @@ class PatcherEditor(FileTreeEditor):
         layer = int(ref.get("layer", "default"))
         return scenario.raw.actors[layer][ref["actor"]]
 
-    def flush_modified_assets(self):
+    def flush_modified_assets(self) -> None:
         for name, resource in self.memory_files.items():
             self.replace_asset(name, resource)
         self.memory_files = {}
 
-    def copy_actor(self, scenario: str, coords, template_actor: Container, new_name: str,
-                   layer_index: int, offset: tuple = (0, 0, 0)):
+    def copy_actor(self, scenario: str, coords: list[float], template_actor: Container, new_name: str,
+                   layer_index: int, offset: tuple = (0, 0, 0)) -> Container:
         new_actor = copy.deepcopy(template_actor)
         current_scenario = self.get_scenario(scenario)
         current_scenario.raw.actors[layer_index][new_name] = new_actor
@@ -66,7 +66,7 @@ class PatcherEditor(FileTreeEditor):
 
         return new_actor
 
-    def remove_entity(self, reference: dict):
+    def remove_entity(self, reference: dict)-> None:
         scenario = self.get_scenario(reference["scenario"])
         layer = reference["layer"]
         actor_name = reference["actor"]

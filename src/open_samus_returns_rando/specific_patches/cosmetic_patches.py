@@ -3,12 +3,12 @@ from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
-def patch_cosmetics(editor: PatcherEditor, configuration: dict):
+def patch_cosmetics(editor: PatcherEditor, configuration: dict) -> None:
     tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
     tunable_cosmetics(tunables, configuration)
 
 
-def tunable_cosmetics(tunables: Bmtun, configuration: dict):
+def tunable_cosmetics(tunables: Bmtun, configuration: dict) -> None:
     aim = tunables.raw["classes"]["CTunableAim"]["tunables"]
     aim["vLaserLockedColor0"]["value"] = configuration["laser_locked_color"]
     aim["vLaserUnlockedColor0"]["value"] = configuration["laser_unlocked_color"]
