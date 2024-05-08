@@ -43,7 +43,7 @@ function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
 end
 
 function RandomizerPowerup.OnPickedUp(resources, actorOrName)
-    local granted = RandomizerPowerup.HandlePickupResources(resources)
+    local granted = RandomizerPowerup.HandlePickupResources(resources, actorOrName)
 
     for _, resource in ipairs(granted) do
         RandomizerPowerup.IncreaseAmmo(resource)
@@ -107,7 +107,7 @@ function RandomizerPowerup.ObjectiveComplete()
     end
 end
 
-function RandomizerPowerup.HandlePickupResources(progression)
+function RandomizerPowerup.HandlePickupResources(progression, actorOrName)
     progression = progression or {}
 
     local alwaysGrant = false
@@ -139,7 +139,10 @@ function RandomizerPowerup.HandlePickupResources(progression)
                     if string.sub(resource.item_id, 0, 14) == "ITEM_RANDO_DNA" then
                         local scenario = Init.tScenarioMapping[Scenario.CurrentScenarioID]
                         local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
-                        Blackboard.SetProp("GAME", scenario .. "_acquired_dna", "i", currentDNA + 1)
+                        -- it should be nil only for offworld DNA and then we don't want increment the scenario DNA
+                        if actorOrName ~= nil then
+                            Blackboard.SetProp("GAME", scenario .. "_acquired_dna", "i", currentDNA + 1)
+                        end
                         Scenario.UpdateDNACounter()
                         RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", resource.quantity)
                         Game.AddSF(0, "RandomizerPowerup.ObjectiveComplete", "")
