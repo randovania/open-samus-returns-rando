@@ -30,11 +30,11 @@ from open_samus_returns_rando.validator_with_default import DefaultValidatingDra
 
 T = typing.TypeVar("T")
 
-def _read_schema():
+def _read_schema() -> dict:
     with Path(__file__).parent.joinpath("files", "schema.json").open() as f:
         return json.load(f)
 
-def add_custom_files(editor: PatcherEditor):
+def add_custom_files(editor: PatcherEditor) -> None:
     custom_romfs = files_path().joinpath("romfs")
     for child in custom_romfs.rglob("*"):
         if not child.is_file():

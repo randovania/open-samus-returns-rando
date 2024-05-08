@@ -20,7 +20,7 @@ new_pickups = [
 ]
 
 
-def add_pickups(editor: PatcherEditor, new_pickup: NewPickups):
+def add_pickups(editor: PatcherEditor, new_pickup: NewPickups) -> None:
     template_pickup = editor.get_scenario("s000_surface").raw.actors[9]["LE_PowerUP_Morphball"]
 
     PICKUP_ICON = Container({
@@ -43,6 +43,6 @@ def add_pickups(editor: PatcherEditor, new_pickup: NewPickups):
         scenario_file.add_actor_to_entity_groups(entity_group, new_pickup.name, True)
 
 
-def patch_custom_pickups(editor: PatcherEditor):
+def patch_custom_pickups(editor: PatcherEditor) -> None:
     for new_pickup in new_pickups:
         add_pickups(editor, new_pickup)

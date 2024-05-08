@@ -1,4 +1,5 @@
 import copy
+import typing
 
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmtun
@@ -45,7 +46,7 @@ MULTI_ROOM_GAMMAS = [
 ]
 
 
-def patch_multi_room_gammas(editor: PatcherEditor):
+def patch_multi_room_gammas(editor: PatcherEditor) -> None:
     for reference in MULTI_ROOM_GAMMAS:
         editor.remove_entity(reference)
 
@@ -70,7 +71,7 @@ def patch_multi_room_gammas(editor: PatcherEditor):
             scenario.raw["actors"][4]["Gamma_002_A"]["position"][0] = 17100.0
 
 
-def patch_pickup_rotation(editor: PatcherEditor):
+def patch_pickup_rotation(editor: PatcherEditor) -> None:
     PICKUPS = {
         "s030_area3": ["LE_PowerUp_GrappleBeam"],
         "s050_area5": ["LE_PowerUp_SpaceJump"],
@@ -82,7 +83,7 @@ def patch_pickup_rotation(editor: PatcherEditor):
             actor["rotation"][1] = 0.0
 
 
-def patch_pickup_position(editor: PatcherEditor):
+def patch_pickup_position(editor: PatcherEditor) -> None:
     PICKUPS = {
         "s000_surface": ["LE_SpecialAbility_ScanningPulse"],
         "s010_area1": ["LE_PowerUp_SpiderBall"],
@@ -100,27 +101,27 @@ def patch_pickup_position(editor: PatcherEditor):
                 actor["position"][1] -= 49.0
 
 
-def remove_area7_grapple_block(editor: PatcherEditor):
+def remove_area7_grapple_block(editor: PatcherEditor) -> None:
     editor.remove_entity(
         {"scenario": "s090_area9", "layer": 9, "actor": "LE_GrappleDest_007"}
     )
 
 
-def patch_a7_save_screw_blocks(editor: PatcherEditor):
+def patch_a7_save_screw_blocks(editor: PatcherEditor) -> None:
     area7 = editor.get_file(
         "maps/levels/c10_samus/s090_area9/s090_area9.bmsbk", Bmsbk
     )
     area7.raw["block_groups"][56]["types"][0]["block_type"] = "power_beam"
 
 
-def shoot_supers_without_missiles(editor: PatcherEditor):
+def shoot_supers_without_missiles(editor: PatcherEditor) -> None:
     samus_bmsad = editor.get_file(
         "actors/characters/samus/charclasses/samus.bmsad", Bmsad
     )
     samus_bmsad.raw["components"]["GUN"]["functions"][20]["params"]["Param5"]["value"] = "ITEM_MISSILE_CHECK"
 
 
-def nerf_ridley_fight(editor: PatcherEditor):
+def nerf_ridley_fight(editor: PatcherEditor) -> None:
     '''
     All beams (except Ice) will use the same factor as Plasma which is 0.12
     Power Beam: 25 -> 3
@@ -144,7 +145,7 @@ def nerf_ridley_fight(editor: PatcherEditor):
     ridley_tunables["fGrabPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
 
 
-def increase_pb_drop_chance(editor: PatcherEditor):
+def increase_pb_drop_chance(editor: PatcherEditor) -> None:
     ACTOR_FILES = [
         "alpha",
         "alphaevolved",
@@ -202,7 +203,7 @@ def increase_pb_drop_chance(editor: PatcherEditor):
             drop["fPowerBombProbability"]["value"] *= 2
 
 
-def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
+def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
     # Prevents hidden item actors from being deleted when its block is broken from an adjacent cc
     CUSTOM_BLOCK = Container({
         "pos": ListContainer([
@@ -273,15 +274,16 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor):
             else:
                 new_group = copy.deepcopy(BOMB_GROUP)
             new_block = copy.deepcopy(CUSTOM_BLOCK)
-            new_block.pos = pos
-            new_block.name1 = sg_casca
-            new_group.types[0].blocks.append(new_block)
+            new_block["pos"] = pos
+            new_block["name1"] = sg_casca
+            types: ListContainer = typing.cast(ListContainer, new_group["types"])
+            types[0]["blocks"].append(new_block)
             bmsbk.raw.block_groups.append(new_group)
             bmsbk_cc_obj = next(cc_obj for cc_obj in bmsbk.raw.collision_cameras if cc_name in cc_obj.name)
             bmsbk_cc_obj.entries.append(len(bmsbk.raw.block_groups) - 1)
 
 
-def apply_static_fixes(editor: PatcherEditor):
+def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
     patch_pickup_position(editor)

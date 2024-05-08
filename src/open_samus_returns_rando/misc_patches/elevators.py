@@ -4,7 +4,7 @@ from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
-def create_elevator_table(editor: PatcherEditor, configuration: dict):
+def create_elevator_table(editor: PatcherEditor, configuration: dict) -> None:
     py_dict: dict = configuration["elevators"]
 
     file = lua_util.replace_lua_template("elevators.lua", {"elevator_dict": py_dict}, True)
@@ -15,7 +15,7 @@ def create_elevator_table(editor: PatcherEditor, configuration: dict):
     )
 
 
-def update_elevators(editor: PatcherEditor, configuration: dict):
+def update_elevators(editor: PatcherEditor, configuration: dict) -> None:
     for scenario_name, elevators in configuration["elevators"].items():
         scenario = editor.get_scenario(scenario_name)
         for elevator in elevators:
@@ -23,6 +23,6 @@ def update_elevators(editor: PatcherEditor, configuration: dict):
             platform["arguments"][1]["value"] = "Scenario.RandoOnElevatorUse"
 
 
-def patch_elevators(editor: PatcherEditor, configuration: dict):
+def patch_elevators(editor: PatcherEditor, configuration: dict) -> None:
     create_elevator_table(editor, configuration)
     update_elevators(editor, configuration)

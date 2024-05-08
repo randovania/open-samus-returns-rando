@@ -4,7 +4,7 @@ from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
-def patch_tiles(editor: PatcherEditor):
+def patch_tiles(editor: PatcherEditor) -> None:
     SCENARIO_TO_DOORS = {
         "s000_surface": ["Door004", "Door011"],
         "s010_area1": ["Door002", "Door004", "Door012", "Door016"],
