@@ -674,6 +674,25 @@
         },
         {
             "pickup_type": "actor",
+            "caption": "Sent Ice Missile to Metroid Dread.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_WEAPON_ICE_MISSILE",
+                        "quantity": 1
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "another_pickup34"
+            },
+            "model": [
+                "powerup_icemissile"
+            ]
+        },
+        {
+            "pickup_type": "actor",
             "caption": "Sent [Item] to [Player].",
             "resources": [
                 [
@@ -685,7 +704,7 @@
             ],
             "pickup_actor": {
                 "scenario": "s000_surface",
-                "actor": "another_pickup34"
+                "actor": "another_pickup35"
             },
             "model": [
                 "item_offworld"
@@ -1113,6 +1132,18 @@
             },
             "location": {
                 "x": -7000.0,
+                "y": 2100.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup35",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -6900.0,
                 "y": 2100.0,
                 "z": 0.0
             },
