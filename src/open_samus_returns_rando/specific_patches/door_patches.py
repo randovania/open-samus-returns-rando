@@ -39,7 +39,7 @@ ON_DEAD_CB = Container({
     "unk2": 1,
     "unk3": 0,
     "args": Container({
-        601445949: Container({
+        601445949: Container({ # type: ignore
             "type": "s",
             "value": "RemoveDoors",
         }),
