@@ -1,4 +1,3 @@
-
 import copy
 import re
 import typing
@@ -191,6 +190,14 @@ def _patch_one_way_doors(editor: PatcherEditor) -> None:
             properties.components[0]["arguments"][2]["value"] = False
 
 
+def _static_door_patches(editor: PatcherEditor) -> None:
+    _patch_one_way_doors(editor)
+    _patch_missile_covers(editor)
+    _patch_beam_bmsads(editor)
+    _patch_beam_covers(editor)
+    _patch_charge_doors(editor)
+
+
 class ActorData(Enum):
     """
     Enum containing data on actors
@@ -205,6 +212,7 @@ class ActorData(Enum):
     SHIELD_MISSILE = (["doorshieldmissile"])
     SHIELD_SUPER_MISSILE = (["doorshieldsupermissile"])
     SHIELD_POWER_BOMB = (["doorshieldpowerbomb"])
+    SHIELD_ICE_BEAM = (["doorshieldicebeam"])
 
 class DoorType(Enum):
     """
@@ -239,6 +247,9 @@ class DoorType(Enum):
     POWER_BOMB = ("power_bomb", ActorData.DOOR_POWER, "doorpowerbomb", True, ActorData.SHIELD_POWER_BOMB, [
         "actors/props/doorshield", "actors/props/doorshieldpowerbomb",
         "sounds/props/doorchargecharge/powerbombdoor_hum.bcwav"
+    ])
+    ICE_BEAM = ("ice_beam", ActorData.DOOR_POWER, "doorice", True, ActorData.SHIELD_ICE_BEAM, [
+        "actors/props/doorshield", "actors/props/doorshieldicebeam"
     ])
 
     def __init__(self, rdv_door_type: str, door_data: ActorData, minimap_name: str,
@@ -426,20 +437,63 @@ class DoorPatcher:
                 self.editor.ensure_present_in_scenario(scenario_name, asset)
 
 
-def _static_door_patches(editor: PatcherEditor) -> None:
-    _patch_one_way_doors(editor)
-    _patch_missile_covers(editor)
-    _patch_beam_bmsads(editor)
-    _patch_beam_covers(editor)
-    _patch_charge_doors(editor)
+class NewShield(typing.NamedTuple):
+    shield_name: str
+    weakness: str
+
+
+new_shields = [
+    NewShield("icebeam", "ICE_BEAM"),
+]
+
+
+def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
+    plasma_bmsad = "actors/props/doorcreature/charclasses/doorcreature.bmsad"
+    missile_bmsad = "actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad"
+    new_bmsad = f"actors/props/doorshield{new_shield.shield_name}/charclasses/doorshield{new_shield.shield_name}.bmsad"
+    new_model = f"actors/props/doorshield{new_shield.shield_name}/models/doorshield{new_shield.shield_name}.bcmdl"
+
+    # Create a copy of the bmsad
+    template_shield = editor.get_raw_asset(plasma_bmsad)
+    editor.add_new_asset(new_bmsad, template_shield, [])
+
+    # Modify the new bmsad
+    custom_shield = editor.get_file(new_bmsad, Bmsad)
+    custom_shield.name = f"doorshield{new_shield.shield_name}"
+    custom_shield.raw["header"]["model_name"] = new_model
+
+    # Update the collision to be able to open both sides
+    missile_shield = editor.get_file(missile_bmsad, Bmsad)
+    custom_shield.raw["components"]["COLLISION"] = missile_shield.raw["components"]["COLLISION"]
+    custom_shield.components["MODELUPDATER"].functions[0].params["Param1"]["value"] = new_model
+
+    # Update the life component
+    life_component = custom_shield.raw["components"]["LIFE"]["functions"]
+    life_component[0]["params"]["Param1"]["value"] = new_shield.weakness
+
+    # Remove the second weakness container
+    life_component.pop(1)
+
+    # Set shield health to 1
+    life_component[2]["params"]["Param2"]["value"] = 1.0
+    life_component[3]["params"]["Param2"]["value"] = 1.0
+
+    # Remove the drops from breaking the shield
+    custom_shield.raw["components"].pop("DROP")
+
+    # Remove the particle animation that occurs after the shield breaks (color mismatch)
+    custom_shield.raw["action_sets"][0]["animations"][0]["events0"][1]["args"][729149823]["value"] = 0
+
 
 def patch_doors(editor: PatcherEditor, door_patches: list[dict]) -> None:
     _static_door_patches(editor)
-
+    for new_shield in new_shields:
+        add_custom_shields(editor, new_shield)
     door_patcher = DoorPatcher(editor)
 
     # small hack to eliminate duplicates (randovania exports everything duplicated)
     import json
+
     set_of_jsons = {json.dumps(d, sort_keys=True) for d in door_patches}
     door_patches_set = [json.loads(t) for t in set_of_jsons]
 
