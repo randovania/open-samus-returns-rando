@@ -298,6 +298,13 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "maps/textures/chozoartifactor_o.bctex",
         ),
     ),
+    "powerup_icemissile": ModelData(
+        bcmdl_path="actors/items/powerup_icemissile/models/powerup_icemissile.bcmdl",
+        dependencies=(
+            "actors/items/powerup_icemissile/models/powerup_icemissile.bcmdl",
+            "actors/items/powerup_icemissile/models/textures/missile_d.bctex",
+        ),
+    ),
 }
 
 
