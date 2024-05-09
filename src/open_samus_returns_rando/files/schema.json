@@ -162,7 +162,8 @@
                             "wave_beam",
                             "missile",
                             "super_missile",
-                            "power_bomb"
+                            "power_bomb",
+                            "ice_beam"
                         ]
                     }
                 },
