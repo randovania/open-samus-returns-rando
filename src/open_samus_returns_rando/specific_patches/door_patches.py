@@ -248,7 +248,7 @@ class DoorType(Enum):
         "actors/props/doorshield", "actors/props/doorshieldpowerbomb",
         "sounds/props/doorchargecharge/powerbombdoor_hum.bcwav"
     ])
-    ICE_BEAM = ("ice_beam", ActorData.DOOR_POWER, "dooricemissile", True, ActorData.SHIELD_ICE_BEAM, [
+    ICE_BEAM = ("ice_beam", ActorData.DOOR_POWER, "doorice", True, ActorData.SHIELD_ICE_BEAM, [
         "actors/props/doorshield", "actors/props/doorshieldicebeam"
     ])
 
@@ -441,35 +441,47 @@ class NewShield(typing.NamedTuple):
     shield_name: str
     weakness: str
 
+
 new_shields = [
     NewShield("icebeam", "ICE_BEAM"),
 ]
 
+
 def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
-    plasmashield_bmsad = "actors/props/doorcreature/charclasses/doorcreature.bmsad"
+    plasma_bmsad = "actors/props/doorcreature/charclasses/doorcreature.bmsad"
+    missile_bmsad = "actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad"
     new_bmsad = f"actors/props/doorshield{new_shield.shield_name}/charclasses/doorshield{new_shield.shield_name}.bmsad"
     new_model = f"actors/props/doorshield{new_shield.shield_name}/models/doorshield{new_shield.shield_name}.bcmdl"
 
     # Create a copy of the bmsad
-    template_shield = editor.get_raw_asset(plasmashield_bmsad)
+    template_shield = editor.get_raw_asset(plasma_bmsad)
     editor.add_new_asset(new_bmsad, template_shield, [])
 
     # Modify the new bmsad
     custom_shield = editor.get_file(new_bmsad, Bmsad)
     custom_shield.name = f"doorshield{new_shield.shield_name}"
     custom_shield.raw["header"]["model_name"] = new_model
+
+    # Update the collision to be able to open both sides
+    missile_shield = editor.get_file(missile_bmsad, Bmsad)
+    custom_shield.raw["components"]["COLLISION"] = missile_shield.raw["components"]["COLLISION"]
     custom_shield.components["MODELUPDATER"].functions[0].params["Param1"]["value"] = new_model
 
-    life = custom_shield.raw["components"]["LIFE"]["functions"]
-    life[0]["params"]["Param1"]["value"] = new_shield.weakness
+    # Update the life component
+    life_component = custom_shield.raw["components"]["LIFE"]["functions"]
+    life_component[0]["params"]["Param1"]["value"] = new_shield.weakness
+
     # Remove the second weakness container
-    life.pop(1)
+    life_component.pop(1)
+
     # Set shield health to 1
-    life[2]["params"]["Param2"]["value"] = 1.0
-    life[3]["params"]["Param2"]["value"] = 1.0
-    # Remove the drops after breaking the shield
+    life_component[2]["params"]["Param2"]["value"] = 1.0
+    life_component[3]["params"]["Param2"]["value"] = 1.0
+
+    # Remove the drops from breaking the shield
     custom_shield.raw["components"].pop("DROP")
-    # Remove the animation after breaking the shield (color mismatch)
+
+    # Remove the particle animation that occurs after the shield breaks (color mismatch)
     custom_shield.raw["action_sets"][0]["animations"][0]["events0"][1]["args"][729149823]["value"] = 0
 
 

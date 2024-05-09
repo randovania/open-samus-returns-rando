@@ -280,6 +280,7 @@ class LuaEditor:
         lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom/savestation.lua")
         lua_util.replace_script(editor, "actors/props/heatzone/scripts/heatzone", "custom/heatzone.lua")
         lua_util.replace_script(editor, "gui/scripts/sprites_splashes", "custom/sprites_splashes.lua")
+        lua_util.replace_script(editor, "gui/scripts/sprites_texturehud", "custom/sprites_texturehud.lua")
 
     def save_modifications(self, editor: PatcherEditor, configuration: dict) -> None:
         self._add_replacement_files(editor, configuration)
