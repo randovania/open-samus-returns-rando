@@ -39,7 +39,7 @@ ON_DEAD_CB = Container({
     "unk2": 1,
     "unk3": 0,
     "args": Container({
-        "601445949": Container({
+        601445949: Container({ # type: ignore
             "type": "s",
             "value": "RemoveDoors",
         }),
@@ -449,22 +449,17 @@ new_shields = [
 
 def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
     plasma_bmsad = "actors/props/doorcreature/charclasses/doorcreature.bmsad"
-    missile_bmsad = "actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad"
     new_bmsad = f"actors/props/doorshield{new_shield.shield_name}/charclasses/doorshield{new_shield.shield_name}.bmsad"
     new_model = f"actors/props/doorshield{new_shield.shield_name}/models/doorshield{new_shield.shield_name}.bcmdl"
 
     # Create a copy of the bmsad
-    template_shield = editor.get_raw_asset(plasma_bmsad)
+    template_shield = editor.get_file(plasma_bmsad, Bmsad)
     editor.add_new_asset(new_bmsad, template_shield, [])
 
     # Modify the new bmsad
     custom_shield = editor.get_file(new_bmsad, Bmsad)
     custom_shield.name = f"doorshield{new_shield.shield_name}"
     custom_shield.raw["header"]["model_name"] = new_model
-
-    # Update the collision to be able to open both sides
-    missile_shield = editor.get_file(missile_bmsad, Bmsad)
-    custom_shield.raw["components"]["COLLISION"] = missile_shield.raw["components"]["COLLISION"]
     custom_shield.components["MODELUPDATER"].functions[0].params["Param1"]["value"] = new_model
 
     # Update the life component
