@@ -162,7 +162,8 @@
                             "wave_beam",
                             "missile",
                             "super_missile",
-                            "power_bomb"
+                            "power_bomb",
+                            "ice_beam"
                         ]
                     }
                 },
@@ -607,7 +608,8 @@
                 "ITEM_RESERVE_TANK_LIFE",
                 "ITEM_RESERVE_TANK_MISSILE",
                 "ITEM_RESERVE_TANK_SPECIAL_ENERGY",
-                "ITEM_OFFWORLD"
+                "ITEM_OFFWORLD",
+                "ITEM_WEAPON_ICE_MISSILE"
             ]
         },
         "item": {
