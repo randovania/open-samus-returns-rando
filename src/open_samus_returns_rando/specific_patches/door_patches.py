@@ -213,6 +213,10 @@ class ActorData(Enum):
     SHIELD_SUPER_MISSILE = (["doorshieldsupermissile"])
     SHIELD_POWER_BOMB = (["doorshieldpowerbomb"])
     SHIELD_ICE_BEAM = (["doorshieldicebeam"])
+    SHIELD_GRAPPLE_BEAM = (["doorshieldgrapplebeam"])
+    SHIELD_BEAM_BURST = (["doorshieldbeamburst"])
+    SHIELD_BOMB = (["doorshieldbomb"])
+    SHIELD_LOCKED = (["doorshieldlocked"])
 
 class DoorType(Enum):
     """
@@ -249,7 +253,24 @@ class DoorType(Enum):
         "sounds/props/doorchargecharge/powerbombdoor_hum.bcwav"
     ])
     ICE_BEAM = ("ice_beam", ActorData.DOOR_POWER, "doorice", True, ActorData.SHIELD_ICE_BEAM, [
-        "actors/props/doorshield", "actors/props/doorshieldicebeam"
+        "actors/props/doorshield", "actors/props/doorshieldicebeam","sounds/props/creaturedoor",
+        "system/fx/textures/blood_gray.bctex",
+    ])
+    GRAPPLE_BEAM = ("grapple_beam", ActorData.DOOR_POWER, "doorgrapple", True, ActorData.SHIELD_GRAPPLE_BEAM, [
+        "actors/props/doorshield", "actors/props/doorshieldgrapplebeam",
+        "sounds/props/doorchargecharge/missiledoor_hum.bcwav"
+    ])
+    BOMB = ("bomb", ActorData.DOOR_POWER, "doorbomb", True, ActorData.SHIELD_BOMB, [
+        "actors/props/doorshield", "actors/props/doorshieldsupermissile", "actors/props/doorshieldbomb",
+        "sounds/props/doorchargecharge/smissiledoor_hum.bcwav"
+    ])
+    BEAM_BURST = ("beam_burst", ActorData.DOOR_POWER, "doorbeamburst", True, ActorData.SHIELD_BEAM_BURST, [
+        "actors/props/doorshield", "actors/props/doorshieldpowerbomb", "actors/props/doorshieldbeamburst",
+        "sounds/props/doorchargecharge/powerbombdoor_hum.bcwav"
+    ])
+    LOCKED = ("locked", ActorData.DOOR_POWER, "doorlocked", True, ActorData.SHIELD_LOCKED, [
+        "actors/props/doorshield", "actors/props/doorshieldlocked", "actors/props/doorspazerbeam",
+        "sounds/props/spazerdoor"
     ])
 
     def __init__(self, rdv_door_type: str, door_data: ActorData, minimap_name: str,
@@ -440,20 +461,30 @@ class DoorPatcher:
 class NewShield(typing.NamedTuple):
     shield_name: str
     weakness: str
+    base_shield: str
 
 
 new_shields = [
-    NewShield("icebeam", "ICE_BEAM"),
+    NewShield("beamburst", "WEAPON_BOOST", "doorshieldpowerbomb"),
+    NewShield("bomb", "BOMB", "doorshieldsupermissile"),
+    NewShield("grapplebeam", "GRAPPLE_BEAM", "doorshield"),
+    NewShield("icebeam", "ICE_BEAM", "doorcreature"),
+    NewShield("locked", "", "doorspazerbeam"),
 ]
 
 
 def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
-    plasma_bmsad = "actors/props/doorcreature/charclasses/doorcreature.bmsad"
-    new_bmsad = f"actors/props/doorshield{new_shield.shield_name}/charclasses/doorshield{new_shield.shield_name}.bmsad"
+    # Missile shields are split across doorshield and doorshieldmissile
+    if new_shield.base_shield == "doorshield":
+        template_bmsad = "actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad"
+    else:
+        template_bmsad = f"actors/props/{new_shield.base_shield}/charclasses/{new_shield.base_shield}.bmsad"
+
     new_model = f"actors/props/doorshield{new_shield.shield_name}/models/doorshield{new_shield.shield_name}.bcmdl"
+    new_bmsad = f"actors/props/doorshield{new_shield.shield_name}/charclasses/doorshield{new_shield.shield_name}.bmsad"
 
     # Create a copy of the bmsad
-    template_shield = editor.get_file(plasma_bmsad, Bmsad)
+    template_shield = editor.get_file(template_bmsad, Bmsad)
     editor.add_new_asset(new_bmsad, template_shield, [])
 
     # Modify the new bmsad
@@ -464,20 +495,27 @@ def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
 
     # Update the life component
     life_component = custom_shield.raw["components"]["LIFE"]["functions"]
-    life_component[0]["params"]["Param1"]["value"] = new_shield.weakness
-
-    # Remove the second weakness container
-    life_component.pop(1)
-
-    # Set shield health to 1
-    life_component[2]["params"]["Param2"]["value"] = 1.0
-    life_component[3]["params"]["Param2"]["value"] = 1.0
-
-    # Remove the drops from breaking the shield
-    custom_shield.raw["components"].pop("DROP")
-
-    # Remove the particle animation that occurs after the shield breaks (color mismatch)
-    custom_shield.raw["action_sets"][0]["animations"][0]["events0"][1]["args"][729149823]["value"] = 0
+    if new_shield.base_shield == "doorshield":
+        # Remove the Super Missile weakness
+        life_component[1]["params"]["Param1"]["value"] = new_shield.weakness
+    elif new_shield.base_shield == "doorspazerbeam":
+        # Remove all weaknesses
+        for i in range(4):
+            life_component[i]["params"]["Param1"]["value"] = new_shield.weakness
+    elif new_shield.base_shield == "doorcreature":
+        # Remove the Power Bomb weakness
+        life_component[1]["params"]["Param1"]["value"] = new_shield.weakness
+        # Set shield health to 1
+        life_component[2]["params"]["Param2"]["value"] = 1.0
+        life_component[3]["params"]["Param2"]["value"] = 1.0
+        # Remove the drops from breaking the shield
+        custom_shield.raw["components"].pop("DROP")
+        # Remove the particle animation that occurs after the shield breaks (color mismatch)
+        custom_shield.raw["action_sets"][0]["animations"][0]["events0"][1]["args"][729149823]["value"] = 0
+    elif new_shield.base_shield in {"doorshieldsupermissile", "doorshieldpowerbomb"}:
+        # Some shaders do not use dissolve fx, so force fx to be used
+        custom_shield.raw["components"]["LIFE"]["fields"]["bDisolveByMaterial"]["value"] = False
+        custom_shield.raw["components"]["LIFE"]["fields"]["fTimeToStartDisolve"]["value"] = 0.2
 
 
 def patch_doors(editor: PatcherEditor, door_patches: list[dict]) -> None:

@@ -163,7 +163,11 @@
                             "missile",
                             "super_missile",
                             "power_bomb",
-                            "ice_beam"
+                            "ice_beam",
+                            "grapple_beam",
+                            "bomb",
+                            "beam_burst",
+                            "locked"
                         ]
                     }
                 },
