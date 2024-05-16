@@ -495,16 +495,11 @@ def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
 
     # Update the life component
     life_component = custom_shield.raw["components"]["LIFE"]["functions"]
-    if new_shield.base_shield == "doorshield":
-        # Remove the Super Missile weakness
-        life_component[1]["params"]["Param1"]["value"] = new_shield.weakness
-    elif new_shield.base_shield == "doorspazerbeam":
-        # Remove all weaknesses
-        for i in range(4):
-            life_component[i]["params"]["Param1"]["value"] = new_shield.weakness
-    elif new_shield.base_shield == "doorcreature":
-        # Remove the Power Bomb weakness
-        life_component[1]["params"]["Param1"]["value"] = new_shield.weakness
+    # Change the weaknesses for each door
+    for damage_source in life_component:
+        if damage_source["name"] == "AddDamageSource":
+            damage_source["params"]["Param1"]["value"] = new_shield.weakness
+    if new_shield.base_shield == "doorcreature":
         # Set shield health to 1
         life_component[2]["params"]["Param2"]["value"] = 1.0
         life_component[3]["params"]["Param2"]["value"] = 1.0
