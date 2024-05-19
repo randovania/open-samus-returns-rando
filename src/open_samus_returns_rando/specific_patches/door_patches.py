@@ -409,6 +409,8 @@ class DoorPatcher:
         # bad special case to force DoorManicMinerBot to doorclosed...
         if actor_name == "DoorManicMinerBot":
             left_tile_icon.icon = 'doorclosedleft'
+            # breaks minimap updating when shooting it from the left side but fixes itself after scan or reload
+            left_tile_icon.actor_name = ''
 
     def patch_actor(
             self, new_door: DoorType, scenario_name: str, actor_name: str, scenario: Bmsld,
