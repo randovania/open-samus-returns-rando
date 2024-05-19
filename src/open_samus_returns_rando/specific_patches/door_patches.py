@@ -255,7 +255,7 @@ class DoorType(Enum):
     ICE_BEAM = ("ice_beam", ActorData.DOOR_POWER, "doorice", True, ActorData.SHIELD_ICE_BEAM, [
         "actors/props/doorshield", "actors/props/doorcreature", "actors/props/doorshieldicebeam",
         "sounds/props/creaturedoor", "system/fx/textures/blood_gray.bctex",
-    ])
+    ], 180.0)
     GRAPPLE_BEAM = ("grapple_beam", ActorData.DOOR_POWER, "doorgrapple", True, ActorData.SHIELD_GRAPPLE_BEAM, [
         "actors/props/doorshield", "actors/props/doorshieldgrapplebeam",
         "sounds/props/doorchargecharge/missiledoor_hum.bcwav"
