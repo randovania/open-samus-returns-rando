@@ -322,6 +322,53 @@ class DoorPatcher:
         new_actor["type"] = new_type
         return new_actor
 
+    def _fix_surfaceb_door012(
+                self,
+                door_actor: Container,
+                left_shield_name: str, left_shield_actor: Container,
+                right_shield_name: str, right_shield_actor: Container,
+                new_door: DoorType
+            ) -> None:
+        scenario_name = "s110_surfaceb"
+        scenario = self.editor.get_scenario(scenario_name)
+
+        # remove door and shield
+        scenario.raw.actors[15].pop("Door012")
+        self.editor.remove_entity({
+            "scenario": scenario_name, "layer": 9, "actor": "LE_SpazerShield_Door_012"
+        })
+
+        # copy door
+        self.editor.copy_actor(
+            scenario_name, door_actor.position,
+            door_actor, "Door012", 15
+        )
+
+        # if shield exists
+        if left_shield_actor is not None and right_shield_actor is not None:
+            # copy left
+            self.editor.copy_actor(
+                scenario_name, left_shield_actor.position,
+                left_shield_actor, left_shield_name, 9
+            )
+            # copy right
+            self.editor.copy_actor(
+                scenario_name, right_shield_actor.position,
+                right_shield_actor, right_shield_name, 9
+            )
+
+            # add to entity groups
+            entity_groups = [group for group_name, group in scenario.all_actor_groups()
+                if group_name in list(scenario.all_actor_group_names_for_actor("Door012"))]
+            for group in entity_groups:
+                scenario.insert_into_entity_group(group,  left_shield_name)
+                scenario.insert_into_entity_group(group,  right_shield_name)
+
+        # ensure required files
+        for folder in new_door.required_asset_folders:
+            for asset in self.editor.get_asset_names_in_folder(folder):
+                self.editor.ensure_present_in_scenario(scenario_name, asset)
+
     def patch_door(self, editor: PatcherEditor, actor_ref: dict, door_type_str: str) -> None:
         scenario_name = actor_ref["scenario"]
         actor_name = actor_ref["actor"]
@@ -335,6 +382,13 @@ class DoorPatcher:
         self.patch_actor(
             new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
         )
+        if scenario_name == "s000_surface" and actor_name == "Door012":
+            left_shield_actor = scenario.raw.actors[9].get(left_shield_name, None)
+            right_shield_actor = scenario.raw.actors[9].get(right_shield_name, None)
+            self._fix_surfaceb_door012(
+                door_actor, left_shield_name, left_shield_actor, right_shield_name, right_shield_actor, new_door
+            )
+
         self.patch_minimap(editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door)
 
     def patch_minimap(
