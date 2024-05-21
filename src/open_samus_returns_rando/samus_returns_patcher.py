@@ -125,6 +125,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict) ->
     editor.flush_modified_assets()
 
     LOG.info("Saving modified pkgs to %s", out_romfs)
-    editor.save_modifications(out_romfs, OutputFormat.PKG)
+    editor.save_modifications(out_romfs, OutputFormat.ROMFS)
 
     LOG.info("Done")
