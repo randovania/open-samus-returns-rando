@@ -39,7 +39,7 @@ ON_DEAD_CB = Container({
     "unk2": 1,
     "unk3": 0,
     "args": Container({
-        601445949: Container({ # type: ignore
+        "CallbackName": Container({
             "type": "s",
             "value": "RemoveDoors",
         }),
@@ -562,7 +562,7 @@ def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
         # Remove the drops from breaking the shield
         custom_shield.raw["components"].pop("DROP")
         # Remove the particle animation that occurs after the shield breaks (color mismatch)
-        custom_shield.raw["action_sets"][0]["animations"][0]["events0"][1]["args"][729149823]["value"] = 0
+        custom_shield.raw["action_sets"][0]["animations"][0]["events0"][1]["args"]["LinkType"]["value"] = 0
     elif new_shield.base_shield in {"doorshieldsupermissile", "doorshieldpowerbomb"}:
         # Some shaders do not use dissolve fx, so force fx to be used
         custom_shield.raw["components"]["LIFE"]["fields"]["bDisolveByMaterial"]["value"] = False
