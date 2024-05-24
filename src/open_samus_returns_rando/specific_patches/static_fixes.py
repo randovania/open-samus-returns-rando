@@ -282,6 +282,9 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
             bmsbk_cc_obj = next(cc_obj for cc_obj in bmsbk.raw.collision_cameras if cc_name in cc_obj.name)
             bmsbk_cc_obj.entries.append(len(bmsbk.raw.block_groups) - 1)
 
+def patch_area7_item(editor: PatcherEditor) -> None:
+    area7 = editor.get_scenario("s090_area9")
+    area7.add_actor_to_entity_groups("PostOmega_003", "LE_Item_009")
 
 def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_multi_room_gammas(editor)
@@ -293,3 +296,4 @@ def apply_static_fixes(editor: PatcherEditor) -> None:
     nerf_ridley_fight(editor)
     increase_pb_drop_chance(editor)
     fix_wrong_cc_actor_deletions(editor)
+    patch_area7_item(editor)
