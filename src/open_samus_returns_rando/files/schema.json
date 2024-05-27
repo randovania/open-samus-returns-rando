@@ -154,22 +154,24 @@
                     "position": {
                         "$ref": "#/$defs/position"
                     },
-                    "entity_group": {
-                        "type": "string"
+                    "entity_groups": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
                     },
-                    "tile_index": {
-                        "type": "number"
-                    },
-                    "direction": {
-                        "type": "string"
+                    "tile_indices": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        }
                     }
                 },
                 "required": [
                     "door_actor",
                     "position",
-                    "entity_group",
-                    "tile_index",
-                    "direction"
+                    "entity_groups",
+                    "tile_indices"
                 ]
             },
             "default": []
