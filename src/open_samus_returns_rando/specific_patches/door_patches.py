@@ -378,18 +378,16 @@ class DoorPatcher:
         left_shield_name = f"Shield_{index}"
         right_shield_name = f"Shield_{index}_o"
         new_door: DoorType = DoorType.get_type(door_type_str)
-        if door_actor is not None:
-            self.patch_actor(
-                new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
-            )
+        self.patch_actor(
+            new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
+        )
         if scenario_name == "s000_surface" and actor_name == "Door012":
             left_shield_actor = scenario.raw.actors[9].get(left_shield_name, None)
             right_shield_actor = scenario.raw.actors[9].get(right_shield_name, None)
             self._fix_surfaceb_door012(
                 door_actor, left_shield_name, left_shield_actor, right_shield_name, right_shield_actor, new_door
             )
-        if door_actor is not None:
-            self.patch_minimap(editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door)
+        self.patch_minimap(editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door)
 
     def patch_minimap(
             self, editor: PatcherEditor, scenario_name:str, actor_name:str,
