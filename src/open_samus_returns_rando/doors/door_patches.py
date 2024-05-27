@@ -388,8 +388,8 @@ class DoorPatcher:
             self._fix_surfaceb_door012(
                 door_actor, left_shield_name, left_shield_actor, right_shield_name, right_shield_actor, new_door
             )
-
-        self.patch_minimap(editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door)
+        if door_actor is not None:
+            self.patch_minimap(editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door)
 
     def patch_minimap(
             self, editor: PatcherEditor, scenario_name:str, actor_name:str,
