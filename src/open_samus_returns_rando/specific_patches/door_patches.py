@@ -618,18 +618,17 @@ def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
 
 
 def patch_doors(editor: PatcherEditor, door_patches: list[dict], custom_doors: list[dict]) -> None:
+    # Patch static door changes
     _static_door_patches(editor)
+
+    # Add custom door actors
     add_custom_doors(editor, custom_doors)
+
+    # Create new door types
     for new_shield in new_shields:
         add_custom_shields(editor, new_shield)
 
+    # Patch doors to different types
     door_patcher = DoorPatcher(editor)
-
-    # small hack to eliminate duplicates (randovania exports everything duplicated)
-    import json
-
-    set_of_jsons = {json.dumps(d, sort_keys=True) for d in door_patches}
-    door_patches_set = [json.loads(t) for t in set_of_jsons]
-
-    for door in door_patches_set:
+    for door in door_patches:
         door_patcher.patch_door(editor, door["actor"], door["door_type"])
