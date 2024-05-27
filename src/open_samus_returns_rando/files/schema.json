@@ -142,6 +142,38 @@
             },
             "default": {}
         },
+        "custom_doors": {
+            "type": "array",
+            "description": "Array of custom door actors",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "door_actor": {
+                        "$ref": "#/$defs/actor_reference"
+                    },
+                    "position": {
+                        "$ref": "#/$defs/position"
+                    },
+                    "entity_group": {
+                        "type": "string"
+                    },
+                    "tile_index": {
+                        "type": "number"
+                    },
+                    "direction": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "door_actor",
+                    "position",
+                    "entity_group",
+                    "tile_index",
+                    "direction"
+                ]
+            },
+            "default": []
+        },
         "door_patches": {
             "type": "array",
             "description": "Changes the door types",

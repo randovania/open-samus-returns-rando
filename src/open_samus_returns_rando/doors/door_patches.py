@@ -378,10 +378,10 @@ class DoorPatcher:
         left_shield_name = f"Shield_{index}"
         right_shield_name = f"Shield_{index}_o"
         new_door: DoorType = DoorType.get_type(door_type_str)
-
-        self.patch_actor(
-            new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
-        )
+        if door_actor is not None:
+            self.patch_actor(
+                new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
+            )
         if scenario_name == "s000_surface" and actor_name == "Door012":
             left_shield_actor = scenario.raw.actors[9].get(left_shield_name, None)
             right_shield_actor = scenario.raw.actors[9].get(right_shield_name, None)
@@ -428,6 +428,7 @@ class DoorPatcher:
 
         # sometimes it finds right tile first and left second, so flip it because
         # tiles_for_door[0] should always be left and tiles_for_door[1] always be right
+
         if tiles_for_door[0].tile_coordinates[0] > tiles_for_door[1].tile_coordinates[0]:
             tiles_for_door.insert(0, tiles_for_door.pop())
 
@@ -465,6 +466,13 @@ class DoorPatcher:
             left_tile_icon.icon = 'doorclosedleft'
             # breaks minimap updating when shooting it from the left side but fixes itself after scan or reload
             left_tile_icon.actor_name = ''
+
+        # special case for the single tile save station in area 1
+        if scenario_name == "s010_area1" and actor_name in {"RandoDoor_004", "RandoDoor_005", "RandoDoor006"}:
+            # FIXME: can't have both door icons be shown inside, so don't show either door pair
+            left_tile_icon.icon = ""
+            right_tile_icon.icon = ""
+
 
     def patch_actor(
             self, new_door: DoorType, scenario_name: str, actor_name: str, scenario: Bmsld,
@@ -514,65 +522,8 @@ class DoorPatcher:
                 self.editor.ensure_present_in_scenario(scenario_name, asset)
 
 
-class NewShield(typing.NamedTuple):
-    shield_name: str
-    weakness: str
-    base_shield: str
-
-
-new_shields = [
-    NewShield("beamburst", "WEAPON_BOOST", "doorshieldpowerbomb"),
-    NewShield("bomb", "BOMB", "doorshieldsupermissile"),
-    NewShield("grapplebeam", "GRAPPLE_BEAM", "doorshield"),
-    NewShield("icebeam", "ICE_BEAM", "doorcreature"),
-    NewShield("locked", "", "doorspazerbeam"),
-]
-
-
-def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
-    # Missile shields are split across doorshield and doorshieldmissile
-    if new_shield.base_shield == "doorshield":
-        template_bmsad = "actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad"
-    else:
-        template_bmsad = f"actors/props/{new_shield.base_shield}/charclasses/{new_shield.base_shield}.bmsad"
-
-    new_model = f"actors/props/doorshield{new_shield.shield_name}/models/doorshield{new_shield.shield_name}.bcmdl"
-    new_bmsad = f"actors/props/doorshield{new_shield.shield_name}/charclasses/doorshield{new_shield.shield_name}.bmsad"
-
-    # Create a copy of the bmsad
-    template_shield = editor.get_file(template_bmsad, Bmsad)
-    editor.add_new_asset(new_bmsad, template_shield, [])
-
-    # Modify the new bmsad
-    custom_shield = editor.get_file(new_bmsad, Bmsad)
-    custom_shield.name = f"doorshield{new_shield.shield_name}"
-    custom_shield.raw["header"]["model_name"] = new_model
-    custom_shield.components["MODELUPDATER"].functions[0].params["Param1"]["value"] = new_model
-
-    # Update the life component
-    life_component = custom_shield.raw["components"]["LIFE"]["functions"]
-    # Change the weaknesses for each door
-    for damage_source in life_component:
-        if damage_source["name"] == "AddDamageSource":
-            damage_source["params"]["Param1"]["value"] = new_shield.weakness
-    if new_shield.base_shield == "doorcreature":
-        # Set shield health to 1
-        life_component[2]["params"]["Param2"]["value"] = 1.0
-        life_component[3]["params"]["Param2"]["value"] = 1.0
-        # Remove the drops from breaking the shield
-        custom_shield.raw["components"].pop("DROP")
-        # Remove the particle animation that occurs after the shield breaks (color mismatch)
-        custom_shield.raw["action_sets"][0]["animations"][0]["events0"][1]["args"]["LinkType"]["value"] = 0
-    elif new_shield.base_shield in {"doorshieldsupermissile", "doorshieldpowerbomb"}:
-        # Some shaders do not use dissolve fx, so force fx to be used
-        custom_shield.raw["components"]["LIFE"]["fields"]["bDisolveByMaterial"]["value"] = False
-        custom_shield.raw["components"]["LIFE"]["fields"]["fTimeToStartDisolve"]["value"] = 0.2
-
-
 def patch_doors(editor: PatcherEditor, door_patches: list[dict]) -> None:
     _static_door_patches(editor)
-    for new_shield in new_shields:
-        add_custom_shields(editor, new_shield)
     door_patcher = DoorPatcher(editor)
 
     # small hack to eliminate duplicates (randovania exports everything duplicated)
