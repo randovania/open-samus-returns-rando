@@ -428,15 +428,14 @@ class DoorPatcher:
 
         # sometimes it finds right tile first and left second, so flip it because
         # tiles_for_door[0] should always be left and tiles_for_door[1] always be right
-
         if tiles_for_door[0].tile_coordinates[0] > tiles_for_door[1].tile_coordinates[0]:
             tiles_for_door.insert(0, tiles_for_door.pop())
 
         # find the icons of the tile
-        left_tile_icon =  next(
+        left_tile_icon = next(
             (y for y in tiles_for_door[0].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
         )
-        right_tile_icon =  next(
+        right_tile_icon = next(
             (y for y in tiles_for_door[1].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
         )
 
