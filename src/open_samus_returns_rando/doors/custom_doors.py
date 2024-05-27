@@ -101,7 +101,7 @@ def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
         custom_shield.raw["components"]["LIFE"]["fields"]["fTimeToStartDisolve"]["value"] = 0.2
 
 
-def patch_custom_doors(editor: PatcherEditor, custom_doors: list[dict]):
+def patch_custom_doors(editor: PatcherEditor, custom_doors: list[dict]) -> None:
     add_custom_doors(editor, custom_doors)
     for new_shield in new_shields:
         add_custom_shields(editor, new_shield)
