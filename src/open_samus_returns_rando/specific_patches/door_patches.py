@@ -5,7 +5,7 @@ from enum import Enum
 
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad, Bmsld, Bmsmsd, Lua
-from mercury_engine_data_structures.formats.bmsmsd import IconPriority
+from mercury_engine_data_structures.formats.bmsmsd import IconPriority, TileBorders
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -378,7 +378,6 @@ class DoorPatcher:
         left_shield_name = f"Shield_{index}"
         right_shield_name = f"Shield_{index}_o"
         new_door: DoorType = DoorType.get_type(door_type_str)
-
         self.patch_actor(
             new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
         )
@@ -388,7 +387,6 @@ class DoorPatcher:
             self._fix_surfaceb_door012(
                 door_actor, left_shield_name, left_shield_actor, right_shield_name, right_shield_actor, new_door
             )
-
         self.patch_minimap(editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door)
 
     def patch_minimap(
@@ -432,10 +430,10 @@ class DoorPatcher:
             tiles_for_door.insert(0, tiles_for_door.pop())
 
         # find the icons of the tile
-        left_tile_icon =  next(
+        left_tile_icon = next(
             (y for y in tiles_for_door[0].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
         )
-        right_tile_icon =  next(
+        right_tile_icon = next(
             (y for y in tiles_for_door[1].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
         )
 
@@ -465,6 +463,13 @@ class DoorPatcher:
             left_tile_icon.icon = 'doorclosedleft'
             # breaks minimap updating when shooting it from the left side but fixes itself after scan or reload
             left_tile_icon.actor_name = ''
+
+        # special case for the single tile save station in area 1
+        if scenario_name == "s010_area1" and actor_name in {"RandoDoor_004", "RandoDoor_005"}:
+            # FIXME: can't have both door icons be shown inside, so don't show either door pair
+            left_tile_icon.icon = ""
+            right_tile_icon.icon = ""
+
 
     def patch_actor(
             self, new_door: DoorType, scenario_name: str, actor_name: str, scenario: Bmsld,
@@ -512,6 +517,49 @@ class DoorPatcher:
         for folder in new_door.required_asset_folders:
             for asset in self.editor.get_asset_names_in_folder(folder):
                 self.editor.ensure_present_in_scenario(scenario_name, asset)
+
+
+def add_custom_doors(editor: PatcherEditor, custom_doors: list[dict]) -> None:
+    template_door = editor.get_scenario("s000_surface").raw.actors[15]["Door001"]
+
+    for door in custom_doors:
+        scenario_name = door["door_actor"]["scenario"]
+        scenario_file = editor.get_scenario(scenario_name)
+        scenario_map = editor.get_file(f"gui/minimaps/c10_samus/{scenario_name}.bmsmsd", Bmsmsd)
+
+        door_name = door["door_actor"]["actor"]
+        door_position = [door["position"]["x"], door["position"]["y"], door["position"]["z"]]
+
+        editor.copy_actor(scenario_name, door_position, template_door, door_name, 15)
+
+        direction = ["left", "right"]
+        border = [TileBorders.RIGHT, TileBorders.LEFT]
+
+        for i in range(2):
+            actor_name = door_name + direction[i]
+            icon = "doorpower" + direction[i]
+
+            DOOR_ICON = Container({
+                "actor_name": actor_name,
+                "clear_condition": "",
+                "icon": icon,
+                "icon_priority": IconPriority.DOOR,
+                "coordinates": ListContainer(door_position),
+            })
+
+            tile_idx = scenario_map.raw["tiles"][door["tile_indices"][i]]
+            # Add the tile border to the tile_borders dict so the doors tiles can properly update
+            tile_idx["tile_borders"][border[i]] = True
+
+            # Add the tile icon
+            if tile_idx["icons"] is None:
+                tile_idx["icons"] = ListContainer([DOOR_ICON])
+            elif len(tile_idx["icons"]) < 2:
+                # The game crashes if there are more than two icons listed per tile, so exclude the second door
+                tile_idx["icons"].append(DOOR_ICON)
+
+        for group in door["entity_groups"]:
+            scenario_file.add_actor_to_entity_groups(group, door_name, True)
 
 
 class NewShield(typing.NamedTuple):
@@ -569,17 +617,18 @@ def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
         custom_shield.raw["components"]["LIFE"]["fields"]["fTimeToStartDisolve"]["value"] = 0.2
 
 
-def patch_doors(editor: PatcherEditor, door_patches: list[dict]) -> None:
+def patch_doors(editor: PatcherEditor, door_patches: list[dict], custom_doors: list[dict]) -> None:
+    # Patch static door changes
     _static_door_patches(editor)
+
+    # Add custom door actors
+    add_custom_doors(editor, custom_doors)
+
+    # Create new door types
     for new_shield in new_shields:
         add_custom_shields(editor, new_shield)
+
+    # Patch doors to different types
     door_patcher = DoorPatcher(editor)
-
-    # small hack to eliminate duplicates (randovania exports everything duplicated)
-    import json
-
-    set_of_jsons = {json.dumps(d, sort_keys=True) for d in door_patches}
-    door_patches_set = [json.loads(t) for t in set_of_jsons]
-
-    for door in door_patches_set:
+    for door in door_patches:
         door_patcher.patch_door(editor, door["actor"], door["door_type"])

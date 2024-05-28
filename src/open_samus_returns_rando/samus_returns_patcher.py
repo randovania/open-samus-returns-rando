@@ -83,7 +83,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict) ->
     patch_heat_rooms(editor)
 
     # Patch door types and make shields on both sides
-    patch_doors(editor, configuration["door_patches"])
+    patch_doors(editor, configuration["door_patches"], configuration["custom_doors"])
 
     # Patch tunables
     tunable_patches.patch_tunables(editor, configuration.get("reserves_per_tank", {}))
