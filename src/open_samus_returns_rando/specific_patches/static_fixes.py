@@ -2,7 +2,7 @@ import copy
 import typing
 
 from construct import Container, ListContainer
-from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmtun
+from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmscc, Bmtun
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 MULTI_ROOM_GAMMAS = [
@@ -286,6 +286,16 @@ def patch_area7_item(editor: PatcherEditor) -> None:
     area7 = editor.get_scenario("s090_area9")
     area7.add_actor_to_entity_groups("PostOmega_003", "LE_Item_009")
 
+
+def patch_a4_collision(editor: PatcherEditor) -> None:
+    # Extends the collision leading into cc1 from cc11 to allow for the upper path to be included in DLR
+    area4 = editor.get_file("maps/levels/c10_samus/s050_area5/s050_area5.bmscd", Bmscc)
+    points = area4.raw["layers"][0]["entries"][0]["data"]["polys"][0]["points"]
+    points[326]["x"] = 800.0
+    points[326]["y"] = -1900.0
+    points[327]["x"] = 800.0
+
+
 def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
@@ -297,3 +307,4 @@ def apply_static_fixes(editor: PatcherEditor) -> None:
     increase_pb_drop_chance(editor)
     fix_wrong_cc_actor_deletions(editor)
     patch_area7_item(editor)
+    patch_a4_collision(editor)
