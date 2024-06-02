@@ -292,6 +292,12 @@ class LuaEditor:
             []
         )
 
+        editor.add_new_asset(
+            "system/scripts/queue.lc",
+            Lua(Container(lua_text=files_path().joinpath("custom", "queue.lua").read_text()), editor.target_game),
+            []
+        )
+
         cosmetics_script = cosmetic_patches.lua_cosmetics(configuration["cosmetic_patches"])
         editor.add_new_asset(
             "system/scripts/cosmetics.lc",
