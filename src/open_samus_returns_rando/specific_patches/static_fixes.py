@@ -288,12 +288,9 @@ def patch_area7_item(editor: PatcherEditor) -> None:
 
 
 def patch_a4_collision(editor: PatcherEditor) -> None:
-    # Extends the collision leading into cc1 from cc11 to allow for the upper path to be included in DLR
+    # Extends the collision cc11 -> cc1 to allow for the upper path to be included in DLR
     area4 = editor.get_file("maps/levels/c10_samus/s050_area5/s050_area5.bmscd", Bmscc)
-    points = area4.raw["layers"][0]["entries"][0]["data"]["polys"][0]["points"]
-    points[326]["x"] = 800.0
-    points[326]["y"] = -1900.0
-    points[327]["x"] = 800.0
+    area4.raw["layers"][0]["entries"][0]["data"]["polys"][0]["points"][327]["x"] = 750.0
 
 
 def apply_static_fixes(editor: PatcherEditor) -> None:
