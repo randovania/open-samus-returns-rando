@@ -119,11 +119,6 @@ class ActorPickup(BasePickup):
         # Update model
         self.patch_model(model_names, new_template)
 
-        # Update caption
-        pickable = new_template["components"]["PICKABLE"]
-        # this actually wants an #GUI identifier but it works
-        pickable["functions"][0]["params"]["Param7"]["value"] = self.pickup["caption"]
-
         # Update given item
         new_template, script_class = self.patch_item_pickup(new_template)
 
