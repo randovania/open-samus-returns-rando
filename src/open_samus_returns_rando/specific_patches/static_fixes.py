@@ -282,18 +282,18 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
             bmsbk_cc_obj = next(cc_obj for cc_obj in bmsbk.raw.collision_cameras if cc_name in cc_obj.name)
             bmsbk_cc_obj.entries.append(len(bmsbk.raw.block_groups) - 1)
 
-            
+
 def patch_area7_item(editor: PatcherEditor) -> None:
     area7 = editor.get_scenario("s090_area9")
     area7.add_actor_to_entity_groups("PostOmega_003", "LE_Item_009")
 
-    
+
 def patch_a4_collision(editor: PatcherEditor) -> None:
     # Extends the collision cc11 -> cc1 to allow for the upper path to be included in DLR
     area4 = editor.get_file("maps/levels/c10_samus/s050_area5/s050_area5.bmscd", Bmscc)
     area4.raw["layers"][0]["entries"][0]["data"]["polys"][0]["points"][327]["x"] = 750.0
 
-    
+
 def patch_a1_teleporter_crumbles(editor: PatcherEditor) -> None:
     # Prevents a possible softlock in DLR if a door is added to the teleporter room
     area1 = editor.get_file("maps/levels/c10_samus/s010_area1/s010_area1.bmsbk", Bmsbk)
