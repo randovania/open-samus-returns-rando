@@ -286,6 +286,13 @@ def patch_area7_item(editor: PatcherEditor) -> None:
     area7 = editor.get_scenario("s090_area9")
     area7.add_actor_to_entity_groups("PostOmega_003", "LE_Item_009")
 
+
+def patch_a1_teleporter_crumbles(editor: PatcherEditor) -> None:
+    # Prevents a possible softlock in DLR if a door is added to the teleporter room
+    area1 = editor.get_file("maps/levels/c10_samus/s010_area1/s010_area1.bmsbk", Bmsbk)
+    area1.raw["block_groups"][15]["types"][0]["blocks"][0]["respawn_time"] = 0.0
+
+
 def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
@@ -297,3 +304,4 @@ def apply_static_fixes(editor: PatcherEditor) -> None:
     increase_pb_drop_chance(editor)
     fix_wrong_cc_actor_deletions(editor)
     patch_area7_item(editor)
+    patch_a1_teleporter_crumbles(editor)
