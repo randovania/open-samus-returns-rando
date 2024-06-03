@@ -27,6 +27,10 @@ function Scenario._UpdateProgressiveItemModels()
         if not has_item or #progressive_models == index then
           local pickup = Game.GetEntity(name)
           pickup.MODELUPDATER.sModelAlias = model.alias
+          -- Rotate Wave Beam and High Jump Boots to face right
+          if index == 1 then
+            pickup.vAng = V3D(0, 1.5, 0)
+          end
           break
         end
       end
