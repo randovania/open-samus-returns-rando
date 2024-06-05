@@ -142,7 +142,6 @@ function GUILib.AddMessageBox()
   })
   local firstLine =  GUI.CreateDisplayObjectEx("firstLine",  "CText", {
       X = "-0.038",
-      Y = "0.015",
       Font = "digital_medium",
       TextAlignment = "Centered",
       Visible = true,
@@ -183,9 +182,15 @@ end
 function GUILib.ShowMessage(text)
   local splitted = GUILib.split(text, "\n")
   if #splitted == 2 then
+    GUI.SetProperties(GUILib.firstLine, {
+      Y = "0.015",
+    })
     GUI.SetTextText(GUILib.firstLine, splitted[1])
     GUI.SetTextText(GUILib.secondLine, splitted[2])
   else
+    GUI.SetProperties(GUILib.firstLine, {
+      Y = "0.045",
+    })
     GUI.SetTextText(GUILib.firstLine, text)
     GUI.SetTextText(GUILib.secondLine, "")
   end
