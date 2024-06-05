@@ -79,15 +79,13 @@ end
 function GUILib.AddMessageBox() 
   local randoUI = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.USSEF.Outer")
   if randoUI ~= nil then
-    return
+    GUI.DestroyDisplayObject(randoUI)
   end
   local ussef =  GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.USSEF")
   local outer =  GUI.CreateDisplayObjectEx("Outer", "CDisplayObjectContainer", {
       StageID = "Up",
-      X = "0.0",
-      Y = "0.822",
-      ScaleX="2.16",
-      ScaleY="2.0",
+      X = "0.038",
+      Y = "0.829",
       Visible = false
   })
   local topL =  GUI.CreateDisplayObjectEx("TopL",  "CSprite", {
@@ -97,59 +95,72 @@ function GUILib.AddMessageBox()
     SpriteSheetItem = "TutorialWindowTop"
   })
   local topR =  GUI.CreateDisplayObjectEx("TopR",  "CSprite", {
-    X = "0.0",
+    X = "0.462",
     Y = "0.0",
     FlipX = true,
     Visible = true,
     SpriteSheetItem = "TutorialWindowTop"
   })
-  local midL =  GUI.CreateDisplayObjectEx("MidL",  "CSprite", {
+  local hiMidL =  GUI.CreateDisplayObjectEx("hiMidL",  "CSprite", {
     X = "0.0",
-    Y = "0.023",
+    Y = "0.024",
     Visible = true,
     SpriteSheetItem = "TutorialWindowMid"
   })
-  local midR =  GUI.CreateDisplayObjectEx("MidR",  "CSprite", {
+  local hiMidR =  GUI.CreateDisplayObjectEx("hiMidR",  "CSprite", {
+    X = "0.462",
+    Y = "0.024",
+    FlipX = true,
+    Visible = true,
+    SpriteSheetItem = "TutorialWindowMid"
+  })
+  local loMidL =  GUI.CreateDisplayObjectEx("loMidL",  "CSprite", {
     X = "0.0",
-    Y = "0.023",
+    Y = "0.083",
+    Visible = true,
+    SpriteSheetItem = "TutorialWindowMid"
+  })
+  local loMidR =  GUI.CreateDisplayObjectEx("loMidR",  "CSprite", {
+    X = "0.462",
+    Y = "0.083",
     FlipX = true,
     Visible = true,
     SpriteSheetItem = "TutorialWindowMid"
   })
   local bottomL =  GUI.CreateDisplayObjectEx("BotL",  "CSprite", {
     X = "0.0",
-    Y = "0.080",
+    Y = "0.141",
     Visible = true,
     SpriteSheetItem = "TutorialWindowBot"
   })
   local bottomR =  GUI.CreateDisplayObjectEx("BotR",  "CSprite", {
-    X = "0.0",
-    Y = "0.080",
+    X = "0.462",
+    Y = "0.142",
     FlipX = true,
     Visible = true,
     SpriteSheetItem = "TutorialWindowBot"
   })
   local firstLine =  GUI.CreateDisplayObjectEx("firstLine",  "CText", {
-      X = "-0.6",
-      Y = "0.03",
+      X = "-0.038",
+      Y = "0.015",
       Font = "digital_medium",
       TextAlignment = "Centered",
-      Text="Bla bla bla bla",
       Visible = true,
   })
   local secondLine =  GUI.CreateDisplayObjectEx("secondLine",  "CText", {
-      X = "-0.6",
-      Y = "0.105",
+      X = "-0.038",
+      Y = "0.080",
       Font = "digital_medium",
       TextAlignment = "Centered",
-      Text="Bla bla bla bla 2",
       Visible = true
   })
   ussef:AddChild(outer)
   outer:AddChild(topL)
   outer:AddChild(topR)
-  outer:AddChild(midL)
-  outer:AddChild(midR)
+  outer:AddChild(hiMidL)
+  outer:AddChild(hiMidR)
+  outer:AddChild(loMidL)
+  outer:AddChild(loMidR)
   outer:AddChild(bottomL)
   outer:AddChild(bottomR)
   outer:AddChild(firstLine)

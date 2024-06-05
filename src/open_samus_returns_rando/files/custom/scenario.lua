@@ -90,14 +90,14 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
     end
   
     Scenario.UpdateProgressiveItemModels()
-    
+
+    if Scenario.showNextSFID ~= nil then
+      Game.DelSFByID(Scenario.showNextSFID)
+    end
     if Scenario.hideSFID ~= nil then
       Game.DelSFByID(Scenario.hideSFID)
       -- hide old popup
       Scenario.HideAsyncPopup()
-    end
-    if Scenario.showNextSFID ~= nil then
-      Game.DelSFByID(Scenario.showNextSFID)
     end
 
     -- Only required for ils test code
