@@ -1,5 +1,6 @@
 Game.ImportLibrary("system/scripts/scenario_original.lua")
 Game.ImportLibrary("system/scripts/guilib.lua", false)
+Game.ImportLibrary("system/scripts/queue.lua", false)
 Game.ImportLibrary("system/scripts/cosmetics.lua", false)
 
 Game.DoFile("system/scripts/room_names.lua")
@@ -55,7 +56,7 @@ end
 
 function Scenario.InitGUI()
   Cosmetics.UpdateGUI()
-  GUILib.AddDNACounter()
+  GUILib.InitCustomUI()
   GUILib.UpdateTotalDNAColor()
   Scenario.UpdateDNACounter()
 
@@ -93,7 +94,16 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
     end
   
     Scenario.UpdateProgressiveItemModels()
-    
+
+    if Scenario.showNextSFID ~= nil then
+      Game.DelSFByID(Scenario.showNextSFID)
+    end
+    if Scenario.hideSFID ~= nil then
+      Game.DelSFByID(Scenario.hideSFID)
+      -- hide old popup
+      Scenario.HideAsyncPopup()
+    end
+
     -- Only required for ils test code
     -- if Scenario.CurrentScenarioID == "s000_surface" then
     -- local next_number = (NextScenario % 17) + 1
@@ -153,4 +163,47 @@ function Scenario.RandoOnElevatorUse(from_actor, _ARG_1_, _ARG_2_)
   local destination = ElevatorDestinations[Scenario.CurrentScenarioID][from_actor.sName]
   Game.AddGUISF(0.5, GUI.ElevatorStartUseActionStep2InterArea, "")
   Elevator.Use("c10_samus", destination.scenario, destination.actor, _ARG_2_)
+end
+
+Scenario.QueuedPopups = Scenario.QueuedPopups or Queue()
+
+function Scenario.ShowIfNotActive()
+  
+  if Scenario.hideSFID == nil and Scenario.showNextSFID == nil then
+    Scenario.ShowNextAsyncPopup()
+  end
+end
+
+function Scenario.QueueAsyncPopup(text, time)
+  Scenario.QueuedPopups:push({Text = text, Time = time or 5.0})
+  Scenario.ShowIfNotActive()
+end
+
+function Scenario.ShowNextAsyncPopup()
+  if Scenario.QueuedPopups:empty() then
+      Scenario.showNextSFID = nil
+      return
+  end
+  local popup = Scenario.QueuedPopups:peek()
+  Scenario.ShowAsyncPopup(popup.Text, popup.Time)
+end
+
+function Scenario.ShowAsyncPopup(text, time)
+  GUILib.ShowMessage(text)
+  Scenario.hideSFID = Game.AddGUISF(time, "Scenario.HideAsyncPopup", "")
+  Scenario.showNextSFID = nil
+end
+
+function Scenario.HideAsyncPopup()
+  if not Scenario.QueuedPopups:empty() then
+      Scenario.QueuedPopups:pop()
+  end
+  GUILib.HideMessage()
+  Scenario.showNextSFID = Game.AddGUISF(0.5, "Scenario.ShowNextAsyncPopup", "")
+  Scenario.hideSFID = nil
+end
+
+function Scenario.ShowMessage(text)
+  GUILib.ShowMessage(text)
+  Game.AddSF(5.0, "GUILib.HideMessage", "")
 end
