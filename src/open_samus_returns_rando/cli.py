@@ -11,6 +11,8 @@ def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input-path", required=True, type=Path,
                         help="Path to where the extracted Metroid: Samus Returns romfs to randomize can be found.")
+    parser.add_argument("--input-exheader", required=False, type=Path,
+                        help="Path to where the decrypted exheader can be found.")
     parser.add_argument("--output-path", required=True, type=Path,
                         help="Path to where the modified files will be written to.")
     parser.add_argument("--input-json", type=Path,
@@ -60,6 +62,7 @@ def main() -> None:
 
     samus_returns_patcher.patch_extracted(
         args.input_path,
+        args.input_exheader,
         args.output_path,
         configuration,
     )
