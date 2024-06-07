@@ -201,6 +201,7 @@
                             "grapple_beam",
                             "bomb",
                             "beam_burst",
+                            "lightning_armor",
                             "locked"
                         ]
                     }

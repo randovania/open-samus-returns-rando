@@ -135,3 +135,30 @@ GUI.AddSpriteSheetItem("doorlockedcenter", "gui/textures/texturehud.bctex", {
     VPixelScale = "8",
     AngleOffset = "0"
 })
+GUI.AddSpriteSheetItem("doorlightningarmorleft", "gui/textures/texturehud.bctex", {
+    TextureWidth = "512",
+    TextureHeight = "256",
+    UPixelOffset = "160",
+    VPixelOffset = "40",
+    UPixelScale = "4",
+    VPixelScale = "8",
+    AngleOffset = "0"
+})
+GUI.AddSpriteSheetItem("doorlightningarmorright", "gui/textures/texturehud.bctex", {
+    TextureWidth = "512",
+    TextureHeight = "256",
+    UPixelOffset = "164",
+    VPixelOffset = "40",
+    UPixelScale = "4",
+    VPixelScale = "8",
+    AngleOffset = "0"
+})
+GUI.AddSpriteSheetItem("doorlightningarmorcenter", "gui/textures/texturehud.bctex", {
+    TextureWidth = "512",
+    TextureHeight = "256",
+    UPixelOffset = "160",
+    VPixelOffset = "40",
+    UPixelScale = "8",
+    VPixelScale = "8",
+    AngleOffset = "0"
+})

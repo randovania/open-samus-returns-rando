@@ -216,6 +216,7 @@ class ActorData(Enum):
     SHIELD_GRAPPLE_BEAM = (["doorshieldgrapplebeam"])
     SHIELD_BEAM_BURST = (["doorshieldbeamburst"])
     SHIELD_BOMB = (["doorshieldbomb"])
+    SHIELD_LIGHTNING_ARMOR = (["doorshieldlightningarmor"])
     SHIELD_LOCKED = (["doorshieldlocked"])
 
 class DoorType(Enum):
@@ -267,6 +268,11 @@ class DoorType(Enum):
     BEAM_BURST = ("beam_burst", ActorData.DOOR_POWER, "doorbeamburst", True, ActorData.SHIELD_BEAM_BURST, [
         "actors/props/doorshield", "actors/props/doorshieldpowerbomb", "actors/props/doorshieldbeamburst",
         "sounds/props/doorchargecharge/powerbombdoor_hum.bcwav"
+    ])
+    LIGHTNING_ARMOR = (
+        "lightning_armor", ActorData.DOOR_POWER, "doorlightningarmor", True, ActorData.SHIELD_LIGHTNING_ARMOR, [
+        "actors/props/doorshield", "actors/props/doorshieldlightningarmor",
+        "sounds/props/doorchargecharge/missiledoor_hum.bcwav"
     ])
     LOCKED = ("locked", ActorData.DOOR_POWER, "doorlocked", True, ActorData.SHIELD_LOCKED, [
         "actors/props/doorshield", "actors/props/doorshieldlocked", "actors/props/doorspazerbeam",
@@ -574,6 +580,7 @@ new_shields = [
     NewShield("grapplebeam", "GRAPPLE_BEAM", "doorshield"),
     NewShield("icebeam", "ICE_BEAM", "doorcreature"),
     NewShield("locked", "", "doorspazerbeam"),
+    NewShield("lightningarmor", "ELECTRIC_MELEE", "doorshield"),
 ]
 
 
