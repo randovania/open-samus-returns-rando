@@ -2,7 +2,6 @@ Game.ImportLibrary("system/scripts/scenario_original.lua")
 Game.ImportLibrary("system/scripts/guilib.lua", false)
 Game.ImportLibrary("system/scripts/queue.lua", false)
 Game.ImportLibrary("system/scripts/cosmetics.lua", false)
-Game.ImportLibrary("system/scripts/message_gui.lua", false)
 
 Game.DoFile("system/scripts/room_names.lua")
 Game.DoFile("system/scripts/elevators.lua")
@@ -69,7 +68,6 @@ function Scenario.InitGUI()
 
     -- INVALID_UUID = no multiworld => no need to schedule the check
   if Init.sLayoutUUID ~= Scenario.INVALID_UUID then
-    MessageGUI.Init()
     if Scenario.checkConnectionSFID ~= nil then
       Game.DelSFByID(Scenario.checkConnectionSFID)
     end
@@ -162,7 +160,7 @@ function Scenario.LoadNewScenario(target_scenario, target_spawnpoint)
 end
 
 function Scenario.CheckConnectionState()
-  MessageGUI.UpdateConnected(not RL.Connected())
+  GUILib.UpdateConnected(not RL.Connected())
   Scenario.checkConnectionSFID = Game.AddGUISF(2, "Scenario.CheckConnectionState", "")
 end
 
