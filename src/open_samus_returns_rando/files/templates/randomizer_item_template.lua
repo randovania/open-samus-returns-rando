@@ -6,7 +6,7 @@ function T__name__T.OnPickedUp(actorOrName)
     local resources = TEMPLATE("resources")
     -- (priority, sound file, unknown, unknown, times to replay sound, fade-out time, fade-in time, unknown)
     Game.PlayMusicStream(1, TEMPLATE("sound"), -1, -1, 0, 0, 0, 0)
-    GUI.LaunchMessage(TEMPLATE("caption"), "RandomizerPowerup.Dummy", "")
+    Scenario.QueueAsyncPopup(TEMPLATE("caption"))
     TEMPLATE("parent").OnPickedUp(resources, actorOrName)
     hud.UpdatePlayerInfo(true)
 end

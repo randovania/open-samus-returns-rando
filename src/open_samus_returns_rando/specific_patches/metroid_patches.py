@@ -27,9 +27,9 @@ def _patch_metroids(editor: PatcherEditor) -> None:
             death_callbacks = [
                 item
                 for events in events0
-                for magic_number, item in events["args"].items()
-                # arguments with this number  defines the function to call
-                if magic_number == 601445949
+                for parameter_name, item in events["args"].items()
+                # check if this event defines a CallbackName
+                if parameter_name == "CallbackName"
             ]
             for death_callback in death_callbacks:
                 death_callback["value"] = "RemoveMetroid"

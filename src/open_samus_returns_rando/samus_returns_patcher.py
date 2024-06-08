@@ -98,7 +98,7 @@ def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, c
     patch_heat_rooms(editor)
 
     # Patch door types and make shields on both sides
-    patch_doors(editor, configuration["door_patches"])
+    patch_doors(editor, configuration["door_patches"], configuration["custom_doors"])
 
     # Patch tunables
     tunable_patches.patch_tunables(editor, configuration.get("reserves_per_tank", {}))
@@ -151,6 +151,6 @@ def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, c
     editor.flush_modified_assets()
 
     LOG.info("Saving modified pkgs to %s", out_romfs)
-    editor.save_modifications(out_romfs, OutputFormat.PKG)
+    editor.save_modifications(out_romfs, OutputFormat.ROMFS)
 
     LOG.info("Done")

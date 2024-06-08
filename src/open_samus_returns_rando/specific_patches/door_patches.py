@@ -5,7 +5,7 @@ from enum import Enum
 
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad, Bmsld, Bmsmsd, Lua
-from mercury_engine_data_structures.formats.bmsmsd import IconPriority
+from mercury_engine_data_structures.formats.bmsmsd import IconPriority, TileBorders
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -39,7 +39,7 @@ ON_DEAD_CB = Container({
     "unk2": 1,
     "unk3": 0,
     "args": Container({
-        601445949: Container({ # type: ignore
+        "CallbackName": Container({
             "type": "s",
             "value": "RemoveDoors",
         }),
@@ -213,6 +213,11 @@ class ActorData(Enum):
     SHIELD_SUPER_MISSILE = (["doorshieldsupermissile"])
     SHIELD_POWER_BOMB = (["doorshieldpowerbomb"])
     SHIELD_ICE_BEAM = (["doorshieldicebeam"])
+    SHIELD_GRAPPLE_BEAM = (["doorshieldgrapplebeam"])
+    SHIELD_BEAM_BURST = (["doorshieldbeamburst"])
+    SHIELD_BOMB = (["doorshieldbomb"])
+    SHIELD_LIGHTNING_ARMOR = (["doorshieldlightningarmor"])
+    SHIELD_LOCKED = (["doorshieldlocked"])
 
 class DoorType(Enum):
     """
@@ -249,7 +254,29 @@ class DoorType(Enum):
         "sounds/props/doorchargecharge/powerbombdoor_hum.bcwav"
     ])
     ICE_BEAM = ("ice_beam", ActorData.DOOR_POWER, "doorice", True, ActorData.SHIELD_ICE_BEAM, [
-        "actors/props/doorshield", "actors/props/doorshieldicebeam"
+        "actors/props/doorshield", "actors/props/doorcreature", "actors/props/doorshieldicebeam",
+        "sounds/props/creaturedoor", "system/fx/textures/blood_gray.bctex",
+    ], 180.0)
+    GRAPPLE_BEAM = ("grapple_beam", ActorData.DOOR_POWER, "doorgrapple", True, ActorData.SHIELD_GRAPPLE_BEAM, [
+        "actors/props/doorshield", "actors/props/doorshieldgrapplebeam",
+        "sounds/props/doorchargecharge/missiledoor_hum.bcwav"
+    ])
+    BOMB = ("bomb", ActorData.DOOR_POWER, "doorbomb", True, ActorData.SHIELD_BOMB, [
+        "actors/props/doorshield", "actors/props/doorshieldsupermissile", "actors/props/doorshieldbomb",
+        "sounds/props/doorchargecharge/smissiledoor_hum.bcwav"
+    ])
+    BEAM_BURST = ("beam_burst", ActorData.DOOR_POWER, "doorbeamburst", True, ActorData.SHIELD_BEAM_BURST, [
+        "actors/props/doorshield", "actors/props/doorshieldpowerbomb", "actors/props/doorshieldbeamburst",
+        "sounds/props/doorchargecharge/powerbombdoor_hum.bcwav"
+    ])
+    LIGHTNING_ARMOR = (
+        "lightning_armor", ActorData.DOOR_POWER, "doorlightningarmor", True, ActorData.SHIELD_LIGHTNING_ARMOR, [
+        "actors/props/doorshield", "actors/props/doorshieldlightningarmor",
+        "sounds/props/doorchargecharge/missiledoor_hum.bcwav"
+    ])
+    LOCKED = ("locked", ActorData.DOOR_POWER, "doorlocked", True, ActorData.SHIELD_LOCKED, [
+        "actors/props/doorshield", "actors/props/doorshieldlocked", "actors/props/doorspazerbeam",
+        "sounds/props/spazerdoor"
     ])
 
     def __init__(self, rdv_door_type: str, door_data: ActorData, minimap_name: str,
@@ -301,6 +328,53 @@ class DoorPatcher:
         new_actor["type"] = new_type
         return new_actor
 
+    def _fix_surfaceb_door012(
+                self,
+                door_actor: Container,
+                left_shield_name: str, left_shield_actor: Container,
+                right_shield_name: str, right_shield_actor: Container,
+                new_door: DoorType
+            ) -> None:
+        scenario_name = "s110_surfaceb"
+        scenario = self.editor.get_scenario(scenario_name)
+
+        # remove door and shield
+        scenario.raw.actors[15].pop("Door012")
+        self.editor.remove_entity({
+            "scenario": scenario_name, "layer": 9, "actor": "LE_SpazerShield_Door_012"
+        })
+
+        # copy door
+        self.editor.copy_actor(
+            scenario_name, door_actor.position,
+            door_actor, "Door012", 15
+        )
+
+        # if shield exists
+        if left_shield_actor is not None and right_shield_actor is not None:
+            # copy left
+            self.editor.copy_actor(
+                scenario_name, left_shield_actor.position,
+                left_shield_actor, left_shield_name, 9
+            )
+            # copy right
+            self.editor.copy_actor(
+                scenario_name, right_shield_actor.position,
+                right_shield_actor, right_shield_name, 9
+            )
+
+            # add to entity groups
+            entity_groups = [group for group_name, group in scenario.all_actor_groups()
+                if group_name in list(scenario.all_actor_group_names_for_actor("Door012"))]
+            for group in entity_groups:
+                scenario.insert_into_entity_group(group,  left_shield_name)
+                scenario.insert_into_entity_group(group,  right_shield_name)
+
+        # ensure required files
+        for folder in new_door.required_asset_folders:
+            for asset in self.editor.get_asset_names_in_folder(folder):
+                self.editor.ensure_present_in_scenario(scenario_name, asset)
+
     def patch_door(self, editor: PatcherEditor, actor_ref: dict, door_type_str: str) -> None:
         scenario_name = actor_ref["scenario"]
         actor_name = actor_ref["actor"]
@@ -310,10 +384,15 @@ class DoorPatcher:
         left_shield_name = f"Shield_{index}"
         right_shield_name = f"Shield_{index}_o"
         new_door: DoorType = DoorType.get_type(door_type_str)
-
         self.patch_actor(
             new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
         )
+        if scenario_name == "s000_surface" and actor_name == "Door012":
+            left_shield_actor = scenario.raw.actors[9].get(left_shield_name, None)
+            right_shield_actor = scenario.raw.actors[9].get(right_shield_name, None)
+            self._fix_surfaceb_door012(
+                door_actor, left_shield_name, left_shield_actor, right_shield_name, right_shield_actor, new_door
+            )
         self.patch_minimap(editor, scenario_name, actor_name, left_shield_name, right_shield_name, new_door)
 
     def patch_minimap(
@@ -357,10 +436,10 @@ class DoorPatcher:
             tiles_for_door.insert(0, tiles_for_door.pop())
 
         # find the icons of the tile
-        left_tile_icon =  next(
+        left_tile_icon = next(
             (y for y in tiles_for_door[0].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
         )
-        right_tile_icon =  next(
+        right_tile_icon = next(
             (y for y in tiles_for_door[1].icons if "Door" in y.actor_name or "Shield" in y.actor_name), None
         )
 
@@ -388,6 +467,15 @@ class DoorPatcher:
         # bad special case to force DoorManicMinerBot to doorclosed...
         if actor_name == "DoorManicMinerBot":
             left_tile_icon.icon = 'doorclosedleft'
+            # breaks minimap updating when shooting it from the left side but fixes itself after scan or reload
+            left_tile_icon.actor_name = ''
+
+        # special case for the single tile save station in area 1
+        if scenario_name == "s010_area1" and actor_name in {"RandoDoor_004", "RandoDoor_005"}:
+            # FIXME: can't have both door icons be shown inside, so don't show either door pair
+            left_tile_icon.icon = ""
+            right_tile_icon.icon = ""
+
 
     def patch_actor(
             self, new_door: DoorType, scenario_name: str, actor_name: str, scenario: Bmsld,
@@ -437,23 +525,77 @@ class DoorPatcher:
                 self.editor.ensure_present_in_scenario(scenario_name, asset)
 
 
+def add_custom_doors(editor: PatcherEditor, custom_doors: list[dict]) -> None:
+    template_door = editor.get_scenario("s000_surface").raw.actors[15]["Door001"]
+
+    for door in custom_doors:
+        scenario_name = door["door_actor"]["scenario"]
+        scenario_file = editor.get_scenario(scenario_name)
+        scenario_map = editor.get_file(f"gui/minimaps/c10_samus/{scenario_name}.bmsmsd", Bmsmsd)
+
+        door_name = door["door_actor"]["actor"]
+        door_position = [door["position"]["x"], door["position"]["y"], door["position"]["z"]]
+
+        editor.copy_actor(scenario_name, door_position, template_door, door_name, 15)
+
+        direction = ["left", "right"]
+        border = [TileBorders.RIGHT, TileBorders.LEFT]
+
+        for i in range(2):
+            actor_name = door_name + direction[i]
+            icon = "doorpower" + direction[i]
+
+            DOOR_ICON = Container({
+                "actor_name": actor_name,
+                "clear_condition": "",
+                "icon": icon,
+                "icon_priority": IconPriority.DOOR,
+                "coordinates": ListContainer(door_position),
+            })
+
+            tile_idx = scenario_map.raw["tiles"][door["tile_indices"][i]]
+            # Add the tile border to the tile_borders dict so the doors tiles can properly update
+            tile_idx["tile_borders"][border[i]] = True
+
+            # Add the tile icon
+            if tile_idx["icons"] is None:
+                tile_idx["icons"] = ListContainer([DOOR_ICON])
+            elif len(tile_idx["icons"]) < 2:
+                # The game crashes if there are more than two icons listed per tile, so exclude the second door
+                tile_idx["icons"].append(DOOR_ICON)
+
+        for group in door["entity_groups"]:
+            scenario_file.add_actor_to_entity_groups(group, door_name, True)
+
+
 class NewShield(typing.NamedTuple):
     shield_name: str
     weakness: str
+    base_shield: str
 
 
 new_shields = [
-    NewShield("icebeam", "ICE_BEAM"),
+    NewShield("beamburst", "WEAPON_BOOST", "doorshieldpowerbomb"),
+    NewShield("bomb", "BOMB", "doorshieldsupermissile"),
+    NewShield("grapplebeam", "GRAPPLE_BEAM", "doorshield"),
+    NewShield("icebeam", "ICE_BEAM", "doorcreature"),
+    NewShield("locked", "", "doorspazerbeam"),
+    NewShield("lightningarmor", "ELECTRIC_MELEE", "doorshield"),
 ]
 
 
 def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
-    plasma_bmsad = "actors/props/doorcreature/charclasses/doorcreature.bmsad"
-    new_bmsad = f"actors/props/doorshield{new_shield.shield_name}/charclasses/doorshield{new_shield.shield_name}.bmsad"
+    # Missile shields are split across doorshield and doorshieldmissile
+    if new_shield.base_shield == "doorshield":
+        template_bmsad = "actors/props/doorshieldmissile/charclasses/doorshieldmissile.bmsad"
+    else:
+        template_bmsad = f"actors/props/{new_shield.base_shield}/charclasses/{new_shield.base_shield}.bmsad"
+
     new_model = f"actors/props/doorshield{new_shield.shield_name}/models/doorshield{new_shield.shield_name}.bcmdl"
+    new_bmsad = f"actors/props/doorshield{new_shield.shield_name}/charclasses/doorshield{new_shield.shield_name}.bmsad"
 
     # Create a copy of the bmsad
-    template_shield = editor.get_file(plasma_bmsad, Bmsad)
+    template_shield = editor.get_file(template_bmsad, Bmsad)
     editor.add_new_asset(new_bmsad, template_shield, [])
 
     # Modify the new bmsad
@@ -464,33 +606,36 @@ def add_custom_shields(editor: PatcherEditor, new_shield: NewShield) -> None:
 
     # Update the life component
     life_component = custom_shield.raw["components"]["LIFE"]["functions"]
-    life_component[0]["params"]["Param1"]["value"] = new_shield.weakness
+    # Change the weaknesses for each door
+    for damage_source in life_component:
+        if damage_source["name"] == "AddDamageSource":
+            damage_source["params"]["Param1"]["value"] = new_shield.weakness
+    if new_shield.base_shield == "doorcreature":
+        # Set shield health to 1
+        life_component[2]["params"]["Param2"]["value"] = 1.0
+        life_component[3]["params"]["Param2"]["value"] = 1.0
+        # Remove the drops from breaking the shield
+        custom_shield.raw["components"].pop("DROP")
+        # Remove the particle animation that occurs after the shield breaks (color mismatch)
+        custom_shield.raw["action_sets"][0]["animations"][0]["events0"][1]["args"]["LinkType"]["value"] = 0
+    elif new_shield.base_shield in {"doorshieldsupermissile", "doorshieldpowerbomb"}:
+        # Some shaders do not use dissolve fx, so force fx to be used
+        custom_shield.raw["components"]["LIFE"]["fields"]["bDisolveByMaterial"]["value"] = False
+        custom_shield.raw["components"]["LIFE"]["fields"]["fTimeToStartDisolve"]["value"] = 0.2
 
-    # Remove the second weakness container
-    life_component.pop(1)
 
-    # Set shield health to 1
-    life_component[2]["params"]["Param2"]["value"] = 1.0
-    life_component[3]["params"]["Param2"]["value"] = 1.0
-
-    # Remove the drops from breaking the shield
-    custom_shield.raw["components"].pop("DROP")
-
-    # Remove the particle animation that occurs after the shield breaks (color mismatch)
-    custom_shield.raw["action_sets"][0]["animations"][0]["events0"][1]["args"][729149823]["value"] = 0
-
-
-def patch_doors(editor: PatcherEditor, door_patches: list[dict]) -> None:
+def patch_doors(editor: PatcherEditor, door_patches: list[dict], custom_doors: list[dict]) -> None:
+    # Patch static door changes
     _static_door_patches(editor)
+
+    # Add custom door actors
+    add_custom_doors(editor, custom_doors)
+
+    # Create new door types
     for new_shield in new_shields:
         add_custom_shields(editor, new_shield)
+
+    # Patch doors to different types
     door_patcher = DoorPatcher(editor)
-
-    # small hack to eliminate duplicates (randovania exports everything duplicated)
-    import json
-
-    set_of_jsons = {json.dumps(d, sort_keys=True) for d in door_patches}
-    door_patches_set = [json.loads(t) for t in set_of_jsons]
-
-    for door in door_patches_set:
+    for door in door_patches:
         door_patcher.patch_door(editor, door["actor"], door["door_type"])
