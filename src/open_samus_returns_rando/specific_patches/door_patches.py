@@ -106,40 +106,36 @@ def _patch_beam_bmsads(editor: PatcherEditor) -> None:
 
 def _patch_beam_covers(editor: PatcherEditor) -> None:
     ALL_BEAM_COVERS = {
-        "s000_surface": ["LE_PlasmaShield_Door_008"],
-        "s010_area1": ["LE_DoorShieldWave008", "LE_SpazerShield_Door007"],
-        "s020_area2": ["LE_WaveShield_Door010"],
-        "s025_area2b": ["LE_PlasmaShield_Door017", "LE_WaveShield_Door008",
-                        "LE_WaveShield_Door016", "LE_WaveShield_Door019"],
-        "s033_area3b": ["LE_SpazerShield_Door_010", "LE_WaveShield_Door_007"],
-        "s036_area3c": ["LE_WaveShield_Door_006"],
-        "s040_area4": ["LE_SpazerShield_Door_001", "LE_SpazerShield_Door_004"],
-        "s050_area5": ["LE_SpazerShield_Door008"],
-        "s065_area6b": ["LE_PlasmaShield_Door003"],
-        "s067_area6c": ["LE_PlasmaShield_Door005", "LE_PlasmaShield_Door014",
-                        "LE_PlasmaShield_Door016", "LE_SpazerShield_Door018"],
-        "s090_area9": ["LE_PlasmaShield_Door003", "LE_Shield_Door006", "LE_Shield_Door015"],
+        "s000_surface": ["Door008"],
+        "s010_area1": ["Door008", "Door007"],
+        "s020_area2": ["Door010"],
+        "s025_area2b": ["Door017", "Door008", "Door016", "Door019"],
+        "s033_area3b": ["Door010", "Door007"],
+        "s036_area3c": ["Door006"],
+        "s040_area4": ["Door001", "Door004"],
+        "s050_area5": ["Door008"],
+        "s065_area6b": ["Door003"],
+        "s067_area6c": ["Door005", "Door014", "Door016", "Door018"],
+        "s090_area9": ["Door003", "Door006", "Door007"],
     }
 
     for scenario_name, beam_covers in ALL_BEAM_COVERS.items():
         scenario = editor.get_scenario(scenario_name)
-        for cover_name in beam_covers:
-            actor = scenario.raw.actors[9][cover_name]
+        for door_name in beam_covers:
+            door_actor = scenario.raw.actors[15].get(door_name, None)
+            cover_name =  door_actor.components[0]["arguments"][3]["value"]
+            cover_actor = scenario.raw.actors[9][cover_name]
+
             new_actor_name = f"{cover_name}_o"
             new_actor = editor.copy_actor(
-                scenario_name, [actor["position"][0], actor["position"][1], actor["position"][2]],
-                actor, new_actor_name, 9
+                scenario_name, [cover_actor["position"][0], cover_actor["position"][1], cover_actor["position"][2]],
+                cover_actor, new_actor_name, 9
             )
             new_actor["rotation"][0] = 0
             new_actor["rotation"][2] = 0
             current_rotation = new_actor["rotation"][1]
             new_actor["rotation"][1] = 180 if current_rotation == 0.0 else 0.0
 
-            door_name = cover_name[cover_name.find("Door"):]
-            door_name = door_name.replace("ShieldPlasma", "").replace("ShieldWave", "")
-            door_actor = scenario.raw.actors[15].get(door_name, None)
-            if door_actor is None:
-                door_actor = scenario.raw.actors[15][door_name.replace("_", "")]
             door_actor.components.append(copy.deepcopy(door_actor.components[0]))
             door_actor.components[1]["arguments"][3]["value"] = new_actor_name
 
