@@ -1,4 +1,3 @@
-
 GUILib = GUILib or {}
 
 function GUILib.InitCustomUI()
@@ -166,21 +165,33 @@ function GUILib.AddMessageBox()
   outer:AddChild(secondLine)
 
   local disconnectLine = GUI.CreateDisplayObjectEx("disconnected",  "CText", {
-      X = "-0.40",
+      X = "-0.30",
       Y = "0.05",
-      Font = "digital_small",
+      Font = "digital_medium",
       Text= "Disconnected!",
       TextAlignment = "Centered",
       ColorR = 0.9, ColorG = 0.1, ColorB = 0.1,
       BlinkColorR = "0.9", BlinkColorG = "0.1", BlinkColorB = "0.1", BlinkAlpha = "1.00000", Blink = "2.00000",
       Visible = false
-})
+  })
   ussef:AddChild(disconnectLine)
+  local disconnectIcon = GUI.CreateDisplayObjectEx("disconnectedicon",  "CSprite", {
+    X = "0.03",
+    Y = "0.05",
+    SizeX = "0.05",
+    SizeY = "0.07",
+    Visible = false,
+    ColorR = 0.9, ColorG = 0.1, ColorB = 0.1,
+    Blink = "2.00000",
+    SpriteSheetItem = "IconX_01"
+  })
+  ussef:AddChild(disconnectIcon)
 
   GUILib.outer = outer
   GUILib.firstLine = firstLine
   GUILib.secondLine = secondLine
   GUILib.disconnectLine = disconnectLine
+  GUILib.disconnectIcon = disconnectIcon
 end
 
 function GUILib.split(source, delimiters)
@@ -221,6 +232,9 @@ end
 
 function GUILib.UpdateConnected(visible)
   GUI.SetProperties(GUILib.disconnectLine, {
+      Visible = visible
+  })
+  GUI.SetProperties(GUILib.disconnectIcon, {
       Visible = visible
   })
 end
