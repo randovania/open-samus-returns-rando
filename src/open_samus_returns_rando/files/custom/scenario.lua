@@ -97,9 +97,11 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
 
     if Scenario.showNextSFID ~= nil then
       Game.DelSFByID(Scenario.showNextSFID)
+      Scenario.showNextSFID = nil
     end
     if Scenario.hideSFID ~= nil then
       Game.DelSFByID(Scenario.hideSFID)
+      Scenario.hideSFID = nil
       -- hide old popup
       Scenario.HideAsyncPopup()
     end
