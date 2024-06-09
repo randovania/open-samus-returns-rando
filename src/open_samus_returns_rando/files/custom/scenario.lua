@@ -11,6 +11,8 @@ setmetatable(Scenario, {__index = _G})
 
 Scenario.tProgressiveModels = {}
 
+Scenario.INVALID_UUID = "00000000-0000-1111-0000-000000000000"
+
 local original_enable =  Scenario.EnableHazarous
 function Scenario.EnableHazarous(_ARG_0_, _ARG_1_)
  if CurrentScenario.OnHazarousPoolDrain ~= nil then
@@ -63,6 +65,22 @@ function Scenario.InitGUI()
   if Init.bEnableRoomIds then
     RoomNameGui.Init()
   end
+
+    -- INVALID_UUID = no multiworld => no need to schedule the check
+  if Init.sLayoutUUID ~= Scenario.INVALID_UUID then
+    if Scenario.checkConnectionSFID ~= nil then
+      Game.DelSFByID(Scenario.checkConnectionSFID)
+    end
+    Scenario.checkConnectionSFID = Game.AddGUISF(2, "Scenario.CheckConnectionState", "")
+  end
+
+  -- delete all SF functions
+  if Scenario.hideSFID ~= nil then
+      Game.DelSFByID(Scenario.hideSFID)
+      -- hide old popup
+      Scenario.HideAsyncPopup()
+  end
+
 end
 
 function Scenario.UpdateDNACounter()
@@ -94,7 +112,6 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
     end
   
     Scenario.UpdateProgressiveItemModels()
-
     if Scenario.showNextSFID ~= nil then
       Game.DelSFByID(Scenario.showNextSFID)
       Scenario.showNextSFID = nil
@@ -106,6 +123,8 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
       Scenario.HideAsyncPopup()
     end
 
+    RL.UpdateRDVClient(true)
+
     -- Only required for ils test code
     -- if Scenario.CurrentScenarioID == "s000_surface" then
     -- local next_number = (NextScenario % 17) + 1
@@ -115,6 +134,8 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
     -- else
     --   Game.AddSF(1.0, "Game.KillPlayer", "")
     -- end
+  else
+    RL.GetGameStateAndSend()
   end
 end
 
@@ -138,6 +159,11 @@ function Scenario.LoadNewScenario(target_scenario, target_spawnpoint)
   Game.FadeOutStream(0.0)
   Game.AddPSF(0.1, "Game.LoadScenario", "ssssi", "c10_samus", target_scenario, target_spawnpoint, "", 1)
   Game.ForceConvertToSamus()
+end
+
+function Scenario.CheckConnectionState()
+  GUILib.UpdateConnected(not RL.Connected())
+  Scenario.checkConnectionSFID = Game.AddGUISF(2, "Scenario.CheckConnectionState", "")
 end
 
 local fatal_messages_seen = 0

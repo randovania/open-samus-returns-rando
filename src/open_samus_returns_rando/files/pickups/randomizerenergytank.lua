@@ -17,7 +17,7 @@ function RandomizerEnergyTank.IncreaseEnergy()
     life.fCurrentLife = new_max
 end
 
-function RandomizerEnergyTank.OnPickedUp(progression)
-    RandomizerPowerup.OnPickedUp(progression)
+function RandomizerEnergyTank.OnPickedUp(progression, actorOrName)
+    RandomizerPowerup.OnPickedUp(progression, actorOrName)
     RandomizerEnergyTank.IncreaseEnergy()
 end

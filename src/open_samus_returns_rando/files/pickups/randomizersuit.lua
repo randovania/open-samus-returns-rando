@@ -61,9 +61,9 @@ function RandomizerSuit.ResetLiquidState()
     end
 end
 
-function RandomizerSuit.OnPickedUp(progression)
+function RandomizerSuit.OnPickedUp(progression, actorOrName)
     RandomizerSuit.ResetLiquidState()
-    RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression, actorOrName)
     if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_GRAVITY_SUIT") > 0 then
         Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
     else

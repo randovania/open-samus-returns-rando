@@ -3,7 +3,7 @@ RandomizerMissileLauncher = RandomizerMissileLauncher or {}
 function RandomizerMissileLauncher.main()
 end
 
-function RandomizerMissileLauncher.OnPickedUp(progression)
+function RandomizerMissileLauncher.OnPickedUp(progression, actorOrName)
     local locked_missiles = RandomizerPowerup.GetItemAmount("ITEM_MISSILE_TANKS")
     for _, outer in ipairs(progression) do
         for _, inner in ipairs(outer) do
@@ -13,7 +13,7 @@ function RandomizerMissileLauncher.OnPickedUp(progression)
             end
         end
     end
-    RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression, actorOrName)
     RandomizerPowerup.SetItemAmount("ITEM_MISSILE_TANKS", 0)
     RandomizerPowerup.IncreaseMissileCheckValue()
     if RandomizerPowerup.GetItemAmount("ITEM_RESERVE_TANK_MISSILE") > 0 then

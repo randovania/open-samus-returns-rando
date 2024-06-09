@@ -32,7 +32,7 @@ function Metroid.RemoveMetroid(_ARG_0_)
                 Metroid.Pickups[scenario] ~= nil and
                 Metroid.Pickups[scenario][spawnGroupName] ~= nil and
                 Metroid.Pickups[scenario][spawnGroupName].OnPickedUp ~= nil then
-            Metroid.Pickups[scenario][spawnGroupName].OnPickedUp()
+            Metroid.Pickups[scenario][spawnGroupName].OnPickedUp(spawnGroupName)
         end
         Game.SetInGameMusicState("RELAX")
         if scenario == "s000_surface" then

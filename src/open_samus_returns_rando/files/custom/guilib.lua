@@ -1,4 +1,3 @@
-
 GUILib = GUILib or {}
 
 function GUILib.InitCustomUI()
@@ -81,72 +80,72 @@ function GUILib.AddMessageBox()
   if randoUI ~= nil then
     GUI.DestroyDisplayObject(randoUI)
   end
-  local ussef =  GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.USSEF")
-  local outer =  GUI.CreateDisplayObjectEx("Outer", "CDisplayObjectContainer", {
+  local ussef = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.USSEF")
+  local outer = GUI.CreateDisplayObjectEx("Outer", "CDisplayObjectContainer", {
       StageID = "Up",
       X = "0.038",
       Y = "0.829",
       Visible = false
   })
-  local topL =  GUI.CreateDisplayObjectEx("TopL",  "CSprite", {
+  local topL = GUI.CreateDisplayObjectEx("TopL",  "CSprite", {
     X = "0.0",
     Y = "0.0",
     Visible = true,
     SpriteSheetItem = "TutorialWindowTop"
   })
-  local topR =  GUI.CreateDisplayObjectEx("TopR",  "CSprite", {
+  local topR = GUI.CreateDisplayObjectEx("TopR",  "CSprite", {
     X = "0.462",
     Y = "0.0",
     FlipX = true,
     Visible = true,
     SpriteSheetItem = "TutorialWindowTop"
   })
-  local hiMidL =  GUI.CreateDisplayObjectEx("hiMidL",  "CSprite", {
+  local hiMidL = GUI.CreateDisplayObjectEx("hiMidL",  "CSprite", {
     X = "0.0",
     Y = "0.024",
     Visible = true,
     SpriteSheetItem = "TutorialWindowMid"
   })
-  local hiMidR =  GUI.CreateDisplayObjectEx("hiMidR",  "CSprite", {
+  local hiMidR = GUI.CreateDisplayObjectEx("hiMidR",  "CSprite", {
     X = "0.462",
     Y = "0.024",
     FlipX = true,
     Visible = true,
     SpriteSheetItem = "TutorialWindowMid"
   })
-  local loMidL =  GUI.CreateDisplayObjectEx("loMidL",  "CSprite", {
+  local loMidL = GUI.CreateDisplayObjectEx("loMidL",  "CSprite", {
     X = "0.0",
     Y = "0.083",
     Visible = true,
     SpriteSheetItem = "TutorialWindowMid"
   })
-  local loMidR =  GUI.CreateDisplayObjectEx("loMidR",  "CSprite", {
+  local loMidR = GUI.CreateDisplayObjectEx("loMidR",  "CSprite", {
     X = "0.462",
     Y = "0.083",
     FlipX = true,
     Visible = true,
     SpriteSheetItem = "TutorialWindowMid"
   })
-  local bottomL =  GUI.CreateDisplayObjectEx("BotL",  "CSprite", {
+  local bottomL = GUI.CreateDisplayObjectEx("BotL",  "CSprite", {
     X = "0.0",
     Y = "0.141",
     Visible = true,
     SpriteSheetItem = "TutorialWindowBot"
   })
-  local bottomR =  GUI.CreateDisplayObjectEx("BotR",  "CSprite", {
+  local bottomR = GUI.CreateDisplayObjectEx("BotR",  "CSprite", {
     X = "0.462",
     Y = "0.142",
     FlipX = true,
     Visible = true,
     SpriteSheetItem = "TutorialWindowBot"
   })
-  local firstLine =  GUI.CreateDisplayObjectEx("firstLine",  "CText", {
+  local firstLine = GUI.CreateDisplayObjectEx("firstLine",  "CText", {
       X = "-0.038",
       Font = "digital_medium",
       TextAlignment = "Centered",
       Visible = true,
   })
-  local secondLine =  GUI.CreateDisplayObjectEx("secondLine",  "CText", {
+  local secondLine = GUI.CreateDisplayObjectEx("secondLine",  "CText", {
       X = "-0.038",
       Y = "0.080",
       Font = "digital_medium",
@@ -165,9 +164,34 @@ function GUILib.AddMessageBox()
   outer:AddChild(firstLine)
   outer:AddChild(secondLine)
 
+  local disconnectLine = GUI.CreateDisplayObjectEx("disconnected",  "CText", {
+      X = "-0.30",
+      Y = "0.05",
+      Font = "digital_medium",
+      Text= "Disconnected!",
+      TextAlignment = "Centered",
+      ColorR = 0.9, ColorG = 0.1, ColorB = 0.1,
+      BlinkColorR = "0.9", BlinkColorG = "0.1", BlinkColorB = "0.1", BlinkAlpha = "1.00000", Blink = "2.00000",
+      Visible = false
+  })
+  ussef:AddChild(disconnectLine)
+  local disconnectIcon = GUI.CreateDisplayObjectEx("disconnectedicon",  "CSprite", {
+    X = "0.03",
+    Y = "0.05",
+    SizeX = "0.05",
+    SizeY = "0.07",
+    Visible = false,
+    ColorR = 0.9, ColorG = 0.1, ColorB = 0.1,
+    Blink = "2.00000",
+    SpriteSheetItem = "IconX_01"
+  })
+  ussef:AddChild(disconnectIcon)
+
   GUILib.outer = outer
   GUILib.firstLine = firstLine
   GUILib.secondLine = secondLine
+  GUILib.disconnectLine = disconnectLine
+  GUILib.disconnectIcon = disconnectIcon
 end
 
 function GUILib.split(source, delimiters)
@@ -203,5 +227,14 @@ end
 function GUILib.HideMessage() 
   GUI.SetProperties(GUILib.outer, {
     Visible = false
+  })
+end
+
+function GUILib.UpdateConnected(visible)
+  GUI.SetProperties(GUILib.disconnectLine, {
+      Visible = visible
+  })
+  GUI.SetProperties(GUILib.disconnectIcon, {
+      Visible = visible
   })
 end

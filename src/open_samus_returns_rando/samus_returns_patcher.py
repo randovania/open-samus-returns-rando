@@ -14,6 +14,7 @@ from open_samus_returns_rando.misc_patches.credits import patch_credits
 from open_samus_returns_rando.misc_patches.elevators import patch_elevators
 from open_samus_returns_rando.misc_patches.spawn_points import patch_custom_spawn_points
 from open_samus_returns_rando.misc_patches.text_patches import add_spiderboost_status, apply_text_patches
+from open_samus_returns_rando.multiworld_integration import create_exefs_patches
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickups.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.pickups.pickup import patch_pickups
@@ -48,13 +49,27 @@ def add_custom_files(editor: PatcherEditor) -> None:
             editor.replace_asset(asset_name, raw_bytes)
 
 
-def validate(configuration: dict) -> None:
+
+def validate(configuration: dict, input_exheader: Path | None) -> None:
+    # validate patcher json with the schema.json
     DefaultValidatingDraft7Validator(_read_schema()).validate(configuration)
 
-def patch_extracted(input_path: Path, output_path: Path, configuration: dict) -> None:
+    # validate multiworld logic. checks are done early to not patch
+    # the whole thing and find out it is misconfigured at the end
+    enable_remote_lua = configuration["enable_remote_lua"]
+    if enable_remote_lua and input_exheader is None:
+        raise ValueError("No exheader input but remote lua is configured")
+    elif enable_remote_lua and input_exheader:
+        with Path.open(input_exheader, "rb") as exheader:
+            if b"MATADORA" not in exheader.read(8):
+                raise ValueError("Wrong decrypted exheader file!")
+
+
+
+def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, configuration: dict) -> None:
     LOG.info("Will patch files from %s", input_path)
 
-    validate(configuration)
+    validate(configuration, input_exheader)
 
     editor = PatcherEditor(input_path)
     lua_scripts = LuaEditor()
@@ -113,10 +128,21 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict) ->
     # Patch elevator destinations
     patch_elevators(editor, configuration)
 
-    out_romfs = output_path.joinpath("romfs")
     out_exefs = output_path.joinpath("exefs")
+    out_romfs = output_path.joinpath("romfs")
+    out_code = output_path.joinpath("code.bps")
+    out_exheader = output_path.joinpath("exheader.bin")
     shutil.rmtree(out_romfs, ignore_errors=True)
+    shutil.rmtree(out_code, ignore_errors=True)
+    shutil.rmtree(out_exheader, ignore_errors=True)
+    # this is just to clean up old version
     shutil.rmtree(out_exefs, ignore_errors=True)
+
+    # Create Exefs patches for multiworld
+    LOG.info("Creating exefs patches")
+    create_exefs_patches(
+        out_code, out_exheader, input_exheader, configuration["enable_remote_lua"], configuration["region"]
+    )
 
     LOG.info("Saving modified lua scripts")
     lua_scripts.save_modifications(editor, configuration)

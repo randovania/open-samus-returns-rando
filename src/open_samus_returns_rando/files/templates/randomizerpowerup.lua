@@ -42,16 +42,51 @@ function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
     end
 end
 
-function RandomizerPowerup.OnPickedUp(resources)
-    local granted = RandomizerPowerup.HandlePickupResources(resources)
+function RandomizerPowerup.OnPickedUp(resources, actorOrName)
+    local granted = RandomizerPowerup.HandlePickupResources(resources, actorOrName)
 
     for _, resource in ipairs(granted) do
         RandomizerPowerup.IncreaseAmmo(resource)
     end
 
     Scenario.UpdateProgressiveItemModels()
-
+    if actorOrName ~= nil then
+        RandomizerPowerup.MarkLocationCollected(actorOrName)
+    end
+    RandomizerPowerup.IncrementInventoryIndex()
+    RL.UpdateRDVClient(false)
+    hud.UpdatePlayerInfo(true)
     return granted
+end
+
+function RandomizerPowerup.IncrementInventoryIndex()
+    local playerSection = Game.GetPlayerBlackboardSectionName()
+    local propName = "InventoryIndex"
+    local currentIndex = Blackboard.GetProp(playerSection, propName) or 0
+    currentIndex = currentIndex + 1
+    Blackboard.SetProp(playerSection, propName, "f", currentIndex)
+end
+
+function RandomizerPowerup.PropertyForLocation(actorOrName)
+    return "c_" .. actorOrName
+end
+
+function RandomizerPowerup.MarkLocationCollected(actorOrName)
+    local name
+    -- normal pickups
+    if actorOrName.sName ~= nil then
+        name = actorOrName.sName
+    -- metroids
+    else
+        name = actorOrName
+    end
+    -- remote pickups from other worlds
+    if name == nil then
+        return
+    end
+    local playerSection = Game.GetPlayerBlackboardSectionName()
+    local propName = RandomizerPowerup.PropertyForLocation(string.format("%s_%s", Scenario.CurrentScenarioID, name))
+    Blackboard.SetProp(playerSection, propName, "b", true)
 end
 
 function RandomizerPowerup.ObjectiveComplete()
@@ -74,7 +109,7 @@ function RandomizerPowerup.ObjectiveComplete()
     end
 end
 
-function RandomizerPowerup.HandlePickupResources(progression)
+function RandomizerPowerup.HandlePickupResources(progression, actorOrName)
     progression = progression or {}
 
     local alwaysGrant = false
@@ -106,7 +141,10 @@ function RandomizerPowerup.HandlePickupResources(progression)
                     if string.sub(resource.item_id, 0, 14) == "ITEM_RANDO_DNA" then
                         local scenario = Init.tScenarioMapping[Scenario.CurrentScenarioID]
                         local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
-                        Blackboard.SetProp("GAME", scenario .. "_acquired_dna", "i", currentDNA + 1)
+                        -- it should be nil only for offworld DNA and then we don't want increment the scenario DNA
+                        if actorOrName ~= nil then
+                            Blackboard.SetProp("GAME", scenario .. "_acquired_dna", "i", currentDNA + 1)
+                        end
                         Scenario.UpdateDNACounter()
                         RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", resource.quantity)
                         Game.AddSF(0, "RandomizerPowerup.ObjectiveComplete", "")

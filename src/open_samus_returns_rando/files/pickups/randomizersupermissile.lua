@@ -3,7 +3,7 @@ RandomizerSuperMissile = RandomizerSuperMissile or {}
 function RandomizerSuperMissile.main()
 end
 
-function RandomizerSuperMissile.OnPickedUp(progression) 
+function RandomizerSuperMissile.OnPickedUp(progression, actorOrName) 
     local locked_supers = RandomizerPowerup.GetItemAmount("ITEM_SUPER_MISSILE_TANKS")
     for _, outer in ipairs(progression) do
         for _, inner in ipairs(outer) do
@@ -13,6 +13,6 @@ function RandomizerSuperMissile.OnPickedUp(progression)
             end
         end
     end
-    RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression, actorOrName)
     RandomizerPowerup.SetItemAmount("ITEM_SUPER_MISSILE_TANKS", 0)
 end

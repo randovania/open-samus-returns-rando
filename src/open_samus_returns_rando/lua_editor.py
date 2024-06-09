@@ -67,6 +67,9 @@ SCENARIO_MAPPING = {
     "s110_surfaceb": "s00",
 }
 
+def get_parent_for(item_id: str) -> str:
+    return SPECIFIC_CLASSES.get(item_id, "RandomizerPowerup")
+
 class ScriptClass:
     def __init__(
             self,
@@ -121,23 +124,22 @@ class LuaEditor:
             for scenario in ALL_SCENARIOS
         }
 
-    def get_parent_for(self, item_id: str) -> str:
-        return SPECIFIC_CLASSES.get(item_id, "RandomizerPowerup")
-
     def create_script_class(self, pickup: dict, actordef_id: str = "") -> ScriptClass:
         pickup_resources = pickup["resources"]
         first_item_id = pickup_resources[0][0]["item_id"]
-        parent = self.get_parent_for(first_item_id)
+        parent = get_parent_for(first_item_id)
         model_array = pickup.get("model", None)
 
         if actordef_id and model_array and len(model_array) > 1:
             self.add_progressive_models(pickup, actordef_id)
 
         hashable_progression = "_".join([
-            f'{pickup["item_id"]}_{pickup["quantity"]}'
-            for res in pickup_resources
-            for pickup in res
-        ]).replace("-", "MINUS")
+            str(
+                hash(f'{item_quantity["item_id"]}_{item_quantity["quantity"]}_{pickup["caption"]}')
+            ).replace("-", "MINUS")
+            for progressive_stage in pickup_resources
+            for item_quantity in progressive_stage
+        ])
 
         if hashable_progression in self._item_classes.keys():
             return self._item_classes[hashable_progression]
@@ -200,6 +202,7 @@ class LuaEditor:
         starting_location: dict = configuration["starting_location"]
         starting_text: list[str] = configuration.get("starting_text", [])
         configuration_identifier: str = configuration["configuration_identifier"]
+        enable_remote_lua: bool = configuration.get("enable_remote_lua", False)
 
         energy_per_tank = configuration["energy_per_tank"]
         max_life = inventory.pop("ITEM_MAX_LIFE")
@@ -246,6 +249,10 @@ class LuaEditor:
             patch_text(editor, f"RANDO_STARTING_TEXT_{textboxes}", box_text)
 
 
+        layout_uuid = None
+        if "layout_uuid" in configuration:
+            layout_uuid = lua_util.wrap_string(configuration["layout_uuid"])
+
         replacement = {
             "new_game_inventory": final_inventory,
             "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
@@ -257,6 +264,8 @@ class LuaEditor:
             "textbox_count": textboxes,
             "configuration_identifier": lua_util.wrap_string(configuration_identifier),
             "enable_room_ids": False if cosmetic_options["enable_room_name_display"] == "NEVER" else True,
+            "layout_uuid": layout_uuid,
+            "enable_remote_lua": enable_remote_lua,
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)

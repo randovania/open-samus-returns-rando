@@ -3,7 +3,7 @@ RandomizerMissileTank = RandomizerMissileTank or {}
 function RandomizerMissileTank.main()
 end
 
-function RandomizerMissileTank.OnPickedUp(progression)
+function RandomizerMissileTank.OnPickedUp(progression, actorOrName)
     -- if we have main item use missile max else use locked missiles
     local new_item_id = "ITEM_MISSILE_TANKS"
     local is_main_unlocked = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_MISSILE_LAUNCHER") > 0
@@ -16,6 +16,6 @@ function RandomizerMissileTank.OnPickedUp(progression)
             inner.item_id = new_item_id
         end
     end
-    RandomizerPowerup.OnPickedUp(progression)
+    RandomizerPowerup.OnPickedUp(progression, actorOrName)
     RandomizerPowerup.IncreaseMissileCheckValue()
 end
