@@ -56,6 +56,7 @@ end
 
 function RandomizerPowerup.ObjectiveComplete()
     if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") == 39 then
+        Game.HUDIdleScreenLeave()
         local baby = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_BABY_HATCHLING")
         local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
         GUI.SetProperties(dnaCounter, {
