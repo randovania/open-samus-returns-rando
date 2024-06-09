@@ -17,5 +17,4 @@ function RandomizerSuperMissileTank.OnPickedUp(progression, actorOrName)
         end
     end
     RandomizerPowerup.OnPickedUp(progression, actorOrName)
-    hud.UpdatePlayerInfo(true)
 end

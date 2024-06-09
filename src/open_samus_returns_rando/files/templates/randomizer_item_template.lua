@@ -8,5 +8,4 @@ function T__name__T.OnPickedUp(actorOrName)
     Game.PlayMusicStream(1, TEMPLATE("sound"), -1, -1, 0, 0, 0, 0)
     Scenario.QueueAsyncPopup(TEMPLATE("caption"))
     TEMPLATE("parent").OnPickedUp(resources, actorOrName)
-    hud.UpdatePlayerInfo(true)
 end

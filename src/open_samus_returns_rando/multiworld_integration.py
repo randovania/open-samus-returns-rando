@@ -14,7 +14,6 @@ def get_lua_for_item(progression: list[list[dict[str, str | int]]]) -> str:
 
     function MultiworldPickup.OnPickedUp(progression, actorOrName)
         RandomizerPowerup.OnPickedUp(progression, actorOrName)
-        hud.UpdatePlayerInfo(true)
     end
     """
 

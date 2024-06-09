@@ -55,6 +55,7 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName)
     end
     RandomizerPowerup.IncrementInventoryIndex()
     RL.UpdateRDVClient(false)
+    hud.UpdatePlayerInfo(true)
     return granted
 end
 
