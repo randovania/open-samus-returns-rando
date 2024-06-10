@@ -323,16 +323,16 @@ class ActorPickup(BasePickup):
             if "itemsphere" in pickup_model or "powerup" in pickup_model:
                 pickup_model = "powerup"
 
-            # Special cases for area6/area10
-            # area6 reveals what the Phase Drift hidden item is before the block is broken if it is a custom icon
-            # area10 reveals what the Queen pickup is without fighing it
-            if (scenario_name == "s060_area6" and actor_name == "LE_HiddenPowerup001") or (
+            # change the icons to their new item type
+            pickup_tile_icon.icon = pickup_model
+
+            # Special cases
+            # Custom icons are always visible, even for hidden pickups, so make them generic
+            # The Queen pickup is always visible on the map without fighing it, so make it generic
+            if pickup_tile_icon.icon_priority == "HIDDEN_ITEM" or (
                 scenario_name == "s100_area10" and actor_name == "LE_Baby_Hatchling"
             ):
                 pickup_tile_icon.icon = "itemenabled"
-
-            # change the icons to their new item type
-            pickup_tile_icon.icon = pickup_model
 
 
     def get_scenario(self) -> str:
