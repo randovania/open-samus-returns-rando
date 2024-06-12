@@ -133,8 +133,8 @@ def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, c
     out_code = output_path.joinpath("code.bps")
     out_exheader = output_path.joinpath("exheader.bin")
     shutil.rmtree(out_romfs, ignore_errors=True)
-    shutil.rmtree(out_code, ignore_errors=True)
-    shutil.rmtree(out_exheader, ignore_errors=True)
+    out_code.unlink(missing_ok=True)
+    out_exheader.unlink(missing_ok=True)
     # this is just to clean up old version
     shutil.rmtree(out_exefs, ignore_errors=True)
 
