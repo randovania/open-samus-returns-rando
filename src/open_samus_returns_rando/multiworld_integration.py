@@ -32,8 +32,10 @@ def get_lua_for_item(progression: list[list[dict[str, str | int]]]) -> str:
     )
 
 
-def create_exefs_patches(out_code: Path, out_exheader: Path, input_exheader: Path, enabled: bool, region: str) -> None:
-    if not enabled:
+def create_exefs_patches(
+        out_code: Path, out_exheader: Path, input_exheader: Path | None, enabled: bool, region: str
+    ) -> None:
+    if not enabled or input_exheader is None:
         return
 
     import shutil
