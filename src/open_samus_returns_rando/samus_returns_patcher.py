@@ -66,7 +66,7 @@ def validate(configuration: dict, input_exheader: Path | None) -> None:
 
 
 
-def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, configuration: dict) -> None:
+def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: Path, configuration: dict) -> None:
     LOG.info("Will patch files from %s", input_path)
 
     validate(configuration, input_exheader)
