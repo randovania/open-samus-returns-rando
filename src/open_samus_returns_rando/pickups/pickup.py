@@ -318,18 +318,21 @@ class ActorPickup(BasePickup):
 
             pickup_model = self.pickup["model"][0]
 
-            # Tanks, DNA, and offworld items just use the icon with the same name as the pickup_model
+            # Tanks and offworld items just use the icon with the same name as the pickup_model
             # Powerups and Nothing items use a "custom" itemsphere so they update on the map
             if "itemsphere" in pickup_model or "powerup" in pickup_model:
-                pickup_model = "powerup"
+                pickup_model = "item_powerup"
+            # DNA uses a custom icon
+            elif "adn" in pickup_model:
+                pickup_model = "item_adn"
 
             # change the icons to their new item type
             pickup_tile_icon.icon = pickup_model
 
             # Special cases
-            # Custom icons are always visible, even for hidden pickups, so make them generic
-            # The Queen pickup is always visible on the map without fighing it, so make it generic
+            # Custom blockx are no longer attached to the pickup, so make all hidden pickups consistent and generic
             if pickup_tile_icon.icon_priority == "HIDDEN_ITEM" or (
+                # The Queen pickup is always visible on the map without fighing it, so make it generic
                 scenario_name == "s100_area10" and actor_name == "LE_Baby_Hatchling"
             ):
                 pickup_tile_icon.icon = "itemenabled"

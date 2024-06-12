@@ -2,7 +2,7 @@
     "$schema": "../../src/open_samus_returns_rando/files/schema.json",
     "starting_location": {
         "scenario": "s000_surface",
-        "actor": "StartPoint0"
+        "actor": "ST_DEBUG_Morphball"
     },
     "starting_items": {
         "ITEM_WEAPON_MISSILE_LAUNCHER": 1,
@@ -40,6 +40,7 @@
         "ITEM_MAX_LIFE": 99,
         "ITEM_MAX_SPECIAL_ENERGY": 1000
     },
+    "reveal_map_on_start": true,
     "starting_text": [],
     "pickups": [
         {
@@ -63,12 +64,12 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Missile Tank acquired.\nMissile capacity increased by 3.",
+            "caption": "Sent Missile Tank acquired.\nMissile capacity increased by 3.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_MISSILE_TANKS",
-                        "quantity": 3
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
                     }
                 ]
             ],
@@ -272,12 +273,12 @@
         },
         {
             "pickup_type": "actor",
-            "caption": "Morph Ball acquired.",
+            "caption": "Sent Speed Booster to meep.",
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_MORPH_BALL",
-                        "quantity": 1
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
                     }
                 ]
             ],
@@ -286,7 +287,7 @@
                 "actor": "LE_PowerUP_Morphball"
             },
             "model": [
-                "powerup_morphball"
+                "item_offworld"
             ]
         },
         {
@@ -331,7 +332,7 @@
                 "actor": "HiddenPowerup001"
             },
             "model": [
-                "item_missiletank"
+                "item_offworld"
             ]
         },
         {
