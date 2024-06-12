@@ -305,6 +305,13 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_icemissile/models/textures/missile_d.bctex",
         ),
     ),
+    "powerup_powergrip": ModelData(
+        bcmdl_path="actors/items/powerup_powergrip/models/powerup_powergrip.bcmdl",
+        dependencies=(
+            "actors/items/powerup_powergrip/models/powerup_powergrip.bcmdl",
+            "actors/items/powerup_powergrip/models/textures/itempowergrip_d.bctex",
+        ),
+    ),
 }
 
 
