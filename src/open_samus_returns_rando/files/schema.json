@@ -301,6 +301,24 @@
             },
             "additionalProperties": false
         },
+        "constant_environment_damage": {
+            "description": "Each property, when not null, will change the damage from that type to be that much per second",
+            "default": {},
+            "type": "object",
+            "properties": {
+                "heat": {
+                    "title": "Heated Rooms",
+                    "$ref": "#/$defs/constant_damage_value",
+                    "default": null
+                },
+                "lava": {
+                    "title": "Lava",
+                    "$ref": "#/$defs/constant_damage_value",
+                    "default": null
+                }
+            },
+            "additionalProperties": false
+        },
         "debug_spawn_points": {
             "type": "array",
             "description": "Creates new spawn points for debugging",
@@ -699,6 +717,19 @@
             "required": [
                 "scenario",
                 "spawngroup"
+            ]
+        },
+        "constant_damage_value": {
+            "default": null,
+            "anyOf": [
+                {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1000
+                },
+                {
+                    "type": "null"
+                }
             ]
         }
     }
