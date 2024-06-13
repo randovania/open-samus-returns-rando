@@ -21,6 +21,7 @@ from open_samus_returns_rando.pickups.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import cosmetic_patches, game_patches, tunable_patches
 from open_samus_returns_rando.specific_patches.chozo_seal_patches import patch_chozo_seals
 from open_samus_returns_rando.specific_patches.door_patches import patch_doors
+from open_samus_returns_rando.specific_patches.environmental_damage import apply_constant_damage
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
 from open_samus_returns_rando.specific_patches.hint_patches import patch_hints
 from open_samus_returns_rando.specific_patches.map_icons import patch_tiles
@@ -96,6 +97,9 @@ def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: 
 
     # Fix unheated heat rooms
     patch_heat_rooms(editor)
+
+    # Environmental Damage
+    apply_constant_damage(editor, configuration["constant_environment_damage"])
 
     # Patch door types and make shields on both sides
     patch_doors(editor, configuration["door_patches"], configuration["custom_doors"])
