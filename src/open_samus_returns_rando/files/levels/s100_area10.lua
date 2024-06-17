@@ -222,7 +222,6 @@ function s100_area10.OnMetroidDead()
     Scenario.WriteToBlackboard("QueenDiscovered", "b", true)
     Game.AddSF(3.5, "s100_area10.ScheduledQueenRoar", "")
     for _FORV_6_, _FORV_7_ in pairs({
-      "collision_camera_008",
       "collision_camera_013",
       "collision_camera_014",
       "collision_camera_015",
@@ -231,9 +230,7 @@ function s100_area10.OnMetroidDead()
       "collision_camera_019"
     }) do
       print(_FORV_7_)
-      if Game.GetEntity("LE_ValveQueen") ~= nil then
-        Game.SetSubAreaCurrentSetup(_FORV_7_, "PostMetroids_001", true)
-      end
+      Game.SetSubAreaCurrentSetup(_FORV_7_, "PostMetroids_001", true)
     end
     for _FORV_7_, _FORV_8_ in pairs({
       "SpawnGroup029",
