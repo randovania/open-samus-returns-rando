@@ -208,6 +208,10 @@ function s100_area10.OnLarva_010_Generated(_ARG_0_, _ARG_1_)
   end
 end
 function s100_area10.OnMetroidDead()
+  Game.DisableTrigger("TG_Intro_Larva")
+  if Game.GetEntity("TG_ChangeCamera_IntroLarva") ~= nil then
+    Game.GetEntity("TG_ChangeCamera_IntroLarva").TRIGGER:DisableTrigger()
+  end
   if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
     if Game.GetEntity("LE_ValveQueen") ~= nil then
       Game.GetEntity("LE_ValveQueen").MODELUPDATER:SetMeshVisible("Valve", false)
