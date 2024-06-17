@@ -226,7 +226,9 @@ function s100_area10.OnMetroidDead()
       "collision_camera_019"
     }) do
       print(_FORV_7_)
-      Game.SetSubAreaCurrentSetup(_FORV_7_, "PostMetroids_001", true)
+      if Game.GetEntity("LE_ValveQueen") ~= nil then
+        Game.SetSubAreaCurrentSetup(_FORV_7_, "PostMetroids_001", true)
+      end
     end
     for _FORV_7_, _FORV_8_ in pairs({
       "SpawnGroup029",
