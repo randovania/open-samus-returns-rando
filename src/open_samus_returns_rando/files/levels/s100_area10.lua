@@ -208,6 +208,7 @@ function s100_area10.OnLarva_010_Generated(_ARG_0_, _ARG_1_)
   end
 end
 function s100_area10.OnMetroidDead()
+  -- Disable the intro and the camera change triggers if a Metroid has been defeated, which means that Reverse Area 8 should be enabled
   Game.DisableTrigger("TG_Intro_Larva")
   if Game.GetEntity("TG_ChangeCamera_IntroLarva") ~= nil then
     Game.GetEntity("TG_ChangeCamera_IntroLarva").TRIGGER:DisableTrigger()
