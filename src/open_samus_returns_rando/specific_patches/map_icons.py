@@ -1,5 +1,4 @@
 from mercury_engine_data_structures.formats import Bmsmsd
-from mercury_engine_data_structures.formats.bmsmsd import TileType
 from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -29,15 +28,6 @@ def patch_tiles(editor: PatcherEditor) -> None:
 
                 icons = current_tile["icons"]
                 if len(icons) != 0:
-                    # Items
-                    if "tank" in icons[0]["icon"] or "itemsphere" in icons[0]["icon"]:
-                        if current_tile["tile_type"] == TileType.HEAT:
-                            icons[0]["icon"] = "itemenabledheat"
-                        else:
-                            icons[0]["icon"] = "itemenabled"
-                    if len(icons) > 1 and "tank" in icons[1]["icon"]:
-                        icons[1]["icon"] = "itemenabled"
-
                     # Doors
                     door_tile = icons[0] if len(icons) == 1 else icons[1]
                     for door in doors:

@@ -5,6 +5,7 @@ from enum import Enum
 
 from construct import Container, ListContainer
 from mercury_engine_data_structures.formats import Bmsad, Bmsmsd, Lua
+from mercury_engine_data_structures.formats.bmsmsd import TileType
 from open_samus_returns_rando.constants import get_package_name
 from open_samus_returns_rando.files import templates_path
 from open_samus_returns_rando.logger import LOG
@@ -318,24 +319,25 @@ class ActorPickup(BasePickup):
 
             pickup_model = self.pickup["model"][0]
 
-            # Tanks and offworld items just use the icon with the same name as the pickup_model
             # Powerups and Nothing items use a "custom" itemsphere so they update on the map
             if "itemsphere" in pickup_model or "powerup" in pickup_model:
-                pickup_model = "item_powerup"
+                pickup_tile_icon.icon = "item_powerup"
             # DNA uses a custom icon
             elif "adn" in pickup_model:
-                pickup_model = "item_adn"
-
-            # change the icons to their new item type
-            pickup_tile_icon.icon = pickup_model
-
-            # Special cases
-            # Custom blockx are no longer attached to the pickup, so make all hidden pickups consistent and generic
-            if pickup_tile_icon.icon_priority == "HIDDEN_ITEM" or (
-                # The Queen pickup is always visible on the map without fighing it, so make it generic
+                pickup_tile_icon.icon = "item_adn"
+            # Custom blocks are no longer attached to the pickup, so make all hidden pickups consistent and generic
+            elif pickup_tile_icon.icon_priority == "HIDDEN_ITEM" or (
+                # The Queen pickup is always visible on the map without fighting it, so make it generic
                 scenario_name == "s100_area10" and actor_name == "LE_Baby_Hatchling"
             ):
-                pickup_tile_icon.icon = "itemenabled"
+                if tile_for_item[0]["tile_type"] == TileType.HEAT:
+                    pickup_tile_icon.icon = "itemenabledheat"
+                else:
+                    pickup_tile_icon.icon = "itemenabled"
+            else:
+                # Tanks and offworld items just use the icon with the same name as the pickup_model
+                pickup_tile_icon.icon = pickup_model
+
 
 
     def get_scenario(self) -> str:
