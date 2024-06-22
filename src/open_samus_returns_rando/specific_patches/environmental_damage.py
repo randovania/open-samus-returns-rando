@@ -16,11 +16,12 @@ def apply_constant_damage(editor: PatcherEditor, configuration: dict) -> None:
         if configuration[config_field] is None:
             continue
 
-        damage = configuration[config_field]
+        # Uses the default time per tick of 0.5
+        damage = configuration[config_field] / 2
 
-        # Max damage per tick
+        # Damage per tick
         actor["components"][1]["arguments"][19]["value"] = damage
         # Damage Scale
         actor["components"][1]["arguments"][28]["value"] = damage
-        # Damage of first tick. Set to half to give room for player error
-        actor["components"][2]["arguments"][19]["value"] = damage / 2
+        # Damage of first tick
+        actor["components"][2]["arguments"][19]["value"] = damage
