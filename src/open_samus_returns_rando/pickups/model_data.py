@@ -347,6 +347,13 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_darkburst/models/textures/missile_d.bctex",
         ),
     ),
+    "powerup_sonicboom": ModelData(
+        bcmdl_path="actors/items/powerup_sonicboom/models/powerup_sonicboom.bcmdl",
+        dependencies=(
+            "actors/items/powerup_sonicboom/models/powerup_sonicboom.bcmdl",
+            "actors/items/powerup_sonicboom/models/textures/missile_d.bctex",
+        ),
+    ),
 }
 
 
