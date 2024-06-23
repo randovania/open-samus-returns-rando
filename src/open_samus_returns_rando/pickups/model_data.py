@@ -326,6 +326,13 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_seekerlauncher/models/textures/missile_d.bctex",
         ),
     ),
+    "powerup_flamethrower": ModelData(
+        bcmdl_path="actors/items/powerup_flamethrower/models/powerup_flamethrower.bcmdl",
+        dependencies=(
+            "actors/items/powerup_flamethrower/models/powerup_flamethrower.bcmdl",
+            "actors/items/powerup_flamethrower/models/textures/missile_d.bctex",
+        ),
+    ),
 }
 
 
