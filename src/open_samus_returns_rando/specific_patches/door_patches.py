@@ -186,12 +186,47 @@ def _patch_one_way_doors(editor: PatcherEditor) -> None:
             properties.components[0]["arguments"][2]["value"] = False
 
 
+def _patch_tiles(editor: PatcherEditor) -> None:
+    SCENARIO_TO_DOORS = {
+        "s000_surface": ["Door004", "Door011"],
+        "s010_area1": ["Door002", "Door004", "Door012", "Door016"],
+        "s025_area2b": ["Door008"],
+        "s028_area2c": ["Door001", "Door007"],
+        "s030_area3": ["Door002", "Door005", "Door006", "Door008"],
+        "s040_area4": ["Door001", "Door006", "Door014"],
+        "s050_area5": ["Door005"],
+        "s060_area6": ["Door001"],
+        "s067_area6c": ["Door005", "Door006", "Door009"],
+        "s090_area9": ["Door012"],
+    }
+
+    for scenario, _ in SCENARIO_TO_DOORS.items():
+        scenario_file = editor.get_file(f"gui/minimaps/c10_samus/{scenario}.bmsmsd", Bmsmsd)
+        tiles = scenario_file.raw["tiles"]
+        doors = SCENARIO_TO_DOORS.get(scenario, [])
+
+        for tile_idx in range(len(tiles)):
+            icons = tiles[tile_idx]["icons"]
+            if len(icons) != 0:
+                door_tile = icons[0] if len(icons) == 1 else icons[1]
+                for door in doors:
+                    if door in door_tile["actor_name"]:
+                        door_tile["clear_condition"] = ""
+                        if "closed" in door_tile["icon"] or "charge" in door_tile["icon"]:
+                            if "left" in door_tile["icon"]:
+                                door_tile["icon"] = "doorpowerleft"
+                            else:
+                                door_tile["icon"] = "doorpowerright"
+
+
+
 def _static_door_patches(editor: PatcherEditor) -> None:
     _patch_one_way_doors(editor)
     _patch_missile_covers(editor)
     _patch_beam_bmsads(editor)
     _patch_beam_covers(editor)
     _patch_charge_doors(editor)
+    _patch_tiles(editor)
 
 
 class ActorData(Enum):

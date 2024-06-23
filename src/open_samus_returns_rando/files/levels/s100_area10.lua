@@ -208,6 +208,11 @@ function s100_area10.OnLarva_010_Generated(_ARG_0_, _ARG_1_)
   end
 end
 function s100_area10.OnMetroidDead()
+  -- Disable the intro and the camera change triggers if a Metroid has been defeated, which means that Reverse Area 8 should be enabled
+  Game.DisableTrigger("TG_Intro_Larva")
+  if Game.GetEntity("TG_ChangeCamera_IntroLarva") ~= nil then
+    Game.GetEntity("TG_ChangeCamera_IntroLarva").TRIGGER:DisableTrigger()
+  end
   if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
     if Game.GetEntity("LE_ValveQueen") ~= nil then
       Game.GetEntity("LE_ValveQueen").MODELUPDATER:SetMeshVisible("Valve", false)
@@ -217,7 +222,6 @@ function s100_area10.OnMetroidDead()
     Scenario.WriteToBlackboard("QueenDiscovered", "b", true)
     Game.AddSF(3.5, "s100_area10.ScheduledQueenRoar", "")
     for _FORV_6_, _FORV_7_ in pairs({
-      "collision_camera_008",
       "collision_camera_013",
       "collision_camera_014",
       "collision_camera_015",

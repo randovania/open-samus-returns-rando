@@ -4,7 +4,8 @@ import json
 from enum import Enum
 
 from construct import Container, ListContainer
-from mercury_engine_data_structures.formats import Bmsad, Lua
+from mercury_engine_data_structures.formats import Bmsad, Bmsmsd, Lua
+from mercury_engine_data_structures.formats.bmsmsd import TileType
 from open_samus_returns_rando.constants import get_package_name
 from open_samus_returns_rando.files import templates_path
 from open_samus_returns_rando.logger import LOG
@@ -288,12 +289,56 @@ class ActorPickup(BasePickup):
 
         script_class.ensure_files(editor)
 
+        self.patch_minimap(editor, scenario_name, actor_name)
+
         # Dependencies
         for level_pkg in pkgs_for_level:
             for model_name in model_names:
                 model_data = get_data(model_name)
                 for dep in model_data.dependencies:
                     editor.ensure_present(get_package_name(level_pkg, dep), dep)
+
+
+    def patch_minimap(self, editor: PatcherEditor, scenario_name: str, actor_name: str) -> None:
+        if scenario_name != "s110_surfaceb":
+            scenario_minimap = editor.get_file(f"gui/minimaps/c10_samus/{scenario_name}.bmsmsd", Bmsmsd)
+        else:
+            scenario_minimap = editor.get_file("gui/minimaps/c10_samus/s000_surface.bmsmsd", Bmsmsd)
+        tiles = scenario_minimap.raw["tiles"]
+
+        # find item tile
+        tile_for_item = [
+            x for x in tiles if len(x.icons) and next((y for y in x.icons if actor_name in y.actor_name), 0)
+        ]
+
+        if len(tile_for_item) == 1:
+            pickup_tile_icon = next((y for y in tile_for_item[0].icons if "item" in y.icon), None)
+
+            if not pickup_tile_icon:
+                raise ValueError("No icon found")
+
+            pickup_model = self.pickup["model"][0]
+
+            # Custom blocks are no longer attached to the pickup, so make all hidden pickups consistent and generic
+            if pickup_tile_icon.icon_priority == "HIDDEN_ITEM" or (
+                # Boss pickups are now always visible on the map without fighting them, so make icons generic
+                actor_name in {"LE_PowerUp_Springball", "LE_PowerUp_Powerbomb", "LE_Baby_Hatchling"}
+            ):
+                if tile_for_item[0]["tile_type"] == TileType.HEAT:
+                    pickup_tile_icon.icon = "itemenabledheat"
+                else:
+                    pickup_tile_icon.icon = "itemenabled"
+            # Powerups and Nothing items use a "custom" itemsphere so they update on the map
+            elif "itemsphere" in pickup_model or "powerup" in pickup_model or "babyhatchling" in pickup_model:
+                pickup_tile_icon.icon = "item_powerup"
+            # DNA uses a custom icon
+            elif "adn" in pickup_model:
+                pickup_tile_icon.icon = "item_adn"
+            else:
+                # Tanks and offworld items just use the icon with the same name as the pickup_model
+                pickup_tile_icon.icon = pickup_model
+
+
 
     def get_scenario(self) -> str:
         return self.pickup["pickup_actor"]["scenario"]

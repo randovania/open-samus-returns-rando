@@ -21,9 +21,9 @@ from open_samus_returns_rando.pickups.pickup import patch_pickups
 from open_samus_returns_rando.specific_patches import cosmetic_patches, game_patches, tunable_patches
 from open_samus_returns_rando.specific_patches.chozo_seal_patches import patch_chozo_seals
 from open_samus_returns_rando.specific_patches.door_patches import patch_doors
+from open_samus_returns_rando.specific_patches.environmental_damage import apply_constant_damage
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
 from open_samus_returns_rando.specific_patches.hint_patches import patch_hints
-from open_samus_returns_rando.specific_patches.map_icons import patch_tiles
 from open_samus_returns_rando.specific_patches.metroid_patches import patch_metroids
 from open_samus_returns_rando.specific_patches.static_fixes import apply_static_fixes
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
@@ -66,7 +66,7 @@ def validate(configuration: dict, input_exheader: Path | None) -> None:
 
 
 
-def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, configuration: dict) -> None:
+def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: Path, configuration: dict) -> None:
     LOG.info("Will patch files from %s", input_path)
 
     validate(configuration, input_exheader)
@@ -79,9 +79,6 @@ def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, c
 
     # Apply fixes
     apply_static_fixes(editor)
-
-    # Update Map Icons
-    patch_tiles(editor)
 
     # Custom pickups
     patch_custom_pickups(editor)
@@ -96,6 +93,9 @@ def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, c
 
     # Fix unheated heat rooms
     patch_heat_rooms(editor)
+
+    # Environmental Damage
+    apply_constant_damage(editor, configuration["constant_environment_damage"])
 
     # Patch door types and make shields on both sides
     patch_doors(editor, configuration["door_patches"], configuration["custom_doors"])
@@ -133,8 +133,8 @@ def patch_extracted(input_path: Path, input_exheader: Path, output_path: Path, c
     out_code = output_path.joinpath("code.bps")
     out_exheader = output_path.joinpath("exheader.bin")
     shutil.rmtree(out_romfs, ignore_errors=True)
-    shutil.rmtree(out_code, ignore_errors=True)
-    shutil.rmtree(out_exheader, ignore_errors=True)
+    out_code.unlink(missing_ok=True)
+    out_exheader.unlink(missing_ok=True)
     # this is just to clean up old version
     shutil.rmtree(out_exefs, ignore_errors=True)
 
