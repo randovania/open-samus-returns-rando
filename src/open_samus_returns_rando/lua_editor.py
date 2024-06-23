@@ -221,7 +221,7 @@ class LuaEditor:
             ("ITEM_WEAPON_POWER_BOMB", "ITEM_POWER_BOMB_TANKS"),
         ]
         for launcher, tanks in LAUNCHER_TANK_MAPPING:
-            if inventory.get(launcher) and tanks in inventory:
+            if launcher in inventory and inventory[launcher] > 0 and tanks in inventory:
                 ammo_max = "ITEM_WEAPON_" + tanks[5:].replace("TANKS", "MAX")
                 inventory[ammo_max] = inventory.pop(tanks)
 
