@@ -319,6 +319,13 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "maps/textures/chozoartifactor_s.bctex",
         ),
     ),
+    "powerup_seekerlauncher": ModelData(
+        bcmdl_path="actors/items/powerup_seekerlauncher/models/powerup_seekerlauncher.bcmdl",
+        dependencies=(
+            "actors/items/powerup_seekerlauncher/models/powerup_seekerlauncher.bcmdl",
+            "actors/items/powerup_seekerlauncher/models/textures/missile_d.bctex",
+        ),
+    ),
 }
 
 
