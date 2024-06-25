@@ -257,9 +257,8 @@ class LuaEditor:
 
 
         baby_metroid_hint = lua_util.wrap_string("Continue searching for the Baby Metroid.")
-        for hint in configuration["hints"]:
-            if "baby_metroid_hint" in hint:
-                baby_metroid_hint = lua_util.wrap_string(hint["baby_metroid_hint"]["text"])
+        if "baby_metroid_hint" in configuration:
+            baby_metroid_hint = lua_util.wrap_string(configuration["baby_metroid_hint"])
 
         replacement = {
             "new_game_inventory": final_inventory,
