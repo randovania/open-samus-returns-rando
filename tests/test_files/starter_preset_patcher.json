@@ -4237,6 +4237,11 @@
                 "actor": "LE_RandoDNA"
             },
             "text": "Metroid DNA is located in Area 5 - Tower Exterior - Red Plant Maze.\n"
+        },
+        {
+            "baby_metroid_hint": {
+                "text": "Baby noises have been reported in Surface East."
+            }
         }
     ],
     "cosmetic_patches": {
