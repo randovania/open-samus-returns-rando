@@ -32,6 +32,7 @@ Init.sLayoutUUID = TEMPLATE("layout_uuid")
 Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier") .. Init.sLayoutUUID
 Init.tBoxesSeen = 0
 Init.bEnableRoomIds = TEMPLATE("enable_room_ids")
+Init.sBabyMetroidHint = TEMPLATE("baby_metroid_hint")
 
 local orig_log = Game.LogWarn
 if TEMPLATE("enable_remote_lua") then

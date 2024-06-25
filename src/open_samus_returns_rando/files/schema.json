@@ -402,6 +402,11 @@
             },
             "default": []
         },
+        "baby_metroid_hint": {
+            "description": "Hint for where the Baby Metroid is located.",
+            "type": "string",
+            "default": {}
+        },
         "cosmetic_patches": {
             "type": "object",
             "properties": {
