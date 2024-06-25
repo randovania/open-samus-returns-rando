@@ -697,8 +697,8 @@
             "resources": [
                 [
                     {
-                        "item_id": "ITEM_OFFWORLD",
-                        "quantity": 1
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
                     }
                 ]
             ],
@@ -708,6 +708,44 @@
             },
             "model": [
                 "item_offworld"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Sent Power Grip to meep.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "another_pickup36"
+            },
+            "model": [
+                "powerup_powergrip"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Sent Speed Booster to meep.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "another_pickup37"
+            },
+            "model": [
+                "powerup_speedbooster"
             ]
         }
     ],
@@ -1144,6 +1182,30 @@
             },
             "location": {
                 "x": -6900.0,
+                "y": 2100.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup36",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -6800.0,
+                "y": 2100.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup37",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -6700.0,
                 "y": 2100.0,
                 "z": 0.0
             },
