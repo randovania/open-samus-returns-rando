@@ -113,6 +113,7 @@ function s090_area9.ElevatorSetTarget(_ARG_0_)
   end
 end
 function s090_area9.InitFromBlackboard()
+  Game.SetSceneGroupEnabledByName("sg_vignette_005", false)
   s090_area9.bAfterOmegasKilledMusicChange = false
   s090_area9.AllOmegasDeadCallback()
   s090_area9.OnFansInit()
