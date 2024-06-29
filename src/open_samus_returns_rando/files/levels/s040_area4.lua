@@ -341,6 +341,7 @@ function s040_area4.SetupDebugGameBlackboard()
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT", "f", 0)
 end
 function s040_area4.InitFromBlackboard()
+  Game.SetSceneGroupEnabledByName("sg_vignette_003", false)
   Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_001", true)
   Game.SetSceneGroupEnabledByName("sg_Hazardous_Puddle_002", true)
   if Blackboard.GetProp("s040_area4", "entity_LE_HazarousPool_001_enabled") == nil then
