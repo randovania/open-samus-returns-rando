@@ -334,8 +334,11 @@ class ActorPickup(BasePickup):
             # DNA uses a custom icon
             elif "adn" in pickup_model:
                 pickup_tile_icon.icon = "item_adn"
+            # Offworld powerups use the offworld model
+            elif "offworld" in pickup_model:
+                pickup_tile_icon.icon = "item_offworld"
             else:
-                # Tanks and offworld items just use the icon with the same name as the pickup_model
+                # Tanks use their respective tank icon
                 pickup_tile_icon.icon = pickup_model
 
 

@@ -291,32 +291,53 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_missilelauncher/models/textures/missile_e.bctex",
         ),
     ),
-    "item_offworld": ModelData(
-        bcmdl_path="actors/items/item_offworld/models/item_offworld.bcmdl",
+    "offworld_generic": ModelData(
+        bcmdl_path="actors/items/offworld_generic/models/offworld_generic.bcmdl",
         dependencies=(
-            "actors/items/item_offworld/models/item_offworld.bcmdl",
+            "actors/items/offworld_generic/models/offworld_generic.bcmdl",
             "maps/textures/chozoartifactor_o.bctex",
         ),
     ),
-    "powerup_icemissile": ModelData(
-        bcmdl_path="actors/items/powerup_icemissile/models/powerup_icemissile.bcmdl",
+    "offworld_icemissile": ModelData(
+        bcmdl_path="actors/items/offworld_icemissile/models/offworld_icemissile.bcmdl",
         dependencies=(
-            "actors/items/powerup_icemissile/models/powerup_icemissile.bcmdl",
-            "actors/items/powerup_icemissile/models/textures/missile_d.bctex",
+            "actors/items/offworld_icemissile/models/offworld_icemissile.bcmdl",
+            "actors/items/offworld_icemissile/models/textures/missile_d.bctex",
         ),
     ),
-    "powerup_powergrip": ModelData(
-        bcmdl_path="actors/items/powerup_powergrip/models/powerup_powergrip.bcmdl",
+    "offworld_powergrip": ModelData(
+        bcmdl_path="actors/items/offworld_powergrip/models/offworld_powergrip.bcmdl",
         dependencies=(
-            "actors/items/powerup_powergrip/models/powerup_powergrip.bcmdl",
-            "actors/items/powerup_powergrip/models/textures/itempowergrip_d.bctex",
+            "actors/items/offworld_powergrip/models/offworld_powergrip.bcmdl",
+            "actors/items/offworld_powergrip/models/textures/itempowergrip_d.bctex",
         ),
     ),
-    "powerup_speedbooster": ModelData(
-        bcmdl_path="actors/items/powerup_speedbooster/models/powerup_speedbooster.bcmdl",
+    "offworld_speedbooster": ModelData(
+        bcmdl_path="actors/items/offworld_speedbooster/models/offworld_speedbooster.bcmdl",
         dependencies=(
-            "actors/items/powerup_speedbooster/models/powerup_speedbooster.bcmdl",
+            "actors/items/offworld_speedbooster/models/offworld_speedbooster.bcmdl",
             "maps/textures/chozoartifactor_s.bctex",
+        ),
+    ),
+    "offworld_missile": ModelData(
+        bcmdl_path="actors/items/offworld_missile/models/offworld_missile.bcmdl",
+        dependencies=(
+            "actors/items/offworld_missile/models/offworld_missile.bcmdl",
+            "actors/items/offworld_missile/models/textures/missile_d.bctex",
+        ),
+    ),
+    "offworld_beam": ModelData(
+        bcmdl_path="actors/items/offworld_beam/models/offworld_beam.bcmdl",
+        dependencies=(
+            "actors/items/offworld_beam/models/offworld_beam.bcmdl",
+            "actors/items/offworld_beam/models/textures/offworldbeam_d.bctex",
+        ),
+    ),
+    "offworld_suit": ModelData(
+        bcmdl_path="actors/items/offworld_suit/models/offworld_suit.bcmdl",
+        dependencies=(
+            "actors/items/offworld_suit/models/offworld_suit.bcmdl",
+            "actors/items/offworld_suit/models/textures/offworldsuit_d.bctex",
         ),
     ),
 }
