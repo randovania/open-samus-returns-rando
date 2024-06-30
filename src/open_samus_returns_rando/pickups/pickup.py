@@ -336,7 +336,7 @@ class ActorPickup(BasePickup):
                 pickup_tile_icon.icon = "item_adn"
             # Offworld powerups use the offworld model
             elif "offworld" in pickup_model:
-                pickup_tile_icon.icon = "offworld_generic"
+                pickup_tile_icon.icon = "item_offworld"
             else:
                 # Tanks use their respective tank icon
                 pickup_tile_icon.icon = pickup_model
