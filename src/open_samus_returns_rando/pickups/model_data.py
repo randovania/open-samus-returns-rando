@@ -333,6 +333,13 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/offworld_beam/models/textures/offworldbeam_d.bctex",
         ),
     ),
+    "offworld_suit": ModelData(
+        bcmdl_path="actors/items/offworld_suit/models/offworld_suit.bcmdl",
+        dependencies=(
+            "actors/items/offworld_suit/models/offworld_suit.bcmdl",
+            "actors/items/offworld_suit/models/textures/offworldsuit_d.bctex",
+        ),
+    ),
 }
 
 
