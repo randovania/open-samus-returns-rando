@@ -766,6 +766,25 @@
             "model": [
                 "offworld_missileupgrade"
             ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Sent Beam to meep.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "another_pickup39"
+            },
+            "model": [
+                "offworld_beam"
+            ]
         }
     ],
     "energy_per_tank": 100,
@@ -1225,6 +1244,30 @@
             },
             "location": {
                 "x": -6700.0,
+                "y": 2100.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup38",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -6600.0,
+                "y": 2100.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "another_pickup39",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -6500.0,
                 "y": 2100.0,
                 "z": 0.0
             },
