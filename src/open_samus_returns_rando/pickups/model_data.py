@@ -319,11 +319,11 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "maps/textures/chozoartifactor_s.bctex",
         ),
     ),
-    "offworld_missileupgrade": ModelData(
-        bcmdl_path="actors/items/offworld_missileupgrade/models/offworld_missileupgrade.bcmdl",
+    "offworld_missile": ModelData(
+        bcmdl_path="actors/items/offworld_missile/models/offworld_missile.bcmdl",
         dependencies=(
-            "actors/items/offworld_missileupgrade/models/offworld_missileupgrade.bcmdl",
-            "actors/items/offworld_missileupgrade/models/textures/missile_d.bctex",
+            "actors/items/offworld_missile/models/offworld_missile.bcmdl",
+            "actors/items/offworld_missile/models/textures/missile_d.bctex",
         ),
     ),
     "offworld_beam": ModelData(
