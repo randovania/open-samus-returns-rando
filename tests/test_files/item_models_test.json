@@ -688,7 +688,7 @@
                 "actor": "another_pickup34"
             },
             "model": [
-                "powerup_icemissile"
+                "offworld_icemissile"
             ]
         },
         {
@@ -707,7 +707,7 @@
                 "actor": "another_pickup35"
             },
             "model": [
-                "item_offworld"
+                "offworld_generic"
             ]
         },
         {
@@ -726,7 +726,7 @@
                 "actor": "another_pickup36"
             },
             "model": [
-                "powerup_powergrip"
+                "offworld_powergrip"
             ]
         },
         {
@@ -745,7 +745,26 @@
                 "actor": "another_pickup37"
             },
             "model": [
-                "powerup_speedbooster"
+                "offworld_speedbooster"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Sent Missile Upgrade to meep.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "another_pickup38"
+            },
+            "model": [
+                "offworld_missileupgrade"
             ]
         }
     ],
