@@ -85,7 +85,14 @@ function RandomizerPowerup.MarkLocationCollected(actorOrName)
         return
     end
     local playerSection = Game.GetPlayerBlackboardSectionName()
-    local propName = RandomizerPowerup.PropertyForLocation(string.format("%s_%s", Scenario.CurrentScenarioID, name))
+    local currentScenario = Scenario.CurrentScenarioID
+    local propScenario = currentScenario
+
+    if currentScenario == "s110_surfaceb" and (name == "LE_Item_002" or name == "LE_Item_003") then
+        propScenario = "s000_surface"
+    end
+
+    local propName = RandomizerPowerup.PropertyForLocation(string.format("%s_%s", propScenario, name))
     Blackboard.SetProp(playerSection, propName, "b", true)
 end
 
