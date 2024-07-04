@@ -300,6 +300,26 @@ def patch_a1_teleporter_crumbles(editor: PatcherEditor) -> None:
     area1.raw["block_groups"][15]["types"][0]["blocks"][0]["respawn_time"] = 0.0
 
 
+def disable_vignettes(editor: PatcherEditor) -> None:
+    scenario_block_sg = {
+        # Exterior Alpha Bomb Block
+        "s010_area1": [6],
+        # Beam Burst Shot Blocks
+        "s030_area3": [5],
+        # Lower Chozo Seal Bomb Blocks
+        "s040_area4": [27],
+        # Middle Save Station Water Bomb Blocks
+        "s090_area9": [66],
+    }
+    for scenario_name, block_groups in scenario_block_sg.items():
+        bmsbk = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmsbk", Bmsbk)
+        for block_group in block_groups:
+            blocks = bmsbk.raw["block_groups"][block_group]["types"][0]["blocks"]
+            for block in range(len(blocks)):
+                # Separate the vignette from the block
+                blocks[block]["name2"] = ""
+
+
 def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
@@ -313,3 +333,4 @@ def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_area7_item(editor)
     patch_a4_collision(editor)
     patch_a1_teleporter_crumbles(editor)
+    disable_vignettes(editor)
