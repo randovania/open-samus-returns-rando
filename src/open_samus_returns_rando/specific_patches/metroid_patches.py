@@ -36,14 +36,14 @@ def _patch_metroids(editor: PatcherEditor) -> None:
 
         drop_component = metroid_bmsad.raw["components"]["DROP"]
         # weird case where some fields are defined two times
-        if type(drop_component["fields"]) == ListContainer:
+        if type(drop_component["fields"]) is ListContainer:
             drop_component["fields"][0]["value"]["value"] = 0.0
         else:
             drop_component["fields"]["fADNProbability"]["value"] = 0.0
 
         ai_component = metroid_bmsad.raw["components"]["AI"]
         # weird case where some fields are defined two times
-        if type(ai_component["fields"]) == ListContainer:
+        if type(ai_component["fields"]) is ListContainer:
             ai_component["fields"][94]["value"]["value"] = False
         else:
             ai_component["fields"]["bRemovePlayerInputOnDeath"]["value"] = False
