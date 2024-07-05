@@ -37,7 +37,11 @@ def lua_cosmetics(configuration: dict) -> str:
 
 
 def music_shuffle(editor: PatcherEditor, configuration: dict) -> None:
+    temp_dict: dict = {}
+    for f in list(editor.get_asset_names_in_folder("sounds/streams/music/")):
+        temp_dict[f] = editor.get_raw_asset(f)
+
     for original, new in configuration["music_shuffle_dict"].items():
         original_track = f"sounds/streams/music/{original}.bcwav"
-        new_track = editor.get_raw_asset(f"sounds/streams/music/{new}.bcwav")
+        new_track = temp_dict[f"sounds/streams/music/{new}.bcwav"]
         editor.replace_asset(original_track, new_track)
