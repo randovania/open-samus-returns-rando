@@ -314,6 +314,10 @@ def disable_vignettes(editor: PatcherEditor) -> None:
         "s040_area4": [
             {"block_group": 27, "cc": ["006"], "vignette_models": [46617345, 354988048]}
         ],
+        # Diggernaut Bomb Blocks
+        "s070_area7": [
+            {"block_group": 52, "cc": ["034"], "vignette_models": [1941338226]}
+        ],
         # Middle Save Station Water Bomb Blocks
         "s090_area9": [
             {"block_group": 66, "cc": ["007"], "vignette_models": [3224282959]}
