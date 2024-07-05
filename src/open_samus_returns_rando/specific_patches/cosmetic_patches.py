@@ -6,6 +6,7 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor
 def patch_cosmetics(editor: PatcherEditor, configuration: dict) -> None:
     tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
     tunable_cosmetics(tunables, configuration)
+    music_shuffle(editor, configuration)
 
 
 def tunable_cosmetics(tunables: Bmtun, configuration: dict) -> None:
@@ -33,3 +34,10 @@ def lua_cosmetics(configuration: dict) -> str:
     }
 
     return lua_util.replace_lua_template("cosmetics.lua", replacement)
+
+
+def music_shuffle(editor: PatcherEditor, configuration: dict) -> None:
+    for original, new in configuration["music_shuffle_dict"].items():
+        original_track = f"sounds/streams/music/{original}.bcwav"
+        new_track = editor.get_raw_asset(f"sounds/streams/music/{new}.bcwav")
+        editor.replace_asset(original_track, new_track)
