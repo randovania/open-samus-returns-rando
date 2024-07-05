@@ -2,7 +2,7 @@ import copy
 import typing
 
 from construct import Container, ListContainer
-from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmscc, Bmtun
+from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmscc, Bmssd, Bmtun
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 MULTI_ROOM_GAMMAS = [
@@ -300,6 +300,55 @@ def patch_a1_teleporter_crumbles(editor: PatcherEditor) -> None:
     area1.raw["block_groups"][15]["types"][0]["blocks"][0]["respawn_time"] = 0.0
 
 
+def disable_vignettes(editor: PatcherEditor) -> None:
+    scenario_block_sg: dict[str, list[dict[str, typing.Any]]] = {
+        # Exterior Alpha Bomb Block
+        "s010_area1": [
+            {"block_group": 6, "cc": ["017", "018"], "vignette_models": [2177967912]},
+        ],
+        # Beam Burst Shot Blocks
+        "s030_area3": [
+            {"block_group": 5, "cc": ["036"], "vignette_models": [1239739760, 2986218869]},
+        ],
+        # Lower Chozo Seal Bomb Blocks
+        "s040_area4": [
+            {"block_group": 27, "cc": ["006"], "vignette_models": [46617345, 354988048]}
+        ],
+        # Diggernaut Bomb Blocks
+        "s070_area7": [
+            {"block_group": 52, "cc": ["034"], "vignette_models": [1941338226]}
+        ],
+        # Middle Save Station Water Bomb Blocks
+        "s090_area9": [
+            {"block_group": 66, "cc": ["007"], "vignette_models": [3224282959]}
+        ],
+    }
+    for scenario_name, vignette_objects in scenario_block_sg.items():
+        for vignette_object in vignette_objects:
+            block_group = vignette_object["block_group"]
+
+            bmsbk = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmsbk", Bmsbk)
+            blocks = bmsbk.raw["block_groups"][block_group]["types"][0]["blocks"]
+            for block in range(len(blocks)):
+                # Separate the vignette from the block
+                blocks[block]["name2"] = ""
+
+            bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
+            cc_group = bmssd.raw["unk_structs_b"]
+            vignette_models = vignette_object["vignette_models"]
+            for camera in vignette_object["cc"]:
+                cc_name = "sg_SubArea_collision_camera_" + camera
+                for group in cc_group:
+                    # Check for the cc_name
+                    if group["str1"] == cc_name:
+                        for model in group["struct3"][0]["struct5"]:
+                            idx = group["struct3"][0]["struct5"].index(model)
+                            for vignette in vignette_models:
+                                # Remove the model to prevent it from loading
+                                if model["int6"] == vignette:
+                                    group["struct3"][0]["struct5"].pop(idx)
+
+
 def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
@@ -313,3 +362,4 @@ def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_area7_item(editor)
     patch_a4_collision(editor)
     patch_a1_teleporter_crumbles(editor)
+    disable_vignettes(editor)
