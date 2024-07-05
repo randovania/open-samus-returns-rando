@@ -33,6 +33,7 @@ Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier") .. Init.sLayout
 Init.tBoxesSeen = 0
 Init.bEnableRoomIds = TEMPLATE("enable_room_ids")
 Init.sBabyMetroidHint = TEMPLATE("baby_metroid_hint")
+Init.sSetDifficulty = TEMPLATE("set_difficulty")
 
 local orig_log = Game.LogWarn
 if TEMPLATE("enable_remote_lua") then
@@ -102,6 +103,11 @@ function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
     Game.LoadScenario("c10_samus", Init.sStartingScenario, Init.sStartingActor, "samus", 1)
     if Init.bRevealMap then
       Game.AddGUISF(0.0, Game.ScanVisitDiscoverEverything, "", "")
+    end
+    if Init.sSetDifficulty == "Hard" then
+      Game.ToggleForceHardMode()
+    elseif Init.sSetDifficulty == "Fusion" then
+      Game.ToggleForceFusionMode()
     end
     Game.SaveGame("savedata", "", Init.sStartingActor, true)
   end

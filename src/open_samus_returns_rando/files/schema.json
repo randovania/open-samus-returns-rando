@@ -524,6 +524,16 @@
             ],
             "default": "pal",
             "description": "This is only required if enable_remote_lua is true to copy the NTSC or PAL bps patch."
+        },
+        "difficulty": {
+            "type": "string",
+            "enum": [
+                "Normal",
+                "Hard",
+                "Fusion"
+            ],
+            "default": "Normal",
+            "description": "Set the difficulty of the file."
         }
     },
     "required": [

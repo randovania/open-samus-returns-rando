@@ -260,6 +260,10 @@ class LuaEditor:
         if "baby_metroid_hint" in configuration:
             baby_metroid_hint = lua_util.wrap_string(configuration["baby_metroid_hint"])
 
+        difficulty = None
+        if "difficulty" in configuration:
+            difficulty = lua_util.wrap_string(configuration["difficulty"])
+
         replacement = {
             "new_game_inventory": final_inventory,
             "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
@@ -273,7 +277,8 @@ class LuaEditor:
             "enable_room_ids": False if cosmetic_options["enable_room_name_display"] == "NEVER" else True,
             "layout_uuid": layout_uuid,
             "enable_remote_lua": enable_remote_lua,
-            "baby_metroid_hint": baby_metroid_hint
+            "baby_metroid_hint": baby_metroid_hint,
+            "set_difficulty": difficulty,
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)
