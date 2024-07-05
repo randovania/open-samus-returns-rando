@@ -91,6 +91,8 @@ s070_area7.tDNAScanLandmarks = {
   }
 }
 function s070_area7.InitFromBlackboard()
+  Game.SetSubAreaCurrentSetup("collision_camera_037", "Omega_Enabled", true)
+  Scenario.WriteToBlackboard("OmegaDiscovered", "b", true)
   if Blackboard.GetProp("s070_area7", "entity_LE_HazarousPool_001_enabled") == nil then
     Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(true)
     Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(false)
@@ -140,8 +142,6 @@ function s070_area7.OnHazarousPoolDrain(_ARG_0_)
   --  Game.SetSubAreaCurrentSetup("collision_camera_044", "Hazardous_Phase_03", true)
   --  Game.SetSubAreaCurrentSetup("collision_camera_042", "Hazardous_Phase_03", true)
   --end
-  Game.SetSubAreaCurrentSetup("collision_camera_037", "Omega_Enabled", true)
-  Scenario.WriteToBlackboard("OmegaDiscovered", "b", true)
   Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_A", "Hazardous_Phase_03", true)
   Game.SetSubAreaCurrentSetup("collision_camera_051", "Hazardous_Phase_03", true)
   Game.SetSubAreaCurrentSetup("collision_camera_060", "Hazardous_Phase_03", true)
