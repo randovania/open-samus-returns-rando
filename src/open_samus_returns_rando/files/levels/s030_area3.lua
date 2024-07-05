@@ -236,7 +236,6 @@ function s030_area3.ElevatorSetTarget(_ARG_0_)
   end
 end
 function s030_area3.InitFromBlackboard()
-  Game.SetSceneGroupEnabledByName("sg_vignette_03", false)
   if Game.GetEntity("LE_Event_03") ~= nil and Scenario.ReadFromBlackboard("SpecialEvent03Launched") then
     Game.GetEntity("LE_Event_03"):Disable()
   end

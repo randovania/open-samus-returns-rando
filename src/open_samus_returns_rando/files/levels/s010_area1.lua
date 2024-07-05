@@ -38,7 +38,6 @@ function s010_area1.SetupDebugGameBlackboard()
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT", "f", 0)
 end
 function s010_area1.InitFromBlackboard()
-  Game.SetSceneGroupEnabledByName("sg_vignette_201", false)
   if Scenario.ReadFromBlackboard("Alpha_PreSpawn11Event", false) then
     if Game.GetEntity("LE_Alpha_PreSpawn11Event") ~= nil then
       Game.GetEntity("LE_Alpha_PreSpawn11Event"):DelMe()
