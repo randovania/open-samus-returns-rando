@@ -301,7 +301,7 @@ def patch_a1_teleporter_crumbles(editor: PatcherEditor) -> None:
 
 
 def disable_vignettes(editor: PatcherEditor) -> None:
-    scenario_block_sg = {
+    scenario_block_sg: dict[str, list[dict[str, typing.Any]]] = {
         # Exterior Alpha Bomb Block
         "s010_area1": [
             {"block_group": 6, "cc": ["017", "018"], "vignette_models": [2177967912]},
@@ -336,14 +336,14 @@ def disable_vignettes(editor: PatcherEditor) -> None:
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
             cc_group = bmssd.raw["unk_structs_b"]
             vignette_models = vignette_object["vignette_models"]
-            for camera in vignette_object["cc"]: # type: ignore
+            for camera in vignette_object["cc"]:
                 cc_name = "sg_SubArea_collision_camera_" + camera
                 for group in cc_group:
                     # Check for the cc_name
                     if group["str1"] == cc_name:
                         for model in group["struct3"][0]["struct5"]:
                             idx = group["struct3"][0]["struct5"].index(model)
-                            for vignette in vignette_models: # type: ignore
+                            for vignette in vignette_models:
                                 # Remove the model to prevent it from loading
                                 if model["int6"] == vignette:
                                     group["struct3"][0]["struct5"].pop(idx)
