@@ -499,7 +499,7 @@
                     }
                 },
                 "music_shuffle_dict": {
-                    "description": "A dictionary mapping music tracks to the output of music mode.",
+                    "description": "A dictionary mapping of music tracks where the keys get swapped with the values.",
                     "type": "object",
                     "patternProperties": {
                         ".*": {
