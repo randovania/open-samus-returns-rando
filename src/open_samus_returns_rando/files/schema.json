@@ -297,6 +297,11 @@
                     "type": "boolean",
                     "description": "Removes the wall between the Queen and Baby, allowing access into Area 8 from Surface West.",
                     "default": false
+                },
+                "respawning_blocks": {
+                    "type": "boolean",
+                    "description": "When enabled, all breakable blocks, except Crumble blocks, will not respawn until a reload to prevent softlocks.",
+                    "default": false
                 }
             },
             "additionalProperties": false

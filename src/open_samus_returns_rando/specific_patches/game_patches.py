@@ -1,5 +1,6 @@
 from construct import Container
 from mercury_engine_data_structures.formats import Bmsad, Bmsbk
+from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
@@ -14,6 +15,7 @@ def apply_game_patches(editor: PatcherEditor, configuration: dict) -> None:
     _remove_grapple_blocks(editor, configuration)
     _patch_crumble_blocks(editor, configuration)
     _patch_reverse_area8(editor, configuration)
+    _disable_respawning_blocks(editor, configuration)
 
 
 def _remove_pb_weaknesses(editor: PatcherEditor, configuration: dict) -> None:
@@ -124,3 +126,14 @@ def _patch_reverse_area8(editor: PatcherEditor, configuration: dict) -> None:
         editor.remove_entity(
             {"scenario": "s100_area10", "layer": 9, "actor": "LE_ValveQueen"}
         )
+
+
+def _disable_respawning_blocks(editor: PatcherEditor, configuration: dict) -> None:
+    if configuration["respawning_blocks"]:
+        for scenario_name in ALL_SCENARIOS:
+            bmsbk = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmsbk", Bmsbk)
+            block_groups = bmsbk.raw["block_groups"]
+            for block_group in block_groups:
+                if block_group["types"][0]["block_type"] != "weight":
+                    for blocks in block_group["types"][0]["blocks"]:
+                        blocks["respawn_time"] = 0.0
