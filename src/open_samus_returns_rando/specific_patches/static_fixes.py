@@ -317,7 +317,7 @@ def disable_vignettes(editor: PatcherEditor) -> None:
         ],
         # Middle Save Station Water Bomb Blocks
         "s090_area9": [
-            {"block_group": 66, "cc": ["007"], "vignette_models": [3224282959]}
+            {"block_group": 66, "cc": ["007"], "vignette_models": [3224282959, 1]}
         ],
     }
     for scenario_name, vignette_objects in scenario_block_sg.items():
@@ -331,19 +331,21 @@ def disable_vignettes(editor: PatcherEditor) -> None:
                 blocks[block]["name2"] = ""
 
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
-            cc_group = bmssd.raw["unk_structs_b"]
+            sg_group = bmssd.raw["unk_structs_b"]
             vignette_models = vignette_object["vignette_models"]
             for camera in vignette_object["cc"]:
                 cc_name = "sg_SubArea_collision_camera_" + camera
-                for group in cc_group:
+                for sg in sg_group:
                     # Check for the cc_name
-                    if group["str1"] == cc_name:
-                        for model in group["struct3"][0]["struct5"]:
-                            idx = group["struct3"][0]["struct5"].index(model)
-                            for vignette in vignette_models:
-                                # Remove the model to prevent it from loading
-                                if model["int6"] == vignette:
-                                    group["struct3"][0]["struct5"].pop(idx)
+                    if sg["str1"] == cc_name:
+                        for cc_group in range(len(sg["struct3"])):
+                            model_group = sg["struct3"][cc_group]["struct5"]
+                            for model in model_group:
+                                idx = model_group.index(model)
+                                for vignette in vignette_models:
+                                    # Remove the model to prevent it from loading
+                                    if model["int6"] == vignette:
+                                        model_group.pop(idx)
 
 
 def apply_static_fixes(editor: PatcherEditor) -> None:
