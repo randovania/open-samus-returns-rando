@@ -194,13 +194,10 @@ def increase_pb_drop_chance(editor: PatcherEditor) -> None:
         drop = actor_bmsad.raw["components"]["DROP"]["fields"]
         # Gamma is special as its DROP component is laid out differently
         if actor in ["gamma", "gammaevolved"]:
-            drop[8]["value"]["value"] = 0.1
-        # The rest of the Metroids
-        elif drop["fPowerBombProbability"]["value"] == 0.0:
-            drop["fPowerBombProbability"]["value"] = 0.1
-        # All other enemies excluding Blobthrower
+            drop[8]["value"]["value"] = 0.2
+        # All other enemies and Metroid excluding Blobthrower
         else:
-            drop["fPowerBombProbability"]["value"] *= 2
+            drop["fPowerBombProbability"]["value"] = 0.2
 
 
 def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
