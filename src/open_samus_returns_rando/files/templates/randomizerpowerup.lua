@@ -51,6 +51,7 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName)
 
     Scenario.UpdateProgressiveItemModels()
     if actorOrName ~= nil then
+        RandomizerPowerup.ActivateSpecialEnergy(actorOrName)
         RandomizerPowerup.MarkLocationCollected(actorOrName)
     end
     RandomizerPowerup.IncrementInventoryIndex()
@@ -94,6 +95,20 @@ function RandomizerPowerup.MarkLocationCollected(actorOrName)
 
     local propName = RandomizerPowerup.PropertyForLocation(string.format("%s_%s", propScenario, name))
     Blackboard.SetProp(playerSection, propName, "b", true)
+end
+
+function RandomizerPowerup.ActivateSpecialEnergy(actorOrName)
+    local name = actorOrName.sName
+    local cloud = ""
+    if name ~= nil then
+        if string.sub(name, 0, 8) == "LE_Power" then
+            cloud = string.sub(name, 11)
+        -- SuperMissile actor name has a typo, so explicity set the value of cloud
+        elseif name == "LE_PoweUp_SuperMissile" then
+            cloud = "_SuperMissile"
+        end
+        SpecialEnergyCloud.ActivateSpecialEnergy("TG_SpecialEnergyCloud" .. cloud)
+    end
 end
 
 function RandomizerPowerup.ObjectiveComplete()
