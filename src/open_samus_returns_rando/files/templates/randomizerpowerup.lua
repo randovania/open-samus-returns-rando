@@ -97,29 +97,22 @@ function RandomizerPowerup.MarkLocationCollected(actorOrName)
     Blackboard.SetProp(playerSection, propName, "b", true)
 end
 
-local AeionAbilityClouds = {
-    {"s000_surface", "LE_SpecialAbility_ScanningPulse"},
-    {"s028_area2c", "LE_SpecialAbility_EnergyShield"},
-    {"s030_area3", "LE_SpecialAbility_EnergyWave"},
-    {"s060_area6", "LE_SpecialAbility_PhaseDisplacement"},
-}
-
 function RandomizerPowerup.ActivateSpecialEnergy(actorOrName)
     local name = actorOrName.sName
     local cloud = "TG_SpecialEnergyCloud"
-    local trigger = cloud .. string.sub(name, 11)
 
     -- Powerups
-    if string.sub(name, 0, 8) == "LE_Power" and trigger ~= nil then
-        SpecialEnergyCloud.ActivateSpecialEnergy(trigger)
-    -- The Super Missile actor name has a typo, so explicity activate its cloud
-    elseif name == "LE_PoweUp_SuperMissile" then
-        SpecialEnergyCloud.ActivateSpecialEnergy(cloud .. "_SuperMissile")
+    if string.sub(name, 0, 7) == "LE_Powe" then
+        local powerup = string.find(name, "_", 4)
+        local trigger = cloud .. string.sub(name, powerup)
+        if Game.GetEntity(trigger) ~= nil then
+            SpecialEnergyCloud.ActivateSpecialEnergy(trigger)
+        end
     end
 
     -- Aeion abilities
-    for _, mapping in ipairs(AeionAbilityClouds) do
-        if mapping[1] == Scenario.CurrentScenarioID and mapping[2] == name then
+    if string.sub(name, 0, 17) == "LE_SpecialAbility" then
+        if Game.GetEntity(name) ~= nil then
             SpecialEnergyCloud.ActivateSpecialEnergy(cloud)
         end
     end
