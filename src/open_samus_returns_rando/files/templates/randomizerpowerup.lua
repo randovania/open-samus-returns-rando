@@ -51,8 +51,7 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName)
 
     Scenario.UpdateProgressiveItemModels()
     if actorOrName ~= nil then
-        RandomizerPowerup.ActivateSpecialEnergy(actorOrName)
-        RandomizerPowerup.MarkLocationCollected(actorOrName)
+        RandomizerPowerup.GetActorName(actorOrName)
     end
     RandomizerPowerup.IncrementInventoryIndex()
     RL.UpdateRDVClient(false)
@@ -72,7 +71,7 @@ function RandomizerPowerup.PropertyForLocation(actorOrName)
     return "c_" .. actorOrName
 end
 
-function RandomizerPowerup.MarkLocationCollected(actorOrName)
+function RandomizerPowerup.GetActorName(actorOrName)
     local name
     -- normal pickups
     if actorOrName.sName ~= nil then
@@ -85,6 +84,11 @@ function RandomizerPowerup.MarkLocationCollected(actorOrName)
     if name == nil then
         return
     end
+    RandomizerPowerup.MarkLocationCollected(name)
+    RandomizerPowerup.ActivateSpecialEnergy(name)
+end
+
+function RandomizerPowerup.MarkLocationCollected(name)
     local playerSection = Game.GetPlayerBlackboardSectionName()
     local currentScenario = Scenario.CurrentScenarioID
     local propScenario = currentScenario
@@ -97,8 +101,7 @@ function RandomizerPowerup.MarkLocationCollected(actorOrName)
     Blackboard.SetProp(playerSection, propName, "b", true)
 end
 
-function RandomizerPowerup.ActivateSpecialEnergy(actorOrName)
-    local name = actorOrName.sName
+function RandomizerPowerup.ActivateSpecialEnergy(name)
     local cloud = "TG_SpecialEnergyCloud"
 
     -- Powerups
