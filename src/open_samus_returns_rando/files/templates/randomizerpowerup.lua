@@ -129,7 +129,10 @@ function RandomizerPowerup.ObjectiveComplete()
         })
         if baby > 0 then
             GUI.LaunchMessage("All Metroid DNA has been collected!\nThe path to Proteus Ridley has been opened in Surface West!",
-                "RandomizerPowerup.Dummy", "")
+            "RandomizerPowerup.Dummy", "")
+            if Scenario.CurrentScenarioID == "s110_surfaceb" then
+                Game.PlayMusicStream(0, "streams/music/k_crateria99.wav", -1, -1, -1, 2, 2, 1)
+            end
         elseif baby == 0 then
             GUI.LaunchMessage("All Metroid DNA has been collected!\n" .. Init.sBabyMetroidHint,
                 "RandomizerPowerup.Dummy", "")
