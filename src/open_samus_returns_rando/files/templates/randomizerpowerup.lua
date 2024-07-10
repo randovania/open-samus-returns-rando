@@ -51,7 +51,7 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName)
 
     Scenario.UpdateProgressiveItemModels()
     if actorOrName ~= nil then
-        RandomizerPowerup.MarkLocationCollected(actorOrName)
+        RandomizerPowerup.PostCollectionAdjustments(actorOrName)
     end
     RandomizerPowerup.IncrementInventoryIndex()
     RL.UpdateRDVClient(false)
@@ -71,7 +71,7 @@ function RandomizerPowerup.PropertyForLocation(actorOrName)
     return "c_" .. actorOrName
 end
 
-function RandomizerPowerup.MarkLocationCollected(actorOrName)
+function RandomizerPowerup.PostCollectionAdjustments(actorOrName)
     local name
     -- normal pickups
     if actorOrName.sName ~= nil then
@@ -84,6 +84,11 @@ function RandomizerPowerup.MarkLocationCollected(actorOrName)
     if name == nil then
         return
     end
+    RandomizerPowerup.MarkLocationCollected(name)
+    RandomizerPowerup.ActivateSpecialEnergy(name)
+end
+
+function RandomizerPowerup.MarkLocationCollected(name)
     local playerSection = Game.GetPlayerBlackboardSectionName()
     local currentScenario = Scenario.CurrentScenarioID
     local propScenario = currentScenario
@@ -94,6 +99,22 @@ function RandomizerPowerup.MarkLocationCollected(actorOrName)
 
     local propName = RandomizerPowerup.PropertyForLocation(string.format("%s_%s", propScenario, name))
     Blackboard.SetProp(playerSection, propName, "b", true)
+end
+
+function RandomizerPowerup.ActivateSpecialEnergy(name)
+    local cloud = "TG_SpecialEnergyCloud"
+
+    -- Powerups
+    if string.sub(name, 0, 7) == "LE_Powe" then
+        local powerup = string.find(name, "_", 4)
+        local trigger = cloud .. string.sub(name, powerup)
+        if Game.GetEntity(trigger) ~= nil then
+            SpecialEnergyCloud.ActivateSpecialEnergy(trigger)
+        end
+    -- Aeion abilities
+    elseif string.sub(name, 0, 17) == "LE_SpecialAbility" then
+        SpecialEnergyCloud.ActivateSpecialEnergy(cloud)
+    end
 end
 
 function RandomizerPowerup.ObjectiveComplete()
