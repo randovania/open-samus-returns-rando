@@ -60,6 +60,7 @@ function s110_surfaceb.ElevatorSetTarget(_ARG_0_)
   GUI.ElevatorSetTarget("s000_surface_elevator", false)
 end
 function s110_surfaceb.InitFromBlackboard()
+  s110_surfaceb.SetLowModelsVisibility(false)
 end
 function s110_surfaceb.OnReloaded()
 end
