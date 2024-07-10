@@ -293,6 +293,7 @@ class LuaEditor:
         scenario_lua_content += "\n" + self._progressive_models
         lua_util.replace_script_with_content(editor, "system/scripts/scenario", scenario_lua_content)
 
+        lua_util.replace_script(editor, "actors/characters/arachnus/scripts/arachnus", "custom/arachnus.lua")
         lua_util.replace_script(editor, "actors/props/samusship/scripts/samusship", "custom/ship.lua")
         lua_util.replace_script(editor, "actors/props/savestation/scripts/savestation", "custom/savestation.lua")
         lua_util.replace_script(editor, "actors/props/heatzone/scripts/heatzone", "custom/heatzone.lua")
