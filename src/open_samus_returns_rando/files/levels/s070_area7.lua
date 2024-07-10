@@ -108,6 +108,7 @@ end
 function s070_area7.OnReloaded()
 end
 function s070_area7.OnExit()
+  s070_area7.SetLowModelsVisibility(false)
 end
 function s070_area7.OnEnter_ActivationDNA_001()
   -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA_001", 1)

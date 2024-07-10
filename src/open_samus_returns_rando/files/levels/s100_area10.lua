@@ -101,6 +101,7 @@ end
 function s100_area10.OnReloaded()
 end
 function s100_area10.OnExit()
+  s070_area7.SetLowModelsVisibility(false)
 end
 function s100_area10.OnEnter_ActivationTeleport_10_01()
   Game.OnTeleportApproached("LE_Teleporter_10_01")

@@ -86,6 +86,7 @@ function s110_surfaceb.InitializeRidleyStorms()
   end
 end
 function s110_surfaceb.OnExit()
+  s070_area7.SetLowModelsVisibility(false)
 end
 function s110_surfaceb.RecoverEnergy()
   if Game.GetPlayer() ~= nil then
