@@ -77,6 +77,7 @@ function s100_area10.InitFromBlackboard()
   Game.DisableEntity("LE_Baby_Hatchling")
   Game.DisableTrigger("TG_MetroidRadar")
   Game.GetEntity("LE_RandoDNA").USABLE:Activate(false)
+  s100_area10.SetLowModelsVisibility(false)
   if Game.GetEntity("LE_ValveQueen") ~= nil then
     if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
       Game.GetEntity("LE_ValveQueen").MODELUPDATER:SetMeshVisible("Valve", false)
@@ -100,6 +101,7 @@ end
 function s100_area10.OnReloaded()
 end
 function s100_area10.OnExit()
+  s100_area10.SetLowModelsVisibility(false)
 end
 function s100_area10.OnEnter_ActivationTeleport_10_01()
   Game.OnTeleportApproached("LE_Teleporter_10_01")

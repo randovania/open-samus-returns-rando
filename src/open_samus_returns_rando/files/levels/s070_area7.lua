@@ -93,6 +93,7 @@ s070_area7.tDNAScanLandmarks = {
 function s070_area7.InitFromBlackboard()
   Game.SetSubAreaCurrentSetup("collision_camera_037", "Omega_Enabled", true)
   Scenario.WriteToBlackboard("OmegaDiscovered", "b", true)
+  s070_area7.SetLowModelsVisibility(false)
   if Blackboard.GetProp("s070_area7", "entity_LE_HazarousPool_001_enabled") == nil then
     Game.GetEntity("LE_HazarousPool_001").HAZAROUSPOOL:Activate(true)
     Game.GetEntity("LE_HazarousPool_002").HAZAROUSPOOL:Activate(false)
@@ -107,6 +108,7 @@ end
 function s070_area7.OnReloaded()
 end
 function s070_area7.OnExit()
+  s070_area7.SetLowModelsVisibility(false)
 end
 function s070_area7.OnEnter_ActivationDNA_001()
   -- Game.OnDNAMechApproached("LE_ChozoUnlockAreaDNA_001", 1)
