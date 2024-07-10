@@ -51,7 +51,7 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName)
 
     Scenario.UpdateProgressiveItemModels()
     if actorOrName ~= nil then
-        RandomizerPowerup.GetActorName(actorOrName)
+        RandomizerPowerup.CheckActorOrName(actorOrName)
     end
     RandomizerPowerup.IncrementInventoryIndex()
     RL.UpdateRDVClient(false)
@@ -71,7 +71,7 @@ function RandomizerPowerup.PropertyForLocation(actorOrName)
     return "c_" .. actorOrName
 end
 
-function RandomizerPowerup.GetActorName(actorOrName)
+function RandomizerPowerup.CheckActorOrName(actorOrName)
     local name
     -- normal pickups
     if actorOrName.sName ~= nil then
@@ -111,10 +111,8 @@ function RandomizerPowerup.ActivateSpecialEnergy(name)
         if Game.GetEntity(trigger) ~= nil then
             SpecialEnergyCloud.ActivateSpecialEnergy(trigger)
         end
-    end
-
-    -- Aeion abilities
-    if string.sub(name, 0, 17) == "LE_SpecialAbility" and Game.GetEntity(name) ~= nil then
+    else
+        -- Aeion abilities
         SpecialEnergyCloud.ActivateSpecialEnergy(cloud)
     end
 end
