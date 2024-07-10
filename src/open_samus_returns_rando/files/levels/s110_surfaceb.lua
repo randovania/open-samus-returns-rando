@@ -61,6 +61,9 @@ function s110_surfaceb.ElevatorSetTarget(_ARG_0_)
 end
 function s110_surfaceb.InitFromBlackboard()
   s110_surfaceb.SetLowModelsVisibility(false)
+  if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") < 39 and Game.GetItemAmount(Game.GetPlayerName(), "ITEM_BABY_HATCHLING") < 1 then
+    Game.PlayMusicStream(0, "streams/music/t_m2_surface_arr1.wav", -1, -1, -1, 2, 2, 1)
+end
 end
 function s110_surfaceb.OnReloaded()
 end
