@@ -51,7 +51,7 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName)
 
     Scenario.UpdateProgressiveItemModels()
     if actorOrName ~= nil then
-        RandomizerPowerup.CheckActorOrName(actorOrName)
+        RandomizerPowerup.PostCollectionAdjustments(actorOrName)
     end
     RandomizerPowerup.IncrementInventoryIndex()
     RL.UpdateRDVClient(false)
@@ -71,7 +71,7 @@ function RandomizerPowerup.PropertyForLocation(actorOrName)
     return "c_" .. actorOrName
 end
 
-function RandomizerPowerup.CheckActorOrName(actorOrName)
+function RandomizerPowerup.PostCollectionAdjustments(actorOrName)
     local name
     -- normal pickups
     if actorOrName.sName ~= nil then
