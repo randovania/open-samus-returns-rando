@@ -111,8 +111,8 @@ function RandomizerPowerup.ActivateSpecialEnergy(name)
         if Game.GetEntity(trigger) ~= nil then
             SpecialEnergyCloud.ActivateSpecialEnergy(trigger)
         end
-    else
-        -- Aeion abilities
+    -- Aeion abilities
+    elseif string.sub(name, 0, 17) == "LE_SpecialAbility" then
         SpecialEnergyCloud.ActivateSpecialEnergy(cloud)
     end
 end
