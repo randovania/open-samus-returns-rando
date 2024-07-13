@@ -326,9 +326,9 @@ def disable_vignettes(editor: PatcherEditor) -> None:
 
             bmsbk = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmsbk", Bmsbk)
             blocks = bmsbk.raw["block_groups"][block_group]["types"][0]["blocks"]
-            for block in range(len(blocks)):
+            for block in blocks:
                 # Separate the vignette from the block
-                blocks[block]["name2"] = ""
+                block["name2"] = ""
 
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
             sg_group = bmssd.raw["unk_structs_b"]
@@ -338,14 +338,12 @@ def disable_vignettes(editor: PatcherEditor) -> None:
                 for sg in sg_group:
                     # Check for the cc_name
                     if sg["str1"] == cc_name:
-                        for cc_group in range(len(sg["struct3"])):
-                            model_group = sg["struct3"][cc_group]["struct5"]
-                            for model in model_group:
-                                idx = model_group.index(model)
-                                for vignette in vignette_models:
+                        for cc_group in sg["struct3"]:
+                            model_group = cc_group["struct5"]
+                            for idx, model in reversed(list(enumerate(model_group))):
+                                if any(model["int6"] == vignette for vignette in vignette_models):
                                     # Remove the model to prevent it from loading
-                                    if model["int6"] == vignette:
-                                        model_group.pop(idx)
+                                    model_group.pop(idx)
 
 
 def apply_static_fixes(editor: PatcherEditor) -> None:
