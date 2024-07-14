@@ -234,8 +234,8 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
         "unk2": 0,
         "unk3": 0,
         "respawn_time": 0.0,
-        "name1": "sg_casca38",
-        "name2": ""
+        "model_name": "sg_casca38",
+        "vignette_name": ""
     })
     BOMB_GROUP = Container(
         unk_bool=True,
@@ -295,7 +295,7 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
                 new_group = copy.deepcopy(BOMB_GROUP)
             new_block = copy.deepcopy(CUSTOM_BLOCK)
             new_block["pos"] = pos
-            new_block["name1"] = sg_casca
+            new_block["model_name"] = sg_casca
             types: ListContainer = typing.cast(ListContainer, new_group["types"])
             types[0]["blocks"].append(new_block)
             bmsbk.raw.block_groups.append(new_group)
@@ -354,17 +354,17 @@ def disable_vignettes(editor: PatcherEditor) -> None:
                 block["name2"] = ""
 
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
-            sg_group = bmssd.raw["unk_structs_b"]
+            sg_group = bmssd.raw["scene_groups"]
             vignette_models = vignette_object["vignette_models"]
             for camera in vignette_object["cc"]:
                 cc_name = "sg_SubArea_collision_camera_" + camera
                 for sg in sg_group:
                     # Check for the cc_name
-                    if sg["str1"] == cc_name:
-                        for cc_group in sg["struct3"]:
-                            model_group = cc_group["struct5"]
+                    if sg["sg_name"] == cc_name:
+                        for cc_group in sg["model_groups"]:
+                            model_group = cc_group["models"]
                             for idx, model in reversed(list(enumerate(model_group))):
-                                if any(model["int6"] == vignette for vignette in vignette_models):
+                                if any(model["model_id"] == vignette for vignette in vignette_models):
                                     # Remove the model to prevent it from loading
                                     model_group.pop(idx)
 
