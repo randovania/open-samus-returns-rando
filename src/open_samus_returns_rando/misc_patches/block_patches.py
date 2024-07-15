@@ -12,10 +12,8 @@ def patch_block_types(editor: PatcherEditor, configuration: dict) -> None:
         blocks = bmsbk.raw["block_groups"]
         for block in blocks:
             block_type = block["types"][0]
-            temp_type: str = ""
             for original_type, new_type in configuration["block_patches"].items():
                 # Check for the block type and change it to the new type
-                if original_type == block_type["block_type"] and temp_type == "":
-                    # Set the temp_type to the original_type to ensure the block doesnt get changed again
-                    temp_type = original_type
+                if original_type == block_type["block_type"]:
                     block_type["block_type"] = new_type
+                    break
