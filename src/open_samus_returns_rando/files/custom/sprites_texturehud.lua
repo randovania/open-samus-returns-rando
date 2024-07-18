@@ -1,10 +1,19 @@
 Game.ImportLibrary("gui/scripts/sprites_texturehud_original.lua")
 
-GUI.AddSpriteSheetItem("item_powerup", "gui/textures/texturehud.bctex", {
+GUI.AddSpriteSheetItem("item_nothing", "gui/textures/texturehud.bctex", {
     TextureWidth = "512",
     TextureHeight = "256",
     UPixelOffset = "144",
     VPixelOffset = "24",
+    UPixelScale = "8",
+    VPixelScale = "8",
+    AngleOffset = "0"
+})
+GUI.AddSpriteSheetItem("item_powerup", "gui/textures/texturehud.bctex", {
+    TextureWidth = "512",
+    TextureHeight = "256",
+    UPixelOffset = "96",
+    VPixelOffset = "40",
     UPixelScale = "8",
     VPixelScale = "8",
     AngleOffset = "0"
