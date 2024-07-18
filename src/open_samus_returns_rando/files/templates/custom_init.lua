@@ -33,6 +33,7 @@ Init.sThisRandoIdentifier = TEMPLATE("configuration_identifier") .. Init.sLayout
 Init.tBoxesSeen = 0
 Init.bEnableRoomIds = TEMPLATE("enable_room_ids")
 Init.sBabyMetroidHint = TEMPLATE("baby_metroid_hint")
+Init.bTanksRefillAmmo = TEMPLATE("tanks_refill_ammo")
 
 local orig_log = Game.LogWarn
 if TEMPLATE("enable_remote_lua") then

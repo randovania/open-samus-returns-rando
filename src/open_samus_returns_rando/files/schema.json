@@ -307,6 +307,11 @@
                     "type": "boolean",
                     "description": "Removes the wall between the Queen and Baby, allowing access into Area 8 from Surface West.",
                     "default": false
+                },
+                "tanks_refill_ammo": {
+                    "type": "boolean",
+                    "description": "If enabled, collecting a tank refills that ammo to max capacity. In vanilla, only Energy and Aeion get fully refilled to max capacity.",
+                    "default": true
                 }
             },
             "additionalProperties": false
