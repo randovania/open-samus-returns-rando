@@ -328,8 +328,8 @@ class ActorPickup(BasePickup):
                     pickup_tile_icon.icon = "itemenabledheat"
                 else:
                     pickup_tile_icon.icon = "itemenabled"
-            # Powerups and Nothing items use a "custom" itemsphere so they update on the map
-            elif "itemsphere" in pickup_model or "powerup" in pickup_model or "babyhatchling" in pickup_model:
+            # Powerups use a modified Samus helmet icon
+            elif "powerup" in pickup_model or "babyhatchling" in pickup_model:
                 pickup_tile_icon.icon = "item_powerup"
             # DNA uses a custom icon
             elif "adn" in pickup_model:
@@ -337,6 +337,9 @@ class ActorPickup(BasePickup):
             # Offworld powerups use the offworld model
             elif "offworld" in pickup_model:
                 pickup_tile_icon.icon = "item_offworld"
+            # Nothing items use an "updated" itemsphere icon so they update on the map
+            elif "itemsphere" in pickup_model:
+                pickup_tile_icon.icon = "item_nothing"
             else:
                 # Tanks use their respective tank icon
                 pickup_tile_icon.icon = pickup_model
