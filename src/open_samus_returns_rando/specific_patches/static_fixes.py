@@ -121,8 +121,35 @@ def shoot_supers_without_missiles(editor: PatcherEditor) -> None:
     samus_bmsad.raw["components"]["GUN"]["functions"][20]["params"]["Param5"]["value"] = "ITEM_MISSILE_CHECK"
 
 
-def nerf_ridley_fight(editor: PatcherEditor) -> None:
+def rebalance_bosses(editor: PatcherEditor) -> None:
+    BOSSES = [
+        ("manicminerbot", 0.19),
+        ("ridley", 0.12),
+    ]
+
+    for boss, factor in BOSSES:
+        bmsad = editor.get_file(f"actors/characters/{boss}/charclasses/{boss}.bmsad", Bmsad)
+        bmsad.components["LIFE"].raw["fields"]["fPowerBeamFactor"]["value"] = factor
+
+    tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
+
     '''
+    Diggernaut
+
+    Wave and Spazer will use the same factor as Plasma which is 0.19
+    Wave: 50 -> 9.5
+    Spazer: 210 -> 39.9
+    Plasma: 57 (default from diggernaut tunable)
+    '''
+    diggernaut = tunables.raw["classes"]["ManicMinerBot|CTunableCharClassManicMinerBotAIComponent"]["tunables"]
+    diggernaut["fHeadPlasmaBeamDamageFactor"]["value"] = 1.0
+    diggernaut["fHeadPlasmaBeamChargeDamageFactor"]["value"] = 0.6
+    diggernaut["fHeadPlasmaBeamWeaponBoostDamageFactor"]["value"] = 0.8
+    diggernaut["fHeadPlasmaBeamWeaponBoostPhaseDisplacementDamageFactor"]["value"] = 1.0
+
+    '''
+    Ridley
+
     All beams (except Ice) will use the same factor as Plasma which is 0.12
     Power Beam: 25 -> 3
     Ice: 10
@@ -130,19 +157,15 @@ def nerf_ridley_fight(editor: PatcherEditor) -> None:
     Spazer: 210 -> 25.2
     Plasma: 36 (default from ridley tunable)
     '''
-    ridley_bmsad = editor.get_file("actors/characters/ridley/charclasses/ridley.bmsad", Bmsad)
-    ridley_bmsad.components["LIFE"].raw["fields"]["fPowerBeamFactor"]["value"] = 0.12
-
-    tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
-    ridley_tunables = tunables.raw["classes"]["Ridley|CTunableCharClassRidleyAIComponent"]["tunables"]
-    ridley_tunables["fPlasmaBeam"]["value"] = 1.0
-    ridley_tunables["fPlasmaBeamCharge"]["value"] = 1.0
-    ridley_tunables["fPlasmaBeamWeaponBoost"]["value"] = 1.1
-    ridley_tunables["fPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
-    ridley_tunables["fGrabPlasmaBeam"]["value"] = 1.0
-    ridley_tunables["fGrabPlasmaBeamCharge"]["value"] = 1.0
-    ridley_tunables["fGrabPlasmaBeamWeaponBoost"]["value"] = 1.1
-    ridley_tunables["fGrabPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
+    ridley = tunables.raw["classes"]["Ridley|CTunableCharClassRidleyAIComponent"]["tunables"]
+    ridley["fPlasmaBeam"]["value"] = 1.0
+    ridley["fPlasmaBeamCharge"]["value"] = 1.0
+    ridley["fPlasmaBeamWeaponBoost"]["value"] = 1.1
+    ridley["fPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
+    ridley["fGrabPlasmaBeam"]["value"] = 1.0
+    ridley["fGrabPlasmaBeamCharge"]["value"] = 1.0
+    ridley["fGrabPlasmaBeamWeaponBoost"]["value"] = 1.1
+    ridley["fGrabPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
 
 
 def increase_pb_drop_chance(editor: PatcherEditor) -> None:
@@ -353,7 +376,7 @@ def apply_static_fixes(editor: PatcherEditor) -> None:
     remove_area7_grapple_block(editor)
     patch_a7_save_screw_blocks(editor)
     shoot_supers_without_missiles(editor)
-    nerf_ridley_fight(editor)
+    rebalance_bosses(editor)
     increase_pb_drop_chance(editor)
     fix_wrong_cc_actor_deletions(editor)
     patch_area7_item(editor)
