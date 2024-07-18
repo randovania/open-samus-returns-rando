@@ -197,11 +197,11 @@ class LuaEditor:
         self._progressive_models += models
 
     def _create_custom_init(self, editor: PatcherEditor, configuration: dict) -> str:
-        cosmetic_options: dict = configuration["cosmetic_patches"]
-        game_patches: dict = configuration["game_patches"]
         inventory: dict[str, int] = configuration["starting_items"]
         starting_location: dict = configuration["starting_location"]
         starting_text: list[str] = configuration.get("starting_text", [])
+        game_patches: dict = configuration["game_patches"]
+        cosmetic_options: dict = configuration["cosmetic_patches"]
         configuration_identifier: str = configuration["configuration_identifier"]
         enable_remote_lua: bool = configuration.get("enable_remote_lua", False)
 
@@ -275,7 +275,7 @@ class LuaEditor:
             "layout_uuid": layout_uuid,
             "enable_remote_lua": enable_remote_lua,
             "baby_metroid_hint": baby_metroid_hint,
-            "tanks_refill_ammo": True if game_patches["tanks_refill_ammo"] else False
+            "tanks_refill_ammo": game_patches["tanks_refill_ammo"]
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)
