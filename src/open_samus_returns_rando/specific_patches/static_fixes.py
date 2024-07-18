@@ -157,7 +157,7 @@ def rebalance_bosses(editor: PatcherEditor) -> None:
     Spazer: 210 -> 25.2
     Plasma: 36 (default from ridley tunable)
     '''
-    ridley = tunables.raw["classes"]["Ridley|CridleyCharClassRidleyAIComponent"]["tunables"]
+    ridley = tunables.raw["classes"]["Ridley|CTunableCharClassRidleyAIComponent"]["tunables"]
     ridley["fPlasmaBeam"]["value"] = 1.0
     ridley["fPlasmaBeamCharge"]["value"] = 1.0
     ridley["fPlasmaBeamWeaponBoost"]["value"] = 1.1
