@@ -1,7 +1,7 @@
 import itertools
 from collections.abc import Iterable
 
-from construct import Container
+from construct import Container  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats.lua import Lua
 
 from open_samus_returns_rando.constants import ALL_SCENARIOS

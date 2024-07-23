@@ -3,7 +3,7 @@ import functools
 import typing
 from pathlib import Path
 
-from construct import Container
+from construct import Container  # type: ignore[import-untyped]
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
 from mercury_engine_data_structures.formats import BaseResource, Bmsld
 from mercury_engine_data_structures.game_check import Game
