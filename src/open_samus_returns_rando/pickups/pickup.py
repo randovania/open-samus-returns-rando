@@ -3,7 +3,7 @@ import functools
 import json
 from enum import Enum
 
-from construct import Container, ListContainer
+from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsmsd, Lua
 from mercury_engine_data_structures.formats.bmsmsd import TileType
 from open_samus_returns_rando.constants import get_package_name

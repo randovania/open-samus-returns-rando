@@ -1,6 +1,6 @@
 {
     "magic": "MSAD",
-    "version": 2883585,
+    "version": "1.44.0",
     "name": "randomizerpowerup",
     "header": {
         "model_name": "actors/items/itemsphere/models/itemsphere.bcmdl",

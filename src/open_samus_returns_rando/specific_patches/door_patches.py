@@ -3,7 +3,7 @@ import re
 import typing
 from enum import Enum
 
-from construct import Container, ListContainer
+from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsld, Bmsmsd, Lua
 from mercury_engine_data_structures.formats.bmsmsd import IconPriority, TileBorders
 from open_samus_returns_rando.files import files_path

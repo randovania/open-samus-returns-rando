@@ -1,7 +1,7 @@
 import re
 import typing
 
-from construct import Container
+from construct import Container  # type: ignore[import-untyped]
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
 from mercury_engine_data_structures.formats.lua import Lua
 from open_samus_returns_rando.files import files_path, templates_path
