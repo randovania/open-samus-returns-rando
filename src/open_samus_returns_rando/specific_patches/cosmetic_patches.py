@@ -7,6 +7,7 @@ def patch_cosmetics(editor: PatcherEditor, configuration: dict) -> None:
     tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
     tunable_cosmetics(tunables, configuration)
     music_shuffle(editor, configuration)
+    volume_patches(editor, configuration)
 
 
 def tunable_cosmetics(tunables: Bmtun, configuration: dict) -> None:
@@ -48,3 +49,14 @@ def music_shuffle(editor: PatcherEditor, configuration: dict) -> None:
         original_track = f"sounds/streams/music/{original}.bcwav"
         new_track = temp_dict[f"sounds/streams/music/{new}.bcwav"]
         editor.replace_asset(original_track, new_track)
+
+
+def volume_patches(editor: PatcherEditor, configuratiin: dict) -> None:
+    sounds = editor.get_file("system/snd/scenariomusicdefs.bmdefs")
+    properties = sounds.raw["sounds"]
+    for sound in sounds:
+        # Apply the configuration value to the track volume
+        properties["volume"] *= configuration["cosmetic_patches"]["custom_volume"]
+        # Prevent track volume from being greater than 1.0
+        if properties["volume"] > 1.0:
+            properties["volume"] = 1.0
