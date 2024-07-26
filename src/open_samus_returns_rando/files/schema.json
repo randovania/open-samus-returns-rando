@@ -523,6 +523,24 @@
                         }
                     },
                 "default": {}
+                },
+                "volume_adjustments": {
+                    "description": "Applies a multiplier to all music tracks to adjust their volumes.",
+                    "type": "object",
+                    "properties": {
+                        "music": {
+                            "minimum": 0,
+                            "maximum": 1
+                        },
+                        "environment_sfx": {
+                            "minimum": 0,
+                            "maximum": 1
+                        }
+                    },
+                    "default": {
+                        "music": 1,
+                        "environment_sfx": 1
+                    }
                 }
             },
             "default": {}

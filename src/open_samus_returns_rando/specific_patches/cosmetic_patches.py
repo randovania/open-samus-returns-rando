@@ -1,4 +1,5 @@
-from mercury_engine_data_structures.formats import Bmdefs, Bmtun
+from mercury_engine_data_structures.formats import Bmdefs, Bmses, Bmtun
+from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -52,11 +53,34 @@ def music_shuffle(editor: PatcherEditor, configuration: dict) -> None:
 
 
 def volume_patches(editor: PatcherEditor, configuration: dict) -> None:
-    sounds = editor.get_file("system/snd/scenariomusicdefs.bmdefs", Bmdefs)
-    properties = sounds.raw["sounds"]
+    music = configuration["volume_adjustments"]["music"]
+    environment_sfx = configuration["volume_adjustments"]["environment_sfx"]
+    # If there are no custom values, quit
+    if music == 1 and environment_sfx == 1:
+        return
+
+    # Music Adjustments
+    sound_defs = editor.get_file("system/snd/scenariomusicdefs.bmdefs", Bmdefs)
+    sounds = sound_defs.raw["sounds"]
     for sound in sounds:
-        # Apply the configuration value to the track volume
-        properties["volume"] *= configuration["cosmetic_patches"]["custom_volume"]
-        # Prevent track volume from being greater than 1.0
-        if properties["volume"] > 1.0:
-            properties["volume"] = 1.0
+        # Apply the music values to each track's music volume
+        sound["volume"] *= music
+
+    enemies_list = sound_defs.raw["enemies_list"]
+    for enemy in enemies_list:
+        areas = enemy["areas"]
+        for area in areas:
+            layers = area["layers"]
+            for layer in layers:
+                states = layer["states"]
+                for state in states:
+                    properties = state["properties"]
+                    properties["volume"] *= music
+
+    # Environmetal Sound Adjustments
+    for scenario in ALL_SCENARIOS:
+        scenario_file = editor.get_file(f"maps/levels/c10_samus/{scenario}/{scenario}.bmses", Bmses)
+        env_sounds = scenario_file.raw["sounds"]
+        for env_sound in env_sounds:
+            # Apply the enviroment_sfx values to each track's enviroment_sfx volume
+            env_sound["properties"]["volume"] *= environment_sfx
