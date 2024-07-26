@@ -51,7 +51,7 @@ def music_shuffle(editor: PatcherEditor, configuration: dict) -> None:
         editor.replace_asset(original_track, new_track)
 
 
-def volume_patches(editor: PatcherEditor, configuratiin: dict) -> None:
+def volume_patches(editor: PatcherEditor, configuration: dict) -> None:
     sounds = editor.get_file("system/snd/scenariomusicdefs.bmdefs")
     properties = sounds.raw["sounds"]
     for sound in sounds:
