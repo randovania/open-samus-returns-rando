@@ -1,4 +1,4 @@
-from mercury_engine_data_structures.formats.bmtun import Bmtun
+from mercury_engine_data_structures.formats import Bmdefs, Bmtun
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -52,7 +52,7 @@ def music_shuffle(editor: PatcherEditor, configuration: dict) -> None:
 
 
 def volume_patches(editor: PatcherEditor, configuration: dict) -> None:
-    sounds = editor.get_file("system/snd/scenariomusicdefs.bmdefs")
+    sounds = editor.get_file("system/snd/scenariomusicdefs.bmdefs", Bmdefs)
     properties = sounds.raw["sounds"]
     for sound in sounds:
         # Apply the configuration value to the track volume
