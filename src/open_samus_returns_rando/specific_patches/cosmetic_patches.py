@@ -55,32 +55,27 @@ def music_shuffle(editor: PatcherEditor, configuration: dict) -> None:
 def volume_patches(editor: PatcherEditor, configuration: dict) -> None:
     music = configuration["volume_adjustments"]["music"]
     environment_sfx = configuration["volume_adjustments"]["environment_sfx"]
-    # If there are no custom values, quit
-    if music == 1 and environment_sfx == 1:
-        return
 
     # Music Adjustments
-    sound_defs = editor.get_file("system/snd/scenariomusicdefs.bmdefs", Bmdefs)
-    sounds = sound_defs.raw["sounds"]
-    for sound in sounds:
-        # Apply the music values to each track's music volume
-        sound["volume"] *= music
+    if music != 1:
+        sound_defs = editor.get_file("system/snd/scenariomusicdefs.bmdefs", Bmdefs)
+        sounds = sound_defs.raw["sounds"]
+        for sound in sounds:
+            # Apply the music values to each track's music volume
+            sound["volume"] *= music
 
-    enemies_list = sound_defs.raw["enemies_list"]
-    for enemy in enemies_list:
-        areas = enemy["areas"]
-        for area in areas:
-            layers = area["layers"]
-            for layer in layers:
-                states = layer["states"]
-                for state in states:
-                    properties = state["properties"]
-                    properties["volume"] *= music
+        enemies_list = sound_defs.raw["enemies_list"]
+        for enemy in enemies_list:
+            for area in enemy["areas"]:
+                for layer in area["layers"]:
+                    for state in layer["states"]:
+                        state["properties"]["volume"] *= music
 
-    # Environmetal Sound Adjustments
-    for scenario in ALL_SCENARIOS:
-        scenario_file = editor.get_file(f"maps/levels/c10_samus/{scenario}/{scenario}.bmses", Bmses)
-        env_sounds = scenario_file.raw["sounds"]
-        for env_sound in env_sounds:
-            # Apply the enviroment_sfx values to each track's enviroment_sfx volume
-            env_sound["properties"]["volume"] *= environment_sfx
+    # Environment Sound Adjustments
+    if environmwnt_sfx != 1:
+        for scenario in ALL_SCENARIOS:
+            scenario_file = editor.get_file(f"maps/levels/c10_samus/{scenario}/{scenario}.bmses", Bmses)
+            env_sounds = scenario_file.raw["sounds"]
+            for env_sound in env_sounds:
+                # Apply the enviroment_sfx values to each track's enviroment_sfx volume
+                env_sound["properties"]["volume"] *= environment_sfx
