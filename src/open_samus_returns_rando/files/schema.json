@@ -255,6 +255,21 @@
             },
             "default": {}
         },
+        "suit_reductions": {
+            "description": "Set the damage reduction per suit.",
+            "type": "object",
+            "properties": {
+                "varia_suit_reduction": {
+                    "type": "number",
+                    "default": 0.75
+                },
+                "gravity_suit_reduction": {
+                    "type": "number",
+                    "default": 0.5
+                }
+            },
+            "default": {}
+        },
         "reveal_map_on_start": {
             "type": "boolean",
             "default": false,
