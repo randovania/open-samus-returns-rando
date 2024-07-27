@@ -72,7 +72,7 @@ def volume_patches(editor: PatcherEditor, configuration: dict) -> None:
                         state["properties"]["volume"] *= music
 
     # Environment Sound Adjustments
-    if environmwnt_sfx != 1:
+    if environment_sfx != 1:
         for scenario in ALL_SCENARIOS:
             scenario_file = editor.get_file(f"maps/levels/c10_samus/{scenario}/{scenario}.bmses", Bmses)
             env_sounds = scenario_file.raw["sounds"]
