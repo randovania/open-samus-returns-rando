@@ -34,6 +34,7 @@ Init.tBoxesSeen = 0
 Init.bEnableRoomIds = TEMPLATE("enable_room_ids")
 Init.sBabyMetroidHint = TEMPLATE("baby_metroid_hint")
 Init.bTanksRefillAmmo = TEMPLATE("tanks_refill_ammo")
+Init.iRequiredDNA = TEMPLATE("required_dna")
 
 local orig_log = Game.LogWarn
 if TEMPLATE("enable_remote_lua") then
@@ -51,10 +52,6 @@ function Init.InitGameBlackboard()
   })
   for _FORV_3_, _FORV_4_ in pairs(Init.tNewGameInventory) do
     Blackboard.SetProp("PLAYER_INVENTORY", _FORV_3_, "f", _FORV_4_)
-    if string.sub(_FORV_3_, 0, 14) == "ITEM_RANDO_DNA" then
-      local current_amount = Blackboard.GetProp("PLAYER_INVENTORY", "ITEM_ADN") or 0
-      Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", current_amount + 1)
-    end
     if string.sub(_FORV_3_, 1, 17) == "ITEM_RESERVE_TANK" and _FORV_4_ > 0 then
       local missile_launcher = Init.tNewGameInventory["ITEM_WEAPON_MISSILE_LAUNCHER"]
       if _FORV_3_ ~= "ITEM_RESERVE_TANK_MISSILE" or (missile_launcher ~= nil and missile_launcher > 0) then
@@ -63,6 +60,7 @@ function Init.InitGameBlackboard()
       end
     end
   end
+  Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", 39 - Init.iRequiredDNA)
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_METROID_COUNT", "f", 0)
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_CURRENT_LIFE", "f", Init.tNewGameInventory.ITEM_MAX_LIFE)
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_WEAPON_MISSILE_CURRENT", "f", Init.tNewGameInventory.ITEM_WEAPON_MISSILE_MAX)
@@ -75,6 +73,12 @@ function Init.InitGameBlackboard()
   Blackboard.SetProp("GAME", "Version", "i", SaveGame.Version)
   Blackboard.SetProp("GAME", "HUD", "b", true)
   Blackboard.SetProp("GAME", "Player", "s", "samus")
+  -- If no DNA is required, then the path to Ridley should always be open
+  if Init.iRequiredDNA == 0 then
+    Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", true)
+  else
+    Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", false)
+  end
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "LevelID", "s", "c10_samus")
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "ScenarioID", "s", TEMPLATE("starting_scenario"))
   Blackboard.SetProp(Game.GetPlayerBlackboardSectionName(), "StartPoint", "s", TEMPLATE("starting_actor"))

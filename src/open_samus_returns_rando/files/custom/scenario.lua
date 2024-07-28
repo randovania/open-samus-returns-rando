@@ -88,6 +88,9 @@ function Scenario.UpdateDNACounter()
   local maxDNA = Init.tDNAPerArea[scenario] or 0
   local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
   GUILib.UpdateDNACounter(currentDNA, maxDNA)
+  if Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
+    RandomizerPowerup.UpdateDNACounter()
+  end
 end
 
 local original_init = Scenario.InitScenario
