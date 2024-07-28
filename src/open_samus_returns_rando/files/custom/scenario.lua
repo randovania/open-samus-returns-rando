@@ -89,7 +89,12 @@ function Scenario.UpdateDNACounter()
   local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
   GUILib.UpdateDNACounter(currentDNA, maxDNA)
   if Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
-    RandomizerPowerup.UpdateDNACounter()
+    local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
+    GUI.SetProperties(dnaCounter, {
+        ColorR = "0.60392",
+        ColorG = "0.61569",
+        ColorB = "0.04314",
+    })
   end
 end
 
