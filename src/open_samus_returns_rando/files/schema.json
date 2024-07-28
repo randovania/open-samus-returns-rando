@@ -529,12 +529,12 @@
                     "type": "object",
                     "properties": {
                         "music": {
-                        	"type": "number",
+                            "type": "number",
                             "minimum": 0,
                             "maximum": 1
                         },
                         "environment_sfx": {
-                        	"type": "number",
+                            "type": "number",
                             "minimum": 0,
                             "maximum": 1
                         }
