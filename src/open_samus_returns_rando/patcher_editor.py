@@ -1,4 +1,5 @@
 import copy
+import functools
 import typing
 from pathlib import Path
 
@@ -74,10 +75,10 @@ class PatcherEditor(FileTreeEditor):
         scenario.raw.actors[layer].pop(actor_name)
         scenario.remove_actor_from_all_groups(actor_name)
 
-    def get_asset_names_in_folder(self, folder: str) -> typing.Iterator[str]:
-        yield from (
-            name
+    @functools.cache
+    def get_asset_names_in_folder(self, folder: str) -> list[str]:
+        return [name
             for name in self._name_for_asset_id.values()
             if name.startswith(folder) and self.does_asset_exists(name)
-        )
+        ]
 
