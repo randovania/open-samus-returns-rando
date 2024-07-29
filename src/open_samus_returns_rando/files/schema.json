@@ -441,6 +441,17 @@
             "description": "Hint for where the Baby Metroid is located.",
             "type": "string"
         },
+        "final_boss": {
+            "description": "Change the final boss to be a different boss other than Proteus Ridley.",
+            "type": "string",
+            "enum": [
+                "Arachnus",
+                "Diggernaut",
+                "Queen",
+                "Ridley"
+            ],
+            "default": "Ridley"
+        },
         "cosmetic_patches": {
             "type": "object",
             "properties": {

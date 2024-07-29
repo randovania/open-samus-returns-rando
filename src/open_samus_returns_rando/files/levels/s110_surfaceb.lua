@@ -63,7 +63,10 @@ function s110_surfaceb.InitFromBlackboard()
   s110_surfaceb.SetLowModelsVisibility(false)
   if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") < 39 and Game.GetItemAmount(Game.GetPlayerName(), "ITEM_BABY_HATCHLING") < 1 then
     Game.PlayMusicStream(0, "streams/music/t_m2_surface_arr1.wav", -1, -1, -1, 2, 2, 1)
-end
+  end
+  if Blackboard.GetProp("DEFEATED_ENEMIES", "Ridley") and Game.GetEntity("TG_Ridley_Access") ~= nil then
+    Game.DeleteEntity("TG_Ridley_Access")
+  end
 end
 function s110_surfaceb.OnReloaded()
 end
@@ -98,6 +101,12 @@ function s110_surfaceb.RecoverEnergy()
 end
 function s110_surfaceb.OnEnter_ActivationTeleport_00b_01()
   Game.OnTeleportApproached("LE_Teleporter_00b_01")
+end
+function s110_surfaceb.LoadSurface()
+  Scenario.LoadNewScenario("s000_surface", "ST_Surface_Connector")
+end
+function s110_surfaceb.OnEnter_Ridley_Access()
+  GUI.LaunchMessage("Proteus Ridley can be fought at any time.\nAre you prepared to fight?", "s110_surfaceb.OnReloaded", "s110_surfaceb.LoadSurface")
 end
 function s110_surfaceb.OnRidleyStartPoint()
   Game.HUDIdleScreenLeave()
@@ -299,6 +308,11 @@ function s110_surfaceb.LaunchRidleyDeadCutscene()
   GUI.ForceIdleCinematicControlledOn()
   Game.LaunchCutscene("cutscenes/ridley4/takes/10/ridley410.bmscu")
   s110_surfaceb.SetLowModelsVisibility(false)
+  if Init.sFinalBoss ~= "Ridley" then
+    Blackboard.SetProp("DEFEATED_ENEMIES", "Ridley", "b", true)
+    Game.GetEntity("Baby Hatchling"):SetVisible(true)
+    Scenario.LoadNewScenario("s000_surface", "StartPoint0")
+  end
 end
 function s110_surfaceb.OnStartRidleyDead()
   Game.AddEntityToUpdateInCutscene("LE_RidleyStorm")
@@ -560,8 +574,10 @@ function s110_surfaceb.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_
   Game.SetScenarioItemEnabledByName("ray01", false)
   Game.SetSceneGroupEnabledByName("sg_debris02", false)
   Game.SetSceneGroupEnabledByName("sg_debris03", false)
-  if _ARG_2_ == "collision_camera_000" and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
-    Scenario.LoadNewScenario("s000_surface", "ST_Surface_Connector")
+  if _ARG_2_ == "collision_camera_000" then
+    if (Init.sFinalBoss == Ridley and Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") == false) or Blackboard.GetProp("DEFEATED_ENEMIES", "Ridley") then
+      s110_surfaceb.LoadSurface()
+    end
   end
   if _ARG_2_ == "collision_camera_021" and _ARG_0_ == "collision_camera_021" and _ARG_3_ == "RidleyCombat" then
     if Game.GetEntity("SG_Ridley") ~= nil then

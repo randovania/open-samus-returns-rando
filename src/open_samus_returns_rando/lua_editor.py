@@ -282,7 +282,8 @@ class LuaEditor:
             "enable_remote_lua": enable_remote_lua,
             "baby_metroid_hint": baby_metroid_hint,
             "tanks_refill_ammo": game_patches["tanks_refill_ammo"],
-            "required_dna": required_dna
+            "required_dna": required_dna,
+            "final_boss": configuration["final_boss"]
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)

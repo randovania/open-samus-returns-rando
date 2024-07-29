@@ -15,6 +15,7 @@ from open_samus_returns_rando.misc_patches.credits import patch_credits
 from open_samus_returns_rando.misc_patches.elevators import patch_elevators
 from open_samus_returns_rando.misc_patches.spawn_points import patch_custom_spawn_points
 from open_samus_returns_rando.misc_patches.text_patches import add_spiderboost_status, apply_text_patches
+from open_samus_returns_rando.misc_patches.triggers import patch_custom_triggers
 from open_samus_returns_rando.multiworld_integration import create_exefs_patches
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickups.custom_pickups import patch_custom_pickups
@@ -83,7 +84,7 @@ def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: 
     apply_static_fixes(editor)
 
     # Custom pickups
-    patch_custom_pickups(editor)
+    patch_custom_pickups(editor, configuration)
     debug_custom_pickups(editor, configuration["debug_custom_pickups"])
 
     # Patch all pickups
@@ -92,6 +93,9 @@ def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: 
     # Custom spawn points
     patch_custom_spawn_points(editor)
     debug_spawn_points(editor, configuration["debug_spawn_points"])
+
+    # Custom triggers
+    patch_custom_triggers(editor, configuration)
 
     # Fix unheated heat rooms
     patch_heat_rooms(editor)
