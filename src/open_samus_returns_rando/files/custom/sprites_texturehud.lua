@@ -12,7 +12,7 @@ GUI.AddSpriteSheetItem("item_nothing", "gui/textures/texturehud.bctex", {
 GUI.AddSpriteSheetItem("item_powerup", "gui/textures/texturehud.bctex", {
     TextureWidth = "512",
     TextureHeight = "256",
-    UPixelOffset = "96",
+    UPixelOffset = "168",
     VPixelOffset = "40",
     UPixelScale = "8",
     VPixelScale = "8",
