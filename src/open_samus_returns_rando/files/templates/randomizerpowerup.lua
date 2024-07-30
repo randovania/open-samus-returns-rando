@@ -195,7 +195,7 @@ function RandomizerPowerup.IncreaseAmmo(resource)
 end
 
 function RandomizerPowerup.ObjectiveComplete()
-    if RandomizerPowerup.GetItemAmount("ITEM_ADN") == (39 + Init.iExtraDNA) then
+    if RandomizerPowerup.GetItemAmount("ITEM_ADN") == 39 then
         Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", true)
         Game.HUDIdleScreenLeave()
         local baby = RandomizerPowerup.GetItemAmount("ITEM_BABY_HATCHLING")

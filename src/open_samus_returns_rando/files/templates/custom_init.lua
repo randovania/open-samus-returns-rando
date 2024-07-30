@@ -35,7 +35,6 @@ Init.bEnableRoomIds = TEMPLATE("enable_room_ids")
 Init.sBabyMetroidHint = TEMPLATE("baby_metroid_hint")
 Init.bTanksRefillAmmo = TEMPLATE("tanks_refill_ammo")
 Init.iRequiredDNA = TEMPLATE("required_dna")
-Init.iExtraDNA = TEMPLATE("extra_dna")
 
 local orig_log = Game.LogWarn
 if TEMPLATE("enable_remote_lua") then

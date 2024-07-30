@@ -261,11 +261,6 @@
             "minimum": 0,
             "default": 39
         },
-        "extra_dna": {
-            "description": "Extra Metroid DNA to place in the game.",
-            "type": "integer",
-            "default": 0
-        },
         "reveal_map_on_start": {
             "type": "boolean",
             "default": false,
