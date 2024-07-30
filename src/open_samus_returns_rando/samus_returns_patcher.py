@@ -19,7 +19,7 @@ from open_samus_returns_rando.multiworld_integration import create_exefs_patches
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickups.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.pickups.pickup import patch_pickups
-from open_samus_returns_rando.specific_patches import cosmetic_patches, game_patches, tunable_patches
+from open_samus_returns_rando.specific_patches import cosmetic_patches, game_patches
 from open_samus_returns_rando.specific_patches.chozo_seal_patches import patch_chozo_seals
 from open_samus_returns_rando.specific_patches.door_patches import patch_doors
 from open_samus_returns_rando.specific_patches.environmental_damage import apply_constant_damage
@@ -27,6 +27,7 @@ from open_samus_returns_rando.specific_patches.heat_room_patches import patch_he
 from open_samus_returns_rando.specific_patches.hint_patches import patch_hints
 from open_samus_returns_rando.specific_patches.metroid_patches import patch_metroids
 from open_samus_returns_rando.specific_patches.static_fixes import apply_static_fixes
+from open_samus_returns_rando.specific_patches.tunable_patches import patch_tunables
 from open_samus_returns_rando.validator_with_default import DefaultValidatingDraft7Validator
 
 T = typing.TypeVar("T")
@@ -102,7 +103,7 @@ def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: 
     patch_doors(editor, configuration["door_patches"], configuration["custom_doors"])
 
     # Patch tunables
-    tunable_patches.patch_tunables(editor, configuration.get("reserves_per_tank", {}))
+    patch_tunables(editor, configuration)
 
     # Patch cosmetics
     cosmetic_patches.patch_cosmetics(editor, configuration.get("cosmetic_patches", {}))
