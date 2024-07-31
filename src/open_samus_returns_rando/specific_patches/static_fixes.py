@@ -351,7 +351,7 @@ def disable_vignettes(editor: PatcherEditor) -> None:
             blocks = bmsbk.raw["block_groups"][block_group]["types"][0]["blocks"]
             for block in blocks:
                 # Separate the vignette from the block
-                block["name2"] = ""
+                block["vignette_name"] = ""
 
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
             sg_group = bmssd.raw["scene_groups"]
