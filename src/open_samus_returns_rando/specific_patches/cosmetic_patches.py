@@ -1,4 +1,5 @@
-from mercury_engine_data_structures.formats.bmtun import Bmtun
+from mercury_engine_data_structures.formats import Bmdefs, Bmses, Bmtun
+from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -7,6 +8,7 @@ def patch_cosmetics(editor: PatcherEditor, configuration: dict) -> None:
     tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
     tunable_cosmetics(tunables, configuration)
     music_shuffle(editor, configuration)
+    volume_patches(editor, configuration)
 
 
 def tunable_cosmetics(tunables: Bmtun, configuration: dict) -> None:
@@ -48,3 +50,32 @@ def music_shuffle(editor: PatcherEditor, configuration: dict) -> None:
         original_track = f"sounds/streams/music/{original}.bcwav"
         new_track = temp_dict[f"sounds/streams/music/{new}.bcwav"]
         editor.replace_asset(original_track, new_track)
+
+
+def volume_patches(editor: PatcherEditor, configuration: dict) -> None:
+    music = configuration["volume_adjustments"]["music"]
+    environment_sfx = configuration["volume_adjustments"]["environment_sfx"]
+
+    # Music Adjustments
+    if music != 1:
+        sound_defs = editor.get_file("system/snd/scenariomusicdefs.bmdefs", Bmdefs)
+        sounds = sound_defs.raw["sounds"]
+        for sound in sounds:
+            # Apply the music values to each track's music volume
+            sound["volume"] *= music
+
+        enemies_list = sound_defs.raw["enemies_list"]
+        for enemy in enemies_list:
+            for area in enemy["areas"]:
+                for layer in area["layers"]:
+                    for state in layer["states"]:
+                        state["properties"]["volume"] *= music
+
+    # Environment Sound Adjustments
+    if environment_sfx != 1:
+        for scenario in ALL_SCENARIOS:
+            scenario_file = editor.get_file(f"maps/levels/c10_samus/{scenario}/{scenario}.bmses", Bmses)
+            env_sounds = scenario_file.raw["sounds"]
+            for env_sound in env_sounds:
+                # Apply the enviroment_sfx values to each track's enviroment_sfx volume
+                env_sound["properties"]["volume"] *= environment_sfx
