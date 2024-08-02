@@ -255,20 +255,11 @@
             },
             "default": {}
         },
-        "suit_reductions": {
-            "description": "Set the damage reduction per suit.",
-            "type": "object",
-            "properties": {
-                "varia_suit_reduction": {
-                    "type": "number",
-                    "default": 0.75
-                },
-                "gravity_suit_reduction": {
-                    "type": "number",
-                    "default": 0.5
-                }
-            },
-            "default": {}
+        "required_dna": {
+            "description": "The amount of Metroid DNA required to access Proteus Ridley.",
+            "type": "integer",
+            "minimum": 0,
+            "default": 39
         },
         "reveal_map_on_start": {
             "type": "boolean",
@@ -330,6 +321,21 @@
                 }
             },
             "additionalProperties": false
+        },
+        "suit_reductions": {
+            "description": "Set the damage reduction per suit.",
+            "type": "object",
+            "properties": {
+                "varia_suit_reduction": {
+                    "type": "number",
+                    "default": 0.75
+                },
+                "gravity_suit_reduction": {
+                    "type": "number",
+                    "default": 0.5
+                }
+            },
+            "default": {}
         },
         "constant_environment_damage": {
             "description": "Each property, when not null, will change the damage from that type to be that much per second",

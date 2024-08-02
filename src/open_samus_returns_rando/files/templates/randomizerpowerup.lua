@@ -121,29 +121,6 @@ function RandomizerPowerup.ActivateSpecialEnergy(name)
     end
 end
 
-function RandomizerPowerup.ObjectiveComplete()
-    if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") == 39 then
-        Game.HUDIdleScreenLeave()
-        local baby = Game.GetItemAmount(Game.GetPlayerName(), "ITEM_BABY_HATCHLING")
-        local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
-        GUI.SetProperties(dnaCounter, {
-            ColorR = "0.60392",
-            ColorG = "0.61569",
-            ColorB = "0.04314",
-        })
-        if baby > 0 then
-            GUI.LaunchMessage("All Metroid DNA has been collected!\nThe path to Proteus Ridley has been opened in Surface West!",
-            "RandomizerPowerup.Dummy", "")
-            if Scenario.CurrentScenarioID == "s110_surfaceb" then
-                Game.PlayMusicStream(0, "streams/music/k_crateria99.wav", -1, -1, -1, 2, 2, 1)
-            end
-        elseif baby == 0 then
-            GUI.LaunchMessage("All Metroid DNA has been collected!\n" .. Init.sBabyMetroidHint,
-                "RandomizerPowerup.Dummy", "")
-        end
-    end
-end
-
 function RandomizerPowerup.HandlePickupResources(progression, actorOrName)
     progression = progression or {}
 
@@ -182,7 +159,7 @@ function RandomizerPowerup.HandlePickupResources(progression, actorOrName)
                         end
                         Scenario.UpdateDNACounter()
                         RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", resource.quantity)
-                        Game.AddSF(0, "RandomizerPowerup.ObjectiveComplete", "")
+                        RandomizerPowerup.ObjectiveComplete()
                     end
                 end
 
@@ -215,6 +192,40 @@ function RandomizerPowerup.IncreaseAmmo(resource)
     if current_id == nil then return end
 
     RandomizerPowerup.IncreaseItemAmount(current_id, resource.quantity, resource.item_id)
+end
+
+function RandomizerPowerup.ObjectiveComplete()
+    if RandomizerPowerup.GetItemAmount("ITEM_ADN") == 39 then
+        Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", true)
+        Game.HUDIdleScreenLeave()
+        local baby = RandomizerPowerup.GetItemAmount("ITEM_BABY_HATCHLING")
+        RandomizerPowerup.UpdateDNACounter()
+        Game.AddGUISF(3, "RandomizerPowerup.DisableBlink", "")
+        if baby > 0 then
+            GUI.LaunchMessage("Enough Metroid DNA has been collected!\nThe path to Proteus Ridley has been opened in Surface West!",
+            "RandomizerPowerup.Dummy", "")
+            if Scenario.CurrentScenarioID == "s110_surfaceb" then
+                Game.PlayMusicStream(0, "streams/music/k_crateria99.wav", -1, -1, -1, 2, 2, 1)
+            end
+        elseif baby == 0 then
+            GUI.LaunchMessage("Enough Metroid DNA has been collected!\n" .. Init.sBabyMetroidHint, "RandomizerPowerup.Dummy", "")
+        end
+    end
+end
+
+function RandomizerPowerup.UpdateDNACounter()
+    local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
+    GUI.SetProperties(dnaCounter, {
+        ColorR = "0.60392",
+        ColorG = "0.61569",
+        ColorB = "0.04314",
+        Blink = "1.00000",
+    })
+end
+
+function RandomizerPowerup.DisableBlink()
+    local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
+    GUI.SetProperties(dnaCounter, { Blink = "0.00000" })
 end
 
 function RandomizerPowerup.IncreaseMissileCheckValue()
