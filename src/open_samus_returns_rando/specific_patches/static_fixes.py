@@ -369,6 +369,11 @@ def disable_vignettes(editor: PatcherEditor) -> None:
                                     model_group.pop(idx)
 
 
+def remove_a6_lower_dna_seal_gullugg(editor: PatcherEditor) -> None:
+    # Just causes issues when going for the dna hint and also adds nothing of value
+    editor.remove_entity({"scenario": "s070_area7", "layer": 4, "actor": "GulluggStr_057"})
+
+
 def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_multi_room_gammas(editor)
     patch_pickup_rotation(editor)
@@ -383,3 +388,4 @@ def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_a4_collision(editor)
     patch_a1_teleporter_crumbles(editor)
     disable_vignettes(editor)
+    remove_a6_lower_dna_seal_gullugg(editor)
