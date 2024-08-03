@@ -255,15 +255,32 @@
             },
             "default": {}
         },
-        "required_dna": {
-            "description": "The amount of Metroid DNA required to access Proteus Ridley.",
-            "type": "integer",
-            "minimum": 0
-        },
         "reveal_map_on_start": {
             "type": "boolean",
             "default": false,
             "description": "When true, the game will start with the whole map revealed"
+        },
+        "objective": {
+            "description": "Requirements for completing a seed.",
+            "type": "object",
+            "properties": {
+                "required_dna": {
+                    "description": "The amount of Metroid DNA required to complete the objective.",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "final_boss": {
+                    "description": "The required boss to defeat to complete the objective.",
+                    "type": "string",
+                    "enum": [
+                        "Arachnus",
+                        "Diggernaut",
+                        "Queen",
+                        "Ridley"
+                    ],
+                    "default": "Ridley"
+                }
+            }
         },
         "game_patches": {
             "type": "object",
@@ -440,17 +457,6 @@
         "baby_metroid_hint": {
             "description": "Hint for where the Baby Metroid is located.",
             "type": "string"
-        },
-        "final_boss": {
-            "description": "Change the final boss to be a different boss other than Proteus Ridley.",
-            "type": "string",
-            "enum": [
-                "Arachnus",
-                "Diggernaut",
-                "Queen",
-                "Ridley"
-            ],
-            "default": "Ridley"
         },
         "cosmetic_patches": {
             "type": "object",

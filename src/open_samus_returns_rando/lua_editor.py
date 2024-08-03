@@ -200,6 +200,7 @@ class LuaEditor:
         inventory: dict[str, int] = configuration["starting_items"]
         starting_location: dict = configuration["starting_location"]
         starting_text: list[str] = configuration.get("starting_text", [])
+        objective: dict = configuration["objective"]
         game_patches: dict = configuration["game_patches"]
         cosmetic_options: dict = configuration["cosmetic_patches"]
         configuration_identifier: str = configuration["configuration_identifier"]
@@ -261,8 +262,8 @@ class LuaEditor:
         if "baby_metroid_hint" in configuration:
             baby_metroid_hint = lua_util.wrap_string(configuration["baby_metroid_hint"])
 
-        if "required_dna" in configuration:
-            required_dna = configuration["required_dna"]
+        if "required_dna" in objective:
+            required_dna = objective["required_dna"]
         else:
             starting_dna = [item for item in inventory if item.startswith("ITEM_RANDO_DNA")]
             required_dna = 39 - len(starting_dna)
@@ -283,7 +284,7 @@ class LuaEditor:
             "baby_metroid_hint": baby_metroid_hint,
             "tanks_refill_ammo": game_patches["tanks_refill_ammo"],
             "required_dna": required_dna,
-            "final_boss": configuration["final_boss"]
+            "final_boss": lua_util.wrap_string(objective["final_boss"])
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)
