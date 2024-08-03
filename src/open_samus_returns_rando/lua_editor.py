@@ -264,7 +264,7 @@ class LuaEditor:
         if "required_dna" in configuration:
             required_dna = configuration["required_dna"]
         else:
-            starting_dna = [item for item in final_inventory if item.startswith("ITEM_RANDO_DNA")]
+            starting_dna = [item for item in inventory if item.startswith("ITEM_RANDO_DNA")]
             required_dna = 39 - len(starting_dna)
 
         replacement = {
