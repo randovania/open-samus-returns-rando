@@ -258,8 +258,7 @@
         "required_dna": {
             "description": "The amount of Metroid DNA required to access Proteus Ridley.",
             "type": "integer",
-            "minimum": 0,
-            "default": 39
+            "minimum": 0
         },
         "reveal_map_on_start": {
             "type": "boolean",

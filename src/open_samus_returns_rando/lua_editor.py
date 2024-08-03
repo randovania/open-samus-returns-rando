@@ -261,6 +261,12 @@ class LuaEditor:
         if "baby_metroid_hint" in configuration:
             baby_metroid_hint = lua_util.wrap_string(configuration["baby_metroid_hint"])
 
+        if "required_dna" in configuration:
+            required_dna = configuration["required_dna"]
+        else:
+            starting_dna = [item for item in inventory if item.startswith("ITEM_RANDO_DNA")]
+            required_dna = 39 - len(starting_dna)
+
         replacement = {
             "new_game_inventory": final_inventory,
             "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
@@ -276,7 +282,7 @@ class LuaEditor:
             "enable_remote_lua": enable_remote_lua,
             "baby_metroid_hint": baby_metroid_hint,
             "tanks_refill_ammo": game_patches["tanks_refill_ammo"],
-            "required_dna": configuration["required_dna"]
+            "required_dna": required_dna
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)
