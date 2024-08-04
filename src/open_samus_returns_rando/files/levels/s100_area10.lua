@@ -76,7 +76,9 @@ function s100_area10.InitFromBlackboard()
   Scenario.WriteToBlackboard("firstTimeMetroidHatchlingIntroPlayed", "b", true)
   Game.DisableEntity("LE_Baby_Hatchling")
   Game.DisableTrigger("TG_MetroidRadar")
-  Game.GetEntity("LE_RandoDNA").USABLE:Activate(false)
+  if Init.sFinalBoss ~= "Queen" then
+    Game.GetEntity("LE_RandoDNA").USABLE:Activate(false)
+  end
   s100_area10.SetLowModelsVisibility(false)
   if Game.GetEntity("LE_ValveQueen") ~= nil then
     if Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
@@ -108,6 +110,11 @@ function s100_area10.OnEnter_ActivationTeleport_10_01()
 end
 function s100_area10.OnEnter_ActivationTeleport_10_02()
   Game.OnTeleportApproached("LE_Teleporter_10_02")
+end
+function s100_area10.OnEnter_Queen_Access()
+  if Init.sFinalBoss == "Queen" and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") and Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") ~= nil and s100_area10.iNumMetroids == Blackboard.GetProp("DEFEATED_ENEMIES", "Metroid") then
+    Game.AddSF(0, "Scenario.ShowFinalBossMessage", "")
+  end
 end
 function s100_area10.OnLarva_001_Generated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil and _ARG_1_.AI ~= nil then
