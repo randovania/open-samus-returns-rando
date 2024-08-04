@@ -48,6 +48,6 @@ def add_pickups(editor: PatcherEditor, new_pickup: NewPickups) -> None:
 
 def patch_custom_pickups(editor: PatcherEditor, configuration: dict) -> None:
     for new_pickup in new_pickups:
-        if configuration["final_boss"] == "Ridley" and new_pickup.name == "LE_Item_Ridley":
+        if configuration["objective"]["final_boss"] == "Ridley" and new_pickup.name == "LE_Item_Ridley":
             continue
         add_pickups(editor, new_pickup)

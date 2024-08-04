@@ -35,6 +35,6 @@ def add_triggers(editor: PatcherEditor, new_trigger: NewTrigger) -> None:
 
 
 def patch_custom_triggers(editor: PatcherEditor, configuration: dict) -> None:
-    if configuration["final_boss"] != "Ridley":
+    if configuration["objective"]["final_boss"] != "Ridley":
         for new_trigger in new_triggers:
             add_triggers(editor, new_trigger)

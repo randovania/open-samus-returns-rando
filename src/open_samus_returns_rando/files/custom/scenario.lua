@@ -201,6 +201,24 @@ function Scenario.RandoOnElevatorUse(from_actor, _ARG_1_, _ARG_2_)
   Elevator.Use("c10_samus", destination.scenario, destination.actor, _ARG_2_)
 end
 
+function Scenario.ShowFinalBossMessage()
+  local boss_mapping = {
+    {"Arachnus", "Arachnus"},
+    {"Diggernaut", "ManicMiner"},
+    {"Queen", "Queen"},
+  }
+  for _, boss in pairs(boss_mapping) do
+    if Init.sFinalBoss == boss[1] then
+      GUI.LaunchMessage("Not enough Metroid DNA!\nCollect more DNA to fight " .. boss[1] .. "!", "RandomizerPowerup.Dummy", "")
+      Game.AddSF(0, "Scenario.FinalBossReload", "")
+    end
+  end
+end
+
+function Scenario.FinalBossReload()
+  Scenario.LoadNewScenario(Scenario.CurrentScenarioID, "ST_SG_" .. Init.sFinalBoss)
+end
+
 Scenario.QueuedPopups = Scenario.QueuedPopups or Queue()
 
 function Scenario.ShowIfNotActive()
