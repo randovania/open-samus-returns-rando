@@ -813,7 +813,9 @@ function s070_area7.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
       s070_area7.LaunchManicMinerBotStealOrb()
     end
   elseif _ARG_0_ == "collision_camera_034" and _ARG_2_ == "collision_camera_043" then
-    if not Scenario.ReadFromBlackboard("ManicMinerBotIntroCutscenePlayed", false) then
+    if Init.sFinalBoss == "Diggernaut" and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
+      Game.AddSF(0, "Scenario.ShowFinalBossMessage", "")
+    elseif not Scenario.ReadFromBlackboard("ManicMinerBotIntroCutscenePlayed", false) then
       Game.SetCameraEnemy("manicminerbot")
       s070_area7.LaunchManicMinerBotIntroCutscene()
     end

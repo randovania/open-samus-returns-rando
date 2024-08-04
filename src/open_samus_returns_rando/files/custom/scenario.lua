@@ -209,14 +209,15 @@ function Scenario.ShowFinalBossMessage()
   }
   for _, boss in pairs(boss_mapping) do
     if Init.sFinalBoss == boss[1] then
+      local startpoint = boss[2]
       GUI.LaunchMessage("Not enough Metroid DNA!\nCollect more DNA to fight " .. boss[1] .. "!", "RandomizerPowerup.Dummy", "")
-      Game.AddSF(0, "Scenario.FinalBossReload", "")
+      Game.AddSF(0, "Scenario.FinalBossReload", "s", startpoint)
     end
   end
 end
 
-function Scenario.FinalBossReload()
-  Scenario.LoadNewScenario(Scenario.CurrentScenarioID, "ST_SG_" .. Init.sFinalBoss)
+function Scenario.FinalBossReload(startpoint)
+  Scenario.LoadNewScenario(Scenario.CurrentScenarioID, "ST_SG_" .. startpoint)
 end
 
 Scenario.QueuedPopups = Scenario.QueuedPopups or Queue()

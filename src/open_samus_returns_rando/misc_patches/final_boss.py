@@ -15,7 +15,7 @@ new_triggers = [
 ]
 
 
-def add_triggers(editor: PatcherEditor, new_trigger: NewTrigger) -> None:
+def add_boss_triggers(editor: PatcherEditor, new_trigger: NewTrigger) -> None:
     template_tg = editor.get_scenario("s110_surfaceb").raw.actors[0]["TG_Activation_Teleport_00b_01"]
 
     scenario_name = new_trigger.scenario
@@ -34,7 +34,12 @@ def add_triggers(editor: PatcherEditor, new_trigger: NewTrigger) -> None:
         scenario_file.add_actor_to_entity_groups(entity_group, new_trigger.name, True)
 
 
-def patch_custom_triggers(editor: PatcherEditor, configuration: dict) -> None:
+def patch_custom_final_boss(editor: PatcherEditor, configuration: dict) -> None:
     if configuration["objective"]["final_boss"] != "Ridley":
         for new_trigger in new_triggers:
-            add_triggers(editor, new_trigger)
+            add_boss_triggers(editor, new_trigger)
+
+    if configuration["objective"]["final_boss"] == "Diggernaut":
+        if not configuration["game_patches"]["remove_elevator_grapple_blocks"]:
+            scenario = editor.get_scenario("s070_area7")
+            scenario.raw.actors[9]["LE_GrappleMov_001"]["position"][0] = -15250.0
