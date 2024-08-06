@@ -575,7 +575,7 @@ function s110_surfaceb.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_
   Game.SetSceneGroupEnabledByName("sg_debris02", false)
   Game.SetSceneGroupEnabledByName("sg_debris03", false)
   if _ARG_2_ == "collision_camera_000" then
-    if (Init.sFinalBoss == Ridley and Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") == false) or Blackboard.GetProp("DEFEATED_ENEMIES", "Ridley") then
+    if (Init.sFinalBoss == Ridley and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE")) or Blackboard.GetProp("DEFEATED_ENEMIES", "Ridley") then
       s110_surfaceb.LoadSurface()
     end
   end
