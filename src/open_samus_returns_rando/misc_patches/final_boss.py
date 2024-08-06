@@ -1,5 +1,7 @@
 import typing
 
+from construct import Container  # type: ignore[import-untyped]
+from mercury_engine_data_structures.formats import Bmsad, Bmtun
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
@@ -43,12 +45,40 @@ def patch_custom_final_boss(editor: PatcherEditor, configuration: dict) -> None:
         # Add new boss triggers
         for new_trigger in new_triggers:
             add_boss_triggers(editor, new_trigger)
-        if final_boss == "Diggernaut":
+        if final_boss == "Arachnus":
+            # Buff Arachnus so the fight isn't trivial
+            arachnus = editor.get_file("actors/characters/arachnus/charclasses/arachnus.bmsad", Bmsad)
+            bmsad_life = arachnus.raw["components"]["LIFE"]["fields"]
+            # Disable Power Bombs because of the instant kill
+            bmsad_life["bShouldDieWithPowerBomb"] = Container({"type": "bool", "value": False})
+
+            '''All beams (except Ice) will use the same factor of 0.33 for balancing with the new health
+            Power Beam: 25 -> 8.25
+            Ice: 10
+            Wave: 50 -> 16.5
+            Spazer: 210 -> 69.3
+            Plasma: 300 -> 99
+            '''
+            bmsad_life["fPowerBeamFactor"]["value"] = 0.33
+            # 1000 -> 500
+            bmsad_life["fScrewAttackFactor"]["value"] = 0.5
+
+            tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
+            damage = tunables.raw["classes"]["Damage|CTunableCharClassAttackComponent"]["tunables"]
+            # 50 -> 150
+            damage["fDamageArachnusDefault"]["value"] *= 3
+            damage["fDamageArachnusEnergyWave"]["value"] *= 3
+            damage["fDamageArachnusFireSplash"]["value"] *= 3
+
+            tunables_life = tunables.raw["classes"]["Life|CTunableCharClassAIComponent"]["tunables"]
+            # Original health is 3000
+            tunables_life["fLifeArachnus"]["value"] = 10000
+        elif final_boss == "Diggernaut":
             # Move the grapple block by the elevator regardless if the grapple config is set
             if not game_patches["remove_elevator_grapple_blocks"]:
                 scenario = editor.get_scenario("s070_area7")
                 scenario.raw.actors[9]["LE_GrappleMov_001"]["position"][0] = -15250.0
         elif final_boss == "Queen":
-            # Remove the Queen wall regargless if the config is set
+            # Remove the Queen wall regardless if the config is set
             if not game_patches["reverse_area8"]:
                 editor.remove_entity({"scenario": "s100_area10", "layer": 9, "actor": "LE_ValveQueen"})
