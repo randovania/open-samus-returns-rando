@@ -283,7 +283,12 @@
             },
             "required": [
                 "final_boss"
-            ]
+            ],
+            "default": {
+                "objective": {
+                    "final_boss": "Ridley"
+                }
+            }
         },
         "game_patches": {
             "type": "object",

@@ -38,7 +38,7 @@ def add_boss_triggers(editor: PatcherEditor, new_trigger: NewTrigger) -> None:
         scenario_file.add_actor_to_entity_groups(entity_group, new_trigger.name, True)
 
 
-def patch_custom_final_boss(editor: PatcherEditor, configuration: dict) -> None:
+def patch_final_boss(editor: PatcherEditor, configuration: dict) -> None:
     final_boss = configuration["objective"]["final_boss"]
     game_patches = configuration["game_patches"]
     if final_boss != "Ridley":
