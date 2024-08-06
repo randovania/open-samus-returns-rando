@@ -280,7 +280,10 @@
                     ],
                     "default": "Ridley"
                 }
-            }
+            },
+            "required": [
+                "final_boss"
+            ]
         },
         "game_patches": {
             "type": "object",
