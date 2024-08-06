@@ -1,6 +1,10 @@
 Game.ImportLibrary("actors/characters/arachnus/scripts/arachnus_original.lc")
 function Arachnus.main()
-  Game.AddSF(0.0, "Arachnus.RotatePickup", "")
+  if Init.sFinalBoss == "Arachnus" then
+    Game.DeleteEntity("LE_PowerUp_Springball")
+  else
+    Game.AddSF(0.0, "Arachnus.RotatePickup", "")
+  end
 end
 function Arachnus.RotatePickup()
   local springball = Game.GetEntity("LE_PowerUp_Springball")

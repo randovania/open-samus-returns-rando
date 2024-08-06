@@ -2,6 +2,10 @@ Game.ImportLibrary("actors/props/damageplants/scripts/damageplants.lua", false)
 Game.ImportLibrary("actors/props/heatzone/scripts/heatzone.lua", false)
 Game.ImportLibrary("actors/props/poisonzone/scripts/poisonzone.lua", false)
 Game.ImportLibrary("actors/props/waterzone/scripts/waterzone.lua", false)
+s070_area7 = {
+  bAfterCredits = false,
+  bFirstTimeCompleted = false
+}
 function s070_area7.main()
   Scenario.InitGUI()
 end
@@ -800,12 +804,17 @@ function s070_area7.OnFansInit()
   end
 end
 function s070_area7.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
-  if _ARG_0_ == "" and _ARG_2_ == "collision_camera_043" and _ARG_3_ == "ManicMiner_Dead" and Game.GetEntity("SG_ManicMinerBot") ~= nil then
-    Game.GetEntity("SG_ManicMinerBot").SPAWNGROUP:EnableSpawnGroup()
-    if Game.GetEntityFromSpawnPoint("SP_ManicMinerBot") ~= nil then
-      Game.GetEntityFromSpawnPoint("SP_ManicMinerBot").ANIMATION.sDefaultSpawnAction = "deathloop"
-      Game.GetEntityFromSpawnPoint("SP_ManicMinerBot").ANIMATION:SetAction("deathloop", true)
-      Game.GetEntityFromSpawnPoint("SP_ManicMinerBot").AI:OnDeadCutsceneEnd()
+  if _ARG_0_ == "" and _ARG_2_ == "collision_camera_043" and _ARG_3_ == "ManicMiner_Dead" then
+    if Init.sFinalBoss == "Diggernaut" then
+      s070_area7.bAfterCredits = false
+      Scenario.OnPostCreditsEnd()
+    elseif Game.GetEntity("SG_ManicMinerBot") ~= nil then
+      Game.GetEntity("SG_ManicMinerBot").SPAWNGROUP:EnableSpawnGroup()
+      if Game.GetEntityFromSpawnPoint("SP_ManicMinerBot") ~= nil then
+        Game.GetEntityFromSpawnPoint("SP_ManicMinerBot").ANIMATION.sDefaultSpawnAction = "deathloop"
+        Game.GetEntityFromSpawnPoint("SP_ManicMinerBot").ANIMATION:SetAction("deathloop", true)
+        Game.GetEntityFromSpawnPoint("SP_ManicMinerBot").AI:OnDeadCutsceneEnd()
+      end
     end
   end
   if _ARG_0_ == "collision_camera_041" and _ARG_2_ == "collision_camera_038" then
@@ -910,6 +919,9 @@ function s070_area7.OnStartManicMinerBotDeathCutscene()
   end
 end
 function s070_area7.OnEndManicMinerBotDeathCutscene()
+  if Init.sFinalBoss == "Diggernaut" then
+    Scenario.LaunchCredits()
+  end
   s070_area7.UpdateMinimapItemsphereIcon()
   Game.RemoveEntityToUpdateInCutscene("LE_ManicMinerWall")
   Game.RemoveEntityToUpdateInCutscene("LE_PowerUp_Powerbomb")

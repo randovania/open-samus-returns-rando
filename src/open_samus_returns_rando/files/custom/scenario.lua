@@ -202,16 +202,15 @@ function Scenario.RandoOnElevatorUse(from_actor, _ARG_1_, _ARG_2_)
 end
 
 function Scenario.ShowFinalBossMessage()
-  local boss_mapping = {
-    {"Arachnus", "Arachnus"},
-    {"Diggernaut", "ManicMiner"},
-    {"Queen", "Queen"},
-  }
-  for _, boss in pairs(boss_mapping) do
-    local boss_name = boss[1]
-    if Init.sFinalBoss == boss_name then
-      local startpoint = boss[2]
-      if boss_name == "Queen" then
+  if Init.sFinalBoss == "Ridley" then return end
+  local bosses = {"Arachnus", "Diggernaut", "Queen"}
+  for _, boss in ipairs(bosses) do
+    if Init.sFinalBoss == boss then
+      local boss_name = boss
+      local startpoint = boss
+      if boss == "Diggernaut" then
+        startpoint = "ManicMiner"
+      elseif boss == "Queen" then
         boss_name = "the Queen"
       end
       GUI.LaunchMessage("Not enough Metroid DNA!\nCollect more DNA to fight " .. boss_name .. "!", "RandomizerPowerup.Dummy", "")
@@ -224,6 +223,20 @@ end
 
 function Scenario.FinalBossReload(startpoint)
   Scenario.LoadNewScenario(Scenario.CurrentScenarioID, "ST_SG_" .. startpoint)
+end
+
+function Scenario.LaunchCredits()
+  Game.ShowEndGameCredits(true)
+end
+
+function Scenario.OnPostCreditsEnd()
+  Game.SaveGameComplete()
+  if CurrentScenario.bFirstTimeCompleted then
+    Game.StopEnvironmentSound()
+    Game.AddGUISF(2.5, GUI.MainMenuGoToState, "i", 28)
+  else
+    Game.GoToMainMenu()
+  end
 end
 
 Scenario.QueuedPopups = Scenario.QueuedPopups or Queue()
