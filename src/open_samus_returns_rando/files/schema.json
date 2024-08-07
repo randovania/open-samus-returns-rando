@@ -285,9 +285,7 @@
                 "final_boss"
             ],
             "default": {
-                "objective": {
-                    "final_boss": "Ridley"
-                }
+                "final_boss": "Ridley"
             }
         },
         "game_patches": {
