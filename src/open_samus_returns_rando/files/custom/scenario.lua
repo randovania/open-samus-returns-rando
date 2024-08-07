@@ -203,21 +203,16 @@ end
 
 function Scenario.ShowFinalBossMessage()
   if Init.sFinalBoss == "Ridley" then return end
-  local bosses = {"Arachnus", "Diggernaut", "Queen"}
-  for _, boss in ipairs(bosses) do
-    if Init.sFinalBoss == boss then
-      local boss_name = boss
-      local startpoint = boss
-      if boss == "Diggernaut" then
-        startpoint = "ManicMiner"
-      elseif boss == "Queen" then
-        boss_name = "the Queen"
-      end
-      GUI.LaunchMessage("Not enough Metroid DNA!\nCollect more DNA to fight " .. boss_name .. "!", "RandomizerPowerup.Dummy", "")
-      if Init.sFinalBoss ~= "Queen" then
-        Game.AddSF(0, "Scenario.FinalBossReload", "s", startpoint)
-      end
-    end
+  local boss = Init.sFinalBoss
+  local startpoint = boss
+  if boss == "Diggernaut" then
+    startpoint = "ManicMiner"
+  elseif boss == "Queen" then
+    boss = "the Queen"
+  end
+  GUI.LaunchMessage("Not enough Metroid DNA!\nCollect more DNA to fight " .. boss .. "!", "RandomizerPowerup.Dummy", "")
+  if Init.sFinalBoss ~= "Queen" then
+    Game.AddSF(0, "Scenario.FinalBossReload", "s", startpoint)
   end
 end
 

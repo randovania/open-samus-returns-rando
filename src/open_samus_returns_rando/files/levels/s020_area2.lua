@@ -2,10 +2,6 @@ Game.ImportLibrary("actors/props/damageplants/scripts/damageplants.lua", false)
 Game.ImportLibrary("actors/props/heatzone/scripts/heatzone.lua", false)
 Game.ImportLibrary("actors/props/poisonzone/scripts/poisonzone.lua", false)
 Game.ImportLibrary("actors/props/waterzone/scripts/waterzone.lua", false)
-s020_area2 = {
-  bAfterCredits = false,
-  bFirstTimeCompleted = false
-}
 function s020_area2.main()
   Scenario.InitGUI()
 end
@@ -68,12 +64,12 @@ end
 function s020_area2.OnExit()
 end
 function s020_area2.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
-  if _ARG_0_ == "" and _ARG_2_ == "collision_camera_005" and Init.sFinalBoss == "Arachnus" and 0 < Scenario.ReadFromBlackboard("entity_SG_Arachnus_001_deaths", 0) then
-    s020_area2.bAfterCredits = false
-    Scenario.OnPostCreditsEnd()
-  end
   if _ARG_2_ == "collision_camera_005" and Init.sFinalBoss == "Arachnus" and 0 < Scenario.ReadFromBlackboard("entity_SG_Arachnus_001_deaths", 0) then
-    Game.AddSF(0, "Scenario.LaunchCredits", "")
+    if _ARG_0_ == "" then
+      Scenario.OnPostCreditsEnd()
+    else
+      Game.AddSF(0, "Scenario.LaunchCredits", "")
+    end
   end
   if _ARG_2_ == "collision_camera_006" then
     if Init.sFinalBoss == "Arachnus" and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then

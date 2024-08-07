@@ -2,10 +2,6 @@ Game.ImportLibrary("actors/props/damageplants/scripts/damageplants.lua", false)
 Game.ImportLibrary("actors/props/heatzone/scripts/heatzone.lua", false)
 Game.ImportLibrary("actors/props/poisonzone/scripts/poisonzone.lua", false)
 Game.ImportLibrary("actors/props/waterzone/scripts/waterzone.lua", false)
-s100_area10 = {
-  bAfterCredits = false,
-  bFirstTimeCompleted = false
-}
 function s100_area10.main()
   Scenario.InitGUI()
 end
@@ -303,7 +299,6 @@ function s100_area10.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_
     Game.SetSafeFarPlaneFactor(s100_area10.fSafeFarPlaneFactor)
   end
   if _ARG_0_ == "" and _ARG_2_ == "collision_camera_020" and _ARG_3_ == "PostMetroids_001" then
-    s100_area10.bAfterCredits = false
     Scenario.OnPostCreditsEnd()
   end
   if _ARG_0_ == "collision_camera_020" and _ARG_2_ == "collision_camera_022" then
