@@ -195,20 +195,48 @@ function RandomizerPowerup.IncreaseAmmo(resource)
 end
 
 function RandomizerPowerup.ObjectiveComplete()
-    if RandomizerPowerup.GetItemAmount("ITEM_ADN") == 39 then
+    local required_dna = 39
+    -- Default required_dna is 39, so change the requirement if set higher in the config
+    if Init.iRequiredDNA > 39 then
+        required_dna = Init.iRequiredDNA
+    end
+
+    if RandomizerPowerup.GetItemAmount("ITEM_ADN") == required_dna then
         Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", true)
         Game.HUDIdleScreenLeave()
-        local baby = RandomizerPowerup.GetItemAmount("ITEM_BABY_HATCHLING")
         RandomizerPowerup.UpdateDNACounter()
         Game.AddGUISF(3, "RandomizerPowerup.DisableBlink", "")
+
+        -- Assign boss names and areas to each boss
+        local boss = Init.sFinalBoss
+        local boss_name = boss
+        local boss_area = ""
+        if boss == "Arachnus" then
+            boss_area = "Area 2 Dam Exterior"
+        elseif boss == "Diggernaut" then
+            boss_area = "Area 6"
+        elseif boss == "Queen" then
+            boss_name = "the Queen"
+            boss_area = "Area 8"
+        elseif boss == "Ridley" then
+            boss_name = "Proteus Ridley"
+            boss_area = "Surface West"
+        end
+
+        -- Handle the message depending the boss/other factors
+        local baby = RandomizerPowerup.GetItemAmount("ITEM_BABY_HATCHLING")
+        local message = "Enough Metroid DNA has been collected!\nThe path to " .. boss_name .. " has been opened in " .. boss_area .. "!"
         if baby > 0 then
-            GUI.LaunchMessage("Enough Metroid DNA has been collected!\nThe path to Proteus Ridley has been opened in Surface West!",
-            "RandomizerPowerup.Dummy", "")
-            if Scenario.CurrentScenarioID == "s110_surfaceb" then
+            GUI.LaunchMessage(message, "RandomizerPowerup.Dummy", "")
+            if Scenario.CurrentScenarioID == "s110_surfaceb" and boss == "Ridley" then
                 Game.PlayMusicStream(0, "streams/music/k_crateria99.wav", -1, -1, -1, 2, 2, 1)
             end
         elseif baby == 0 then
-            GUI.LaunchMessage("Enough Metroid DNA has been collected!\n" .. Init.sBabyMetroidHint, "RandomizerPowerup.Dummy", "")
+            if boss == "Ridley" then
+                GUI.LaunchMessage("Enough Metroid DNA has been collected!\n" .. Init.sBabyMetroidHint, "RandomizerPowerup.Dummy", "")
+            else
+                GUI.LaunchMessage(message .. "\n" .. Init.sBabyMetroidHint, "RandomizerPowerup.Dummy", "")
+            end
         end
     end
 end
