@@ -340,6 +340,34 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/offworld_suit/models/textures/offworldsuit_d.bctex",
         ),
     ),
+    "offworld_supermissile_prime": ModelData(
+        bcmdl_path="actors/items/offworld_supermissile_prime/models/offworld_supermissile_prime.bcmdl",
+        dependencies=(
+            "actors/items/offworld_supermissile_prime/models/offworld_supermissile_prime.bcmdl",
+            "actors/items/offworld_supermissile_prime/models/textures/offworld_supermissile_prime_d.bctex",
+        ),
+    ),
+    "offworld_wavebuster_prime": ModelData(
+        bcmdl_path="actors/items/offworld_wavebuster_prime/models/offworld_wavebuster_prime.bcmdl",
+        dependencies=(
+            "actors/items/offworld_wavebuster_prime/models/offworld_wavebuster_prime.bcmdl",
+            "actors/items/offworld_wavebuster_prime/models/textures/offworld_wavebuster_prime_d.bctex",
+        ),
+    ),
+    "offworld_icespreader_prime": ModelData(
+        bcmdl_path="actors/items/offworld_icespreader_prime/models/offworld_icespreader_prime.bcmdl",
+        dependencies=(
+            "actors/items/offworld_icespreader_prime/models/offworld_icespreader_prime.bcmdl",
+            "actors/items/offworld_icespreader_prime/models/textures/offworld_icespreader_prime_d.bctex",
+        ),
+    ),
+    "offworld_flamethrower_prime": ModelData(
+        bcmdl_path="actors/items/offworld_flamethrower_prime/models/offworld_flamethrower_prime.bcmdl",
+        dependencies=(
+            "actors/items/offworld_flamethrower_prime/models/offworld_flamethrower_prime.bcmdl",
+            "actors/items/offworld_flamethrower_prime/models/textures/offworld_flamethrower_prime_d.bctex",
+        ),
+    ),
 }
 
 
