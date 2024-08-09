@@ -226,12 +226,7 @@ end
 
 function Scenario.OnPostCreditsEnd()
   Game.SaveGameComplete()
-  if CurrentScenario.bFirstTimeCompleted then
-    Game.StopEnvironmentSound()
-    Game.AddGUISF(2.5, GUI.MainMenuGoToState, "i", 28)
-  else
-    Game.GoToMainMenu()
-  end
+  Game.GoToMainMenu()
 end
 
 Scenario.QueuedPopups = Scenario.QueuedPopups or Queue()
