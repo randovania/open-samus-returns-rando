@@ -918,6 +918,82 @@
             "model": [
                 "offworld_quote_cavestory"
             ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Sent STK to meep.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "offworld_pickup14"
+            },
+            "model": [
+                "offworld_skytemplekey_echoes"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Sent Agon Key to meep.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "offworld_pickup15"
+            },
+            "model": [
+                "offworld_agontemplekey_echoes"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Sent Torvus Key to meep.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "offworld_pickup16"
+            },
+            "model": [
+                "offworld_torvustemplekey_echoes"
+            ]
+        },
+        {
+            "pickup_type": "actor",
+            "caption": "Sent Ing Hive Key to meep.",
+            "resources": [
+                [
+                    {
+                        "item_id": "ITEM_NONE",
+                        "quantity": 0
+                    }
+                ]
+            ],
+            "pickup_actor": {
+                "scenario": "s000_surface",
+                "actor": "offworld_pickup17"
+            },
+            "model": [
+                "offworld_inghivekey_echoes"
+            ]
         }
     ],
     "energy_per_tank": 100,
@@ -1485,6 +1561,54 @@
             },
             "location": {
                 "x": -6300.0,
+                "y": 2250.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "offworld_pickup14",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -6200.0,
+                "y": 2250.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "offworld_pickup15",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -6100.0,
+                "y": 2250.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "offworld_pickup16",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -6000.0,
+                "y": 2250.0,
+                "z": 0.0
+            },
+            "collision_camera_name": "collision_camera_000"
+        },
+        {
+            "new_actor": {
+                "actor": "offworld_pickup17",
+                "scenario": "s000_surface"
+            },
+            "location": {
+                "x": -5900.0,
                 "y": 2250.0,
                 "z": 0.0
             },

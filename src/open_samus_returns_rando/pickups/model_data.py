@@ -382,6 +382,34 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/offworld_quote_cavestory/models/textures/offworld_quote_cavestory_d.bctex",
         ),
     ),
+    "offworld_skytemplekey_echoes": ModelData(
+        bcmdl_path="actors/items/offworld_skytemplekey_echoes/models/offworld_skytemplekey_echoes.bcmdl",
+        dependencies=(
+            "actors/items/offworld_skytemplekey_echoes/models/offworld_skytemplekey_echoes.bcmdl",
+            "actors/items/offworld_skytemplekey_echoes/models/textures/offworld_skytemplekey_echoes_d.bctex",
+        ),
+    ),
+    "offworld_agontemplekey_echoes": ModelData(
+        bcmdl_path="actors/items/offworld_agontemplekey_echoes/models/offworld_agontemplekey_echoes.bcmdl",
+        dependencies=(
+            "actors/items/offworld_agontemplekey_echoes/models/offworld_agontemplekey_echoes.bcmdl",
+            "actors/items/offworld_agontemplekey_echoes/models/textures/offworld_agontemplekey_echoes_d.bctex",
+        ),
+    ),
+    "offworld_torvustemplekey_echoes": ModelData(
+        bcmdl_path="actors/items/offworld_torvustemplekey_echoes/models/offworld_torvustemplekey_echoes.bcmdl",
+        dependencies=(
+            "actors/items/offworld_torvustemplekey_echoes/models/offworld_torvustemplekey_echoes.bcmdl",
+            "actors/items/offworld_torvustemplekey_echoes/models/textures/offworld_torvustemplekey_echoes_d.bctex",
+        ),
+    ),
+    "offworld_inghivekey_echoes": ModelData(
+        bcmdl_path="actors/items/offworld_inghivekey_echoes/models/offworld_inghivekey_echoes.bcmdl",
+        dependencies=(
+            "actors/items/offworld_inghivekey_echoes/models/offworld_inghivekey_echoes.bcmdl",
+            "actors/items/offworld_inghivekey_echoes/models/textures/offworld_inghivekey_echoes_d.bctex",
+        ),
+    ),
 }
 
 
