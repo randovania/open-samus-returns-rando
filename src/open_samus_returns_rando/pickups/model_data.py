@@ -368,6 +368,13 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/offworld_flamethrower_prime/models/textures/offworld_flamethrower_prime_d.bctex",
         ),
     ),
+    "offworld_gear_factorio": ModelData(
+        bcmdl_path="actors/items/offworld_gear_factorio/models/offworld_gear_factorio.bcmdl",
+        dependencies=(
+            "actors/items/offworld_gear_factorio/models/offworld_gear_factorio.bcmdl",
+            "actors/items/offworld_gear_factorio/models/textures/offworld_gear_factorio_d.bctex",
+        ),
+    ),
 }
 
 
