@@ -15,8 +15,11 @@ class NewPickups(typing.NamedTuple):
 
 new_pickups = [
     NewPickups(
+        "s000_surface", "LE_Item_Ridley", [-8000.0, 1900.0, 0.0], 168, ["collision_camera_000"]
+    ),
+    NewPickups(
         "s100_area10", "LE_Baby_Hatchling", [-3400.0, 11225.0, 0.0], 252, ["collision_camera_022"]
-    )
+    ),
 ]
 
 
@@ -43,6 +46,8 @@ def add_pickups(editor: PatcherEditor, new_pickup: NewPickups) -> None:
         scenario_file.add_actor_to_entity_groups(entity_group, new_pickup.name, True)
 
 
-def patch_custom_pickups(editor: PatcherEditor) -> None:
+def patch_custom_pickups(editor: PatcherEditor, configuration: dict) -> None:
     for new_pickup in new_pickups:
+        if configuration["objective"]["final_boss"] == "Ridley" and new_pickup.name == "LE_Item_Ridley":
+            continue
         add_pickups(editor, new_pickup)

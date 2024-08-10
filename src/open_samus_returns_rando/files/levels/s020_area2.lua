@@ -64,7 +64,17 @@ end
 function s020_area2.OnExit()
 end
 function s020_area2.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
+  if _ARG_2_ == "collision_camera_005" and Init.sFinalBoss == "Arachnus" and 0 < Scenario.ReadFromBlackboard("entity_SG_Arachnus_001_deaths", 0) then
+    if _ARG_0_ == "" then
+      Scenario.OnPostCreditsEnd()
+    else
+      Game.AddSF(0, "Scenario.LaunchCredits", "")
+    end
+  end
   if _ARG_2_ == "collision_camera_006" then
+    if Init.sFinalBoss == "Arachnus" and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
+      Game.AddSF(0.0, "Scenario.ShowFinalBossMessage", "")
+    end
     Game.DelSF("s020_area2.CloseDoor004")
     Game.AddSF(0.1, "s020_area2.CloseDoor004", "")
   end

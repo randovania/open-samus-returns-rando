@@ -93,6 +93,13 @@ function s000_surface.InitFromBlackboard()
     Game.SetPlayerInputEnabled(false, false)
     s000_surface.LaunchPlanetArrival()
   end
+  if Game.GetEntity("LE_Item_Ridley") ~= nil then
+    if not Blackboard.GetProp("DEFEATED_ENEMIES", "Ridley") then 
+      Game.DisableEntity("LE_Item_Ridley")
+    else
+      Game.EnableEntity("LE_Item_Ridley")
+    end
+  end
 end
 function s000_surface.OnReloaded()
 end

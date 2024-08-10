@@ -322,7 +322,7 @@ class ActorPickup(BasePickup):
             # Custom blocks are no longer attached to the pickup, so make all hidden pickups consistent and generic
             if pickup_tile_icon.icon_priority == "HIDDEN_ITEM" or (
                 # Boss pickups are now always visible on the map without fighting them, so make icons generic
-                actor_name in {"LE_PowerUp_Springball", "LE_PowerUp_Powerbomb", "LE_Baby_Hatchling"}
+                actor_name in {"LE_PowerUp_Springball", "LE_PowerUp_Powerbomb", "LE_Baby_Hatchling", "LE_Item_Ridley"}
             ):
                 if tile_for_item[0]["tile_type"] == TileType.HEAT:
                     pickup_tile_icon.icon = "itemenabledheat"

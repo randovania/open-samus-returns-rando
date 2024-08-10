@@ -13,6 +13,7 @@ from open_samus_returns_rando.misc_patches.block_patches import patch_block_type
 from open_samus_returns_rando.misc_patches.collision_camera_table import create_collision_camera_table
 from open_samus_returns_rando.misc_patches.credits import patch_credits
 from open_samus_returns_rando.misc_patches.elevators import patch_elevators
+from open_samus_returns_rando.misc_patches.final_boss import patch_final_boss
 from open_samus_returns_rando.misc_patches.spawn_points import patch_custom_spawn_points
 from open_samus_returns_rando.misc_patches.text_patches import add_spiderboost_status, apply_text_patches
 from open_samus_returns_rando.multiworld_integration import create_exefs_patches
@@ -83,7 +84,7 @@ def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: 
     apply_static_fixes(editor)
 
     # Custom pickups
-    patch_custom_pickups(editor)
+    patch_custom_pickups(editor, configuration)
     debug_custom_pickups(editor, configuration["debug_custom_pickups"])
 
     # Patch all pickups
@@ -92,6 +93,9 @@ def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: 
     # Custom spawn points
     patch_custom_spawn_points(editor)
     debug_spawn_points(editor, configuration["debug_spawn_points"])
+
+    # Custom final boss
+    patch_final_boss(editor, configuration)
 
     # Fix unheated heat rooms
     patch_heat_rooms(editor)
