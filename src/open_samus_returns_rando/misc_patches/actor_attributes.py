@@ -8,4 +8,4 @@ def patch_actor_attributes(editor: PatcherEditor, configuration: dict) -> None:
 
 def _custom_baby_size(editor: PatcherEditor, configuration: dict) -> None:
     baby = editor.get_file("actors/characters/babyhatchling/charclasses/babyhatchling.bmsad", Bmsad)
-    baby.raw["header"]["model_scale"] = configuration["babyhatchling"]["size"]
+    baby.raw["header"]["model_scale"] = configuration["babyhatchling"]["model_scale"]

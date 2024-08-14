@@ -596,7 +596,7 @@
             "properties": {
                 "babyhatchling": {
                     "properties": {
-                        "size": {
+                        "model_scale": {
                             "description": "Size of the Baby Metroid.",
                             "type": "number",
                             "minimum": 0.1,
