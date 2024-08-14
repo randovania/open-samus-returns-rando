@@ -590,6 +590,25 @@
             },
             "default": {}
         },
+        "actor_attributes": {
+            "description": "Modifications to actor attributes.",
+            "type": "object",
+            "properties": {
+                "babyhatchling": {
+                    "properties": {
+                        "size": {
+                            "description": "Size of the Baby Metroid.",
+                            "type": "number",
+                            "minimum": 0.1,
+                            "maximum": 10,
+                            "default": 0.6600000262260437
+                        }
+                    },
+                    "default": {}
+                }
+            },
+            "default": {}
+        },
         "configuration_identifier": {
             "type": "string",
             "description": "An unique identifier for this configuration. Only save files created with this identifier can be loaded."
