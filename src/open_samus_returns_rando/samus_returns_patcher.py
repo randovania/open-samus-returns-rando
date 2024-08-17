@@ -9,6 +9,7 @@ from open_samus_returns_rando.debug import debug_custom_pickups, debug_spawn_poi
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor
+from open_samus_returns_rando.misc_patches.actor_attributes import patch_actor_attributes
 from open_samus_returns_rando.misc_patches.block_patches import patch_block_types
 from open_samus_returns_rando.misc_patches.collision_camera_table import create_collision_camera_table
 from open_samus_returns_rando.misc_patches.credits import patch_credits
@@ -136,6 +137,9 @@ def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: 
 
     # Patch blocks to another type
     patch_block_types(editor, configuration)
+
+    # Patch actor attributes
+    patch_actor_attributes(editor, configuration["actor_attributes"])
 
     out_exefs = output_path.joinpath("exefs")
     out_romfs = output_path.joinpath("romfs")
