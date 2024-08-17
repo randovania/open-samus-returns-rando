@@ -3,6 +3,7 @@ import typing
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmscc, Bmssd, Bmtun
+
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 MULTI_ROOM_GAMMAS = [

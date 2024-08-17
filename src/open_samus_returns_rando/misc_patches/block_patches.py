@@ -1,4 +1,5 @@
 from mercury_engine_data_structures.formats import Bmsbk
+
 from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 

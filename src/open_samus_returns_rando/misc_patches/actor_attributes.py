@@ -1,4 +1,5 @@
 from mercury_engine_data_structures.formats import Bmsad
+
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 

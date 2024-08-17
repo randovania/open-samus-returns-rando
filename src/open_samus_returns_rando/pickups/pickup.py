@@ -6,6 +6,7 @@ from enum import Enum
 from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsmsd, Lua
 from mercury_engine_data_structures.formats.bmsmsd import TileType
+
 from open_samus_returns_rando.constants import get_package_name
 from open_samus_returns_rando.files import templates_path
 from open_samus_returns_rando.logger import LOG
