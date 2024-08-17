@@ -1,4 +1,5 @@
 from mercury_engine_data_structures.formats import Bmdefs, Bmses, Bmtun
+
 from open_samus_returns_rando.constants import ALL_SCENARIOS
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor

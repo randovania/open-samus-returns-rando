@@ -2,6 +2,7 @@ import copy
 import typing
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
+
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 

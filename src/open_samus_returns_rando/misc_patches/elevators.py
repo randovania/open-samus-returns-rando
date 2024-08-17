@@ -1,5 +1,6 @@
 from construct import Container  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats.lua import Lua
+
 from open_samus_returns_rando.misc_patches import lua_util
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
