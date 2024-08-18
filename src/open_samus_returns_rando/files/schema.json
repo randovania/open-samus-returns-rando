@@ -574,23 +574,6 @@
                     "default": "NEVER",
                     "description": "Configures how the room name is displayed on the HUD. Defaults to disabled."
                 },
-                "camera_names_dict": {
-                    "type": "object",
-                    "description": "A dictionary of dictionaries mapping scenario and collision camera to room name in the database",
-                    "additionalProperties": false,
-                    "default": {},
-                    "patternProperties": {
-                        ".*": {
-                            "type": "object",
-                            "additionalProperties": false,
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                },
                 "music_shuffle_dict": {
                     "description": "A dictionary mapping of music tracks where the keys get swapped with the values.",
                     "type": "object",
@@ -640,6 +623,35 @@
                         }
                     },
                     "default": {}
+                }
+            },
+            "default": {}
+        },
+        "collision_camera_attributes": {
+            "description": "A dictionary of dictionaries mapping scenario and collision camera to names in the database and custom attributes.",
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "type": "object",
+                    "patternProperties": {
+                        ".*": {
+                            "room_name": {
+                                 "type": "string"
+                            },
+                            "custom_env_source": {
+                                "type": "string",
+                                "enum": [
+                                    "heat",
+                                    "lava",
+                                    "water",
+                                    "acid"
+                                ]
+                            },
+                            "required": [
+                                "room_name"
+                            ]
+                        }
+                    }
                 }
             },
             "default": {}

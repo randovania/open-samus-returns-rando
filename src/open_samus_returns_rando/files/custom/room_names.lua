@@ -16,7 +16,7 @@ function RoomNameGui.GetRoomName(camera)
         return nil
     end
 
-    return dict[scenario][camera]
+    return dict[scenario][camera]["room_name"]
 end
 
 function RoomNameGui.Init()
