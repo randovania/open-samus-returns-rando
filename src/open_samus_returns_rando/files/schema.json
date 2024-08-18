@@ -280,11 +280,6 @@
             },
             "default": {}
         },
-        "reveal_map_on_start": {
-            "type": "boolean",
-            "default": false,
-            "description": "When true, the game will start with the whole map revealed"
-        },
         "objective": {
             "description": "Requirements for completing a seed.",
             "type": "object",
@@ -573,6 +568,11 @@
                     ],
                     "default": "NEVER",
                     "description": "Configures how the room name is displayed on the HUD. Defaults to disabled."
+                },
+                "reveal_map_on_start": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "When true, the game will start with the whole map revealed"
                 },
                 "music_shuffle_dict": {
                     "description": "A dictionary mapping of music tracks where the keys get swapped with the values.",
