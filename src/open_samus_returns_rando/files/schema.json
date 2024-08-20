@@ -635,17 +635,20 @@
                     "type": "object",
                     "patternProperties": {
                         ".*": {
-                            "room_name": {
-                                 "type": "string"
-                            },
-                            "custom_env_source": {
-                                "type": "string",
-                                "enum": [
-                                    "heat",
-                                    "lava",
-                                    "water",
-                                    "acid"
-                                ]
+                            "type": "object",
+                            "properties": {
+                                "room_name": {
+                                     "type": "string"
+                                },
+                                "custom_env_source": {
+                                    "type": "string",
+                                    "enum": [
+                                        "heat",
+                                        "lava",
+                                        "water",
+                                        "acid"
+                                    ]
+                                }
                             },
                             "required": [
                                 "room_name"
