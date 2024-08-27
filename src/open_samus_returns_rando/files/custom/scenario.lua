@@ -88,14 +88,7 @@ function Scenario.UpdateDNACounter()
   local maxDNA = Init.tDNAPerArea[scenario] or 0
   local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
   GUILib.UpdateDNACounter(currentDNA, maxDNA)
-  if Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
-    local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
-    GUI.SetProperties(dnaCounter, {
-        ColorR = "0.60392",
-        ColorG = "0.61569",
-        ColorB = "0.04314",
-    })
-  end
+  GUILib.UpdateTotalDNAColor()
 end
 
 local original_init = Scenario.InitScenario
