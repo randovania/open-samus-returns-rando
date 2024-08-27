@@ -160,7 +160,7 @@ function RandomizerPowerup.HandlePickupResources(progression, actorOrName)
                             Blackboard.SetProp("GAME", scenario .. "_acquired_dna", "i", currentDNA + 1)
                         end
                         Scenario.UpdateDNACounter()
-                        RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", resource.quantity)
+                        RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", -1 * resource.quantity)
                         RandomizerPowerup.ObjectiveComplete()
                     end
                 end
@@ -197,13 +197,7 @@ function RandomizerPowerup.IncreaseAmmo(resource)
 end
 
 function RandomizerPowerup.ObjectiveComplete()
-    local required_dna = 39
-    -- Default required_dna is 39, so change the requirement if set higher in the config
-    if Init.iRequiredDNA > 39 then
-        required_dna = Init.iRequiredDNA
-    end
-
-    if RandomizerPowerup.GetItemAmount("ITEM_ADN") == required_dna then
+    if RandomizerPowerup.GetItemAmount("ITEM_ADN") == 0 and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
         Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", true)
         Game.HUDIdleScreenLeave()
         GUILib.BlinkTotalDNACounter()
