@@ -1,6 +1,7 @@
-from construct import Container  # type: ignore[import-untyped]
-from mercury_engine_data_structures.formats import Bmsad, Bmsbk
+import typing
 
+from construct import Container  # type: ignore[import-untyped]
+from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmssd
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
@@ -95,29 +96,51 @@ def _remove_super_missile_weakness(editor: PatcherEditor) -> None:
 
 
 def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict) -> None:
-    # Crumble blocks after Scan Pulse
-    if configuration["patch_surface_crumbles"]:
-        surface = editor.get_file(
-            "maps/levels/c10_samus/s000_surface/s000_surface.bmsbk", Bmsbk
-        )
-        post_scan_pulse_crumbles = surface.raw["block_groups"][37]
-        post_scan_pulse_crumbles["types"][0]["block_type"] = "power_beam"
-        post_scan_pulse_crumbles["types"][0]["blocks"][0]["respawn_time"] = 0.0
-        post_scan_pulse_crumbles["types"][0]["blocks"][1]["respawn_time"] = 0.0
-        post_scan_pulse_crumbles["types"][0]["blocks"][2]["respawn_time"] = 0.0
+    scenario_block_sg: dict[str, list[dict[str, typing.Any]]] = {
+        # Crumble blocks after Scan Pulse
+        "s000_surface": [
+            {
+                "block_group": 5,
+                "cc_idx": 7,
+                "entry_idx": 1,
+                "sg_idx": 42,
+                "vignette_models": [2950175714, 3474952711, 3638504308],
+            },
+        ],
+        # Crumble blocks leaving Area 1
+        "s010_area1": [
+            {
+                "block_group": 6,
+                "cc_idx": 21,
+                "entry_idx": 1,
+                "sg_idx": 0,
+                "vignette_models": [963224018, 1315868996, 2366773761, 2690707560, 3613901054],
+            },
+        ],
+    }
 
-    # Crumble blocks leaving Area 1
+    if configuration["patch_surface_crumbles"]:
+        object_group = scenario_block_sg.get("s000_surface")
+        scenario_name = "s000_surface"
+        _update_blocks(editor, object_group, scenario_name)
     if configuration["patch_area1_crumbles"]:
-        area1 = editor.get_file(
-            "maps/levels/c10_samus/s010_area1/s010_area1.bmsbk", Bmsbk
-        )
-        area1_chozo_seal_crumbles = area1.raw["block_groups"][19]
-        area1_chozo_seal_crumbles["types"][0]["block_type"] = "power_beam"
-        area1_chozo_seal_crumbles["types"][0]["blocks"][0]["respawn_time"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][1]["respawn_time"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][2]["respawn_time"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][3]["respawn_time"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][4]["respawn_time"] = 0.0
+        object_group = scenario_block_sg.get("s010_area1")
+        scenario_name = "s010_area1"
+        _update_blocks(editor, object_group, scenario_name)
+
+
+def _update_blocks(editor: PatcherEditor, object_group: typing.Any, scenario_name: str) -> None:
+    bmsbk = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmsbk", Bmsbk)
+    bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
+    for objects in object_group:
+        # Disable the blocks
+        bmsbk.raw["collision_cameras"][objects["cc_idx"]]["entries"].pop(objects["entry_idx"])
+        # Remove the model to prevent it from loading
+        models = bmssd.raw["scene_groups"][objects["sg_idx"]]["model_groups"][0]["models"]
+        for vignette_model in objects["vignette_models"]:
+            for idx, model in enumerate(models):
+                if model["model_id"] == vignette_model:
+                    models.pop(idx)
 
 
 def _patch_reverse_area8(editor: PatcherEditor, configuration: dict) -> None:
