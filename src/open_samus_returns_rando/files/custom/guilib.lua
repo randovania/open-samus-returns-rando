@@ -64,15 +64,40 @@ function GUILib.UpdateDNACounter(currentDNA, maxDNA)
   end
 end
 
+function GUILib.GetTotalDNACounter()
+  return GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
+end
+
 function GUILib.UpdateTotalDNAColor()
-  if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") < 39 then
-    local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
+  local dnaCounter = GUILib.GetTotalDNACounter()
+  if Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
+    GUI.SetProperties(dnaCounter, {
+        ColorR = "0.60392",
+        ColorG = "0.61569",
+        ColorB = "0.04314",
+    })
+  else
     GUI.SetProperties(dnaCounter, {
       ColorR = "0.68000",
       ColorG = "0.83000",
       ColorB = "0.93000",
     })
   end
+end
+
+function GUILib.BlinkTotalDNACounter()
+  local dnaCounter = GUILib.GetTotalDNACounter()
+  GUI.SetProperties(dnaCounter, {
+      ColorR = "0.60392",
+      ColorG = "0.61569",
+      ColorB = "0.04314",
+      Blink = "1.00000",
+  })
+end
+
+function GUILib.DisableBlinkTotalDNACounter()
+  local dnaCounter = GUILib.GetTotalDNACounter()
+  GUI.SetProperties(dnaCounter, { Blink = "0.00000" })
 end
 
 function GUILib.AddMessageBox() 

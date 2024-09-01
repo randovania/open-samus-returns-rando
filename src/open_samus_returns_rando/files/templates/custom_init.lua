@@ -62,14 +62,10 @@ function Init.InitGameBlackboard()
     end
   end
   Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", false)
+  Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", Init.iRequiredDNA)
   if Init.iRequiredDNA == 0 then
   -- If no DNA is required, then the path to Ridley should always be open
     Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", true)
-    Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", 39)
-  elseif Init.iRequiredDNA <= 39 then
-    Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", 39 - Init.iRequiredDNA)
-  else
-    Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", 0)
   end
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_METROID_COUNT", "f", 0)
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_CURRENT_LIFE", "f", Init.tNewGameInventory.ITEM_MAX_LIFE)

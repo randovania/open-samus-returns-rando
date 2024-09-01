@@ -21,10 +21,11 @@ from open_samus_returns_rando.multiworld_integration import create_exefs_patches
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 from open_samus_returns_rando.pickups.custom_pickups import patch_custom_pickups
 from open_samus_returns_rando.pickups.pickup import patch_pickups
-from open_samus_returns_rando.specific_patches import cosmetic_patches, game_patches
 from open_samus_returns_rando.specific_patches.chozo_seal_patches import patch_chozo_seals
+from open_samus_returns_rando.specific_patches.cosmetic_patches import patch_cosmetics
 from open_samus_returns_rando.specific_patches.door_patches import patch_doors
 from open_samus_returns_rando.specific_patches.environmental_damage import apply_constant_damage
+from open_samus_returns_rando.specific_patches.game_patches import apply_game_patches
 from open_samus_returns_rando.specific_patches.heat_room_patches import patch_heat_rooms
 from open_samus_returns_rando.specific_patches.hint_patches import patch_hints
 from open_samus_returns_rando.specific_patches.metroid_patches import patch_metroids
@@ -111,7 +112,7 @@ def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: 
     patch_tunables(editor, configuration)
 
     # Patch cosmetics
-    cosmetic_patches.patch_cosmetics(editor, configuration.get("cosmetic_patches", {}))
+    patch_cosmetics(editor, configuration.get("cosmetic_patches", {}))
 
     # Patch metroids
     patch_metroids(editor)
@@ -121,7 +122,7 @@ def patch_extracted(input_path: Path, input_exheader: Path | None, output_path: 
     patch_hints(lua_scripts, configuration["hints"])
 
     # Specific game patches
-    game_patches.apply_game_patches(editor, configuration.get("game_patches", {}))
+    apply_game_patches(editor, configuration.get("game_patches", {}))
 
     # Text patches
     if "text_patches" in configuration:

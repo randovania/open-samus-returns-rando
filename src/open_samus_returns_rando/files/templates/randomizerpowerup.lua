@@ -1,3 +1,5 @@
+Game.ImportLibrary("system/scripts/guilib.lua", false)
+
 RandomizerPowerup = RandomizerPowerup or {}
 function RandomizerPowerup.main()
 end
@@ -158,7 +160,7 @@ function RandomizerPowerup.HandlePickupResources(progression, actorOrName)
                             Blackboard.SetProp("GAME", scenario .. "_acquired_dna", "i", currentDNA + 1)
                         end
                         Scenario.UpdateDNACounter()
-                        RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", resource.quantity)
+                        RandomizerPowerup.IncreaseItemAmount("ITEM_ADN", -1 * resource.quantity)
                         RandomizerPowerup.ObjectiveComplete()
                     end
                 end
@@ -195,17 +197,11 @@ function RandomizerPowerup.IncreaseAmmo(resource)
 end
 
 function RandomizerPowerup.ObjectiveComplete()
-    local required_dna = 39
-    -- Default required_dna is 39, so change the requirement if set higher in the config
-    if Init.iRequiredDNA > 39 then
-        required_dna = Init.iRequiredDNA
-    end
-
-    if RandomizerPowerup.GetItemAmount("ITEM_ADN") == required_dna then
+    if RandomizerPowerup.GetItemAmount("ITEM_ADN") == 0 and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
         Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", true)
         Game.HUDIdleScreenLeave()
-        RandomizerPowerup.UpdateDNACounter()
-        Game.AddGUISF(3, "RandomizerPowerup.DisableBlink", "")
+        GUILib.BlinkTotalDNACounter()
+        Game.AddGUISF(3, "GUILib.DisableBlinkTotalDNACounter", "")
 
         -- Assign boss names and areas to each boss
         local boss = Init.sFinalBoss
@@ -241,20 +237,6 @@ function RandomizerPowerup.ObjectiveComplete()
     end
 end
 
-function RandomizerPowerup.UpdateDNACounter()
-    local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
-    GUI.SetProperties(dnaCounter, {
-        ColorR = "0.60392",
-        ColorG = "0.61569",
-        ColorB = "0.04314",
-        Blink = "1.00000",
-    })
-end
-
-function RandomizerPowerup.DisableBlink()
-    local dnaCounter = GUI.GetDisplayObject("IngameMenuRoot.IngameMenuComposition.LowerComposition.LowerInfoComposition.DNACounter")
-    GUI.SetProperties(dnaCounter, { Blink = "0.00000" })
-end
 
 function RandomizerPowerup.IncreaseMissileCheckValue()
     -- Update the min missile reserve tank refill value (capped by config)

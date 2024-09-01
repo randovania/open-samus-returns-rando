@@ -4037,8 +4037,8 @@
         }
     },
     "objective": {
-        "required_dna": 10,
-        "final_boss": "Ridley"
+        "final_boss": "Ridley",
+        "required_dna": 10
     },
     "energy_per_tank": 100,
     "reserves_per_tank": {
