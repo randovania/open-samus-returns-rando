@@ -866,6 +866,7 @@ function s070_area7.LaunchManicMinerBotIntroCutscene()
     Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB_MAX", 0)
     Game.SetItemAmount(Game.GetPlayerName(), "ITEM_WEAPON_POWER_BOMB_CURRENT", 0)
     Game.SetItemAmount(Game.GetPlayerName(), "ITEM_POWER_BOMB_TANKS", PreFightPBMax)
+    hud.UpdatePlayerInfo(true)
   end
 end
 function s070_area7.OnStartManicMinerBotIntroCutscene()
