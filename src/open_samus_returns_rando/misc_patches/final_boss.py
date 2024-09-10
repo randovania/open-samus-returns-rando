@@ -79,6 +79,8 @@ def patch_final_boss(editor: PatcherEditor, configuration: dict) -> None:
             if not game_patches["remove_elevator_grapple_blocks"]:
                 scenario = editor.get_scenario("s070_area7")
                 scenario.raw.actors[9]["LE_GrappleMov_001"]["position"][0] = -15250.0
+            # Remove the breakable Grapple block to allow access to Diggernaut backwards
+            editor.remove_entity({"scenario": "s070_area7", "layer": 9, "actor": "LE_GrappleDest_012"})
         elif final_boss == "Queen":
             # Remove the Queen wall regardless if the config is set
             if not game_patches["reverse_area8"]:
