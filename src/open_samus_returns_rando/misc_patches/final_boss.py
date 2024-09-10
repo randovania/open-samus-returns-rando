@@ -15,6 +15,9 @@ class NewTrigger(typing.NamedTuple):
 
 
 new_triggers = [
+    NewTrigger(
+        "s070_area7", "TG_Diggernaut_Access", [-20900.0, -7700.0, 0.0], [50, 700, 300], ["collision_camera_045"]
+    ),
     NewTrigger("s100_area10", "TG_Queen_Access", [1000.0, 12050.0, 0.0], [500, 300, 300], ["collision_camera_019"]),
     NewTrigger("s110_surfaceb", "TG_Ridley_Access", [-22800.0, 4400.0, 0.0], [150, 800, 800], ["collision_camera_017"]),
 ]

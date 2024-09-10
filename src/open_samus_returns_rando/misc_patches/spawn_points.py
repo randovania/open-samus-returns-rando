@@ -19,6 +19,9 @@ new_spawnpoints = [
         "s050_area5", "ST_Diggernaut_Chase_Respawn", [-2100.0, -4800.0, 0.0], 90, ["collision_camera_AfterChase_001"]
     ),
     NewSpawnPoint(
+        "s070_area7", "ST_SG_Diggernaut", [-21450.0, -7600.0, 0.0], 90, ["collision_camera_045"]
+    ),
+    NewSpawnPoint(
         "s110_surfaceb", "ST_SurfaceB_Connector", [-23179.0, 4500.0, 0.0], -90, ["collision_camera_017"]
     ),
 ]

@@ -163,6 +163,13 @@ function s070_area7.OnExitHazardous_001()
   PoisonZone.OnExit()
   Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_A", "Default", false)
 end
+function s070_area7.OnEnter_Diggernaut_Access()
+  if Init.sFinalBoss == "Diggernaut" and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
+    local startpoint = "Diggernaut"
+    GUI.LaunchMessage("Not enough Metroid DNA!\nCollect more DNA to fight Diggernaut!", "RandomizerPowerup.Dummy", "")
+    Game.AddSF(0, "Scenario.FinalBossReload", "s", startpoint)
+  end
+end
 function s070_area7.OnZeta_001_Intro_Generated(_ARG_0_, _ARG_1_)
   s070_area7.OnZeta_001_Generated(_ARG_0_, _ARG_1_)
 end
