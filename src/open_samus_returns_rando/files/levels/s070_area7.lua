@@ -163,6 +163,17 @@ function s070_area7.OnExitHazardous_001()
   PoisonZone.OnExit()
   Game.SetSubAreaCurrentSetup("collision_camera_Hazard_End_A", "Default", false)
 end
+function s070_area7.OnEnter_Diggernaut_Access()
+  if Init.sFinalBoss == "Diggernaut" then
+    if not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
+      local startpoint = "Diggernaut"
+      GUI.LaunchMessage("Not enough Metroid DNA!\nCollect more DNA to fight Diggernaut!", "RandomizerPowerup.Dummy", "")
+      Game.AddSF(0, "Scenario.FinalBossReload", "s", startpoint)
+    else
+      Game.GetPlayer().vPos = V3D(-18500, -7600, 0)
+    end
+  end
+end
 function s070_area7.OnZeta_001_Intro_Generated(_ARG_0_, _ARG_1_)
   s070_area7.OnZeta_001_Generated(_ARG_0_, _ARG_1_)
 end
@@ -816,7 +827,7 @@ function s070_area7.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
     if not Scenario.ReadFromBlackboard("ManicMinerBotStealOrbPlayed", false) then
       s070_area7.LaunchManicMinerBotStealOrb()
     end
-  elseif _ARG_0_ == "collision_camera_034" and _ARG_2_ == "collision_camera_043" then
+  elseif _ARG_2_ == "collision_camera_043" then
     if Init.sFinalBoss == "Diggernaut" and not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
       Game.AddSF(0, "Scenario.ShowFinalBossMessage", "")
     elseif not Scenario.ReadFromBlackboard("ManicMinerBotIntroCutscenePlayed", false) then
@@ -928,6 +939,9 @@ function s070_area7.OnEndManicMinerBotDeathCutscene()
 end
 function s070_area7.OnEnter_SetCheckpoint_001_ManicMiner()
   Game.SetBossCheckPointNames("ST_SG_ManicMiner_Checkpoint", "ST_SG_ManicMiner_Checkpoint", "SG_ManicMinerBot", "", "")
+end
+function s070_area7.OnEnter_SetCheckpoint_002_ManicMiner()
+  Game.SetBossCheckPointNames("ST_SG_Diggernaut_Checkpoint", "ST_SG_Diggernaut_Checkpoint", "SG_ManicMinerBot", "", "")
 end
 function s070_area7.OnManicMinerBotGenerated(_ARG_0_, _ARG_1_)
   if _ARG_1_ ~= nil then

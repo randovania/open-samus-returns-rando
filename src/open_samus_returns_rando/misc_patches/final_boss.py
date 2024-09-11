@@ -15,6 +15,16 @@ class NewTrigger(typing.NamedTuple):
 
 
 new_triggers = [
+    NewTrigger(
+        "s070_area7", "TG_Diggernaut_Access", [-20900.0, -7700.0, 0.0], [50, 700, 300], ["collision_camera_045"]
+    ),
+    NewTrigger(
+        "s070_area7",
+        "TG_SetCheckpoint_002_ManicMiner",
+        [-21450.0, -7600.0, 0.0],
+        [50, 700, 300],
+        ["collision_camera_045"],
+    ),
     NewTrigger("s100_area10", "TG_Queen_Access", [1000.0, 12050.0, 0.0], [500, 300, 300], ["collision_camera_019"]),
     NewTrigger("s110_surfaceb", "TG_Ridley_Access", [-22800.0, 4400.0, 0.0], [150, 800, 800], ["collision_camera_017"]),
 ]
@@ -79,6 +89,8 @@ def patch_final_boss(editor: PatcherEditor, configuration: dict) -> None:
             if not game_patches["remove_elevator_grapple_blocks"]:
                 scenario = editor.get_scenario("s070_area7")
                 scenario.raw.actors[9]["LE_GrappleMov_001"]["position"][0] = -15250.0
+            # Remove the breakable Grapple block to allow access to Diggernaut backwards
+            editor.remove_entity({"scenario": "s070_area7", "layer": 9, "actor": "LE_GrappleDest_012"})
         elif final_boss == "Queen":
             # Remove the Queen wall regardless if the config is set
             if not game_patches["reverse_area8"]:
