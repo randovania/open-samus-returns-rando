@@ -49,6 +49,9 @@ def add_pickups(editor: PatcherEditor, new_pickup: NewPickups) -> None:
 
 def patch_custom_pickups(editor: PatcherEditor, configuration: dict) -> None:
     for new_pickup in new_pickups:
+        # Memory errors occur if the custom boss pickup is added and the pickup is not in the config
         if configuration["objective"]["final_boss"] == "Ridley" and new_pickup.name == "LE_Item_Ridley":
+            continue
+        if configuration["objective"]["final_boss"] == "Queen" and new_pickup.name == "LE_Baby_Hatchling":
             continue
         add_pickups(editor, new_pickup)
