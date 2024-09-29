@@ -56,4 +56,3 @@ def patch_custom_pickups(editor: PatcherEditor, configuration: dict) -> None:
         if configuration["objective"]["final_boss"] == "Queen" and new_pickup.name == "LE_Baby_Hatchling":
             continue
         add_pickups(editor, new_pickup)
- 
