@@ -32,7 +32,7 @@ def patch_with_status_update(input_path: Path, input_exheader: Path | None, outp
         LOG.handlers.insert(0, new_handler)
         LOG.propagate = False
 
-        patch_extracted(input_path, input_exheader, output_path, configuration)
+        patch_extracted(input_path, output_path, configuration)
         if new_handler.count < total_logs:
             status_update(1, f"Done was {new_handler.count}")
 
