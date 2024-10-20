@@ -806,6 +806,9 @@ function s070_area7.OnSubAreaChange(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_, _ARG_4_)
       Game.GetEntityFromSpawnPoint("SP_ManicMinerBot").AI:OnDeadCutsceneEnd()
     end
   end
+  -- if _ARG_2_ == "collision_camera_038" then
+  --   Game.AddGUISF(2.5, GUI.MainMenuGoToState, "i", 5)
+  -- end
   if _ARG_0_ == "collision_camera_041" and _ARG_2_ == "collision_camera_038" then
     if not Scenario.ReadFromBlackboard("ManicMinerBotStealOrbPlayed", false) then
       s070_area7.LaunchManicMinerBotStealOrb()

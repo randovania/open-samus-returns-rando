@@ -131,7 +131,7 @@ def nerf_ridley_fight(editor: PatcherEditor) -> None:
     Plasma: 36 (default from ridley tunable)
     '''
     ridley_bmsad = editor.get_file("actors/characters/ridley/charclasses/ridley.bmsad", Bmsad)
-    ridley_bmsad.components["LIFE"].raw["fields"]["fPowerBeamFactor"]["value"] = 0.12
+    ridley_bmsad.components["LIFE"].raw["fields"]["fPowerBeamFactor"]["value"] = 500000.0
 
     tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
     ridley_tunables = tunables.raw["classes"]["Ridley|CTunableCharClassRidleyAIComponent"]["tunables"]
