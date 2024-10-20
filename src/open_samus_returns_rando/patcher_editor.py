@@ -3,8 +3,9 @@ import typing
 from pathlib import Path
 
 from construct import Container  # type: ignore[import-untyped]
+from mercury_engine_data_structures.base_resource import BaseResource
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
-from mercury_engine_data_structures.formats import BaseResource, Bmsld
+from mercury_engine_data_structures.formats import Bmsld
 from mercury_engine_data_structures.game_check import Game
 
 from open_samus_returns_rando.constants import ALL_SCENARIOS, get_package_name
