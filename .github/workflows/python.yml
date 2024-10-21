@@ -101,7 +101,7 @@ jobs:
 
       - name: Export
         run:
-          venv/bin/python -m open_samus_returns_rando --input-path "$SAMUS_RETURNS_PATH" --output-path export/ --input-json tests/test_files/starter_preset_patcher.json
+          venv/bin/python -m open_samus_returns_rando --input-path "$SAMUS_RETURNS_PATH_ROMS"/MSR.3ds --output-path export/ --input-json tests/test_files/starter_preset_patcher.json
 
   mypy:
     runs-on: 'ubuntu-latest'
