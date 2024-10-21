@@ -76,99 +76,99 @@ def cleanup_old_patcher(output_path: Path) -> None:
 
 def patch_extracted(input_path: Path, output_path: Path, configuration: dict) -> None:
     LOG.info("Will patch files from %s", input_path)
-    file_stream = input_path.open("rb")
-    parsed_rom = Rom3DS(parse_rom_file(input_path, file_stream), file_stream)
+    with input_path.open("rb") as file_stream:
+        parsed_rom = Rom3DS(parse_rom_file(input_path, file_stream), file_stream)
 
-    validate(configuration)
+        validate(configuration)
 
-    editor = PatcherEditor(input_path, parsed_rom)
-    lua_scripts = LuaEditor()
+        editor = PatcherEditor(input_path, parsed_rom)
+        lua_scripts = LuaEditor()
 
-    # Add all custom files from RomFS
-    add_custom_files(editor)
+        # Add all custom files from RomFS
+        add_custom_files(editor)
 
-    # Apply fixes
-    apply_static_fixes(editor)
+        # Apply fixes
+        apply_static_fixes(editor)
 
-    # Custom pickups
-    patch_custom_pickups(editor, configuration)
-    debug_custom_pickups(editor, configuration["debug_custom_pickups"])
+        # Custom pickups
+        patch_custom_pickups(editor, configuration)
+        debug_custom_pickups(editor, configuration["debug_custom_pickups"])
 
-    # Patch all pickups
-    patch_pickups(editor, lua_scripts, configuration["pickups"], configuration)
+        # Patch all pickups
+        patch_pickups(editor, lua_scripts, configuration["pickups"], configuration)
 
-    # Custom spawn points
-    patch_custom_spawn_points(editor)
-    debug_spawn_points(editor, configuration["debug_spawn_points"])
+        # Custom spawn points
+        patch_custom_spawn_points(editor)
+        debug_spawn_points(editor, configuration["debug_spawn_points"])
 
-    # Custom final boss
-    patch_final_boss(editor, configuration)
+        # Custom final boss
+        patch_final_boss(editor, configuration)
 
-    # Fix unheated heat rooms
-    patch_heat_rooms(editor)
+        # Fix unheated heat rooms
+        patch_heat_rooms(editor)
 
-    # Environmental Damage
-    apply_constant_damage(editor, configuration["constant_environment_damage"])
+        # Environmental Damage
+        apply_constant_damage(editor, configuration["constant_environment_damage"])
 
-    # Patch door types and make shields on both sides
-    patch_doors(editor, configuration["door_patches"], configuration["custom_doors"])
+        # Patch door types and make shields on both sides
+        patch_doors(editor, configuration["door_patches"], configuration["custom_doors"])
 
-    # Patch tunables
-    patch_tunables(editor, configuration)
+        # Patch tunables
+        patch_tunables(editor, configuration)
 
-    # Patch cosmetics
-    patch_cosmetics(editor, configuration.get("cosmetic_patches", {}))
+        # Patch cosmetics
+        patch_cosmetics(editor, configuration.get("cosmetic_patches", {}))
 
-    # Patch metroids
-    patch_metroids(editor)
+        # Patch metroids
+        patch_metroids(editor)
 
-    # Patch Chozo Seals
-    patch_chozo_seals(editor)
-    patch_hints(lua_scripts, configuration["hints"])
+        # Patch Chozo Seals
+        patch_chozo_seals(editor)
+        patch_hints(lua_scripts, configuration["hints"])
 
-    # Specific game patches
-    apply_game_patches(editor, configuration.get("game_patches", {}))
+        # Specific game patches
+        apply_game_patches(editor, configuration.get("game_patches", {}))
 
-    # Text patches
-    if "text_patches" in configuration:
-        apply_text_patches(editor, configuration["text_patches"])
-    patch_credits(editor, configuration["spoiler_log"])
-    add_spiderboost_status(editor)
+        # Text patches
+        if "text_patches" in configuration:
+            apply_text_patches(editor, configuration["text_patches"])
+        patch_credits(editor, configuration["spoiler_log"])
+        add_spiderboost_status(editor)
 
-     # Update cc_to_room_name.lua
-    create_collision_camera_table(editor, configuration)
+        # Update cc_to_room_name.lua
+        create_collision_camera_table(editor, configuration)
 
-    # Patch elevator destinations
-    patch_elevators(editor, configuration)
+        # Patch elevator destinations
+        patch_elevators(editor, configuration)
 
-    # Patch blocks to another type
-    patch_block_types(editor, configuration)
+        # Patch blocks to another type
+        patch_block_types(editor, configuration)
 
-    # Patch actor attributes
-    patch_actor_attributes(editor, configuration["actor_attributes"])
+        # Patch actor attributes
+        patch_actor_attributes(editor, configuration["actor_attributes"])
 
-    cleanup_old_patcher(output_path)
+        cleanup_old_patcher(output_path)
 
-    out_romfs = output_path.joinpath("romfs")
-    out_code = output_path.joinpath("code.bin")
-    out_exheader = output_path.joinpath("exheader.bin")
+        out_romfs = output_path.joinpath("romfs")
+        out_code = output_path.joinpath("code.bin")
+        out_exheader = output_path.joinpath("exheader.bin")
 
-    # Create Exefs patches for multiworld
-    LOG.info("Creating exefs patches")
-    create_exefs_patches(
-        out_code, out_exheader,
-        parsed_rom.get_code_binary(),
-        parsed_rom.exheader(),
-        configuration["enable_remote_lua"]
-    )
+        # Create Exefs patches for multiworld
+        LOG.info("Creating exefs patches")
+        create_exefs_patches(
+            out_code, out_exheader,
+            parsed_rom.get_code_binary(),
+            parsed_rom.exheader(),
+            configuration["enable_remote_lua"]
+        )
 
-    LOG.info("Saving modified lua scripts")
-    lua_scripts.save_modifications(editor, configuration)
+        LOG.info("Saving modified lua scripts")
+        lua_scripts.save_modifications(editor, configuration)
 
-    LOG.info("Flush modified assets")
-    editor.flush_modified_assets()
+        LOG.info("Flush modified assets")
+        editor.flush_modified_assets()
 
-    LOG.info("Saving modified pkgs to %s", out_romfs)
-    editor.save_modifications(out_romfs, OutputFormat.ROMFS)
+        LOG.info("Saving modified pkgs to %s", out_romfs)
+        editor.save_modifications(out_romfs, OutputFormat.ROMFS)
 
-    LOG.info("Done")
+        LOG.info("Done")
