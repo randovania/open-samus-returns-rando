@@ -3,7 +3,7 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
 
-import construct
+import construct  # type: ignore
 from mercury_engine_data_structures.romfs import RomFs
 
 from open_samus_returns_rando.romfs.rom3ds import Rom3DS

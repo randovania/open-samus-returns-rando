@@ -6,8 +6,8 @@
 from io import BufferedReader
 from pathlib import Path
 
-import construct
-from construct.core import (
+import construct  # type: ignore
+from construct.core import (  # type: ignore
     AlignedStruct,
     Array,
     Bytes,
@@ -126,7 +126,7 @@ Add3ds = Struct(
     # is a NCSD or NCCH. (0x0 - 0x100 are the signature)
     "ncsd" / NCSD,
     # there is a lot of card data, test data etc. totally irrelevant see https://www.3dbrew.org/wiki/NCSD
-    "_garbage" / Seek(construct.this.ncsd.partitions[0].offset * 0x200), # type: ignore (no idea why it wants a string)
+    "_garbage" / Seek(construct.this.ncsd.partitions[0].offset * 0x200), # type: ignore
     "rom_struct" / ROMStructure,
 )
 

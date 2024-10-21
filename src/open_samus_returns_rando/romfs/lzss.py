@@ -1,7 +1,7 @@
 # Lzss structure was taken from GodMode9 https://github.com/d0k3/GodMode9/commit/a6a15eb70d66e3c96bbc164598f9482bb545b3f9
 
-from construct import Struct
-from construct.core import Int32ul
+from construct import Struct  # type: ignore
+from construct.core import Int32ul  # type: ignore
 
 LzssFooter = Struct(
     "off_size_comp" / Int32ul,  # 0xOOSSSSSS, where O == reverse offset and S == size
