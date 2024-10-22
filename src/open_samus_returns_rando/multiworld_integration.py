@@ -33,12 +33,13 @@ def get_lua_for_item(progression: list[list[dict[str, str | int]]]) -> str:
 
 
 def create_exefs_patches(
-        out_code: Path, out_exheader: Path, input_exheader: Path | None, enabled: bool, region: str
+        out_code: Path, out_exheader: Path, input_code: bytes | None, input_exheader: bytes, enabled: bool
     ) -> None:
-    if not enabled or input_exheader is None:
+    if not enabled:
         return
 
-    import shutil
+    if input_code is None:
+        raise ValueError("Could not get decompressed + decrypted code binary")
 
     import ips  # type: ignore
 
@@ -48,12 +49,18 @@ def create_exefs_patches(
     out_exheader.parent.mkdir(parents=True, exist_ok=True)
     with (
           Path.open(exheader_ips_path, "rb") as exheader_ips,
-          Path.open(input_exheader, "rb") as original,
           Path.open(out_exheader, "wb") as result
         ):
         content = exheader_ips.read()
         patch = ips.Patch.load(content)
-        patch.apply(original, result)
+        patch.apply(input_exheader, result)
 
-    # copy bps patch (don't ask me why the patch does not work as IPS format)
-    shutil.copyfile(files_path().joinpath("exefs_patches", f"code_{region}.bps"), out_code)
+    code_ips_path = files_path().joinpath("exefs_patches", "code.ips")
+    out_code.parent.mkdir(parents=True, exist_ok=True)
+    with (
+          Path.open(code_ips_path, "rb") as code_ips,
+          Path.open(out_code, "wb") as result
+        ):
+        content = code_ips.read()
+        patch = ips.Patch.load(content)
+        patch.apply(input_code, result)

@@ -16,7 +16,7 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "mercury-engine-data-structures>=0.31.1",
+    "mercury-engine-data-structures>=0.33.0",
     "jsonschema>=4.0.0",
     "ips.py>=0.1.2",
 ]
@@ -59,7 +59,7 @@ lint.select = [
 ]
 
 # Version to target for generated code.
-target-version = "py39"
+target-version = "py310"
 
 [tool.ruff.lint.mccabe]
 # Flag errors (`C901`) whenever the complexity level exceeds 25.
@@ -73,6 +73,10 @@ typing = [
     "mypy"
 ]
 
+test = [
+    "pytest"
+]
+
 [tool.mypy]
 files = [
     "src/"
@@ -80,3 +84,20 @@ files = [
 follow_imports = "silent"
 disallow_untyped_defs = true
 local_partial_types = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+check_untyped_defs = true
+disable_error_code = "method-assign"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+]
+xfail_strict = true
+filterwarnings = [
+    "error",
+    "ignore::DeprecationWarning",
+]

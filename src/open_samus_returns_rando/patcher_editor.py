@@ -1,13 +1,15 @@
 import copy
 import typing
-from pathlib import Path
 
 from construct import Container  # type: ignore[import-untyped]
+from mercury_engine_data_structures.base_resource import BaseResource
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
-from mercury_engine_data_structures.formats import BaseResource, Bmsld
+from mercury_engine_data_structures.formats import Bmsld
 from mercury_engine_data_structures.game_check import Game
 
 from open_samus_returns_rando.constants import ALL_SCENARIOS, get_package_name
+from open_samus_returns_rando.romfs.packaged_romfs import PackagedRomFs
+from open_samus_returns_rando.romfs.rom3ds import Rom3DS
 
 T = typing.TypeVar("T")
 
@@ -19,8 +21,8 @@ def path_for_level(level_name: str) -> str:
 class PatcherEditor(FileTreeEditor):
     memory_files: dict[str, BaseResource]
 
-    def __init__(self, root: Path):
-        super().__init__(root, Game.SAMUS_RETURNS)
+    def __init__(self, parsed_rom: Rom3DS):
+        super().__init__(PackagedRomFs(parsed_rom), Game.SAMUS_RETURNS)
         self.memory_files = {}
 
     def get_file(self, path: str, type_hint: type[T] = BaseResource) -> T: # type: ignore
