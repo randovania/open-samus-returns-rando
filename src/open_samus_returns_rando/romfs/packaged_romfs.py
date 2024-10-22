@@ -1,7 +1,6 @@
 import io
 from collections.abc import Iterator
 from contextlib import contextmanager
-from pathlib import Path
 
 import construct  # type: ignore
 from mercury_engine_data_structures.romfs import RomFs
@@ -10,13 +9,8 @@ from open_samus_returns_rando.romfs.rom3ds import Rom3DS
 
 
 class PackagedRomFs(RomFs):
-    def __init__(self, root: Path, parsed_rom: Rom3DS):
-        self.root = root
-        self._file_stream = self.root.open("rb")
+    def __init__(self, parsed_rom: Rom3DS):
         self.parsed_rom = parsed_rom
-
-    def __del__(self) -> None:
-        self._file_stream.close()
 
     @contextmanager
     def get_pkg_stream(self, file_path: str) -> Iterator[io.BytesIO]:

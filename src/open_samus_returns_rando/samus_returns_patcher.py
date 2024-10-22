@@ -81,7 +81,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict) ->
 
         validate(configuration)
 
-        editor = PatcherEditor(input_path, parsed_rom)
+        editor = PatcherEditor(parsed_rom)
         lua_scripts = LuaEditor()
 
         # Add all custom files from RomFS
