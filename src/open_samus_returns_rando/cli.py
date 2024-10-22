@@ -64,7 +64,6 @@ def main() -> None:
     start = time.time()
     samus_returns_patcher.patch_extracted(
         args.input_path,
-        args.input_exheader,
         args.output_path,
         configuration,
     )
