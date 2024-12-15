@@ -126,8 +126,14 @@ class LuaEditor:
 
     def create_script_class(self, pickup: dict, actordef_id: str = "") -> ScriptClass:
         pickup_resources = pickup["resources"]
-        first_item_id = pickup_resources[0][0]["item_id"]
-        parent = get_parent_for(first_item_id)
+        first_item = pickup_resources[0][0]
+        first_item_id = first_item["item_id"]
+
+        # coop uses quantity of 0 and should not use the specific classes
+        if first_item["quantity"] > 0:
+            parent = get_parent_for(first_item_id)
+        else:
+            parent = "RandomizerPowerup"
         model_array = pickup.get("model", None)
 
         if actordef_id and model_array and len(model_array) > 1:
@@ -174,6 +180,7 @@ class LuaEditor:
         lua_content = lua_util.replace_lua_template("randomizer_item_template.lua", replacement)
         new_script_class = ScriptClass(class_name, actordef_id, lua_content, parent)
         self._item_classes[hashable_progression] = new_script_class
+        print(new_script_class.lua_content)
 
         return new_script_class
 
