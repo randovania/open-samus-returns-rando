@@ -152,7 +152,8 @@ function RandomizerPowerup.HandlePickupResources(progression, actorOrName)
             if shouldGrant then
                 for _, resource in ipairs(resource_list) do
                     RandomizerPowerup.IncreaseItemAmount(resource.item_id, resource.quantity)
-                    if string.sub(resource.item_id, 0, 14) == "ITEM_RANDO_DNA" then
+                    -- don't update with quantity of 0, which means it is a coop dna
+                    if string.sub(resource.item_id, 0, 14) == "ITEM_RANDO_DNA" and resource.quantity > 0 then
                         local scenario = Init.tScenarioMapping[Scenario.CurrentScenarioID]
                         local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
                         -- it should be nil only for offworld DNA and then we don't want increment the scenario DNA
