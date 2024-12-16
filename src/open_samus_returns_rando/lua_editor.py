@@ -180,7 +180,6 @@ class LuaEditor:
         lua_content = lua_util.replace_lua_template("randomizer_item_template.lua", replacement)
         new_script_class = ScriptClass(class_name, actordef_id, lua_content, parent)
         self._item_classes[hashable_progression] = new_script_class
-        print(new_script_class.lua_content)
 
         return new_script_class
 

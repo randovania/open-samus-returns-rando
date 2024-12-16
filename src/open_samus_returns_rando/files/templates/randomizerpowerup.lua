@@ -48,8 +48,8 @@ function RandomizerPowerup.IncreaseItemAmount(item_id, quantity, capacity)
     end
 end
 
-function RandomizerPowerup.OnPickedUp(resources, actorOrName)
-    local granted = RandomizerPowerup.HandlePickupResources(resources, actorOrName)
+function RandomizerPowerup.OnPickedUp(resources, actorOrName, regionName)
+    local granted = RandomizerPowerup.HandlePickupResources(resources, regionName)
 
     for _, resource in ipairs(granted) do
         RandomizerPowerup.IncreaseAmmo(resource)
@@ -123,7 +123,7 @@ function RandomizerPowerup.ActivateSpecialEnergy(name)
     end
 end
 
-function RandomizerPowerup.HandlePickupResources(progression, actorOrName)
+function RandomizerPowerup.HandlePickupResources(progression, regionName)
     progression = progression or {}
 
     local alwaysGrant = false
@@ -154,10 +154,25 @@ function RandomizerPowerup.HandlePickupResources(progression, actorOrName)
                     RandomizerPowerup.IncreaseItemAmount(resource.item_id, resource.quantity)
                     -- don't update with quantity of 0, which means it is a coop dna
                     if string.sub(resource.item_id, 0, 14) == "ITEM_RANDO_DNA" and resource.quantity > 0 then
-                        local scenario = Init.tScenarioMapping[Scenario.CurrentScenarioID]
+                        local scenario_id
+                        local shouldIncreaseCounter
+
+                        -- empty string: offworld dna not from coop
+                        if regionName == "" then
+                            scenario_id = Scenario.CurrentScenarioID
+                            shouldIncreaseCounter = false
+                        -- ~= nil but also not "" => from coop
+                        elseif regionName ~= nil then
+                            scenario_id = regionName
+                            shouldIncreaseCounter = true
+                        -- == nil means local collected DNA
+                        else
+                            scenario_id = Scenario.CurrentScenarioID
+                            shouldIncreaseCounter = true
+                        end
+                        local scenario = Init.tScenarioMapping[scenario_id]
                         local currentDNA =  Blackboard.GetProp("GAME", scenario .."_acquired_dna") or 0
-                        -- it should be nil only for offworld DNA and then we don't want increment the scenario DNA
-                        if actorOrName ~= nil then
+                        if shouldIncreaseCounter then
                             Blackboard.SetProp("GAME", scenario .. "_acquired_dna", "i", currentDNA + 1)
                         end
                         Scenario.UpdateDNACounter()
