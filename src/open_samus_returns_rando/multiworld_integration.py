@@ -5,15 +5,15 @@ from open_samus_returns_rando.lua_editor import get_parent_for
 from open_samus_returns_rando.misc_patches.lua_util import lua_convert
 
 
-def get_lua_for_item(progression: list[list[dict[str, str | int]]]) -> str:
+def get_lua_for_item(progression: list[list[dict[str, str | int]]], region_name: str) -> str:
     generic_pickup = """
     Game.ImportLibrary("actors/items/randomizerpowerup/scripts/randomizerpowerup.lc", false)
     MultiworldPickup = MultiworldPickup or {}
     function MultiworldPickup.main()
     end
 
-    function MultiworldPickup.OnPickedUp(progression, actorOrName)
-        RandomizerPowerup.OnPickedUp(progression, actorOrName)
+    function MultiworldPickup.OnPickedUp(progression, actorOrName, regionName)
+        RandomizerPowerup.OnPickedUp(progression, actorOrName, regionName)
     end
     """
 
@@ -27,7 +27,7 @@ def get_lua_for_item(progression: list[list[dict[str, str | int]]]) -> str:
         parent_content = parent_content.replace(parent, "MultiworldPickup")
 
     progression_as_lua = lua_convert(progression, True)
-    return (f'{parent_content}\nMultiworldPickup.OnPickedUp({progression_as_lua}, nil)'
+    return (f'{parent_content}\nMultiworldPickup.OnPickedUp({progression_as_lua},nil,{region_name})'
             .replace("\n", "\\\n").replace("'", "\\'")
     )
 
