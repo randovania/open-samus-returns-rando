@@ -3,6 +3,7 @@ import typing
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmscc, Bmssd, Bmtun
+from mercury_engine_data_structures.formats.bmssd import ItemType
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -322,32 +323,46 @@ def patch_a1_teleporter_crumbles(editor: PatcherEditor) -> None:
 
 
 def disable_vignettes(editor: PatcherEditor) -> None:
-    scenario_block_sg: dict[str, list[dict[str, typing.Any]]] = {
+    scenario_scene_blocks: dict[str, list[dict[str, typing.Any]]] = {
         # Exterior Alpha Bomb Block
         "s010_area1": [
-            {"block_group": 6, "cc": ["017", "018"], "vignette_models": [2177967912]},
+            {"block_group": 6, "names_or_ids": ["vignettealpha41"]},
         ],
         # Beam Burst Shot Blocks
         "s030_area3": [
-            {"block_group": 5, "cc": ["036"], "vignette_models": [1239739760, 2986218869]},
+            {"block_group": 5,  "names_or_ids": [1239739760, 2986218869]},
         ],
         # Lower Chozo Seal Bomb Blocks
         "s040_area4": [
-            {"block_group": 27, "cc": ["006"], "vignette_models": [46617345, 354988048]}
+            {"block_group": 27, "names_or_ids": [46617345, 354988048]}
         ],
         # Diggernaut Bomb Blocks
         "s070_area7": [
-            {"block_group": 52, "cc": ["034"], "vignette_models": [1941338226]}
+            {"block_group": 52, "names_or_ids": [1941338226]}
         ],
         # Middle Save Station Water Bomb Blocks
         "s090_area9": [
-            {"block_group": 66, "cc": ["007"], "vignette_models": [3224282959, 1]}
+            {"block_group": 66, "names_or_ids": [3224282959]}
         ],
     }
-    for scenario_name, vignette_objects in scenario_block_sg.items():
-        for vignette_object in vignette_objects:
-            block_group = vignette_object["block_group"]
+    scenario_objects_list: dict[str, list[dict[str, typing.Any]]] = {
+        # Middle Save Station Water Bomb Blocks
+        "s090_area9": [
+            {"names_or_ids": [1]}
+        ],
+    }
 
+    def remove_type(bmssd: Bmssd, names_or_ids: list[str | int], type: ItemType):
+        for name_or_id in names_or_ids:
+            item_to_remove = bmssd.get_item(name_or_id, type)
+            if item_to_remove is None:
+                raise KeyError(f"{name_or_id} does not exists")
+            bmssd.remove_item(item_to_remove, type)
+
+
+    for scenario_name, scene_block_objs in scenario_scene_blocks.items():
+        for scene_block_obj in scene_block_objs:
+            block_group = scene_block_obj["block_group"]
             bmsbk = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmsbk", Bmsbk)
             blocks = bmsbk.raw["block_groups"][block_group]["types"][0]["blocks"]
             for block in blocks:
@@ -355,19 +370,13 @@ def disable_vignettes(editor: PatcherEditor) -> None:
                 block["vignette_name"] = ""
 
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
-            sg_group = bmssd.raw["scene_groups"]
-            vignette_models = vignette_object["vignette_models"]
-            for camera in vignette_object["cc"]:
-                cc_name = "sg_SubArea_collision_camera_" + camera
-                for sg in sg_group:
-                    # Check for the cc_name
-                    if sg["sg_name"] == cc_name:
-                        for cc_group in sg["model_groups"]:
-                            model_group = cc_group["models"]
-                            for idx, model in reversed(list(enumerate(model_group))):
-                                if any(model["model_id"] == vignette for vignette in vignette_models):
-                                    # Remove the model to prevent it from loading
-                                    model_group.pop(idx)
+            remove_type(bmssd, scene_block_obj["names_or_ids"], ItemType.SCENE_BLOCK)
+
+    for scenario_name, scenario_objects in scenario_objects_list.items():
+        for scenario_object in scenario_objects:
+            bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
+            remove_type(bmssd, scenario_object["names_or_ids"], ItemType.OBJECT)
+
 
 
 def remove_a6_lower_dna_seal_gullugg(editor: PatcherEditor) -> None:
