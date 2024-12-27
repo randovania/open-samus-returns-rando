@@ -326,29 +326,29 @@ def disable_vignettes(editor: PatcherEditor) -> None:
     scenario_scene_blocks: dict[str, list[dict[str, typing.Any]]] = {
         # Exterior Alpha Bomb Block
         "s010_area1": [
-            {"block_group": 6, "names_or_ids": ["vignettealpha41"]},
+            {"block_group": 6, "names": ["vignettealpha41"]},
         ],
         # Beam Burst Shot Blocks
         "s030_area3": [
-            {"block_group": 5,  "names_or_ids": [1239739760, 2986218869]},
+            {"block_group": 5,  "names": ["object090", "vignette_050"]},
         ],
         # Lower Chozo Seal Bomb Blocks
         "s040_area4": [
-            {"block_group": 27, "names_or_ids": [46617345, 354988048]}
+            {"block_group": 27, "names": ["s040_area4_111", "sg_vinegtte_003"]}
         ],
         # Diggernaut Bomb Blocks
         "s070_area7": [
-            {"block_group": 52, "names_or_ids": [1941338226]}
+            {"block_group": 52, "names": ["casca_vignette_03"]}
         ],
         # Middle Save Station Water Bomb Blocks
         "s090_area9": [
-            {"block_group": 66, "names_or_ids": [3224282959]}
+            {"block_group": 66, "names": ["sg_vignette_005"]}
         ],
     }
     scenario_objects_list: dict[str, list[dict[str, typing.Any]]] = {
         # Middle Save Station Water Bomb Blocks
         "s090_area9": [
-            {"names_or_ids": [1]}
+            {"indices": [1]}
         ],
     }
 
@@ -370,12 +370,12 @@ def disable_vignettes(editor: PatcherEditor) -> None:
                 block["vignette_name"] = ""
 
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
-            remove_type(bmssd, scene_block_obj["names_or_ids"], ItemType.SCENE_BLOCK)
+            remove_type(bmssd, scene_block_obj["names"], ItemType.SCENE_BLOCK)
 
     for scenario_name, scenario_objects in scenario_objects_list.items():
         for scenario_object in scenario_objects:
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
-            remove_type(bmssd, scenario_object["names_or_ids"], ItemType.OBJECT)
+            remove_type(bmssd, scenario_object["indices"], ItemType.OBJECT)
 
 
 
