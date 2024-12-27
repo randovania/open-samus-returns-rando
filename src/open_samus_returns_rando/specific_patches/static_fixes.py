@@ -352,7 +352,7 @@ def disable_vignettes(editor: PatcherEditor) -> None:
         ],
     }
 
-    def remove_type(bmssd: Bmssd, names_or_ids: list[str | int], type: ItemType):
+    def remove_type(bmssd: Bmssd, names_or_ids: list[str | int], type: ItemType) -> None:
         for name_or_id in names_or_ids:
             item_to_remove = bmssd.get_item(name_or_id, type)
             if item_to_remove is None:
