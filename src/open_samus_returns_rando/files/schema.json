@@ -461,7 +461,7 @@
             "default": []
         },
         "final_boss_hint": {
-            "description": "Hint for where the required item to fight the final is located.",
+            "description": "Hint for where the required item to access/fight the final boss is located.",
             "type": "string"
         },
         "cosmetic_patches": {
