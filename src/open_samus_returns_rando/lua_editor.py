@@ -264,7 +264,7 @@ class LuaEditor:
             layout_uuid = lua_util.wrap_string(configuration["layout_uuid"])
 
 
-        final_boss_hint = "No hint for the final boss was provided!"
+        final_boss_hint = lua_util.wrap_string("No hint for the final boss was provided!")
         # Handle older versions of the patcher
         if "baby_metroid_hint" in configuration or "final_boss_hint" in configuration:
             final_boss_hint = lua_util.wrap_string(configuration["final_boss_hint"])
