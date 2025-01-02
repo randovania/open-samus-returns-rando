@@ -267,7 +267,9 @@ class LuaEditor:
         final_boss_hint = lua_util.wrap_string("No hint for the final boss was provided!")
         # Handle older versions of the patcher
         if "baby_metroid_hint" in configuration or "final_boss_hint" in configuration:
-            final_boss_hint = lua_util.wrap_string(configuration.get("baby_metroid_hint", "final_boss_hint"))
+            final_boss_hint = lua_util.wrap_string(
+                configuration.get("baby_metroid_hint", configuration["final_boss_hint"])
+            )
 
         if "required_dna" in objective:
             required_dna = objective["required_dna"]
