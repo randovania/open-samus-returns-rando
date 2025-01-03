@@ -33,6 +33,9 @@ function Scenario._UpdateProgressiveItemModels()
           -- Rotate Wave Beam and High Jump Boots to face right
           if model.alias == "powerup_wavebeam" or model.alias == "powerup_highjumpboots" then
             pickup.vAng = V3D(0, 1.5, 0)
+          -- multiworld case: rotate back from e.g. wave beam to spazer beam if wave beam was received remotely
+          else
+            pickup.vAng = V3D(0, 0, 0)
           end
           break
         end
