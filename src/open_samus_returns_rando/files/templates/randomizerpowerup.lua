@@ -242,6 +242,7 @@ function RandomizerPowerup.ObjectiveComplete()
             GUI.LaunchMessage(message, "RandomizerPowerup.Dummy", "")
             if Scenario.CurrentScenarioID == "s110_surfaceb" and boss == "Ridley" then
                 Game.PlayMusicStream(0, "streams/music/k_crateria99.wav", -1, -1, -1, 2, 2, 1)
+                Game.EnableTrigger("TG_Ridley_Access")
             end
         elseif baby == 0 then
             if boss == "Ridley" then
