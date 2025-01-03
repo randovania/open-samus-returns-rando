@@ -4243,7 +4243,7 @@
             "text": "Metroid DNA is located in Area 5 - Tower Exterior - Red Plant Maze.\n"
         }
     ],
-    "baby_metroid_hint": "Baby noises have been reported in Surface East.",
+    "final_boss_hint": "Baby noises have been reported in Surface East.",
     "cosmetic_patches": {
         "laser_locked_color": [
             1.0,
