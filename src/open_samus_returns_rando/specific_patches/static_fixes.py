@@ -355,11 +355,11 @@ def disable_vignettes(editor: PatcherEditor) -> None:
     scenario_objects_list: dict[str, list[dict[str, typing.Any]]] = {
         # Gawron Groove Gamma Tunnel Outer Power Beam Block
         "s050_area5": [
-            {"object_ids": [1881]}
+            {"indices": [1881]}
         ],
         # Middle Save Station Water Bomb Blocks
         "s090_area9": [
-            {"object_ids": [1]}
+            {"indices": [1]}
         ],
     }
 
@@ -386,7 +386,7 @@ def disable_vignettes(editor: PatcherEditor) -> None:
     for scenario_name, scenario_objects in scenario_objects_list.items():
         for scenario_object in scenario_objects:
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
-            remove_type(bmssd, scenario_object["object_ids"], ItemType.OBJECT)
+            remove_type(bmssd, scenario_object["indices"], ItemType.OBJECT)
 
 
 
