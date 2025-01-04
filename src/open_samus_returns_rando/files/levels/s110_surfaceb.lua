@@ -61,8 +61,15 @@ function s110_surfaceb.ElevatorSetTarget(_ARG_0_)
 end
 function s110_surfaceb.InitFromBlackboard()
   s110_surfaceb.SetLowModelsVisibility(false)
-  if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_ADN") > 0 and Game.GetItemAmount(Game.GetPlayerName(), "ITEM_BABY_HATCHLING") < 1 then
-    Game.PlayMusicStream(0, "streams/music/t_m2_surface_arr1.wav", -1, -1, -1, 2, 2, 1)
+  if not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
+    if Init.sFinalBoss == "Ridley" then
+      Game.DisableEntity("TG_Ridley_Access")
+    end
+    if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_BABY_HATCHLING") < 1 then
+      Game.PlayMusicStream(0, "streams/music/t_m2_surface_arr1.wav", -1, -1, -1, 2, 2, 1)
+    end
+  else
+    Game.EnableTrigger("TG_Ridley_Access")
   end
   if Blackboard.GetProp("DEFEATED_ENEMIES", "Ridley") and Game.GetEntity("TG_Ridley_Access") ~= nil then
     Game.DeleteEntity("TG_Ridley_Access")
@@ -106,7 +113,13 @@ function s110_surfaceb.LoadSurface()
   Scenario.LoadNewScenario("s000_surface", "ST_Surface_Connector")
 end
 function s110_surfaceb.OnEnter_Ridley_Access()
-  GUI.LaunchMessage("Proteus Ridley can be fought at any time.\nAre you prepared to fight?", "s110_surfaceb.OnReloaded", "s110_surfaceb.LoadSurface")
+  local message = ""
+  if Init.sFinalBoss == "Ridley" then
+    message = "The path to Proteus Ridley is now open."
+  else
+    message = "Proteus Ridley can be fought at any time."
+  end
+  GUI.LaunchMessage(message .. "\nAre you prepared to fight?", "s110_surfaceb.OnReloaded", "s110_surfaceb.LoadSurface")
 end
 function s110_surfaceb.OnRidleyStartPoint()
   Game.HUDIdleScreenLeave()
