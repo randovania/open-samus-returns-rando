@@ -222,33 +222,31 @@ function RandomizerPowerup.ObjectiveComplete()
         -- Assign boss names and areas to each boss
         local boss = Init.sFinalBoss
         local boss_name = boss
-        local boss_area = ""
+        local boss_area = "Surface West"
+        local boss_item = "ITEM_BABY_HATCHLING"
         if boss == "Arachnus" then
             boss_area = "Area 2 Dam Exterior"
         elseif boss == "Diggernaut" then
             boss_area = "Area 6"
+            boss_item = "ITEM_WEAPON_BOMB"
         elseif boss == "Queen" then
             boss_name = "the Queen"
             boss_area = "Area 8"
+            boss_item = "ITEM_WEAPON_ICE_BEAM"
         elseif boss == "Ridley" then
             boss_name = "Proteus Ridley"
-            boss_area = "Surface West"
         end
 
         -- Handle the message depending the boss/other factors
-        local baby = RandomizerPowerup.GetItemAmount("ITEM_BABY_HATCHLING")
+        local required_item = RandomizerPowerup.GetItemAmount(boss_item)
         local message = "Enough Metroid DNA has been collected!\nThe path to " .. boss_name .. " has been opened in " .. boss_area .. "!"
-        if baby > 0 then
+        if boss == "Arachnus" or required_item > 0 then
             GUI.LaunchMessage(message, "RandomizerPowerup.Dummy", "")
             if Scenario.CurrentScenarioID == "s110_surfaceb" and boss == "Ridley" then
                 Game.PlayMusicStream(0, "streams/music/k_crateria99.wav", -1, -1, -1, 2, 2, 1)
             end
-        elseif baby == 0 then
-            if boss == "Ridley" then
-                GUI.LaunchMessage("Enough Metroid DNA has been collected!\n" .. Init.sBabyMetroidHint, "RandomizerPowerup.Dummy", "")
-            else
-                GUI.LaunchMessage(message .. "\n" .. Init.sBabyMetroidHint, "RandomizerPowerup.Dummy", "")
-            end
+        elseif required_item == 0 then
+            GUI.LaunchMessage("Enough Metroid DNA has been collected!\n" .. Init.sFinalBossHint, "RandomizerPowerup.Dummy", "")
         end
     end
 end

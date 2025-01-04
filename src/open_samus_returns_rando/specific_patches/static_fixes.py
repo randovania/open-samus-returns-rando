@@ -261,6 +261,9 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
         "s025_area2b": [
             {"powerup_name": "HP_Item_001", "cc": "collision_camera012"},
         ],
+        "s040_area4": [
+            {"powerup_name": "HiddenPowerup004", "cc": "collision_camera_010"},
+        ],
         "s050_area5": [
             {"powerup_name": "HiddenPowerup002", "cc": "collision_camera_001"},
         ],

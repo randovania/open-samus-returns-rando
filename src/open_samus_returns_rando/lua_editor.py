@@ -264,9 +264,12 @@ class LuaEditor:
             layout_uuid = lua_util.wrap_string(configuration["layout_uuid"])
 
 
-        baby_metroid_hint = lua_util.wrap_string("Continue searching for the Baby Metroid.")
-        if "baby_metroid_hint" in configuration:
-            baby_metroid_hint = lua_util.wrap_string(configuration["baby_metroid_hint"])
+        final_boss_hint = lua_util.wrap_string("No hint for the final boss was provided!")
+        # Handle older versions of the patcher
+        if "baby_metroid_hint" in configuration or "final_boss_hint" in configuration:
+            final_boss_hint = lua_util.wrap_string(
+                configuration.get("baby_metroid_hint", configuration["final_boss_hint"])
+            )
 
         if "required_dna" in objective:
             required_dna = objective["required_dna"]
@@ -287,7 +290,7 @@ class LuaEditor:
             "enable_room_ids": False if cosmetic_options["enable_room_name_display"] == "NEVER" else True,
             "layout_uuid": layout_uuid,
             "enable_remote_lua": enable_remote_lua,
-            "baby_metroid_hint": baby_metroid_hint,
+            "final_boss_hint": final_boss_hint,
             "tanks_refill_ammo": game_patches["tanks_refill_ammo"],
             "required_dna": required_dna,
             "final_boss": lua_util.wrap_string(objective["final_boss"])
