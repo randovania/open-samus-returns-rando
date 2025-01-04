@@ -336,6 +336,10 @@ def disable_vignettes(editor: PatcherEditor) -> None:
         "s040_area4": [
             {"block_group": 27, "names": ["s040_area4_111", "sg_vinegtte_003"]}
         ],
+        # Gawron Groove Gamma Tunnel Outer Power Beam Block
+        "s050_area5": [
+            {"block_group": 14, "names": ["vignette_casca_05"]},
+        ],
         # Diggernaut Bomb Blocks
         "s070_area7": [
             {"block_group": 52, "names": ["casca_vignette_03"]}
@@ -346,9 +350,13 @@ def disable_vignettes(editor: PatcherEditor) -> None:
         ],
     }
     scenario_objects_list: dict[str, list[dict[str, typing.Any]]] = {
+        # Gawron Groove Gamma Tunnel Outer Power Beam Block
+        "s050_area5": [
+            {"object_ids": [1881]}
+        ],
         # Middle Save Station Water Bomb Blocks
         "s090_area9": [
-            {"indices": [1]}
+            {"object_ids": [1]}
         ],
     }
 
@@ -375,13 +383,19 @@ def disable_vignettes(editor: PatcherEditor) -> None:
     for scenario_name, scenario_objects in scenario_objects_list.items():
         for scenario_object in scenario_objects:
             bmssd = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmssd", Bmssd)
-            remove_type(bmssd, scenario_object["indices"], ItemType.OBJECT)
+            remove_type(bmssd, scenario_object["object_ids"], ItemType.OBJECT)
 
 
 
 def remove_a6_lower_dna_seal_gullugg(editor: PatcherEditor) -> None:
     # Just causes issues when going for the dna hint and also adds nothing of value
     editor.remove_entity({"scenario": "s070_area7", "layer": 4, "actor": "GulluggStr_057"})
+
+
+def remove_a4_cm_gawron_grove_tunnel_block(editor: PatcherEditor) -> None:
+    a4 = editor.get_file("maps/levels/c10_samus/s050_area5/s050_area5.bmsbk", Bmsbk)
+    # Remove the block from the object list
+    a4.raw["collision_cameras"][7]["entries"].pop(3)
 
 
 def apply_static_fixes(editor: PatcherEditor) -> None:
@@ -399,3 +413,4 @@ def apply_static_fixes(editor: PatcherEditor) -> None:
     patch_a1_teleporter_crumbles(editor)
     disable_vignettes(editor)
     remove_a6_lower_dna_seal_gullugg(editor)
+    remove_a4_cm_gawron_grove_tunnel_block(editor)
