@@ -349,6 +349,12 @@ class LuaEditor:
             []
         )
 
+        editor.add_new_asset(
+            "system/scripts/randoapi.lc",
+            Lua(Container(lua_text=files_path().joinpath("custom", "randoapi.lua").read_text()), editor.target_game),
+            []
+        )
+
         # replace ensured scripts with the final code
         final_metroid_script = lua_util.replace_lua_template("metroid_template.lua", {"mapping": self._metroid_dict})
         imports_in_metroid = [f'Game.ImportLibrary("{a_import}", false)' for a_import in self._metroid_imports]

@@ -2,6 +2,7 @@ Game.ImportLibrary("system/scripts/scenario_original.lua")
 Game.ImportLibrary("system/scripts/guilib.lua", false)
 Game.ImportLibrary("system/scripts/queue.lua", false)
 Game.ImportLibrary("system/scripts/cosmetics.lua", false)
+Game.ImportLibrary("system/scripts/randoapi.lua", false)
 
 Game.DoFile("system/scripts/room_names.lua")
 Game.DoFile("system/scripts/elevators.lua")
@@ -64,6 +65,7 @@ function Scenario.InitGUI()
   GUILib.InitCustomUI()
   GUILib.UpdateTotalDNAColor()
   Scenario.UpdateDNACounter()
+  RandoApi.ChangeSuitValues(hasVaria, hasGravity)
 
   if Init.bEnableRoomIds then
     RoomNameGui.Init()

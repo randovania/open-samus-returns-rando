@@ -1,6 +1,14 @@
 Game.ImportLibrary("actors/items/randomizerpowerup/scripts/randomizerpowerup.lc", false)
+
 RandomizerSuit = RandomizerSuit or {}
 function RandomizerSuit.main()
+end
+
+function RandomizerSuit.IsInLiquid(liquid)
+    if liquid ~= nil and liquid.TRIGGER:IsPlayerInside() == true then
+        liquid.TRIGGER:DisableTrigger()
+        liquid.TRIGGER:EnableTrigger()
+    end
 end
 
 function RandomizerSuit.ResetLiquidState()
@@ -15,10 +23,7 @@ function RandomizerSuit.ResetLiquidState()
             for i = 1, 2 do
                 for j = 1, 19 do
                     local water = Game.GetEntity(waterPrefixes[i] .. string.format("%03d", j))
-                    if water ~= nil and water.TRIGGER:IsPlayerInside() == true then
-                        water.TRIGGER:DisableTrigger()
-                        water.TRIGGER:EnableTrigger()
-                    end
+                    RandomizerSuit.IsInLiquid(water)
                 end
             end
         end
@@ -26,11 +31,8 @@ function RandomizerSuit.ResetLiquidState()
             local lavaScenarios = {"s020_area2", "s033_area3b", "s036_area3c", "s040_area4", "s050_area5"}
             if scenario == lavaScenarios[i] then
                 for j = 1, 5 do
-                    lava = Game.GetEntity("TG_Lava_" .. string.format("%03d", j))
-                    if lava ~= nil and lava.TRIGGER:IsPlayerInside() == true then
-                        lava.TRIGGER:DisableTrigger()
-                        lava.TRIGGER:EnableTrigger()
-                    end
+                    local lava = Game.GetEntity("TG_Lava_" .. string.format("%03d", j))
+                    RandomizerSuit.IsInLiquid(lava)
                 end
             end
         end
@@ -52,11 +54,8 @@ function RandomizerSuit.ResetLiquidState()
             liquids = {"TG_Damage_Hazardous_001", "TG_Damage_Hazardous_002"}
         end
         for i = 1, #liquids do
-            local liquid = Game.GetEntity(liquids[i])
-            if liquid.TRIGGER:IsPlayerInside() == true then
-                Game.GetEntity(liquid[i]).TRIGGER:DisableTrigger()
-                Game.GetEntity(liquid[i]).TRIGGER:EnableTrigger()
-            end
+            liquid = Game.GetEntity(liquids[i])
+            RandomizerSuit.IsInLiquid(liquid)
         end
     end
 end
@@ -64,10 +63,16 @@ end
 function RandomizerSuit.OnPickedUp(progression, actorOrName)
     RandomizerSuit.ResetLiquidState()
     RandomizerPowerup.OnPickedUp(progression, actorOrName)
-    if Game.GetItemAmount(Game.GetPlayerName(), "ITEM_GRAVITY_SUIT") > 0 then
+    if RandomizerPowerup.GetItemAmount("ITEM_GRAVITY_SUIT") > 0 then
         Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
+        RandoApi.ChangeSuitValues(false, true)
+        if RandomizerPowerup.GetItemAmount("ITEM_VARIA_SUIT") > 0 then
+            RandoApi.ChangeSuitValues(true, true)
+            Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
+        end
     else
         Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
+        RandoApi.ChangeSuitValues(true, false)
+        Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
     end
-    Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
 end
