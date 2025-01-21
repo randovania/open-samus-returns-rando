@@ -65,7 +65,7 @@ function Scenario.InitGUI()
   GUILib.InitCustomUI()
   GUILib.UpdateTotalDNAColor()
   Scenario.UpdateDNACounter()
-  RandoApi.ChangeSuitValues(hasVaria, hasGravity)
+  RandoApi.UpdateSuits()
 
   if Init.bEnableRoomIds then
     RoomNameGui.Init()

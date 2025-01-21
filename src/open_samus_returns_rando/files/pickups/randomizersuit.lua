@@ -63,16 +63,5 @@ end
 function RandomizerSuit.OnPickedUp(progression, actorOrName)
     RandomizerSuit.ResetLiquidState()
     RandomizerPowerup.OnPickedUp(progression, actorOrName)
-    if RandomizerPowerup.GetItemAmount("ITEM_GRAVITY_SUIT") > 0 then
-        Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Gravity"
-        RandoApi.ChangeSuitValues(false, true)
-        if RandomizerPowerup.GetItemAmount("ITEM_VARIA_SUIT") > 0 then
-            RandoApi.ChangeSuitValues(true, true)
-            Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
-        end
-    else
-        Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
-        RandoApi.ChangeSuitValues(true, false)
-        Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
-    end
+    RandoApi.UpdateSuits()
 end
