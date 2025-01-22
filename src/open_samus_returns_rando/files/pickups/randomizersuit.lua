@@ -4,7 +4,7 @@ RandomizerSuit = RandomizerSuit or {}
 function RandomizerSuit.main()
 end
 
-function RandomizerSuit.IsInLiquid(liquid)
+function RandomizerSuit.CheckLiquidState(liquid)
     if liquid ~= nil and liquid.TRIGGER:IsPlayerInside() == true then
         liquid.TRIGGER:DisableTrigger()
         liquid.TRIGGER:EnableTrigger()
@@ -23,7 +23,7 @@ function RandomizerSuit.ResetLiquidState()
             for i = 1, 2 do
                 for j = 1, 19 do
                     local water = Game.GetEntity(waterPrefixes[i] .. string.format("%03d", j))
-                    RandomizerSuit.IsInLiquid(water)
+                    RandomizerSuit.CheckLiquidState(water)
                 end
             end
         end
@@ -32,7 +32,7 @@ function RandomizerSuit.ResetLiquidState()
             if scenario == lavaScenarios[i] then
                 for j = 1, 5 do
                     local lava = Game.GetEntity("TG_Lava_" .. string.format("%03d", j))
-                    RandomizerSuit.IsInLiquid(lava)
+                    RandomizerSuit.CheckLiquidState(lava)
                 end
             end
         end
@@ -54,8 +54,8 @@ function RandomizerSuit.ResetLiquidState()
             liquids = {"TG_Damage_Hazardous_001", "TG_Damage_Hazardous_002"}
         end
         for i = 1, #liquids do
-            liquid = Game.GetEntity(liquids[i])
-            RandomizerSuit.IsInLiquid(liquid)
+            local liquid = Game.GetEntity(liquids[i])
+            RandomizerSuit.CheckLiquidState(liquid)
         end
     end
 end
