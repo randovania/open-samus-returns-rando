@@ -53,6 +53,9 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName, regionName)
 
     for _, resource in ipairs(granted) do
         RandomizerPowerup.IncreaseAmmo(resource)
+        if resource.item_id == "ITEM_WEAPON_WAVE_BEAM" or resource.item_id == "ITEM_WEAPON_SPAZER_BEAM" or resource.item_id == "ITEM_WEAPON_PLASMA_BEAM" then
+            RandoApi.CheckBeams()
+        end
     end
 
     Scenario.UpdateProgressiveItemModels()

@@ -4,9 +4,9 @@ RandoApi = RandoApi or {}
 function RandoApi.main()
 end
 
-function RandoApi.UpdateSuits()
-    hasVaria = RandomizerPowerup.GetItemAmount("ITEM_VARIA_SUIT") > 0
-    hasGravity = RandomizerPowerup.GetItemAmount("ITEM_GRAVITY_SUIT") > 0
+function RandoApi.CheckSuits()
+    local hasVaria = RandomizerPowerup.GetItemAmount("ITEM_VARIA_SUIT") > 0
+    local hasGravity = RandomizerPowerup.GetItemAmount("ITEM_GRAVITY_SUIT") > 0
 
     -- Update damage reductions based on the suits
     RandoApi.ChangeSuitValues(hasVaria, hasGravity)
@@ -21,4 +21,13 @@ function RandoApi.UpdateSuits()
         Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
         Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
     end
+end
+
+function RandoApi.CheckBeams()
+    local hasWave = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_WAVE_BEAM") > 0
+    local hasSpazer = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SPAZER_BEAM") > 0
+    local hasPlasma = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_PLASMA_BEAM") > 0
+
+    -- Damage values are Solo Spazer, Solo Plasma, Plasma + Wave, and Plasma + Spazer, respctively
+    RandoApi.ChangeBeams(hasWave, hasSpazer, hasPlasma, 40, 75, 90, 82.5)
 end

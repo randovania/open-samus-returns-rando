@@ -63,5 +63,5 @@ end
 function RandomizerSuit.OnPickedUp(progression, actorOrName)
     RandomizerSuit.ResetLiquidState()
     RandomizerPowerup.OnPickedUp(progression, actorOrName)
-    RandoApi.UpdateSuits()
+    RandoApi.CheckSuits()
 end
