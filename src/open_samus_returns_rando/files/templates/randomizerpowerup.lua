@@ -59,6 +59,8 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName, regionName)
     end
 
     Scenario.UpdateProgressiveItemModels()
+    Scenario.UpdateBlastShields()
+
     if actorOrName ~= nil then
         RandomizerPowerup.PostCollectionAdjustments(actorOrName)
     end

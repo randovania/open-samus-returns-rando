@@ -51,6 +51,7 @@ end
 
 function Scenario.OnSubAreaChange(old_subarea, old_actorgroup, new_subarea, new_actorgroup, disable_fade)
   Scenario.UpdateProgressiveItemModels()
+  Scenario.UpdateBlastShields()
   Scenario.UpdateRoomName(new_subarea)
 end
 
@@ -64,9 +65,9 @@ function Scenario.InitGUI()
   Cosmetics.UpdateGUI()
   GUILib.InitCustomUI()
   GUILib.UpdateTotalDNAColor()
-  Scenario.UpdateDNACounter()
   RandoApi.CheckSuits()
   RandoApi.CheckBeams()
+  Scenario.UpdateDNACounter()
 
   if Init.bEnableRoomIds then
     RoomNameGui.Init()
@@ -117,8 +118,10 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
       Game.HUDIdleScreenLeave()
       Scenario.ShowText()
     end
-  
+
     Scenario.UpdateProgressiveItemModels()
+    Scenario.UpdateBlastShields()
+
     if Scenario.showNextSFID ~= nil then
       Game.DelSFByID(Scenario.showNextSFID)
       Scenario.showNextSFID = nil
@@ -228,10 +231,36 @@ function Scenario.OnPostCreditsEnd()
   Game.GoToMainMenu()
 end
 
+Scenario._BlastShieldTypes = {
+  doorwave = {
+      item = "ITEM_WEAPON_WAVE_BEAM",
+      damage = {"WAVE_BEAM"},
+  },
+  doorspazerbeam = {
+      item = "ITEM_WEAPON_SPAZER_BEAM",
+      damage = {"POWER_BEAM"},
+  },
+}
+
+function Scenario._UpdateBlastShields()
+  for name, actordef in pairs(Game.GetEntities()) do
+      shield_type = Scenario._BlastShieldTypes[actordef]
+      if shield_type ~= nil and Game.GetItemAmount(Game.GetPlayerName(), shield_type.item) > 0 then
+          local shield = Game.GetEntity(name)
+          for _, damage in ipairs(shield_type.damage) do
+            shield.LIFE:AddDamageSource(damage)
+          end
+      end
+  end
+end
+
+function Scenario.UpdateBlastShields()
+  Game.AddSF(0.1, "Scenario._UpdateBlastShields", "")
+end
+
 Scenario.QueuedPopups = Scenario.QueuedPopups or Queue()
 
 function Scenario.ShowIfNotActive()
-  
   if Scenario.hideSFID == nil and Scenario.showNextSFID == nil then
     Scenario.ShowNextAsyncPopup()
   end

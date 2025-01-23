@@ -21,9 +21,7 @@ def _remove_pb_weaknesses(editor: PatcherEditor, configuration: dict) -> None:
     # Charge Door
     if configuration["charge_door_buff"]:
         for door in ["doorchargecharge", "doorclosedcharge"]:
-            charge_door = editor.get_file(
-                f"actors/props/{door}/charclasses/{door}.bmsad", Bmsad
-            )
+            charge_door = editor.get_file(f"actors/props/{door}/charclasses/{door}.bmsad", Bmsad)
             func = charge_door.raw.components.LIFE.functions[0]
             if func.params.Param1.value:
                 func.params.Param1.value = "CHARGE_BEAM"
@@ -33,18 +31,14 @@ def _remove_pb_weaknesses(editor: PatcherEditor, configuration: dict) -> None:
     # Beam Doors
     if configuration["beam_door_buff"]:
         for door in ["doorwave", "doorspazerbeam", "doorcreature"]:
-            beam_door = editor.get_file(
-                f"actors/props/{door}/charclasses/{door}.bmsad", Bmsad
-            )
-            func_wp = beam_door.raw.components.LIFE.functions[1]
-            func_s = beam_door.raw.components.LIFE.functions[2]
-            if func_wp.params.Param1.value:
-                if door == "doorwave":
-                    func_wp.params.Param1.value = "WAVE_BEAM"
-                else:
-                    func_wp.params.Param1.value = "PLASMA_BEAM"
-            if func_s.params.Param1.value:
-                func_s.params.Param1.value = "SPAZER_BEAM"
+            beam_door = editor.get_file(f"actors/props/{door}/charclasses/{door}.bmsad", Bmsad)
+            func = beam_door.raw.components.LIFE.functions
+            if door == "doorwave":
+                func[1].params.Param1.value = ""
+            elif door == "doorcreature":
+                func[1].params.Param1.value = "PLASMA_BEAM"
+            else:
+                func[2].params.Param1.value = ""
 
     # Blobthrowers/Steel Orbs
     if configuration["beam_burst_buff"]:
@@ -54,9 +48,9 @@ def _remove_pb_weaknesses(editor: PatcherEditor, configuration: dict) -> None:
         ]
         for plants in PLANT_FILES:
             plant = editor.get_file(plants, Bmsad)
-            plant.raw["components"]["LIFE"]["fields"][
-                "bShouldDieWithPowerBomb"
-            ] = Container({"type": "bool", "value": False})
+            plant.raw["components"]["LIFE"]["fields"]["bShouldDieWithPowerBomb"] = Container(
+                {"type": "bool", "value": False}
+            )
 
 
 def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict) -> None:
