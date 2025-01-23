@@ -65,8 +65,6 @@ function Scenario.InitGUI()
   Cosmetics.UpdateGUI()
   GUILib.InitCustomUI()
   GUILib.UpdateTotalDNAColor()
-  RandoApi.CheckSuits()
-  RandoApi.CheckBeams()
   Scenario.UpdateDNACounter()
 
   if Init.bEnableRoomIds then
@@ -119,6 +117,8 @@ function Scenario.InitScenario(_ARG_0_, _ARG_1_, _ARG_2_, _ARG_3_)
       Scenario.ShowText()
     end
 
+    RandoApi.CheckSuits()
+    RandoApi.CheckBeams()
     Scenario.UpdateProgressiveItemModels()
     Scenario.UpdateBlastShields()
 

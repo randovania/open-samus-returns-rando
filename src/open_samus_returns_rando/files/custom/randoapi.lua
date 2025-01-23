@@ -1,6 +1,10 @@
 Game.ImportLibrary("actors/items/randomizerpowerup/scripts/randomizerpowerup.lc", false)
 
-RandoApi = RandoApi or {}
+RandoApi = RandoApi or {
+    ChangeSuitValues = function(hasVaria, hasGravity) end,
+    ChangeBeams = function(hasWave, hasSpazer, hasPlasma, dmgSpazer, dmgPlasma, dmgPlasmaWave, dmgPlasmaSpazer) end
+}
+
 function RandoApi.main()
 end
 
