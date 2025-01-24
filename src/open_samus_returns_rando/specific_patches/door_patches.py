@@ -220,6 +220,12 @@ def _patch_tiles(editor: PatcherEditor) -> None:
                                 door_tile["icon"] = "doorpowerright"
 
 
+def _patch_beam_door_weaknesses(editor: PatcherEditor) -> None:
+    # Prevent stronger beams from opening doors for weaker beams with split beams
+    for door in ["doorwave", "doorspazerbeam"]:
+        beam_door = editor.get_file(f"actors/props/{door}/charclasses/{door}.bmsad", Bmsad)
+        beam_door.raw.components.LIFE.functions[0].params.Param1.value = ""
+
 
 def _static_door_patches(editor: PatcherEditor) -> None:
     _patch_one_way_doors(editor)
@@ -228,6 +234,7 @@ def _static_door_patches(editor: PatcherEditor) -> None:
     _patch_beam_covers(editor)
     _patch_charge_doors(editor)
     _patch_tiles(editor)
+    _patch_beam_door_weaknesses(editor)
 
 
 class ActorData(Enum):

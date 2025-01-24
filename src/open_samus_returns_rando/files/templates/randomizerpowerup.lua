@@ -53,9 +53,12 @@ function RandomizerPowerup.OnPickedUp(resources, actorOrName, regionName)
 
     for _, resource in ipairs(granted) do
         RandomizerPowerup.IncreaseAmmo(resource)
+        RandoApi.CheckBeams()
     end
 
     Scenario.UpdateProgressiveItemModels()
+    Scenario.UpdateBlastShields()
+
     if actorOrName ~= nil then
         RandomizerPowerup.PostCollectionAdjustments(actorOrName)
     end

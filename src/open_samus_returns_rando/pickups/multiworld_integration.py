@@ -1,4 +1,3 @@
-from pathlib import Path
 
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.lua_editor import get_parent_for
@@ -30,37 +29,3 @@ def get_lua_for_item(progression: list[list[dict[str, str | int]]], region_name:
     return (f'{parent_content}\nMultiworldPickup.OnPickedUp({progression_as_lua},nil,{region_name})'
             .replace("\n", "\\\n").replace("'", "\\'")
     )
-
-
-def create_exefs_patches(
-        out_code: Path, out_exheader: Path, input_code: bytes | None, input_exheader: bytes, enabled: bool
-    ) -> None:
-    if not enabled:
-        return
-
-    if input_code is None:
-        raise ValueError("Could not get decompressed + decrypted code binary")
-
-    import ips  # type: ignore
-
-    # Citra and Luma don't support patching the exheader. User needs to provide it as input and
-    # here the patch is just applied
-    exheader_ips_path = files_path().joinpath("exefs_patches", "exheader.ips")
-    out_exheader.parent.mkdir(parents=True, exist_ok=True)
-    with (
-          Path.open(exheader_ips_path, "rb") as exheader_ips,
-          Path.open(out_exheader, "wb") as result
-        ):
-        content = exheader_ips.read()
-        patch = ips.Patch.load(content)
-        patch.apply(input_exheader, result)
-
-    code_ips_path = files_path().joinpath("exefs_patches", "code.ips")
-    out_code.parent.mkdir(parents=True, exist_ok=True)
-    with (
-          Path.open(code_ips_path, "rb") as code_ips,
-          Path.open(out_code, "wb") as result
-        ):
-        content = code_ips.read()
-        patch = ips.Patch.load(content)
-        patch.apply(input_code, result)

@@ -324,30 +324,18 @@ class LuaEditor:
         self._add_replacement_files(editor, configuration)
 
         # add new system scripts
-        editor.add_new_asset(
-            "system/scripts/guilib.lc",
-            Lua(Container(lua_text=files_path().joinpath("custom", "guilib.lua").read_text()), editor.target_game),
-            []
-        )
-
-        editor.add_new_asset(
-            "system/scripts/queue.lc",
-            Lua(Container(lua_text=files_path().joinpath("custom", "queue.lua").read_text()), editor.target_game),
-            []
-        )
-
-        cosmetics_script = cosmetic_patches.lua_cosmetics(configuration["cosmetic_patches"])
-        editor.add_new_asset(
-            "system/scripts/cosmetics.lc",
-            Lua(Container(lua_text=cosmetics_script), editor.target_game),
-            []
-        )
-
-        editor.add_new_asset(
-            "system/scripts/room_names.lc",
-            Lua(Container(lua_text=files_path().joinpath("custom", "room_names.lua").read_text()), editor.target_game),
-            []
-        )
+        SYSTEM_SCRIPTS = ["cosmetics", "guilib", "queue", "randoapi", "room_names"]
+        for system_script in SYSTEM_SCRIPTS:
+            lua_text_replacement = (
+                files_path().joinpath("custom", f"{system_script}.lua").read_text()
+                if system_script != "cosmetics"
+                else cosmetic_patches.lua_cosmetics(configuration["cosmetic_patches"])
+            )
+            editor.add_new_asset(
+                f"system/scripts/{system_script}.lc",
+                Lua(Container(lua_text=lua_text_replacement), editor.target_game),
+                [],
+            )
 
         # replace ensured scripts with the final code
         final_metroid_script = lua_util.replace_lua_template("metroid_template.lua", {"mapping": self._metroid_dict})
