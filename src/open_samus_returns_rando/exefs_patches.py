@@ -21,7 +21,7 @@ def create_exefs_patches(
         content = code_ips.read()
         patch = ips.Patch.load(content)
         patch.apply(input_code, result)
-    
+
     # exheader.bin patching
     # Citra and Luma don't support patching the exheader. User needs to provide it as input and
     # here the patch is just applied
