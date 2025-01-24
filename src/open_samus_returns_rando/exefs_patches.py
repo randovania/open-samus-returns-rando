@@ -6,13 +6,12 @@ from open_samus_returns_rando.files import files_path
 def create_exefs_patches(
         out_code: Path, out_exheader: Path, input_code: bytes | None, input_exheader: bytes, enabled: bool
     ) -> None:
-
     if input_code is None:
         raise ValueError("Could not get decompressed + decrypted code binary")
 
     import ips  # type: ignore
 
-    # code.bin modifications
+    # code.bin patching
     code_ips_path = files_path().joinpath("exefs_patches", "code.ips")
     out_code.parent.mkdir(parents=True, exist_ok=True)
     with (
@@ -30,6 +29,7 @@ def create_exefs_patches(
     if not enabled:
         return
 
+    # exheader.bin patching
     exheader_ips_path = files_path().joinpath("exefs_patches", "exheader.ips")
     out_exheader.parent.mkdir(parents=True, exist_ok=True)
     with (
