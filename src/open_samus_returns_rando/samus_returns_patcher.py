@@ -159,7 +159,6 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict) ->
             out_code, out_exheader,
             parsed_rom.get_code_binary(),
             parsed_rom.exheader(),
-            configuration["enable_remote_lua"]
         )
 
         LOG.info("Saving modified lua scripts")
