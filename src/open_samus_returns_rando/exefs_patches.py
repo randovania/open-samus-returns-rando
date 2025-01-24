@@ -6,26 +6,13 @@ from open_samus_returns_rando.files import files_path
 def create_exefs_patches(
         out_code: Path, out_exheader: Path, input_code: bytes | None, input_exheader: bytes, enabled: bool
     ) -> None:
-    if not enabled:
-        return
 
     if input_code is None:
         raise ValueError("Could not get decompressed + decrypted code binary")
 
     import ips  # type: ignore
 
-    # Citra and Luma don't support patching the exheader. User needs to provide it as input and
-    # here the patch is just applied
-    exheader_ips_path = files_path().joinpath("exefs_patches", "exheader.ips")
-    out_exheader.parent.mkdir(parents=True, exist_ok=True)
-    with (
-          Path.open(exheader_ips_path, "rb") as exheader_ips,
-          Path.open(out_exheader, "wb") as result
-        ):
-        content = exheader_ips.read()
-        patch = ips.Patch.load(content)
-        patch.apply(input_exheader, result)
-
+    # code.bin modifications
     code_ips_path = files_path().joinpath("exefs_patches", "code.ips")
     out_code.parent.mkdir(parents=True, exist_ok=True)
     with (
@@ -35,3 +22,20 @@ def create_exefs_patches(
         content = code_ips.read()
         patch = ips.Patch.load(content)
         patch.apply(input_code, result)
+
+    # Citra and Luma don't support patching the exheader. User needs to provide it as input and
+    # here the patch is just applied
+
+    # Check if `enable_remote_lua` is enabled
+    if not enabled:
+        return
+
+    exheader_ips_path = files_path().joinpath("exefs_patches", "exheader.ips")
+    out_exheader.parent.mkdir(parents=True, exist_ok=True)
+    with (
+          Path.open(exheader_ips_path, "rb") as exheader_ips,
+          Path.open(out_exheader, "wb") as result
+        ):
+        content = exheader_ips.read()
+        patch = ips.Patch.load(content)
+        patch.apply(input_exheader, result)
