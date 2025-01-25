@@ -70,6 +70,9 @@ def cleanup_old_patcher(output_path: Path) -> None:
     out_code = output_path.joinpath("code.bps")
     out_code.unlink(missing_ok=True)
 
+    out_code = output_path.joinpath("code.bin")
+    out_code.unlink(missing_ok=True)
+
     out_exheader = output_path.joinpath("exheader.bin")
     out_exheader.unlink(missing_ok=True)
 
