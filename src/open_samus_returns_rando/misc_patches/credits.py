@@ -14,6 +14,7 @@ _PROJECT_MEMBERS = {
         "Henrique 'Darkszero' Gemignani",
         "duncathan_salt",
         "MeriKatt",
+        "Athebyne",
     ],
     "Logic Database": [
         "Miepee",
