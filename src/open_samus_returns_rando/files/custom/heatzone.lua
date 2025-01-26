@@ -16,7 +16,7 @@ function HeatZone.PlaySound()
 end 
 
 function HeatZone.OnEnter()
-  if Game.GetPlayerInfo().iHeatZoneCount == 0 and Game.GetEntity("Samus").MODELUPDATER.sModelAlias == "Default" then
+  if Game.GetPlayerInfo().iHeatZoneCount == 0 and Game.GetVariaSuitOn() < 1 then
     Game.AddSF(0.0, "HeatZone.PlaySound", "")
     guicallbacks.OnPlayerContinuousDamageStart()
     utils.LOG(utils.LOGTYPE_LOGIC, "heatzoneenter")
