@@ -24,6 +24,8 @@ function RandoApi.CheckSuits()
     elseif hasVaria then
         Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Varia"
         Game.GetPlayer():StopEntityLoopWithFade("actors/samus/damage_alarm.wav", 0.6)
+    else
+        Game.GetEntity("Samus").MODELUPDATER.sModelAlias = "Default"
     end
 end
 
