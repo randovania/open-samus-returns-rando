@@ -32,6 +32,6 @@ function RandoApi.CheckBeams()
     local hasSpazer = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SPAZER_BEAM") > 0
     local hasPlasma = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_PLASMA_BEAM") > 0
 
-    -- Damage values are Solo Spazer, Solo Plasma, Plasma + Wave, and Plasma + Spazer, respctively
-    RandoApi.ChangeBeams(hasWave, hasSpazer, hasPlasma, 40, 75, 90, 82.5)
+    -- Damage values are Solo Spazer, Solo Plasma, Plasma + Wave, and Plasma + Spazer, respectively
+    RandoApi.ChangeBeams(hasWave, hasSpazer, hasPlasma, 40, 85, 95, 90)
 end
