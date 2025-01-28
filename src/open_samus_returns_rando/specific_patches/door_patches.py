@@ -90,6 +90,10 @@ def _patch_beam_bmsads(editor: PatcherEditor) -> None:
         # wave cb didn't work and it has animation id 21.it's maybe a bitmask? because it works
         # with 29 and also with 30 (which the other two are using) and both are setting 2^3 bit
         action_set_anim["animation_id"] = 30
+        # modify doorcreature life
+        if i == 1:
+            cr_bmsad.components["LIFE"].functions[3].set_param(2, 600.0)
+            cr_bmsad.components["LIFE"].functions[4].set_param(2, 600.0)
         # modify doorwave collision
         if i == 2:
             # Param6 and Param7 seems to be a position
