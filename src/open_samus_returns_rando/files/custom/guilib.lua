@@ -189,6 +189,13 @@ function GUILib.AddMessageBox()
   outer:AddChild(firstLine)
   outer:AddChild(secondLine)
 
+  if GUILib.disconnectLine ~= nil then
+    GUI.DestroyDisplayObject(GUILib.disconnectLine)
+  end
+  if GUILib.disconnectIcon ~= nil then
+    GUI.DestroyDisplayObject(GUILib.disconnectIcon)
+  end
+
   local disconnectLine = GUI.CreateDisplayObjectEx("disconnected",  "CText", {
       X = "-0.30",
       Y = "0.05",
@@ -199,7 +206,6 @@ function GUILib.AddMessageBox()
       BlinkColorR = "0.9", BlinkColorG = "0.1", BlinkColorB = "0.1", BlinkAlpha = "1.00000", Blink = "2.00000",
       Visible = false
   })
-  ussef:AddChild(disconnectLine)
   local disconnectIcon = GUI.CreateDisplayObjectEx("disconnectedicon",  "CSprite", {
     X = "0.03",
     Y = "0.05",
@@ -211,6 +217,7 @@ function GUILib.AddMessageBox()
     SpriteSheetItem = "IconX_01"
   })
   ussef:AddChild(disconnectIcon)
+  ussef:AddChild(disconnectLine)
 
   GUILib.outer = outer
   GUILib.firstLine = firstLine
