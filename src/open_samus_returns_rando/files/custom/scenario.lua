@@ -244,13 +244,30 @@ Scenario._BlastShieldTypes = {
 
 function Scenario._UpdateBlastShields()
   for name, actordef in pairs(Game.GetEntities()) do
-      shield_type = Scenario._BlastShieldTypes[actordef]
-      if shield_type ~= nil and Game.GetItemAmount(Game.GetPlayerName(), shield_type.item) > 0 then
-          local shield = Game.GetEntity(name)
-          for _, damage in ipairs(shield_type.damage) do
-            shield.LIFE:AddDamageSource(damage)
-          end
+    -- Remove weakness from shields until the proper beam is acquired
+    local shield_type = Scenario._BlastShieldTypes[actordef]
+    if shield_type ~= nil and RandomizerPowerup.GetItemAmount(shield_type.item) > 0 then
+      local shield = Game.GetEntity(name)
+      for _, damage in ipairs(shield_type.damage) do
+        shield.LIFE:AddDamageSource(damage)
       end
+    end
+    -- Modify the life of doorcreature based on the beams in inventory to ensure it always takes 4 shots to kill
+    if actordef == "doorcreature" then
+      local entity = Game.GetEntity(name)
+      local has_wave = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_WAVE_BEAM") > 0
+      local has_spazer = RandomizerPowerup.GetItemAmount("ITEM_WEAPON_SPAZER_BEAM") > 0
+      if has_wave and has_spazer then
+        entity.LIFE.fMaxLife = 1125.0 -- 300 per shot (default, all beams)
+      elseif has_spazer then
+        entity.LIFE.fMaxLife = 850.0  -- 225 per shot (spazer + plasma)
+      elseif has_wave then
+        entity.LIFE.fMaxLife = 315.0  -- 80 per shot (wave + plasma)
+      else
+        entity.LIFE.fMaxLife = 215.0  -- 55 per shot (solo plasma)
+      end
+      entity.LIFE.fCurrentLife = entity.LIFE.fMaxLife
+    end
   end
 end
 
