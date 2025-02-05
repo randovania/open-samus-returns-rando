@@ -43,8 +43,11 @@ SPECIFIC_SOUNDS = {
     "ITEM_ENERGY_TANKS": "streams/music/tank_jingle.wav",
     "ITEM_MAX_SPECIAL_ENERGY": "streams/music/tank_jingle.wav",
     "ITEM_MISSILE_TANKS": "streams/music/tank_jingle.wav",
+    "ITEM_WEAPON_MISSILE_MAX": "streams/music/tank_jingle.wav",
     "ITEM_SUPER_MISSILE_TANKS": "streams/music/tank_jingle.wav",
+    "ITEM_WEAPON_SUPER_MISSILE_MAX": "streams/music/tank_jingle.wav",
     "ITEM_POWER_BOMB_TANKS": "streams/music/tank_jingle.wav",
+    "ITEM_WEAPON_POWER_BOMB_MAX": "streams/music/tank_jingle.wav",
 }
 
 SCENARIO_MAPPING = {
