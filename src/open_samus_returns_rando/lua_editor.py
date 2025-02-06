@@ -35,21 +35,6 @@ SPECIFIC_CLASSES = {
     "ITEM_RESERVE_TANK_SPECIAL_ENERGY": "RandomizerReserveTankA",
 }
 
-SPECIFIC_SOUNDS = {
-    "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": "streams/music/special_ability2_32.wav",
-    "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD": "streams/music/special_ability2_32.wav",
-    "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": "streams/music/special_ability2_32.wav",
-    "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "streams/music/special_ability2_32.wav",
-    "ITEM_ENERGY_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_MAX_SPECIAL_ENERGY": "streams/music/tank_jingle.wav",
-    "ITEM_MISSILE_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_WEAPON_MISSILE_MAX": "streams/music/tank_jingle.wav",
-    "ITEM_SUPER_MISSILE_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_WEAPON_SUPER_MISSILE_MAX": "streams/music/tank_jingle.wav",
-    "ITEM_POWER_BOMB_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_WEAPON_POWER_BOMB_MAX": "streams/music/tank_jingle.wav",
-}
-
 SCENARIO_MAPPING = {
     "s000_surface": "s00",
     "s010_area1": "s01",
@@ -131,6 +116,7 @@ class LuaEditor:
         pickup_resources = pickup["resources"]
         first_item = pickup_resources[0][0]
         first_item_id = first_item["item_id"]
+        pickup_caption = pickup["caption"]
 
         # coop uses quantity of 0 and should not use the specific classes
         if first_item["quantity"] > 0:
@@ -144,7 +130,7 @@ class LuaEditor:
 
         hashable_progression = "_".join([
             str(
-                hash(f'{item_quantity["item_id"]}_{item_quantity["quantity"]}_{pickup["caption"]}')
+                hash(f'{item_quantity["item_id"]}_{item_quantity["quantity"]}_{pickup_caption}')
             ).replace("-", "MINUS")
             for progressive_stage in pickup_resources
             for item_quantity in progressive_stage
@@ -165,10 +151,21 @@ class LuaEditor:
             ]
             for resource_list in pickup_resources
         ]
-        if "ITEM_RANDO_DNA" in first_item_id:
+
+        # pickup jingle is determined by popup
+        if "Tank" in pickup_caption:
+            sound = "streams/music/tank_jingle.wav"
+        elif (
+            "Scan Pulse" in pickup_caption
+            or "Lightning Armor" in pickup_caption
+            or "Beam Burst" in pickup_caption
+            or "Phase Drift" in pickup_caption
+        ):
+            sound = "streams/music/special_ability2_32.wav"
+        elif "Metroid DNA" in pickup_caption:
             sound = "streams/music/k_matad_jinchozo.wav"
         else:
-            sound = SPECIFIC_SOUNDS.get(first_item_id, "streams/music/sphere_jingle_placeholder.wav")
+            sound = "streams/music/sphere_jingle_placeholder.wav"
 
         parent_file_name = f"actors/items/{parent.lower()}/scripts/{parent.lower()}.lc"
         replacement = {
