@@ -212,7 +212,7 @@ function Scenario.ShowFinalBossMessage()
   elseif boss == "Queen" then
     boss = "the Queen"
   end
-  GUI.LaunchMessage("Not enough Metroid DNA!\nCollect more DNA to fight " .. boss .. "!", "RandomizerPowerup.Dummy", "")
+  GUI.LaunchMessage("Not enough Metroid DNA!\nCollect " .. RandomizerPowerup.GetItemAmount("ITEM_ADN") .. " more DNA to fight " .. boss .. "!", "RandomizerPowerup.Dummy", "")
   if Init.sFinalBoss ~= "Queen" then
     Game.AddSF(0, "Scenario.FinalBossReload", "s", startpoint)
   end
