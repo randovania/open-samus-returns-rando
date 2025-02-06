@@ -25,7 +25,7 @@ boss_triggers = [
         [50, 700, 300],
         ["collision_camera_045"],
     ),
-    BossTrigger("s100_area10", "TG_Queen_Access", [1000.0, 12050.0, 0.0], [500, 300, 300], ["collision_camera_019"]),
+    BossTrigger("s100_area10", "TG_Queen_Access", [1000.0, 12050.0, 0.0], [500, 300, 300], ["PostMetroids_001"]),
 ]
 
 ridley_trigger = BossTrigger(
