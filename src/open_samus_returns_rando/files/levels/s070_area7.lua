@@ -166,9 +166,9 @@ end
 function s070_area7.OnEnter_Diggernaut_Access()
   if Init.sFinalBoss == "Diggernaut" then
     if not Blackboard.GetProp("GAME", "OBJECTIVE_COMPLETE") then
-       local startpoint = "Diggernaut" 
-       GUI.LaunchMessage("Not enough Metroid DNA!\nCollect " .. RandomizerPowerup.GetItemAmount(ITEM_ADN) .. " more DNA to fight Diggernaut!", "RandomizerPowerup.Dummy", "") 
-       Game.AddSF(0, "Scenario.FinalBossReload", "s", startpoint)
+      local startpoint = "Diggernaut" 
+      GUI.LaunchMessage("Not enough Metroid DNA!\nCollect " .. RandomizerPowerup.GetItemAmount(ITEM_ADN) .. " more DNA to fight Diggernaut!", "RandomizerPowerup.Dummy", "") 
+      Game.AddSF(0, "Scenario.FinalBossReload", "s", startpoint)
     else
       Game.GetPlayer().vPos = V3D(-18500, -7600, 0)
     end
