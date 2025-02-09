@@ -117,6 +117,7 @@ class LuaEditor:
         first_item = pickup_resources[0][0]
         first_item_id = first_item["item_id"]
         pickup_caption = pickup["caption"]
+        pickup_sound = pickup.get("sound", None)
 
         # coop uses quantity of 0 and should not use the specific classes
         if first_item["quantity"] > 0:
@@ -152,20 +153,19 @@ class LuaEditor:
             for resource_list in pickup_resources
         ]
 
-        # pickup jingle is determined by popup
-        if "Tank" in pickup_caption:
-            sound = "streams/music/tank_jingle.wav"
-        elif (
-            "Scan Pulse" in pickup_caption
-            or "Lightning Armor" in pickup_caption
-            or "Beam Burst" in pickup_caption
-            or "Phase Drift" in pickup_caption
-        ):
-            sound = "streams/music/special_ability2_32.wav"
-        elif "Metroid DNA" in pickup_caption:
-            sound = "streams/music/k_matad_jinchozo.wav"
+        # Set the pickup sound based on the json
+        if pickup_sound is not None:
+            sound = f"streams/music/{pickup_sound}.wav"
+        # Handle old patcher files not having sounds defined per pickup
         else:
-            sound = "streams/music/sphere_jingle_placeholder.wav"
+            if "TANKS" in first_item_id or "MAX" in first_item_id:
+                sound = "streams/music/tank_jingle.wav"
+            elif "ITEM_SPECIAL_ENERGY" in first_item_id:
+                sound = "streams/music/special_ability2_32.wav"
+            elif "ITEM_RANDO_DNA" in first_item_id:
+                sound = "streams/music/k_matad_jinchozo.wav"
+            else:
+                sound = "streams/music/sphere_jingle_placeholder.wav"
 
         parent_file_name = f"actors/items/{parent.lower()}/scripts/{parent.lower()}.lc"
         replacement = {
@@ -173,7 +173,7 @@ class LuaEditor:
             "resources": resources,
             "parent": parent,
             "parent_lua": lua_util.wrap_string(parent_file_name),
-            "caption": lua_util.wrap_string(pickup["caption"].replace("\n", "\\n")),
+            "caption": lua_util.wrap_string(pickup_caption.replace("\n", "\\n")),
             "sound": lua_util.wrap_string(sound),
         }
 
