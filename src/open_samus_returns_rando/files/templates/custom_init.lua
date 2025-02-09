@@ -64,7 +64,7 @@ function Init.InitGameBlackboard()
   Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", false)
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_ADN", "f", Init.iRequiredDNA)
   if Init.iRequiredDNA == 0 then
-  -- If no DNA is required, then the path to Ridley should always be open
+  -- If no DNA is required, then the path to the final boss should always be open
     Blackboard.SetProp("GAME", "OBJECTIVE_COMPLETE", "b", true)
   end
   Blackboard.SetProp("PLAYER_INVENTORY", "ITEM_METROID_COUNT", "f", 0)
