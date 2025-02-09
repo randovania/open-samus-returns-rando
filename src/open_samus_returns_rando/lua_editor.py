@@ -35,18 +35,6 @@ SPECIFIC_CLASSES = {
     "ITEM_RESERVE_TANK_SPECIAL_ENERGY": "RandomizerReserveTankA",
 }
 
-SPECIFIC_SOUNDS = {
-    "ITEM_SPECIAL_ENERGY_SCANNING_PULSE": "streams/music/special_ability2_32.wav",
-    "ITEM_SPECIAL_ENERGY_ENERGY_SHIELD": "streams/music/special_ability2_32.wav",
-    "ITEM_SPECIAL_ENERGY_ENERGY_WAVE": "streams/music/special_ability2_32.wav",
-    "ITEM_SPECIAL_ENERGY_PHASE_DISPLACEMENT": "streams/music/special_ability2_32.wav",
-    "ITEM_ENERGY_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_MAX_SPECIAL_ENERGY": "streams/music/tank_jingle.wav",
-    "ITEM_MISSILE_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_SUPER_MISSILE_TANKS": "streams/music/tank_jingle.wav",
-    "ITEM_POWER_BOMB_TANKS": "streams/music/tank_jingle.wav",
-}
-
 SCENARIO_MAPPING = {
     "s000_surface": "s00",
     "s010_area1": "s01",
@@ -128,6 +116,8 @@ class LuaEditor:
         pickup_resources = pickup["resources"]
         first_item = pickup_resources[0][0]
         first_item_id = first_item["item_id"]
+        pickup_caption = pickup["caption"]
+        pickup_sound = pickup.get("sound", None)
 
         # coop uses quantity of 0 and should not use the specific classes
         if first_item["quantity"] > 0:
@@ -141,7 +131,7 @@ class LuaEditor:
 
         hashable_progression = "_".join([
             str(
-                hash(f'{item_quantity["item_id"]}_{item_quantity["quantity"]}_{pickup["caption"]}')
+                hash(f'{item_quantity["item_id"]}_{item_quantity["quantity"]}_{pickup_caption}')
             ).replace("-", "MINUS")
             for progressive_stage in pickup_resources
             for item_quantity in progressive_stage
@@ -162,10 +152,20 @@ class LuaEditor:
             ]
             for resource_list in pickup_resources
         ]
-        if "ITEM_RANDO_DNA" in first_item_id:
-            sound = "streams/music/k_matad_jinchozo.wav"
+
+        # Set the pickup sound based on the json
+        if pickup_sound is not None:
+            sound = f"streams/music/{pickup_sound}.wav"
+        # Handle old patcher files not having sounds defined per pickup
         else:
-            sound = SPECIFIC_SOUNDS.get(first_item_id, "streams/music/sphere_jingle_placeholder.wav")
+            if "TANKS" in first_item_id or "MAX" in first_item_id:
+                sound = "streams/music/tank_jingle.wav"
+            elif "ITEM_SPECIAL_ENERGY" in first_item_id:
+                sound = "streams/music/special_ability2_32.wav"
+            elif "ITEM_RANDO_DNA" in first_item_id:
+                sound = "streams/music/k_matad_jinchozo.wav"
+            else:
+                sound = "streams/music/sphere_jingle_placeholder.wav"
 
         parent_file_name = f"actors/items/{parent.lower()}/scripts/{parent.lower()}.lc"
         replacement = {
@@ -173,7 +173,7 @@ class LuaEditor:
             "resources": resources,
             "parent": parent,
             "parent_lua": lua_util.wrap_string(parent_file_name),
-            "caption": lua_util.wrap_string(pickup["caption"].replace("\n", "\\n")),
+            "caption": lua_util.wrap_string(pickup_caption.replace("\n", "\\n")),
             "sound": lua_util.wrap_string(sound),
         }
 

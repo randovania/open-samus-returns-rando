@@ -36,6 +36,15 @@
                     "caption": {
                         "type": "string"
                     },
+                    "sound": {
+                        "type": "string",
+                        "enum": [
+                            "tank_jingle",
+                            "sphere_jingle_placeholder",
+                            "special_ability2_32",
+                            "k_matad_jinchozo"
+                        ]
+                    },
                     "resources": {
                         "type": "array",
                         "items": {
