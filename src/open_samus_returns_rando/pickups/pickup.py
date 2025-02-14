@@ -151,7 +151,8 @@ class ActorPickup(BasePickup):
                 else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
                 # Placeholder until custom models/textures are made
-                if item_id in RESERVE_TANK_ITEMS:
+                # Checks for caption in multiworld if for another world
+                if item_id in RESERVE_TANK_ITEMS or "Reserve Tank" in self.pickup["caption"]:
                     fx_create_and_link["Param1"]["value"] = "spinattack"
                     fx_create_and_link["Param2"]["value"] = "actors/characters/samus/fx/spinattack.bcptl"
                     fx_create_and_link["Param8"]["value"] = 55
