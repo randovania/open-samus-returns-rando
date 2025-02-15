@@ -213,12 +213,10 @@ class LuaEditor:
         enable_remote_lua: bool = configuration.get("enable_remote_lua", False)
 
         starting_scenario = starting_location["scenario"]
-        scenario_bmsld = editor.get_scenario(starting_scenario)
         starting_actor = starting_location["actor"]
-        for actor in scenario_bmsld.raw.actors[5]:
-            if starting_location["actor"] == actor:
-                break
-        else:
+        scenario_bmsld = editor.get_scenario(starting_scenario)
+        # check if the actor is an existing startpoint
+        if starting_actor not in scenario_bmsld.raw.actors[5]:
             raise KeyError(f"No actor named '{starting_actor}' found in {starting_scenario}!")
 
         energy_per_tank = configuration["energy_per_tank"]
