@@ -212,6 +212,13 @@ class LuaEditor:
         configuration_identifier: str = configuration["configuration_identifier"]
         enable_remote_lua: bool = configuration.get("enable_remote_lua", False)
 
+        starting_scenario = starting_location["scenario"]
+        starting_actor = starting_location["actor"]
+        scenario_bmsld = editor.get_scenario(starting_scenario)
+        # check if the actor is an existing startpoint
+        if starting_actor not in scenario_bmsld.raw.actors[5]:
+            raise KeyError(f"No actor named '{starting_actor}' found in {starting_scenario}!")
+
         energy_per_tank = configuration["energy_per_tank"]
         max_life = inventory.pop("ITEM_MAX_LIFE")
 
@@ -278,8 +285,8 @@ class LuaEditor:
 
         replacement = {
             "new_game_inventory": final_inventory,
-            "starting_scenario": lua_util.wrap_string(starting_location["scenario"]),
-            "starting_actor": lua_util.wrap_string(starting_location["actor"]),
+            "starting_scenario": lua_util.wrap_string(starting_scenario),
+            "starting_actor": lua_util.wrap_string(starting_actor),
             "energy_per_tank": energy_per_tank,
             "reveal_map_on_start": configuration["reveal_map_on_start"],
             "dna_per_area": self._dna_count_dict,
