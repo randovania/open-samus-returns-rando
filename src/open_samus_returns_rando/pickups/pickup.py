@@ -14,10 +14,13 @@ from open_samus_returns_rando.lua_editor import LuaEditor, ScriptClass
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
 from open_samus_returns_rando.pickups.model_data import get_data
 
-RESERVE_TANK_ITEMS = {
+RESERVE_TANKS = {
     "ITEM_RESERVE_TANK_LIFE",
     "ITEM_RESERVE_TANK_MISSILE",
     "ITEM_RESERVE_TANK_SPECIAL_ENERGY",
+    "powerup_reserveenergy",
+    "powerup_reservemissile",
+    "powerup_reserveaeion",
 }
 
 TANK_MODELS = {
@@ -151,8 +154,8 @@ class ActorPickup(BasePickup):
                 else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
                 # Placeholder until custom models/textures are made
-                # Checks for caption in multiworld if for another world
-                if item_id in RESERVE_TANK_ITEMS or "Reserve Tank" in self.pickup["caption"]:
+                # FIXME: Make this less ugly
+                if model_name in RESERVE_TANKS or item_id in RESERVE_TANKS:
                     fx_create_and_link["Param1"]["value"] = "spinattack"
                     fx_create_and_link["Param2"]["value"] = "actors/characters/samus/fx/spinattack.bcptl"
                     fx_create_and_link["Param8"]["value"] = 55
