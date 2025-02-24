@@ -37,40 +37,6 @@ MODELS_WITH_FX = {
     "itemsphere"
 }
 
-MODEL_TO_OFFSET = {
-    "powerup_scanningpulse": 50,
-    "powerup_energyshield": 50,
-    "powerup_energywave": 50,
-    "powerup_phasedisplacement": 50,
-    "powerup_spiderball": 40,
-    "item_energytank": 0,
-    "item_senergytank": 0,
-    "item_missiletank": 0,
-    "item_supermissiletank": 0,
-    "item_powerbombtank": 0,
-    "adn": 50,
-    "babyhatchling": 50,
-}
-
-OFFSET = Container({
-    "vInitPosWorldOffset": Container({
-        "type": "vec3",
-        "value": ListContainer([
-            0.0,
-            50.0,
-            0.0,
-        ])
-    }),
-        "vInitAngWorldOffset": Container({
-        "type": "vec3",
-        "value": ListContainer([
-            0.0,
-            0.0,
-            0.0,
-        ])
-    })
-})
-
 @functools.cache
 def _read_template_powerup() -> dict:
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
@@ -126,20 +92,25 @@ class ActorPickup(BasePickup):
         MODELUPDATER = bmsad["components"]["MODELUPDATER"]
         item_id: str = self.pickup["resources"][0][0]["item_id"]
         model_name = model_names[0]
-        y_offset = MODEL_TO_OFFSET.get(model_name, 20)
+        model_data = get_data(model_name)
+
+        # modify offsets as necessary
+        if model_data.transform is not None:
+            MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"] = model_data.transform.position
+
         if len(model_names) == 1:
-            model_data = get_data(model_name)
             action_sets: dict = bmsad["action_sets"][0]["animations"][0]
             bmsad["header"]["model_name"] = model_data.bcmdl_path
             fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
 
-            fx_create_and_link["Param8"]["value"] = y_offset
+            # enable the fx
             fx_create_and_link["Param13"]["value"] = True
 
             # if model uses fx, enable it and adjust position
             if model_name in MODELS_WITH_FX and model_data.fx_data is not None:
                 fx_create_and_link["Param1"]["value"] = model_data.fx_data.name
                 fx_create_and_link["Param2"]["value"] = model_data.fx_data.path
+                fx_create_and_link["Param8"]["value"] = MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"][1]
             # Placeholder until custom models/textures are made
             elif item_id in RESERVE_TANK_ITEMS:
                 fx_create_and_link["Param1"]["value"] = "spinattack"
@@ -170,7 +141,6 @@ class ActorPickup(BasePickup):
             MODELUPDATER["unk_2"] = 0.0
 
             for idx, model_name in enumerate(model_names):
-                model_data = get_data(model_name)
                 if idx != 0:
                     MODELUPDATER["functions"].append(copy.deepcopy(MODELUPDATER["functions"][0]))
                 MODELUPDATER["functions"][idx]["name"] = "AddModel"
@@ -183,12 +153,6 @@ class ActorPickup(BasePickup):
                     MODELUPDATER["functions"][idx]["params"]["Param1"]
                 )
                 MODELUPDATER["functions"][idx]["params"]["Param2"]["value"] = model_data.bcmdl_path
-
-        # offset for single and multimodels
-        if model_name not in TANK_MODELS:
-            MODELUPDATER["fields"] = OFFSET
-            MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"][1] = y_offset
-            MODELUPDATER["fields"]["vInitAngWorldOffset"]["value"][0] = 0.0
 
 
     def patch(self, editor: PatcherEditor) -> None:

@@ -141,7 +141,24 @@
                     }
                 }
             ],
-            "fields": {},
+            "fields": {
+                "vInitPosWorldOffset": {
+                    "type": "vec3",
+                    "value": [
+                        0.0,
+                        20.0,
+                        0.0
+                    ]
+                },
+                "vInitAngWorldOffset": {
+                    "type": "vec3",
+                    "value": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            },
             "dependencies": null
         },
         "ANIMATION": {

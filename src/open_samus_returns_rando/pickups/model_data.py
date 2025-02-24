@@ -2,6 +2,12 @@ import dataclasses
 
 
 @dataclasses.dataclass(frozen=True)
+class Transform:
+    position: tuple[float, float, float] = (0.0, 20.0, 0.0)
+    angle: tuple[float, float, float] = (0.0, 0.0, 0.0)
+
+
+@dataclasses.dataclass(frozen=True)
 class FXData:
     name: str = ""
     path: str = ""
@@ -11,6 +17,7 @@ class FXData:
 class ModelData:
     bcmdl_path: str
     dependencies: tuple[str, ...]
+    transform: Transform | None = None
     fx_data: FXData | None = None
 
 ALL_MODEL_DATA: dict[str, ModelData] = {
@@ -48,6 +55,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/steam.bctex",
             "system/fx/textures/twistsmoke_l.bctex",
         ),
+        transform=Transform(
+            position=(0.0, 50.0, 0.0),
+        ),
         fx_data=FXData(
             name="leak",
             path="actors/items/adn/fx/adnleak.bcptl",
@@ -58,6 +68,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         dependencies=(
             "actors/characters/babyhatchling/models/babyhatchlingsmall.bcmdl",
             "actors/characters/babyhatchling/models/babyhatchling.bcmdl",
+        ),
+        transform=Transform(
+            position=(0.0, 50.0, 0.0),
         ),
     ),
     "powerup_wavebeam": ModelData(
@@ -124,6 +137,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/tracer2.bctex",
             "system/fx/textures/xflare_large.bctex",
         ),
+        transform=Transform(
+            position=(0.0, 50.0, 0.0),
+        ),
         fx_data=FXData(
             name="orb",
             path="actors/items/powerup_scanningpulse/fx/orb.bcptl",
@@ -145,6 +161,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/spinenergy_l.bctex",
             "system/fx/textures/tracer2.bctex",
             "system/fx/textures/xflare_large.bctex",
+        ),
+        transform=Transform(
+            position=(0.0, 50.0, 0.0),
         ),
         fx_data=FXData(
             name="orb",
@@ -168,6 +187,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/tracer2.bctex",
             "system/fx/textures/xflare_large.bctex",
         ),
+        transform=Transform(
+            position=(0.0, 50.0, 0.0),
+        ),
         fx_data=FXData(
             name="yelloworb",
             path="actors/items/powerup_energywave/fx/yelloworb.bcptl",
@@ -189,6 +211,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/spinenergy_l.bctex",
             "system/fx/textures/tracer2.bctex",
             "system/fx/textures/xflare_large.bctex",
+        ),
+        transform=Transform(
+            position=(0.0, 50.0, 0.0),
         ),
         fx_data=FXData(
             name="purpleorb",
@@ -238,6 +263,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/powerup_spiderball/models/powerup_spiderball.bcmdl",
             "actors/items/powerup_spiderball/models/textures/powerup_morphball_d.bctex",
         ),
+        transform=Transform(
+            position=(0.0, 40.0, 0.0),
+        ),
     ),
     "powerup_highjumpboots": ModelData(
         bcmdl_path="actors/items/powerup_highjumpboots/models/powerup_highjumpboots.bcmdl",
@@ -270,6 +298,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/item_energytank/models/textures/tankglow.bctex",
             "actors/items/item_energytank/models/textures/weaponstank_d.bctex",
         ),
+        transform=Transform(
+            position=(0.0, 0.0, 0.0),
+        ),
     ),
     "item_senergytank": ModelData(
         bcmdl_path="actors/items/item_senergytank/models/item_senergytank.bcmdl",
@@ -278,6 +309,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/item_energytank/models/item_energytank.bcmdl",
             "actors/items/item_senergytank/models/textures/spenergytank_d.bctex",
         ),
+        transform=Transform(
+            position=(0.0, 0.0, 0.0),
+        ),
     ),
     "item_missiletank": ModelData(
         bcmdl_path="actors/items/item_missiletank/models/item_missiletank.bcmdl",
@@ -285,12 +319,18 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/item_missiletank/models/item_missiletank.bcmdl",
             "actors/items/item_energytank/models/item_energytank.bcmdl",
         ),
+        transform=Transform(
+            position=(0.0, 0.0, 0.0),
+        ),
     ),
     "item_supermissiletank": ModelData(
         bcmdl_path="actors/items/item_supermissiletank/models/item_supermissiletank.bcmdl",
         dependencies=(
             "actors/items/item_supermissiletank/models/item_supermissiletank.bcmdl",
             "actors/items/item_energytank/models/item_energytank.bcmdl",
+        ),
+        transform=Transform(
+            position=(0.0, 0.0, 0.0),
         ),
     ),
     "item_powerbombtank": ModelData(
@@ -300,6 +340,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "actors/items/item_energytank/models/item_energytank.bcmdl",
             "maps/textures/powerbomb_d.bctex",
             "actors/weapons/powerbomb/models/textures/powerbomb_d.bctex",
+        ),
+        transform=Transform(
+            position=(0.0, 0.0, 0.0),
         ),
     ),
     "powerup_powerbomb": ModelData(
