@@ -102,6 +102,18 @@
                             },
                             "minItems": 1,
                             "description": "A list of model identifiers used by this pickup. Non-progressive items will only have one model identifier."
+                        },
+                        "map_icon": {
+                            "type": "string",
+                            "enum": [
+                                "itemenabled",
+                                "itemenabledheat",
+                                "item_powerup",
+                                "item_adn",
+                                "item_offworld",
+                                "item_nothing"
+                            ],
+                            "default": "itemenabled"
                         }
                     },
                     "required": [
