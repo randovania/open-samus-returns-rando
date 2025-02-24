@@ -161,39 +161,7 @@ class ActorPickup(BasePickup):
             elif model_name in MODELS_WITH_FX:
                 bmsad["action_sets"] = ListContainer([])
                 bmsad["components"].pop("ANIMATION")
-                # aeion abilities
-                if model_name not in {"adn", "itemsphere"}:
-                    scanningpulse_bcmdl = "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
-                    MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = scanningpulse_bcmdl
-                    bmsad["sound_fx"] = ListContainer([
-                        ListContainer([
-                            "generic/hability_projector.wav",
-                            1
-                        ])
-                    ])
-                    if model_name == "powerup_scanningpulse":
-                        MODELUPDATER["functions"][0]["params"].pop("Param2")
-                elif model_name == "adn":
-                    MODELUPDATER["functions"][0]["params"].pop("Param2")
-                    bmsad["sound_fx"] = ListContainer([
-                        ListContainer([
-                            "actors/samus/samus_dnascan.wav",
-                            1
-                        ])
-                    ])
-                else:
-                    MODELUPDATER["functions"][0]["params"].pop("Param2")
-                    bmsad["sound_fx"] = ListContainer([
-                        ListContainer([
-                            "generic/itemsphere_cracks.wav",
-                            1
-                        ])
-                    ])
-            elif model_name in {"babyhatchling", "powerup_spiderball"}:
                 MODELUPDATER["functions"][0]["params"].pop("Param2")
-                bmsad["sound_fx"] = ListContainer([])
-            else:
-                bmsad["sound_fx"] = ListContainer([])
         else:
             bmsad["components"].pop("FX")
             MODELUPDATER["type"] = "CMultiModelUpdaterComponent"
