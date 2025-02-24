@@ -133,6 +133,21 @@ class ActorPickup(BasePickup):
             bmsad["header"]["model_name"] = model_data.bcmdl_path
             fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
 
+            fx_create_and_link["Param8"]["value"] = y_offset
+            fx_create_and_link["Param13"]["value"] = True
+
+            # if model uses fx, enable it and adjust position
+            if model_name in MODELS_WITH_FX and model_data.fx_data is not None:
+                fx_create_and_link["Param1"]["value"] = model_data.fx_data.name
+                fx_create_and_link["Param2"]["value"] = model_data.fx_data.path
+            # Placeholder until custom models/textures are made
+            elif item_id in RESERVE_TANK_ITEMS:
+                fx_create_and_link["Param1"]["value"] = "spinattack"
+                fx_create_and_link["Param2"]["value"] = "actors/characters/samus/fx/spinattack.bcptl"
+                fx_create_and_link["Param8"]["value"] = 55
+            else:
+                bmsad["components"].pop("FX")
+
             MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
             # tank models
             if model_name in TANK_MODELS:
@@ -143,18 +158,7 @@ class ActorPickup(BasePickup):
                     MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
                 else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
-                # Placeholder until custom models/textures are made
-                if item_id in RESERVE_TANK_ITEMS:
-                    fx_create_and_link["Param1"]["value"] = "spinattack"
-                    fx_create_and_link["Param2"]["value"] = "actors/characters/samus/fx/spinattack.bcptl"
-                    fx_create_and_link["Param8"]["value"] = 55
-                    fx_create_and_link["Param13"]["value"] = True
-                else:
-                    bmsad["components"].pop("FX")
-            # if model uses fx, enable it and adjust position
             elif model_name in MODELS_WITH_FX:
-                fx_create_and_link["Param8"]["value"] = y_offset
-                fx_create_and_link["Param13"]["value"] = True
                 bmsad["action_sets"] = ListContainer([])
                 bmsad["components"].pop("ANIMATION")
                 # aeion abilities
@@ -169,23 +173,8 @@ class ActorPickup(BasePickup):
                     ])
                     if model_name == "powerup_scanningpulse":
                         MODELUPDATER["functions"][0]["params"].pop("Param2")
-                        fx_create_and_link["Param1"]["value"] = "orb"
-                        fx_create_and_link["Param2"]["value"] = "actors/items/powerup_scanningpulse/fx/orb.bcptl"
-                    elif model_name == "powerup_energyshield":
-                        fx_create_and_link["Param1"]["value"] = "orb"
-                        fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energyshield/fx/orb.bcptl"
-                    elif model_name == "powerup_energywave":
-                        fx_create_and_link["Param1"]["value"] = "yelloworb"
-                        fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energywave/fx/yelloworb.bcptl"
-                    else:
-                        fx_create_and_link["Param1"]["value"] = "purpleorb"
-                        fx_create_and_link["Param2"]["value"] = (
-                            "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
-                        )
                 elif model_name == "adn":
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
-                    fx_create_and_link["Param1"]["value"] = "leak"
-                    fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
                     bmsad["sound_fx"] = ListContainer([
                         ListContainer([
                             "actors/samus/samus_dnascan.wav",
@@ -194,8 +183,6 @@ class ActorPickup(BasePickup):
                     ])
                 else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
-                    fx_create_and_link["Param1"]["value"] = "itemparts"
-                    fx_create_and_link["Param2"]["value"] = "actors/items/itemsphere/fx/itemsphereparts.bcptl"
                     bmsad["sound_fx"] = ListContainer([
                         ListContainer([
                             "generic/itemsphere_cracks.wav",
@@ -204,10 +191,8 @@ class ActorPickup(BasePickup):
                     ])
             elif model_name in {"babyhatchling", "powerup_spiderball"}:
                 MODELUPDATER["functions"][0]["params"].pop("Param2")
-                bmsad["components"].pop("FX")
                 bmsad["sound_fx"] = ListContainer([])
             else:
-                bmsad["components"].pop("FX")
                 bmsad["sound_fx"] = ListContainer([])
         else:
             bmsad["components"].pop("FX")

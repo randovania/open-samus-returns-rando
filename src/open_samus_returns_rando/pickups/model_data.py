@@ -2,10 +2,16 @@ import dataclasses
 
 
 @dataclasses.dataclass(frozen=True)
+class FXData:
+    name: str = ""
+    path: str = ""
+
+
+@dataclasses.dataclass(frozen=True)
 class ModelData:
     bcmdl_path: str
     dependencies: tuple[str, ...]
-
+    fx_data: FXData | None = None
 
 ALL_MODEL_DATA: dict[str, ModelData] = {
     "itemsphere": ModelData(
@@ -26,6 +32,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/impact2.bctex",
             "system/fx/textures/splat.bctex",
         ),
+        fx_data=FXData(
+            name="itemparts",
+            path="actors/items/itemsphere/fx/itemsphereparts.bcptl",
+        ),
     ),
     "adn": ModelData(
         bcmdl_path="actors/items/adn/models/adn.bcmdl",
@@ -37,6 +47,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/leavessegments_l.bctex",
             "system/fx/textures/steam.bctex",
             "system/fx/textures/twistsmoke_l.bctex",
+        ),
+        fx_data=FXData(
+            name="leak",
+            path="actors/items/adn/fx/adnleak.bcptl",
         ),
     ),
     "babyhatchling": ModelData(
@@ -91,9 +105,7 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
     ),
     "powerup_supermissile": ModelData(
         bcmdl_path="actors/items/powerup_supermissile/models/powerup_supermissile.bcmdl",
-        dependencies=(
-            "actors/items/powerup_supermissile/models/powerup_supermissile.bcmdl",
-        ),
+        dependencies=("actors/items/powerup_supermissile/models/powerup_supermissile.bcmdl",),
     ),
     "powerup_scanningpulse": ModelData(
         bcmdl_path="actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl",
@@ -111,6 +123,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/spinenergy_l.bctex",
             "system/fx/textures/tracer2.bctex",
             "system/fx/textures/xflare_large.bctex",
+        ),
+        fx_data=FXData(
+            name="orb",
+            path="actors/items/powerup_scanningpulse/fx/orb.bcptl",
         ),
     ),
     "powerup_energyshield": ModelData(
@@ -131,6 +147,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/tracer2.bctex",
             "system/fx/textures/xflare_large.bctex",
         ),
+        fx_data=FXData(
+            name="orb",
+            path="actors/items/powerup_energyshield/fx/orb.bcptl",
+        ),
     ),
     "powerup_energywave": ModelData(
         bcmdl_path="actors/items/powerup_energywave/models/powerup_energywave.bcmdl",
@@ -150,6 +170,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/tracer2.bctex",
             "system/fx/textures/xflare_large.bctex",
         ),
+        fx_data=FXData(
+            name="yelloworb",
+            path="actors/items/powerup_energywave/fx/yelloworb.bcptl",
+        ),
     ),
     "powerup_phasedisplacement": ModelData(
         bcmdl_path="actors/items/powerup_phasedisplacement/models/powerup_phasedisplacement.bcmdl",
@@ -168,6 +192,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             "system/fx/textures/spinenergy_l.bctex",
             "system/fx/textures/tracer2.bctex",
             "system/fx/textures/xflare_large.bctex",
+        ),
+        fx_data=FXData(
+            name="purpleorb",
+            path="actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl",
         ),
     ),
     "powerup_variasuit": ModelData(
