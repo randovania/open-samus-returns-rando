@@ -20,14 +20,17 @@ RESERVE_TANK_ITEMS = {
     "ITEM_RESERVE_TANK_SPECIAL_ENERGY",
 }
 
+
 @functools.cache
 def _read_template_powerup() -> dict:
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
         return json.load(f)
 
+
 class PickupType(Enum):
     ACTOR = "actor"
     METROID = "metroid"
+
 
 class BasePickup:
     def __init__(self, lua_editor: LuaEditor, pickup: dict, pickup_id: int, configuration: dict):
@@ -41,6 +44,7 @@ class BasePickup:
 
     def get_scenario(self) -> str:
         raise NotImplementedError
+
 
 class ActorPickup(BasePickup):
     _bmsad_dict: dict[int, tuple[str, ScriptClass]] = {}
@@ -67,24 +71,32 @@ class ActorPickup(BasePickup):
         new_template, script_class = self.patch_item_pickup(new_template)
 
         new_path = script_class.get_bmsad_path()
-        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level) # type: ignore
+        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)  # type: ignore
         return script_class
 
-
     def patch_model(self, model_names: list[str], bmsad: dict) -> None:
-        MODELUPDATER = bmsad["components"]["MODELUPDATER"]
+        modelupdater = bmsad["components"]["MODELUPDATER"]
         item_id: str = self.pickup["resources"][0][0]["item_id"]
         model_name = model_names[0]
         model_data = get_data(model_name)
 
         # modify offsets as necessary
         if model_data.transform is not None:
-            MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"] = model_data.transform.position
+            modelupdater["fields"]["vInitPosWorldOffset"]["value"] = model_data.transform.position
 
         if len(model_names) == 1:
             action_sets: dict = bmsad["action_sets"][0]["animations"][0]
             bmsad["header"]["model_name"] = model_data.bcmdl_path
             fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
+
+            # update model path
+            modelupdater["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
+            # tank models
+            # TODO: Have separate template for tanks?
+            if "tank" in model_name:
+                modelupdater["functions"][0]["params"]["Param2"]["value"] = (
+                    "actors/items/item_energytank/models/item_energytank.bcmdl"
+                )
 
             # enable the fx
             fx_create_and_link["Param13"]["value"] = True
@@ -93,7 +105,7 @@ class ActorPickup(BasePickup):
             if model_data.fx_data is not None:
                 fx_create_and_link["Param1"]["value"] = model_data.fx_data.name
                 fx_create_and_link["Param2"]["value"] = model_data.fx_data.path
-                fx_create_and_link["Param8"]["value"] = MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"][1]
+                fx_create_and_link["Param8"]["value"] = modelupdater["fields"]["vInitPosWorldOffset"]["value"][1]
             # Placeholder until custom models/textures are made
             elif item_id in RESERVE_TANK_ITEMS:
                 fx_create_and_link["Param1"]["value"] = "spinattack"
@@ -101,8 +113,6 @@ class ActorPickup(BasePickup):
                 fx_create_and_link["Param8"]["value"] = 55
             else:
                 bmsad["components"].pop("FX")
-
-            MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
 
             # set relax animation_id and bcslka
             if model_data.action_sets is not None:
@@ -112,41 +122,34 @@ class ActorPickup(BasePickup):
                 if model_data.action_sets.animation_id is None:
                     bmsad["action_sets"] = ListContainer([])
                     bmsad["components"].pop("ANIMATION")
-                    MODELUPDATER["functions"][0]["params"].pop("Param2")
+                    modelupdater["functions"][0]["params"].pop("Param2")
 
-            # tank models
-            # TODO: Have separate template for tanks?
-            if "tank" in model_name:
-                MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = (
-                    "actors/items/item_energytank/models/item_energytank.bcmdl"
-                )
         else:
             bmsad["components"].pop("FX")
-            MODELUPDATER["type"] = "CMultiModelUpdaterComponent"
+            modelupdater["type"] = "CMultiModelUpdaterComponent"
             # no idea what this is
-            MODELUPDATER["unk_1"] = 2500
-            MODELUPDATER["unk_2"] = 0.0
+            modelupdater["unk_1"] = 2500
+            modelupdater["unk_2"] = 0.0
 
             for idx, model_name in enumerate(model_names):
                 if idx != 0:
-                    MODELUPDATER["functions"].append(copy.deepcopy(MODELUPDATER["functions"][0]))
-                MODELUPDATER["functions"][idx]["name"] = "AddModel"
-                MODELUPDATER["functions"][idx]["unk1"] = True
-                MODELUPDATER["functions"][idx]["unk2"] = False
+                    modelupdater["functions"].append(copy.deepcopy(modelupdater["functions"][0]))
+                modelupdater["functions"][idx]["name"] = "AddModel"
+                modelupdater["functions"][idx]["unk1"] = True
+                modelupdater["functions"][idx]["unk2"] = False
                 # this is just the alias which needs to be used in the update functions of lua
                 # we are simply using the model name as alias
-                MODELUPDATER["functions"][idx]["params"]["Param1"]["value"] = model_name
-                MODELUPDATER["functions"][idx]["params"]["Param2"] = copy.deepcopy(
-                    MODELUPDATER["functions"][idx]["params"]["Param1"]
+                modelupdater["functions"][idx]["params"]["Param1"]["value"] = model_name
+                modelupdater["functions"][idx]["params"]["Param2"] = copy.deepcopy(
+                    modelupdater["functions"][idx]["params"]["Param1"]
                 )
-                MODELUPDATER["functions"][idx]["params"]["Param2"]["value"] = model_data.bcmdl_path
-
+                modelupdater["functions"][idx]["params"]["Param2"]["value"] = model_data.bcmdl_path
 
     def patch(self, editor: PatcherEditor) -> None:
         actor_reference = self.pickup["pickup_actor"]
         actor_name = actor_reference["actor"]
         model_names: list[str] = self.pickup["model"]
-        scenario_name: str = actor_reference['scenario']
+        scenario_name: str = actor_reference["scenario"]
 
         pkgs_for_level = set(editor.find_pkgs(path_for_level(self.pickup["pickup_actor"]["scenario"]) + ".bmsld"))
         scenario = editor.get_scenario(scenario_name)
@@ -172,9 +175,8 @@ class ActorPickup(BasePickup):
         actor.type = actordef_id
 
         # special case for surface / surfaceb item
-        if (
-                actor_reference["scenario"] == "s000_surface" and
-                (actor_name == "LE_Item_002" or actor_name == "LE_Item_003")
+        if actor_reference["scenario"] == "s000_surface" and (
+            actor_name == "LE_Item_002" or actor_name == "LE_Item_003"
         ):
             surfaceb_name = "s110_surfaceb"
             surface_b = editor.get_scenario(surfaceb_name)
@@ -195,7 +197,6 @@ class ActorPickup(BasePickup):
                 model_data = get_data(model_name)
                 for dep in model_data.dependencies:
                     editor.ensure_present(get_package_name(level_pkg, dep), dep)
-
 
     def patch_minimap(self, editor: PatcherEditor, scenario_name: str, actor_name: str) -> None:
         if scenario_name != "s110_surfaceb":
@@ -226,7 +227,6 @@ class ActorPickup(BasePickup):
                     pickup_tile_icon.icon = "itemenabled"
             else:
                 pickup_tile_icon.icon = self.pickup["map_icon"]
-
 
     def get_scenario(self) -> str:
         return self.pickup["pickup_actor"]["scenario"]
@@ -260,22 +260,24 @@ def ensure_base_models(editor: PatcherEditor) -> None:
         for dep in model_data.dependencies:
             editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
+
 def count_dna(lua_scripts: LuaEditor, pickup_object: BasePickup) -> None:
     item_id = pickup_object.pickup["resources"][0][0]["item_id"]
     if item_id.startswith("ITEM_RANDO_DNA"):
         scenario: str = pickup_object.get_scenario()
         lua_scripts.add_dna(scenario)
 
+
 def patch_pickups(
-        editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict
-        ) -> None:
+    editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict
+) -> None:
     ActorPickup._bmsad_dict = {}
     editor.add_new_asset(
         "actors/items/randomizerpowerup/scripts/randomizerpowerup.lc",
         Lua(Container(lua_text=templates_path().joinpath("randomizerpowerup.lua").read_text()), editor.target_game),
-        []
+        [],
     )
-    editor.add_new_asset("actors/scripts/metroid.lc", b'', [])
+    editor.add_new_asset("actors/scripts/metroid.lc", b"", [])
     ensure_base_models(editor)
 
     for i, pickup in enumerate(pickups_config):
@@ -287,10 +289,12 @@ def patch_pickups(
         except NotImplementedError as e:
             LOG.warning(e)
 
+
 _PICKUP_TYPE_TO_CLASS: dict[PickupType, type[BasePickup]] = {
     PickupType.ACTOR: ActorPickup,
     PickupType.METROID: MetroidPickup,
 }
+
 
 def pickup_object_for(lua_scripts: LuaEditor, pickup: dict, pickup_id: int, configuration: dict) -> "BasePickup":
     pickup_type = PickupType(pickup["pickup_type"])
