@@ -97,16 +97,9 @@ class ActorPickup(BasePickup):
     _bmsad_dict: dict[int, tuple[str, ScriptClass]] = {}
 
     def patch_item_pickup(self, bmsad: dict) -> tuple[dict, ScriptClass]:
-        pickable: dict = bmsad["components"]["PICKABLE"]
         script: dict = bmsad["components"]["SCRIPT"]
 
-        set_custom_params: dict = pickable["functions"][0]["params"]
-        set_custom_params["Param1"]["value"] = "ITEM_NONE"
-        set_custom_params["Param2"]["value"] = 0
-
-        script_class = self.lua_editor.create_script_class(
-            self.pickup, actordef_id=bmsad["name"]
-        )
+        script_class = self.lua_editor.create_script_class(self.pickup, actordef_id=bmsad["name"])
 
         script["functions"][0]["params"]["Param1"]["value"] = script_class.get_lua_file_name()
         script["functions"][0]["params"]["Param2"]["value"] = script_class.class_name

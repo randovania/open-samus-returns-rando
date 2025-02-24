@@ -40,11 +40,11 @@
                     "params": {
                         "Param1": {
                             "type": "s",
-                            "value": "ITEM_SPIDER_BALL"
+                            "value": "ITEM_NONE"
                         },
                         "Param2": {
                             "type": "f",
-                            "value": 1.0
+                            "value": 0.0
                         },
                         "Param3": {
                             "type": "f",
