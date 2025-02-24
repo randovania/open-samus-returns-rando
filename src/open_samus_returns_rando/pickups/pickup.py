@@ -20,14 +20,6 @@ RESERVE_TANK_ITEMS = {
     "ITEM_RESERVE_TANK_SPECIAL_ENERGY",
 }
 
-TANK_MODELS = {
-    "item_energytank",
-    "item_senergytank",
-    "item_missiletank",
-    "item_supermissiletank",
-    "item_powerbombtank",
-}
-
 @functools.cache
 def _read_template_powerup() -> dict:
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
@@ -123,12 +115,11 @@ class ActorPickup(BasePickup):
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
 
             # tank models
-            if model_name in TANK_MODELS:
-                if model_name != "item_energytank":
-                    energytank_bcmdl = "actors/items/item_energytank/models/item_energytank.bcmdl"
-                    MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
-                else:
-                    MODELUPDATER["functions"][0]["params"].pop("Param2")
+            # TODO: Have separate template for tanks?
+            if "tank" in model_name:
+                MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = (
+                    "actors/items/item_energytank/models/item_energytank.bcmdl"
+                )
         else:
             bmsad["components"].pop("FX")
             MODELUPDATER["type"] = "CMultiModelUpdaterComponent"
