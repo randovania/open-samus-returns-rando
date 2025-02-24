@@ -28,15 +28,6 @@ TANK_MODELS = {
     "item_powerbombtank",
 }
 
-MODELS_WITH_FX = {
-    "powerup_scanningpulse",
-    "powerup_energyshield",
-    "powerup_energywave",
-    "powerup_phasedisplacement",
-    "adn",
-    "itemsphere"
-}
-
 @functools.cache
 def _read_template_powerup() -> dict:
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
@@ -107,7 +98,7 @@ class ActorPickup(BasePickup):
             fx_create_and_link["Param13"]["value"] = True
 
             # if model uses fx, enable it and adjust position
-            if model_name in MODELS_WITH_FX and model_data.fx_data is not None:
+            if model_data.fx_data is not None:
                 fx_create_and_link["Param1"]["value"] = model_data.fx_data.name
                 fx_create_and_link["Param2"]["value"] = model_data.fx_data.path
                 fx_create_and_link["Param8"]["value"] = MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"][1]
@@ -120,19 +111,24 @@ class ActorPickup(BasePickup):
                 bmsad["components"].pop("FX")
 
             MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
+
+            # set relax animation_id and bcslka
+            if model_data.action_sets is not None:
+                action_sets["animation_id"] = model_data.action_sets.animation_id
+                action_sets["action"]["bcskla"] = model_data.action_sets.bcskla_path
+                # remove for models that don't "relax"
+                if model_data.action_sets.animation_id is None:
+                    bmsad["action_sets"] = ListContainer([])
+                    bmsad["components"].pop("ANIMATION")
+                    MODELUPDATER["functions"][0]["params"].pop("Param2")
+
             # tank models
             if model_name in TANK_MODELS:
-                action_sets["animation_id"] = 150
-                action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
                 if model_name != "item_energytank":
                     energytank_bcmdl = "actors/items/item_energytank/models/item_energytank.bcmdl"
                     MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
                 else:
                     MODELUPDATER["functions"][0]["params"].pop("Param2")
-            elif model_name in MODELS_WITH_FX:
-                bmsad["action_sets"] = ListContainer([])
-                bmsad["components"].pop("ANIMATION")
-                MODELUPDATER["functions"][0]["params"].pop("Param2")
         else:
             bmsad["components"].pop("FX")
             MODELUPDATER["type"] = "CMultiModelUpdaterComponent"

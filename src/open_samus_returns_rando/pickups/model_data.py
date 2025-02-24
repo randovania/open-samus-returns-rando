@@ -14,11 +14,19 @@ class FXData:
 
 
 @dataclasses.dataclass(frozen=True)
+class ActionSets:
+    animation_id: int | None = 120
+    bcskla_path: str = "actors/items/itemsphere/animations/relax.bcskla"
+
+
+@dataclasses.dataclass(frozen=True)
 class ModelData:
     bcmdl_path: str
     dependencies: tuple[str, ...]
     transform: Transform | None = None
     fx_data: FXData | None = None
+    action_sets: ActionSets | None = None
+
 
 ALL_MODEL_DATA: dict[str, ModelData] = {
     "itemsphere": ModelData(
@@ -43,6 +51,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             name="itemparts",
             path="actors/items/itemsphere/fx/itemsphereparts.bcptl",
         ),
+        action_sets=ActionSets(
+            animation_id=None,
+        ),
     ),
     "adn": ModelData(
         bcmdl_path="actors/items/adn/models/adn.bcmdl",
@@ -61,6 +72,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         fx_data=FXData(
             name="leak",
             path="actors/items/adn/fx/adnleak.bcptl",
+        ),
+        action_sets=ActionSets(
+            animation_id=None,
         ),
     ),
     "babyhatchling": ModelData(
@@ -144,6 +158,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             name="orb",
             path="actors/items/powerup_scanningpulse/fx/orb.bcptl",
         ),
+        action_sets=ActionSets(
+            animation_id=None,
+        ),
     ),
     "powerup_energyshield": ModelData(
         bcmdl_path="actors/items/powerup_energyshield/models/powerup_energyshield.bcmdl",
@@ -168,6 +185,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         fx_data=FXData(
             name="orb",
             path="actors/items/powerup_energyshield/fx/orb.bcptl",
+        ),
+        action_sets=ActionSets(
+            animation_id=None,
         ),
     ),
     "powerup_energywave": ModelData(
@@ -194,6 +214,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             name="yelloworb",
             path="actors/items/powerup_energywave/fx/yelloworb.bcptl",
         ),
+        action_sets=ActionSets(
+            animation_id=None,
+        ),
     ),
     "powerup_phasedisplacement": ModelData(
         bcmdl_path="actors/items/powerup_phasedisplacement/models/powerup_phasedisplacement.bcmdl",
@@ -218,6 +241,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         fx_data=FXData(
             name="purpleorb",
             path="actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl",
+        ),
+        action_sets=ActionSets(
+            animation_id=None,
         ),
     ),
     "powerup_variasuit": ModelData(
@@ -301,6 +327,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         transform=Transform(
             position=(0.0, 0.0, 0.0),
         ),
+        action_sets=ActionSets(
+            animation_id=150,
+            bcskla_path="actors/items/itemtank/animations/relax.bcskla",
+        ),
     ),
     "item_senergytank": ModelData(
         bcmdl_path="actors/items/item_senergytank/models/item_senergytank.bcmdl",
@@ -312,6 +342,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         transform=Transform(
             position=(0.0, 0.0, 0.0),
         ),
+        action_sets=ActionSets(
+            animation_id=150,
+            bcskla_path="actors/items/itemtank/animations/relax.bcskla",
+        ),
     ),
     "item_missiletank": ModelData(
         bcmdl_path="actors/items/item_missiletank/models/item_missiletank.bcmdl",
@@ -322,6 +356,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         transform=Transform(
             position=(0.0, 0.0, 0.0),
         ),
+        action_sets=ActionSets(
+            animation_id=150,
+            bcskla_path="actors/items/itemtank/animations/relax.bcskla",
+        ),
     ),
     "item_supermissiletank": ModelData(
         bcmdl_path="actors/items/item_supermissiletank/models/item_supermissiletank.bcmdl",
@@ -331,6 +369,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         ),
         transform=Transform(
             position=(0.0, 0.0, 0.0),
+        ),
+        action_sets=ActionSets(
+            animation_id=150,
+            bcskla_path="actors/items/itemtank/animations/relax.bcskla",
         ),
     ),
     "item_powerbombtank": ModelData(
@@ -343,6 +385,10 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         ),
         transform=Transform(
             position=(0.0, 0.0, 0.0),
+        ),
+        action_sets=ActionSets(
+            animation_id=150,
+            bcskla_path="actors/items/itemtank/animations/relax.bcskla",
         ),
     ),
     "powerup_powerbomb": ModelData(
