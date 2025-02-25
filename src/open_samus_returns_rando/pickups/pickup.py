@@ -97,13 +97,17 @@ class ActorPickup(BasePickup):
                     "actors/items/item_energytank/models/item_energytank.bcmdl"
                 )
 
-            # set fx
+            # set fx name and path
             if model_data.fx_data is not None:
                 fx_create_and_link["Param1"]["value"] = model_data.fx_data.name
                 fx_create_and_link["Param2"]["value"] = model_data.fx_data.path
-                # if defined, use a different offset for fx
+                # offset used is independent of model
                 if model_data.fx_data.transform is not None:
                     fx_create_and_link["Param8"]["value"] = model_data.fx_data.transform.position[1]
+                # offset used is model transformation
+                elif model_data.transform is not None:
+                    fx_create_and_link["Param8"]["value"] = model_data.transform.position[1]
+                # offset is model if no fx or transformation
                 else:
                     fx_create_and_link["Param8"]["value"] = modelupdater["fields"]["vInitPosWorldOffset"]["value"][1]
             else:
@@ -122,10 +126,6 @@ class ActorPickup(BasePickup):
         else:
             bmsad["components"].pop("FX")
             modelupdater["type"] = "CMultiModelUpdaterComponent"
-            # no idea what this is
-            modelupdater["unk_1"] = 2500
-            modelupdater["unk_2"] = 0.0
-
             for idx, model_name in enumerate(model_names):
                 model_data = get_data(model_name)
                 if idx != 0:
