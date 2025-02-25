@@ -97,10 +97,7 @@ class ActorPickup(BasePickup):
                     "actors/items/item_energytank/models/item_energytank.bcmdl"
                 )
 
-            # enable the fx
-            fx_create_and_link["Param13"]["value"] = True
-
-            # if model uses fx, enable it and adjust position
+            # set fx
             if model_data.fx_data is not None:
                 fx_create_and_link["Param1"]["value"] = model_data.fx_data.name
                 fx_create_and_link["Param2"]["value"] = model_data.fx_data.path
