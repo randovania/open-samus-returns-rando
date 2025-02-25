@@ -15,9 +15,9 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_leve
 from open_samus_returns_rando.pickups.model_data import get_data
 
 RESERVE_TANK_ITEMS = {
-    "ITEM_RESERVE_TANK_LIFE",
-    "ITEM_RESERVE_TANK_MISSILE",
-    "ITEM_RESERVE_TANK_SPECIAL_ENERGY",
+    "ITEM_RESERVE_TANK_LIFE": "powerup_energyreservetank",
+    "ITEM_RESERVE_TANK_SPECIAL_ENERGY": "powerup_aeionreservetank",
+    "ITEM_RESERVE_TANK_MISSILE": "powerup_missilereservetank",
 }
 
 
@@ -78,6 +78,9 @@ class ActorPickup(BasePickup):
         modelupdater = bmsad["components"]["MODELUPDATER"]
         item_id: str = self.pickup["resources"][0][0]["item_id"]
         model_name = model_names[0]
+        # Placeholder until custom models/textures are made
+        if item_id in RESERVE_TANK_ITEMS:
+            model_name = RESERVE_TANK_ITEMS[item_id]
         model_data = get_data(model_name)
 
         # modify offsets as necessary
@@ -105,12 +108,11 @@ class ActorPickup(BasePickup):
             if model_data.fx_data is not None:
                 fx_create_and_link["Param1"]["value"] = model_data.fx_data.name
                 fx_create_and_link["Param2"]["value"] = model_data.fx_data.path
-                fx_create_and_link["Param8"]["value"] = modelupdater["fields"]["vInitPosWorldOffset"]["value"][1]
-            # Placeholder until custom models/textures are made
-            elif item_id in RESERVE_TANK_ITEMS:
-                fx_create_and_link["Param1"]["value"] = "spinattack"
-                fx_create_and_link["Param2"]["value"] = "actors/characters/samus/fx/spinattack.bcptl"
-                fx_create_and_link["Param8"]["value"] = 55
+                # reserve tanks fx use a different offset than the model
+                if "reservetank" in model_name:
+                    fx_create_and_link["Param8"]["value"] = 55
+                else:
+                    fx_create_and_link["Param8"]["value"] = modelupdater["fields"]["vInitPosWorldOffset"]["value"][1]
             else:
                 bmsad["components"].pop("FX")
 

@@ -391,6 +391,66 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
             bcskla_path="actors/items/itemtank/animations/relax.bcskla",
         ),
     ),
+    "powerup_energyreservetank": ModelData(
+        bcmdl_path="actors/items/item_energytank/models/item_energytank.bcmdl",
+        dependencies=(
+            "actors/items/item_energytank/models/item_energytank.bcmdl",
+            "actors/items/item_energytank/models/textures/energytank_d.bctex",
+            "actors/items/item_energytank/models/textures/tankglow.bctex",
+            "actors/items/item_energytank/models/textures/weaponstank_d.bctex",
+            "actors/characters/samus/fx/spinattack.bcptl",
+        ),
+        transform=Transform(
+            position=(0.0, 0.0, 0.0),
+        ),
+        fx_data=FXData(
+            name="spinattack",
+            path="actors/characters/samus/fx/spinattack.bcptl",
+        ),
+        action_sets=ActionSets(
+            animation_id=150,
+            bcskla_path="actors/items/itemtank/animations/relax.bcskla",
+        ),
+    ),
+    "powerup_aeionreservetank": ModelData(
+        bcmdl_path="actors/items/item_senergytank/models/item_senergytank.bcmdl",
+        dependencies=(
+            "actors/items/item_senergytank/models/item_senergytank.bcmdl",
+            "actors/items/item_energytank/models/item_energytank.bcmdl",
+            "actors/items/item_senergytank/models/textures/spenergytank_d.bctex",
+            "actors/characters/samus/fx/spinattack.bcptl",
+        ),
+        transform=Transform(
+            position=(0.0, 0.0, 0.0),
+        ),
+        fx_data=FXData(
+            name="spinattack",
+            path="actors/characters/samus/fx/spinattack.bcptl",
+        ),
+        action_sets=ActionSets(
+            animation_id=150,
+            bcskla_path="actors/items/itemtank/animations/relax.bcskla",
+        ),
+    ),
+    "powerup_missilereservetank": ModelData(
+        bcmdl_path="actors/items/item_missiletank/models/item_missiletank.bcmdl",
+        dependencies=(
+            "actors/items/item_missiletank/models/item_missiletank.bcmdl",
+            "actors/items/item_energytank/models/item_energytank.bcmdl",
+            "actors/characters/samus/fx/spinattack.bcptl",
+        ),
+        transform=Transform(
+            position=(0.0, 0.0, 0.0),
+        ),
+        fx_data=FXData(
+            name="spinattack",
+            path="actors/characters/samus/fx/spinattack.bcptl",
+        ),
+        action_sets=ActionSets(
+            animation_id=150,
+            bcskla_path="actors/items/itemtank/animations/relax.bcskla",
+        ),
+    ),
     "powerup_powerbomb": ModelData(
         bcmdl_path="actors/items/powerup_powerbomb/models/powerup_powerbomb.bcmdl",
         dependencies=(
