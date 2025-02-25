@@ -95,7 +95,6 @@ class ActorPickup(BasePickup):
             # update model path
             modelupdater["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
             # tank models
-            # TODO: Have separate template for tanks?
             if "tank" in model_name:
                 modelupdater["functions"][0]["params"]["Param2"]["value"] = (
                     "actors/items/item_energytank/models/item_energytank.bcmdl"
@@ -108,9 +107,9 @@ class ActorPickup(BasePickup):
             if model_data.fx_data is not None:
                 fx_create_and_link["Param1"]["value"] = model_data.fx_data.name
                 fx_create_and_link["Param2"]["value"] = model_data.fx_data.path
-                # reserve tanks fx use a different offset than the model
-                if "reservetank" in model_name:
-                    fx_create_and_link["Param8"]["value"] = 55
+                # if defined, use a different offset for fx
+                if model_data.fx_data.transform is not None:
+                    fx_create_and_link["Param8"]["value"] = model_data.fx_data.transform.position[1]
                 else:
                     fx_create_and_link["Param8"]["value"] = modelupdater["fields"]["vInitPosWorldOffset"]["value"][1]
             else:

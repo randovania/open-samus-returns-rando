@@ -3,7 +3,7 @@ import dataclasses
 
 @dataclasses.dataclass(frozen=True)
 class Transform:
-    position: tuple[float, float, float] = (0.0, 20.0, 0.0)
+    position: tuple[float, float, float] = (0.0, 0.0, 0.0)
     angle: tuple[float, float, float] = (0.0, 0.0, 0.0)
 
 
@@ -11,6 +11,7 @@ class Transform:
 class FXData:
     name: str = ""
     path: str = ""
+    transform: Transform | None = None
 
 
 @dataclasses.dataclass(frozen=True)
@@ -406,6 +407,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         fx_data=FXData(
             name="spinattack",
             path="actors/characters/samus/fx/spinattack.bcptl",
+            transform=Transform(
+                position=(0.0, 55.0, 0.0),
+            ),
         ),
         action_sets=ActionSets(
             animation_id=150,
@@ -426,6 +430,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         fx_data=FXData(
             name="spinattack",
             path="actors/characters/samus/fx/spinattack.bcptl",
+            transform=Transform(
+                position=(0.0, 55.0, 0.0),
+            ),
         ),
         action_sets=ActionSets(
             animation_id=150,
@@ -445,6 +452,9 @@ ALL_MODEL_DATA: dict[str, ModelData] = {
         fx_data=FXData(
             name="spinattack",
             path="actors/characters/samus/fx/spinattack.bcptl",
+            transform=Transform(
+                position=(0.0, 55.0, 0.0),
+            ),
         ),
         action_sets=ActionSets(
             animation_id=150,
