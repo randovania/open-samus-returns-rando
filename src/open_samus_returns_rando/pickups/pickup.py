@@ -78,16 +78,13 @@ class ActorPickup(BasePickup):
         modelupdater = bmsad["components"]["MODELUPDATER"]
         item_id: str = self.pickup["resources"][0][0]["item_id"]
         model_name = model_names[0]
-        # Placeholder until custom models/textures are made
-        if item_id in RESERVE_TANK_ITEMS:
-            model_name = RESERVE_TANK_ITEMS[item_id]
-        model_data = get_data(model_name)
 
-        # modify offsets as necessary
-        if model_data.transform is not None:
-            modelupdater["fields"]["vInitPosWorldOffset"]["value"] = model_data.transform.position
-
+        # single models
         if len(model_names) == 1:
+            # Placeholder until custom models/textures are made
+            if item_id in RESERVE_TANK_ITEMS:
+                model_name = RESERVE_TANK_ITEMS[item_id]
+            model_data = get_data(model_name)
             action_sets: dict = bmsad["action_sets"][0]["animations"][0]
             bmsad["header"]["model_name"] = model_data.bcmdl_path
             fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
@@ -124,7 +121,7 @@ class ActorPickup(BasePickup):
                     bmsad["action_sets"] = ListContainer([])
                     bmsad["components"].pop("ANIMATION")
                     modelupdater["functions"][0]["params"].pop("Param2")
-
+        # multi models
         else:
             bmsad["components"].pop("FX")
             modelupdater["type"] = "CMultiModelUpdaterComponent"
@@ -133,6 +130,7 @@ class ActorPickup(BasePickup):
             modelupdater["unk_2"] = 0.0
 
             for idx, model_name in enumerate(model_names):
+                model_data = get_data(model_name)
                 if idx != 0:
                     modelupdater["functions"].append(copy.deepcopy(modelupdater["functions"][0]))
                 modelupdater["functions"][idx]["name"] = "AddModel"
@@ -145,6 +143,10 @@ class ActorPickup(BasePickup):
                     modelupdater["functions"][idx]["params"]["Param1"]
                 )
                 modelupdater["functions"][idx]["params"]["Param2"]["value"] = model_data.bcmdl_path
+
+        # modify offsets as necessary
+        if model_data.transform is not None:
+            modelupdater["fields"]["vInitPosWorldOffset"]["value"] = model_data.transform.position
 
     def patch(self, editor: PatcherEditor) -> None:
         actor_reference = self.pickup["pickup_actor"]
