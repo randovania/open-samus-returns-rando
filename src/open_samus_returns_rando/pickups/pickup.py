@@ -15,70 +15,22 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_leve
 from open_samus_returns_rando.pickups.model_data import get_data
 
 RESERVE_TANK_ITEMS = {
-    "ITEM_RESERVE_TANK_LIFE",
-    "ITEM_RESERVE_TANK_MISSILE",
-    "ITEM_RESERVE_TANK_SPECIAL_ENERGY",
+    "ITEM_RESERVE_TANK_LIFE": "powerup_energyreservetank",
+    "ITEM_RESERVE_TANK_SPECIAL_ENERGY": "powerup_aeionreservetank",
+    "ITEM_RESERVE_TANK_MISSILE": "powerup_missilereservetank",
 }
 
-TANK_MODELS = {
-    "item_energytank",
-    "item_senergytank",
-    "item_missiletank",
-    "item_supermissiletank",
-    "item_powerbombtank",
-}
-
-MODELS_WITH_FX = {
-    "powerup_scanningpulse",
-    "powerup_energyshield",
-    "powerup_energywave",
-    "powerup_phasedisplacement",
-    "adn",
-    "itemsphere"
-}
-
-MODEL_TO_OFFSET = {
-    "powerup_scanningpulse": 50,
-    "powerup_energyshield": 50,
-    "powerup_energywave": 50,
-    "powerup_phasedisplacement": 50,
-    "powerup_spiderball": 40,
-    "item_energytank": 0,
-    "item_senergytank": 0,
-    "item_missiletank": 0,
-    "item_supermissiletank": 0,
-    "item_powerbombtank": 0,
-    "adn": 50,
-    "babyhatchling": 50,
-}
-
-OFFSET = Container({
-    "vInitPosWorldOffset": Container({
-        "type": "vec3",
-        "value": ListContainer([
-            0.0,
-            50.0,
-            0.0,
-        ])
-    }),
-        "vInitAngWorldOffset": Container({
-        "type": "vec3",
-        "value": ListContainer([
-            0.0,
-            0.0,
-            0.0,
-        ])
-    })
-})
 
 @functools.cache
 def _read_template_powerup() -> dict:
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
         return json.load(f)
 
+
 class PickupType(Enum):
     ACTOR = "actor"
     METROID = "metroid"
+
 
 class BasePickup:
     def __init__(self, lua_editor: LuaEditor, pickup: dict, pickup_id: int, configuration: dict):
@@ -93,20 +45,14 @@ class BasePickup:
     def get_scenario(self) -> str:
         raise NotImplementedError
 
+
 class ActorPickup(BasePickup):
     _bmsad_dict: dict[int, tuple[str, ScriptClass]] = {}
 
     def patch_item_pickup(self, bmsad: dict) -> tuple[dict, ScriptClass]:
-        pickable: dict = bmsad["components"]["PICKABLE"]
         script: dict = bmsad["components"]["SCRIPT"]
 
-        set_custom_params: dict = pickable["functions"][0]["params"]
-        set_custom_params["Param1"]["value"] = "ITEM_NONE"
-        set_custom_params["Param2"]["value"] = 0
-
-        script_class = self.lua_editor.create_script_class(
-            self.pickup, actordef_id=bmsad["name"]
-        )
+        script_class = self.lua_editor.create_script_class(self.pickup, actordef_id=bmsad["name"])
 
         script["functions"][0]["params"]["Param1"]["value"] = script_class.get_lua_file_name()
         script["functions"][0]["params"]["Param2"]["value"] = script_class.class_name
@@ -125,131 +71,85 @@ class ActorPickup(BasePickup):
         new_template, script_class = self.patch_item_pickup(new_template)
 
         new_path = script_class.get_bmsad_path()
-        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level) # type: ignore
+        editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)  # type: ignore
         return script_class
 
-
     def patch_model(self, model_names: list[str], bmsad: dict) -> None:
-        MODELUPDATER = bmsad["components"]["MODELUPDATER"]
+        modelupdater = bmsad["components"]["MODELUPDATER"]
         item_id: str = self.pickup["resources"][0][0]["item_id"]
         model_name = model_names[0]
-        y_offset = MODEL_TO_OFFSET.get(model_name, 20)
+
+        # single models
         if len(model_names) == 1:
+            # Placeholder until custom models/textures are made
+            if item_id in RESERVE_TANK_ITEMS:
+                model_name = RESERVE_TANK_ITEMS[item_id]
             model_data = get_data(model_name)
             action_sets: dict = bmsad["action_sets"][0]["animations"][0]
             bmsad["header"]["model_name"] = model_data.bcmdl_path
             fx_create_and_link: dict = bmsad["components"]["FX"]["functions"][0]["params"]
 
-            MODELUPDATER["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
+            # update model path
+            modelupdater["functions"][0]["params"]["Param1"]["value"] = model_data.bcmdl_path
             # tank models
-            if model_name in TANK_MODELS:
-                action_sets["animation_id"] = 150
-                action_sets["action"]["bcskla"] = "actors/items/itemtank/animations/relax.bcskla"
-                if model_name != "item_energytank":
-                    energytank_bcmdl = "actors/items/item_energytank/models/item_energytank.bcmdl"
-                    MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = energytank_bcmdl
+            if "tank" in model_name:
+                modelupdater["functions"][0]["params"]["Param2"]["value"] = (
+                    "actors/items/item_energytank/models/item_energytank.bcmdl"
+                )
+
+            # set fx name and path
+            if model_data.fx_data is not None:
+                fx_create_and_link["Param1"]["value"] = model_data.fx_data.name
+                fx_create_and_link["Param2"]["value"] = model_data.fx_data.path
+                # offset used is independent of model
+                if model_data.fx_data.transform is not None:
+                    fx_create_and_link["Param8"]["value"] = model_data.fx_data.transform.position[1]
+                # offset used is model transformation
+                elif model_data.transform is not None:
+                    fx_create_and_link["Param8"]["value"] = model_data.transform.position[1]
+                # offset is model if no fx or transformation
                 else:
-                    MODELUPDATER["functions"][0]["params"].pop("Param2")
-                # Placeholder until custom models/textures are made
-                if item_id in RESERVE_TANK_ITEMS:
-                    fx_create_and_link["Param1"]["value"] = "spinattack"
-                    fx_create_and_link["Param2"]["value"] = "actors/characters/samus/fx/spinattack.bcptl"
-                    fx_create_and_link["Param8"]["value"] = 55
-                    fx_create_and_link["Param13"]["value"] = True
-                else:
-                    bmsad["components"].pop("FX")
-            # if model uses fx, enable it and adjust position
-            elif model_name in MODELS_WITH_FX:
-                fx_create_and_link["Param8"]["value"] = y_offset
-                fx_create_and_link["Param13"]["value"] = True
-                bmsad["action_sets"] = ListContainer([])
-                bmsad["components"].pop("ANIMATION")
-                # aeion abilities
-                if model_name not in {"adn", "itemsphere"}:
-                    scanningpulse_bcmdl = "actors/items/powerup_scanningpulse/models/powerup_scanningpulse.bcmdl"
-                    MODELUPDATER["functions"][0]["params"]["Param2"]["value"] = scanningpulse_bcmdl
-                    bmsad["sound_fx"] = ListContainer([
-                        ListContainer([
-                            "generic/hability_projector.wav",
-                            1
-                        ])
-                    ])
-                    if model_name == "powerup_scanningpulse":
-                        MODELUPDATER["functions"][0]["params"].pop("Param2")
-                        fx_create_and_link["Param1"]["value"] = "orb"
-                        fx_create_and_link["Param2"]["value"] = "actors/items/powerup_scanningpulse/fx/orb.bcptl"
-                    elif model_name == "powerup_energyshield":
-                        fx_create_and_link["Param1"]["value"] = "orb"
-                        fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energyshield/fx/orb.bcptl"
-                    elif model_name == "powerup_energywave":
-                        fx_create_and_link["Param1"]["value"] = "yelloworb"
-                        fx_create_and_link["Param2"]["value"] = "actors/items/powerup_energywave/fx/yelloworb.bcptl"
-                    else:
-                        fx_create_and_link["Param1"]["value"] = "purpleorb"
-                        fx_create_and_link["Param2"]["value"] = (
-                            "actors/items/powerup_phasedisplacement/fx/purpleorb.bcptl"
-                        )
-                elif model_name == "adn":
-                    MODELUPDATER["functions"][0]["params"].pop("Param2")
-                    fx_create_and_link["Param1"]["value"] = "leak"
-                    fx_create_and_link["Param2"]["value"] = "actors/items/adn/fx/adnleak.bcptl"
-                    bmsad["sound_fx"] = ListContainer([
-                        ListContainer([
-                            "actors/samus/samus_dnascan.wav",
-                            1
-                        ])
-                    ])
-                else:
-                    MODELUPDATER["functions"][0]["params"].pop("Param2")
-                    fx_create_and_link["Param1"]["value"] = "itemparts"
-                    fx_create_and_link["Param2"]["value"] = "actors/items/itemsphere/fx/itemsphereparts.bcptl"
-                    bmsad["sound_fx"] = ListContainer([
-                        ListContainer([
-                            "generic/itemsphere_cracks.wav",
-                            1
-                        ])
-                    ])
-            elif model_name in {"babyhatchling", "powerup_spiderball"}:
-                MODELUPDATER["functions"][0]["params"].pop("Param2")
-                bmsad["components"].pop("FX")
-                bmsad["sound_fx"] = ListContainer([])
+                    fx_create_and_link["Param8"]["value"] = modelupdater["fields"]["vInitPosWorldOffset"]["value"][1]
             else:
                 bmsad["components"].pop("FX")
-                bmsad["sound_fx"] = ListContainer([])
+
+            # set relax animation_id and bcslka
+            if model_data.action_sets is not None:
+                action_sets["animation_id"] = model_data.action_sets.animation_id
+                action_sets["action"]["bcskla"] = model_data.action_sets.bcskla_path
+                # remove for models that don't "relax"
+                if model_data.action_sets.animation_id is None:
+                    bmsad["action_sets"] = ListContainer([])
+                    bmsad["components"].pop("ANIMATION")
+                    modelupdater["functions"][0]["params"].pop("Param2")
+        # multi models
         else:
             bmsad["components"].pop("FX")
-            MODELUPDATER["type"] = "CMultiModelUpdaterComponent"
-            # no idea what this is
-            MODELUPDATER["unk_1"] = 2500
-            MODELUPDATER["unk_2"] = 0.0
-
+            modelupdater["type"] = "CMultiModelUpdaterComponent"
             for idx, model_name in enumerate(model_names):
                 model_data = get_data(model_name)
                 if idx != 0:
-                    MODELUPDATER["functions"].append(copy.deepcopy(MODELUPDATER["functions"][0]))
-                MODELUPDATER["functions"][idx]["name"] = "AddModel"
-                MODELUPDATER["functions"][idx]["unk1"] = True
-                MODELUPDATER["functions"][idx]["unk2"] = False
+                    modelupdater["functions"].append(copy.deepcopy(modelupdater["functions"][0]))
+                modelupdater["functions"][idx]["name"] = "AddModel"
+                modelupdater["functions"][idx]["unk1"] = True
+                modelupdater["functions"][idx]["unk2"] = False
                 # this is just the alias which needs to be used in the update functions of lua
                 # we are simply using the model name as alias
-                MODELUPDATER["functions"][idx]["params"]["Param1"]["value"] = model_name
-                MODELUPDATER["functions"][idx]["params"]["Param2"] = copy.deepcopy(
-                    MODELUPDATER["functions"][idx]["params"]["Param1"]
+                modelupdater["functions"][idx]["params"]["Param1"]["value"] = model_name
+                modelupdater["functions"][idx]["params"]["Param2"] = copy.deepcopy(
+                    modelupdater["functions"][idx]["params"]["Param1"]
                 )
-                MODELUPDATER["functions"][idx]["params"]["Param2"]["value"] = model_data.bcmdl_path
+                modelupdater["functions"][idx]["params"]["Param2"]["value"] = model_data.bcmdl_path
 
-        # offset for single and multimodels
-        if model_name not in TANK_MODELS:
-            MODELUPDATER["fields"] = OFFSET
-            MODELUPDATER["fields"]["vInitPosWorldOffset"]["value"][1] = y_offset
-            MODELUPDATER["fields"]["vInitAngWorldOffset"]["value"][0] = 0.0
-
+        # modify offsets as necessary
+        if model_data.transform is not None:
+            modelupdater["fields"]["vInitPosWorldOffset"]["value"] = model_data.transform.position
 
     def patch(self, editor: PatcherEditor) -> None:
         actor_reference = self.pickup["pickup_actor"]
         actor_name = actor_reference["actor"]
         model_names: list[str] = self.pickup["model"]
-        scenario_name: str = actor_reference['scenario']
+        scenario_name: str = actor_reference["scenario"]
 
         pkgs_for_level = set(editor.find_pkgs(path_for_level(self.pickup["pickup_actor"]["scenario"]) + ".bmsld"))
         scenario = editor.get_scenario(scenario_name)
@@ -275,9 +175,8 @@ class ActorPickup(BasePickup):
         actor.type = actordef_id
 
         # special case for surface / surfaceb item
-        if (
-                actor_reference["scenario"] == "s000_surface" and
-                (actor_name == "LE_Item_002" or actor_name == "LE_Item_003")
+        if actor_reference["scenario"] == "s000_surface" and (
+            actor_name == "LE_Item_002" or actor_name == "LE_Item_003"
         ):
             surfaceb_name = "s110_surfaceb"
             surface_b = editor.get_scenario(surfaceb_name)
@@ -299,7 +198,6 @@ class ActorPickup(BasePickup):
                 for dep in model_data.dependencies:
                     editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
-
     def patch_minimap(self, editor: PatcherEditor, scenario_name: str, actor_name: str) -> None:
         if scenario_name != "s110_surfaceb":
             scenario_minimap = editor.get_file(f"gui/minimaps/c10_samus/{scenario_name}.bmsmsd", Bmsmsd)
@@ -318,8 +216,6 @@ class ActorPickup(BasePickup):
             if not pickup_tile_icon:
                 raise ValueError("No icon found")
 
-            pickup_model = self.pickup["model"][0]
-
             # Custom blocks are no longer attached to the pickup, so make all hidden pickups consistent and generic
             if pickup_tile_icon.icon_priority == "HIDDEN_ITEM" or (
                 # Boss pickups are now always visible on the map without fighting them, so make icons generic
@@ -329,23 +225,8 @@ class ActorPickup(BasePickup):
                     pickup_tile_icon.icon = "itemenabledheat"
                 else:
                     pickup_tile_icon.icon = "itemenabled"
-            # Powerups use a modified Samus helmet icon
-            elif "powerup" in pickup_model or "babyhatchling" in pickup_model:
-                pickup_tile_icon.icon = "item_powerup"
-            # DNA uses a custom icon
-            elif "adn" in pickup_model:
-                pickup_tile_icon.icon = "item_adn"
-            # Offworld powerups use the offworld model
-            elif "offworld" in pickup_model:
-                pickup_tile_icon.icon = "item_offworld"
-            # Nothing items use an "updated" itemsphere icon so they update on the map
-            elif "itemsphere" in pickup_model:
-                pickup_tile_icon.icon = "item_nothing"
             else:
-                # Tanks use their respective tank icon
-                pickup_tile_icon.icon = pickup_model
-
-
+                pickup_tile_icon.icon = self.pickup["map_icon"]
 
     def get_scenario(self) -> str:
         return self.pickup["pickup_actor"]["scenario"]
@@ -379,22 +260,24 @@ def ensure_base_models(editor: PatcherEditor) -> None:
         for dep in model_data.dependencies:
             editor.ensure_present(get_package_name(level_pkg, dep), dep)
 
+
 def count_dna(lua_scripts: LuaEditor, pickup_object: BasePickup) -> None:
     item_id = pickup_object.pickup["resources"][0][0]["item_id"]
     if item_id.startswith("ITEM_RANDO_DNA"):
         scenario: str = pickup_object.get_scenario()
         lua_scripts.add_dna(scenario)
 
+
 def patch_pickups(
-        editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict
-        ) -> None:
+    editor: PatcherEditor, lua_scripts: LuaEditor, pickups_config: list[dict], configuration: dict
+) -> None:
     ActorPickup._bmsad_dict = {}
     editor.add_new_asset(
         "actors/items/randomizerpowerup/scripts/randomizerpowerup.lc",
         Lua(Container(lua_text=templates_path().joinpath("randomizerpowerup.lua").read_text()), editor.target_game),
-        []
+        [],
     )
-    editor.add_new_asset("actors/scripts/metroid.lc", b'', [])
+    editor.add_new_asset("actors/scripts/metroid.lc", b"", [])
     ensure_base_models(editor)
 
     for i, pickup in enumerate(pickups_config):
@@ -406,10 +289,12 @@ def patch_pickups(
         except NotImplementedError as e:
             LOG.warning(e)
 
+
 _PICKUP_TYPE_TO_CLASS: dict[PickupType, type[BasePickup]] = {
     PickupType.ACTOR: ActorPickup,
     PickupType.METROID: MetroidPickup,
 }
+
 
 def pickup_object_for(lua_scripts: LuaEditor, pickup: dict, pickup_id: int, configuration: dict) -> "BasePickup":
     pickup_type = PickupType(pickup["pickup_type"])

@@ -40,11 +40,11 @@
                     "params": {
                         "Param1": {
                             "type": "s",
-                            "value": "ITEM_SPIDER_BALL"
+                            "value": "ITEM_NONE"
                         },
                         "Param2": {
                             "type": "f",
-                            "value": 1.0
+                            "value": 0.0
                         },
                         "Param3": {
                             "type": "f",
@@ -141,7 +141,24 @@
                     }
                 }
             ],
-            "fields": {},
+            "fields": {
+                "vInitPosWorldOffset": {
+                    "type": "vec3",
+                    "value": [
+                        0.0,
+                        20.0,
+                        0.0
+                    ]
+                },
+                "vInitAngWorldOffset": {
+                    "type": "vec3",
+                    "value": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                }
+            },
             "dependencies": null
         },
         "ANIMATION": {
@@ -235,7 +252,7 @@
                         },
                         "Param13": {
                             "type": "b",
-                            "value": false
+                            "value": true
                         },
                         "Param14": {
                             "type": "b",
