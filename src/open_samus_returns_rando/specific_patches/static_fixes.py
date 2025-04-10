@@ -301,7 +301,7 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
             new_block = copy.deepcopy(CUSTOM_BLOCK)
             new_block["pos"] = pos
             new_block["model_name"] = sg_casca
-            types: ListContainer = typing.cast(ListContainer, new_group["types"])
+            types: ListContainer = typing.cast("ListContainer", new_group["types"])
             types[0]["blocks"].append(new_block)
             bmsbk.raw.block_groups.append(new_group)
             bmsbk_cc_obj = next(cc_obj for cc_obj in bmsbk.raw.collision_cameras if cc_name in cc_obj.name)
