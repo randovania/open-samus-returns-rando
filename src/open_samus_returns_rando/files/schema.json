@@ -111,7 +111,12 @@
                                 "item_powerup",
                                 "item_adn",
                                 "item_offworld",
-                                "item_nothing"
+                                "item_nothing",
+                                "item_senergytank",
+                                "item_missiletank",
+                                "item_supermissiletank",
+                                "item_energytank",
+                                "item_powerbombtank"
                             ],
                             "default": "itemenabled"
                         }
