@@ -16,6 +16,12 @@ MODEL_ICON_MAPPING = {
 
     # offworld
     "offworld_generic": "item_offworld",
+    "offworld_icemissile": "item_offworld",
+    "offworld_powergrip": "item_offworld",
+    "offworld_speedbooster":"item_offworld",
+    "offworld_missile": "item_offworld",
+    "offworld_beam": "item_offworld",
+    "offworld_suit": "item_offworld",
 
     # nothing
     "itemsphere": "item_nothing",
