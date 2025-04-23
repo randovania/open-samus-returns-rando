@@ -117,8 +117,7 @@
                                 "item_supermissiletank",
                                 "item_energytank",
                                 "item_powerbombtank"
-                            ],
-                            "default": "itemenabled"
+                            ]
                         }
                     },
                     "required": [

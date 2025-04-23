@@ -12,6 +12,7 @@ from open_samus_returns_rando.files import templates_path
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor, ScriptClass
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
+from open_samus_returns_rando.pickups.map_icons import get_map_icon_data
 from open_samus_returns_rando.pickups.model_data import get_data
 
 RESERVE_TANK_ITEMS = {
@@ -81,7 +82,7 @@ class ActorPickup(BasePickup):
 
         # single models
         if len(model_names) == 1:
-            # Placeholder until custom models/textures are made
+            # Ensure reserve tank items use the proper model even for old input json files
             if item_id in RESERVE_TANK_ITEMS:
                 model_name = RESERVE_TANK_ITEMS[item_id]
             model_data = get_data(model_name)
@@ -226,7 +227,11 @@ class ActorPickup(BasePickup):
                 else:
                     pickup_tile_icon.icon = "itemenabled"
             else:
-                pickup_tile_icon.icon = self.pickup["map_icon"]
+                first_model_name = self.pickup["model"][0]
+                icon = self.pickup.get("map_icon", None)
+                if icon is None:
+                    icon = get_map_icon_data(first_model_name)
+                pickup_tile_icon.icon = icon
 
     def get_scenario(self) -> str:
         return self.pickup["pickup_actor"]["scenario"]
