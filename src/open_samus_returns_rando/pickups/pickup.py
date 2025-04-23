@@ -12,13 +12,8 @@ from open_samus_returns_rando.files import templates_path
 from open_samus_returns_rando.logger import LOG
 from open_samus_returns_rando.lua_editor import LuaEditor, ScriptClass
 from open_samus_returns_rando.patcher_editor import PatcherEditor, path_for_level
+from open_samus_returns_rando.pickups.map_icons import get_map_icon_data
 from open_samus_returns_rando.pickups.model_data import get_data
-
-RESERVE_TANK_ITEMS = {
-    "ITEM_RESERVE_TANK_LIFE": "powerup_energyreservetank",
-    "ITEM_RESERVE_TANK_SPECIAL_ENERGY": "powerup_aeionreservetank",
-    "ITEM_RESERVE_TANK_MISSILE": "powerup_missilereservetank",
-}
 
 
 @functools.cache
@@ -76,14 +71,10 @@ class ActorPickup(BasePickup):
 
     def patch_model(self, model_names: list[str], bmsad: dict) -> None:
         modelupdater = bmsad["components"]["MODELUPDATER"]
-        item_id: str = self.pickup["resources"][0][0]["item_id"]
         model_name = model_names[0]
 
         # single models
         if len(model_names) == 1:
-            # Placeholder until custom models/textures are made
-            if item_id in RESERVE_TANK_ITEMS:
-                model_name = RESERVE_TANK_ITEMS[item_id]
             model_data = get_data(model_name)
             action_sets: dict = bmsad["action_sets"][0]["animations"][0]
             bmsad["header"]["model_name"] = model_data.bcmdl_path
@@ -226,7 +217,10 @@ class ActorPickup(BasePickup):
                 else:
                     pickup_tile_icon.icon = "itemenabled"
             else:
-                pickup_tile_icon.icon = self.pickup["map_icon"]
+                first_model_name = self.pickup["model"][0]
+                icon = self.pickup.get("map_icon", None)
+                icon = get_map_icon_data(first_model_name) if icon is None else icon
+                pickup_tile_icon.icon = icon
 
     def get_scenario(self) -> str:
         return self.pickup["pickup_actor"]["scenario"]
