@@ -277,11 +277,18 @@ class LuaEditor:
             )
         )
 
+        starting_dna = [item for item in inventory if item.startswith("ITEM_RANDO_DNA")]
+        default_dna = 39
+        objective_dna = objective["required_dna"]
         if "required_dna" in objective:
-            required_dna = objective["required_dna"]
+            if objective_dna >= default_dna:
+                required_dna = objective_dna - len(starting_dna)
+            elif len(starting_dna) == default_dna:
+                required_dna = 0
+            else:
+                required_dna = objective_dna
         else:
-            starting_dna = [item for item in inventory if item.startswith("ITEM_RANDO_DNA")]
-            required_dna = 39 - len(starting_dna)
+            required_dna = default_dna - len(starting_dna)
 
         replacement = {
             "new_game_inventory": final_inventory,
