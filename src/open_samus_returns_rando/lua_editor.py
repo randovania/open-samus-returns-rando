@@ -279,12 +279,15 @@ class LuaEditor:
 
         starting_dna = [item for item in inventory if item.startswith("ITEM_RANDO_DNA")]
         default_dna = 39
-        objective_dna = objective["required_dna"]
         if "required_dna" in objective:
+            objective_dna = objective["required_dna"]
+            # If the objective is higher than default, take the difference of objective and starting
             if objective_dna >= default_dna:
                 required_dna = objective_dna - len(starting_dna)
+            # If the objective is less than default and starting equals default, require 0 dna
             elif len(starting_dna) == default_dna:
                 required_dna = 0
+            # If the objective is less than default, require objective
             else:
                 required_dna = objective_dna
         else:
