@@ -43,14 +43,23 @@ def music_shuffle(editor: PatcherEditor, configuration: dict) -> None:
     if len(configuration["music_shuffle_dict"]) == 0:
         return
 
-    temp_dict: dict = {}
-    for f in list(editor.get_asset_names_in_folder("sounds/streams/music/")):
-        temp_dict[f] = editor.get_raw_asset(f)
+    bmdefs = editor.get_file("system/snd/scenariomusicdefs.bmdefs", Bmdefs)
+    sounds = bmdefs.raw["sounds"]
 
+    # Create a dictionary of all sounds using the volumes as the values
+    sound_dict: dict = {}
+    for sound in sounds:
+        sound_name = sound["file_path"][14:].split(".")[0]
+        sound_dict[sound_name] = sound["volume"]
+
+    # Assign the new sounds with their respective volumes
     for original, new in configuration["music_shuffle_dict"].items():
-        original_track = f"sounds/streams/music/{original}.bcwav"
-        new_track = temp_dict[f"sounds/streams/music/{new}.bcwav"]
-        editor.replace_asset(original_track, new_track)
+        for sound in sounds:
+            # Only change the sound if it matches to prevent changing it back when iterating
+            if original in sound["file_path"] and sound["sound_name"] in original:
+                sound["file_path"] = f"streams/music/{new}.wav"
+                sound["volume"] = sound_dict.get(new)
+                break
 
 
 def volume_patches(editor: PatcherEditor, configuration: dict) -> None:
