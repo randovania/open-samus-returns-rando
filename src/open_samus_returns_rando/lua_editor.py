@@ -278,20 +278,18 @@ class LuaEditor:
         )
 
         starting_dna = [item for item in inventory if item.startswith("ITEM_RANDO_DNA")]
-        default_dna = 39
-        if "required_dna" in objective:
-            objective_dna = objective["required_dna"]
-            # If the objective is higher than default, take the difference of objective and starting
-            if objective_dna >= default_dna:
-                required_dna = objective_dna - len(starting_dna)
-            # If the objective is less than default and starting equals default, require 0 dna
-            elif len(starting_dna) == default_dna:
-                required_dna = 0
-            # If the objective is less than default, require objective
-            else:
-                required_dna = objective_dna
+        total_dna = objective.get("total_dna", 39)
+        objective_dna = objective.get("required_dna", 0)
+        placed_dna = total_dna - len(starting_dna)
+        # If there is no placed DNA or there is no objective DNA, require 0 DNA
+        if placed_dna == 0 or objective_dna == 0:
+            required_dna = 0
+        # If there are less DNA placed than required, require DNA that is placed
+        elif placed_dna < objective_dna:
+            required_dna = placed_dna
+        # If the same amount or more DNA is placed than required, require DNA from the objective
         else:
-            required_dna = default_dna - len(starting_dna)
+            required_dna = objective_dna
 
         replacement = {
             "new_game_inventory": final_inventory,

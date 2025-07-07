@@ -289,6 +289,11 @@
             "description": "Requirements for completing a seed.",
             "type": "object",
             "properties": {
+                "total_dna": {
+                    "description": "The total amount of Metroid DNA that exists in the seed, including starting and placed.",
+                    "type": "integer",
+                    "minimum": 0
+                },
                 "required_dna": {
                     "description": "The amount of Metroid DNA required to complete the objective.",
                     "type": "integer",
