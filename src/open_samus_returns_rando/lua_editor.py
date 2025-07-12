@@ -279,7 +279,7 @@ class LuaEditor:
 
         starting_dna = [item for item in inventory if item.startswith("ITEM_RANDO_DNA")]
         total_dna = objective.get("total_dna", 39)
-        placed_dna = objective.get("placed_dna", 0)
+        placed_dna = objective.get("placed_dna", -1 * (total_dna - len(starting_dna))
         objective_dna = objective.get("required_dna", 0)
 
         # Handle starting with extra DNA which would affect the objective
