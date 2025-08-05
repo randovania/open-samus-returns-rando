@@ -180,14 +180,14 @@ def parse_rom_file(file_path: Path, file_stream: BufferedReader) -> construct.Co
         if file_path.suffix == ".cia":
             raw = AddCia.parse_stream(file_stream)
             return raw
-        elif file_path.suffix == ".3ds":
+        elif file_path.suffix == ".3ds" or file_path.suffix == ".cci" :
             raw = Add3ds.parse_stream(file_stream)
             return raw
         elif file_path.suffix == ".app" or file_path.suffix == ".cxi":
             raw = AddCxi.parse_stream(file_stream)
             return raw
         else:
-            raise ValueError('Input does not end with ".cia", ".3ds", ".app" or ".cxi"')
+            raise ValueError('Input does not end with ".cia", ".3ds", ".cci", ".app" or ".cxi"')
         # encrypted files should throw a ConstError because the ".code" string is encrypted and parsing fails
     except construct.ConstError:
         raise ValueError("Rom file could not be parsed. Make sure that you use a decrypted supported file format.")
