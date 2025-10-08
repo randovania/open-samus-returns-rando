@@ -803,7 +803,8 @@
                 "ITEM_RESERVE_TANK_LIFE",
                 "ITEM_RESERVE_TANK_MISSILE",
                 "ITEM_RESERVE_TANK_SPECIAL_ENERGY",
-                "ITEM_WEAPON_ICE_MISSILE"
+                "ITEM_WEAPON_ICE_MISSILE",
+                "ITEM_RANDO_GAME_COMPLETE"
             ]
         },
         "item": {

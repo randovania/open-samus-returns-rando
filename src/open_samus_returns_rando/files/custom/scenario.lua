@@ -223,6 +223,7 @@ function Scenario.FinalBossReload(startpoint)
 end
 
 function Scenario.LaunchCredits()
+  RandomizerPowerup.SetItemAmount("ITEM_RANDO_GAME_COMPLETE", 1)
   Game.ShowEndGameCredits(true)
 end
 
