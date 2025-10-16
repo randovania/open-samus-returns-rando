@@ -1,7 +1,8 @@
 Game.ImportLibrary("system/scripts/init_original.lua")
 
 RL = RL or { 
-  -- defined by remote connector
+  -- defined by msr-remote-connector
+  -- somewhere around here: https://github.com/randovania/msr-remote-connector/blob/main/source/lua_hook.cpp#L19
   Init = function() end,
   Update = function() end,
   SendLog = function(message) end,
@@ -36,6 +37,7 @@ Init.sFinalBossHint = TEMPLATE("final_boss_hint")
 Init.bTanksRefillAmmo = TEMPLATE("tanks_refill_ammo")
 Init.iRequiredDNA = TEMPLATE("required_dna")
 Init.sFinalBoss = TEMPLATE("final_boss")
+Init.bBeatenSinceLastReboot = false
 
 local orig_log = Game.LogWarn
 if TEMPLATE("enable_remote_lua") then
