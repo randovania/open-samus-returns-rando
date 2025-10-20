@@ -223,6 +223,8 @@ function Scenario.FinalBossReload(startpoint)
 end
 
 function Scenario.LaunchCredits()
+  Init.bBeatenSinceLastReboot = true
+  RL.UpdateRDVClient(false)
   Game.ShowEndGameCredits(true)
 end
 
