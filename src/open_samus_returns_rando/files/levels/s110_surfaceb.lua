@@ -361,7 +361,7 @@ function s110_surfaceb.RemoveLightFromRidleyStorm(_ARG_0_)
   end
 end
 function s110_surfaceb.LaunchCredits()
-  Game.ShowEndGameCredits(true)
+  Game.AddSF(0, "Scenario.LaunchCredits", "")
 end
 function s110_surfaceb.SetRidleyStormEnabled(_ARG_0_)
   Game.RemoveEntityToUpdateInCutscene("LE_RidleyStorm")
