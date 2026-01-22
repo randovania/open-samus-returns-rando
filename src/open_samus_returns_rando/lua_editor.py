@@ -291,7 +291,7 @@ class LuaEditor:
             "starting_scenario": lua_util.wrap_string(starting_scenario),
             "starting_actor": lua_util.wrap_string(starting_actor),
             "energy_per_tank": energy_per_tank,
-            "reveal_map_on_start": configuration["reveal_map_on_start"],
+            "reveal_map_on_start": cosmetic_options["reveal_map_on_start"],
             "dna_per_area": self._dna_count_dict,
             "scenario_mapping": {key: lua_util.wrap_string(value) for key, value in SCENARIO_MAPPING.items()},
             "textbox_count": textboxes,
