@@ -58,16 +58,13 @@ def main() -> None:
     args = parser.parse_args()
     print(args)
 
-    if not args.output_path.is_absolute():
-        raise ValueError(f"'{args.output_path}' is not a valid output path. Paths must be absolute!")
-
     with args.input_json.open() as f:
         configuration = json.load(f)
 
     start = time.time()
     samus_returns_patcher.patch_extracted(
         args.input_path,
-        args.output_path,
+        args.output_path.resolve(),
         configuration,
     )
     end = time.time()
