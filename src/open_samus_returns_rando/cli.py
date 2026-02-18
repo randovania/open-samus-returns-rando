@@ -58,6 +58,9 @@ def main() -> None:
     args = parser.parse_args()
     print(args)
 
+    if not args.output_path.is_absolute():
+        raise ValueError(f"'{args.output_path}' is not a valid output path. Paths must be absolute!")
+
     with args.input_json.open() as f:
         configuration = json.load(f)
 
