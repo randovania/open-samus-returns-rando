@@ -150,7 +150,7 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict) ->
         # Patch actor attributes
         patch_actor_attributes(editor, configuration["actor_attributes"])
 
-        # Resolve relavtive paths to prevent breaking RomFS folder
+        # FIXME: Using relative paths breaks the RomFS folder
         resolved_output_path = output_path.resolve()
 
         cleanup_old_patcher(resolved_output_path)
