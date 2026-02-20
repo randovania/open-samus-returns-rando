@@ -150,11 +150,14 @@ def patch_extracted(input_path: Path, output_path: Path, configuration: dict) ->
         # Patch actor attributes
         patch_actor_attributes(editor, configuration["actor_attributes"])
 
-        cleanup_old_patcher(output_path)
+        # Resolve relavtive paths to prevent breaking RomFS folder
+        resolved_output_path = output_path.resolve()
 
-        out_romfs = output_path.joinpath("romfs")
-        out_code = output_path.joinpath("code.bin")
-        out_exheader = output_path.joinpath("exheader.bin")
+        cleanup_old_patcher(resolved_output_path)
+
+        out_romfs = resolved_output_path.joinpath("romfs")
+        out_code = resolved_output_path.joinpath("code.bin")
+        out_exheader = resolved_output_path.joinpath("exheader.bin")
 
         # Create Exefs patches for multiworld and other binary modifications
         LOG.info("Creating exefs patches")
