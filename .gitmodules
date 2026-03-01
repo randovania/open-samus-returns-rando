@@ -1,0 +1,6 @@
+[submodule "external/magikoopa-py"]
+	path = external/magikoopa-py
+	url = git@github.com:ThanatosGit/magikoopa-py.git
+[submodule "external/msr-remote-connector"]
+	path = external/msr-remote-connector
+	url = git@github.com:randovania/msr-remote-connector.git
