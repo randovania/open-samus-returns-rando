@@ -27,3 +27,15 @@ This repository uses [pre-commit](https://pre-commit.com/).
 pip install pre-commit
 pre-commit install
 ```
+
+## Native code patch development
+
+The `external/` directory contains the tools for compiling and patching the
+native 3DS code (via `msr-remote-connector` and `magikoopa-py`). These are
+managed as git submodules, so after cloning you need to initialise them:
+
+```
+git submodule update --init --recursive
+```
+
+See [external/README.md](external/README.md) for setup and build instructions.
