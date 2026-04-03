@@ -2,6 +2,7 @@ import typing
 
 from construct import ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad
+from mercury_engine_data_structures.formats.bmsld import ActorLayer
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -103,19 +104,22 @@ new_startpoints = [
 
 
 def add_startpoints(editor: PatcherEditor, new_startpoint: NewStartPoint)  -> None:
-    template_tg = editor.get_scenario("s025_area2b").raw.actors[0]["TG_SetCheckpoint_001_Gamma_001"]
-    template_st = editor.get_scenario("s025_area2b").raw.actors[5]["ST_SG_Gamma_001"]
+    template_scenario = editor.get_scenario("s025_area2b")
+    template_tg = template_scenario.get_actor(ActorLayer.TRIGGER, "TG_SetCheckpoint_001_Gamma_001")
+    template_st = template_scenario.get_actor(ActorLayer.STARTPOINT, "ST_SG_Gamma_001")
 
     scenario_name = new_startpoint.scenario
     scenario_file = editor.get_scenario(scenario_name)
 
     # Copy the actors
-    if new_startpoint.tg_name is not None and new_startpoint.tg_position is not None :
-        editor.copy_actor(scenario_name, new_startpoint.tg_position, template_tg, new_startpoint.tg_name, 0)
+    if new_startpoint.tg_name is not None and new_startpoint.tg_position is not None:
+        scenario_file.copy_actor(new_startpoint.tg_position, template_tg, new_startpoint.tg_name, ActorLayer.TRIGGER)
     if new_startpoint.st_name is not None:
-        editor.copy_actor(scenario_name, new_startpoint.st_position, template_st, new_startpoint.st_name, 5)
+        scenario_file.copy_actor(new_startpoint.st_position, template_st, new_startpoint.st_name, ActorLayer.STARTPOINT)
     if new_startpoint.st_out_name is not None:
-        editor.copy_actor(scenario_name, new_startpoint.st_position, template_st, new_startpoint.st_out_name, 5)
+        scenario_file.copy_actor(
+            new_startpoint.st_position, template_st, new_startpoint.st_out_name, ActorLayer.STARTPOINT
+        )
 
     # Add to the entity groups
     for entity_group in new_startpoint.entity_groups:
@@ -125,20 +129,21 @@ def add_startpoints(editor: PatcherEditor, new_startpoint: NewStartPoint)  -> No
 
     # Rotate the startpoint actors
     if new_startpoint.st_name is not None:
-        scenario_file.raw.actors[5][new_startpoint.st_name]["rotation"][1] = new_startpoint.st_rotation
+        scenario_file.get_actor(ActorLayer.STARTPOINT, new_startpoint.st_name).rotation.y = new_startpoint.st_rotation
         if new_startpoint.st_out_name is not None:
-            scenario_file.raw.actors[5][new_startpoint.st_out_name]["rotation"][1] = (
-                -90 if new_startpoint.st_rotation == 90 else 90
-            )
+            rotation = -90 if new_startpoint.st_rotation == 90 else 90
+            scenario_file.get_actor(ActorLayer.STARTPOINT, new_startpoint.st_out_name).rotation.y, rotation
     # Edge case where startpoint actors aren't being added but startpoint_out actors are
     if new_startpoint.st_out_name == "ST_SG_Omega_001_Out":
-        scenario_file.raw.actors[5][new_startpoint.st_out_name]["rotation"][1] = new_startpoint.st_rotation
+        scenario_file.get_actor(
+            ActorLayer.STARTPOINT, new_startpoint.st_out_name
+        ).rotation.y = new_startpoint.st_rotation
 
     # Update the trigger actor
     if new_startpoint.tg_name is not None:
-        scenario_file.raw.actors[0][new_startpoint.tg_name]["components"][0][
-            "arguments"
-        ][3]["value"] = ("CurrentScenario.OnEnter_" + new_startpoint.tg_name[3:])
+        scenario_file.get_actor(ActorLayer.TRIGGER, new_startpoint.tg_name).get_component_function().set_argument(
+            3, "CurrentScenario.OnEnter_" + new_startpoint.tg_name[3:]
+        )
 
 
 def patch_metroids(editor: PatcherEditor) -> None:

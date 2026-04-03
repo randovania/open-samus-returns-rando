@@ -1,7 +1,5 @@
-import copy
 import typing
 
-from construct import Container  # type: ignore[import-untyped]
 from mercury_engine_data_structures.base_resource import BaseResource
 from mercury_engine_data_structures.file_tree_editor import FileTreeEditor
 from mercury_engine_data_structures.formats import Bmsld
@@ -46,35 +44,10 @@ class PatcherEditor(FileTreeEditor):
     def get_scenario(self, name: str) -> Bmsld:
         return self.get_file(path_for_level(name) + ".bmsld", Bmsld)
 
-    def resolve_actor_reference(self, ref: dict) -> Container:
-        scenario = self.get_scenario(ref["scenario"])
-        # FIXME: There is no "default" as layer in SR
-        layer = int(ref.get("layer", "default"))
-        return scenario.raw.actors[layer][ref["actor"]]
-
     def flush_modified_assets(self) -> None:
         for name, resource in self.memory_files.items():
             self.replace_asset(name, resource)
         self.memory_files = {}
-
-    def copy_actor(self, scenario: str, coords: list[float], template_actor: Container, new_name: str,
-                   layer_index: int, offset: tuple = (0, 0, 0)) -> Container:
-        new_actor = copy.deepcopy(template_actor)
-        current_scenario = self.get_scenario(scenario)
-        current_scenario.raw.actors[layer_index][new_name] = new_actor
-        new_actor["position"][0] = coords[0] + offset[0]
-        new_actor["position"][1] = coords[1] + offset[1]
-        new_actor["position"][2] = coords[2] + offset[2]
-
-        return new_actor
-
-    def remove_entity(self, reference: dict)-> None:
-        scenario = self.get_scenario(reference["scenario"])
-        layer = reference["layer"]
-        actor_name = reference["actor"]
-
-        scenario.raw.actors[layer].pop(actor_name)
-        scenario.remove_actor_from_all_groups(actor_name)
 
     def get_asset_names_in_folder(self, folder: str) -> typing.Iterator[str]:
         yield from (

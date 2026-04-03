@@ -3,15 +3,15 @@ from open_samus_returns_rando.specific_patches.environmental_damage_sources impo
 
 
 def apply_constant_damage(editor: PatcherEditor, configuration: dict) -> None:
-    for reference in ALL_DAMAGE_ROOM_ACTORS:
-        actor = editor.resolve_actor_reference(reference)
+    for scenario_name, layer, actor in ALL_DAMAGE_ROOM_ACTORS:
+        env_actor = editor.get_scenario(scenario_name).get_actor(layer, actor)
 
-        if actor["components"][1]["arguments"][26]["value"] == "HEAT":
+        if env_actor.get_component_function(1).get_argument(26) == "HEAT":
             config_field = "heat"
-        elif actor["components"][1]["arguments"][26]["value"] == "LAVA":
+        elif env_actor.get_component_function(1).get_argument(26) == "LAVA":
             config_field = "lava"
         else:
-            raise ValueError(f"{reference} does not have a valid actorDef for environmental damage")
+            raise ValueError(f"{env_actor} does not have a valid actorDef for environmental damage")
 
         if configuration[config_field] is None:
             continue
@@ -20,8 +20,8 @@ def apply_constant_damage(editor: PatcherEditor, configuration: dict) -> None:
         damage = configuration[config_field] / 2
 
         # Damage per tick
-        actor["components"][1]["arguments"][19]["value"] = damage
+        env_actor.get_component_function(1).set_argument(19, damage)
         # Damage Scale
-        actor["components"][1]["arguments"][28]["value"] = damage
+        env_actor.get_component_function(1).set_argument(28, damage)
         # Damage of first tick
-        actor["components"][2]["arguments"][19]["value"] = damage
+        env_actor.get_component_function(2).set_argument(19, damage)
