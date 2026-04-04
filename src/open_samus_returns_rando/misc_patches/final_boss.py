@@ -2,6 +2,7 @@ import typing
 
 from construct import Container  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmtun
+from mercury_engine_data_structures.formats.bmsld import ActorLayer
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -34,19 +35,19 @@ ridley_trigger = BossTrigger(
 
 
 def add_boss_triggers(editor: PatcherEditor, boss_trigger: BossTrigger) -> None:
-    template_tg = editor.get_scenario("s110_surfaceb").raw.actors[0]["TG_Activation_Teleport_00b_01"]
+    template_tg = editor.get_scenario("s110_surfaceb").get_actor(0, "TG_Activation_Teleport_00b_01")
 
     scenario_name = boss_trigger.scenario
     scenario_file = editor.get_scenario(scenario_name)
 
-    editor.copy_actor(scenario_name, boss_trigger.position, template_tg, boss_trigger.name, 0)
+    scenario_file.copy_actor(boss_trigger.position, template_tg, boss_trigger.name, ActorLayer.TRIGGER)
 
-    arguments = scenario_file.raw.actors[0][boss_trigger.name]["components"][0]["arguments"]
-    arguments[3]["value"] = "CurrentScenario.OnEnter_" + boss_trigger.name[3:]
+    actor = scenario_file.get_actor(ActorLayer.TRIGGER, boss_trigger.name).get_component_function()
+    actor.set_argument(3, "CurrentScenario.OnEnter_" + boss_trigger.name[3:])
     # Set the size of the trigger to fill the opening
-    arguments[16]["value"] = boss_trigger.size[0]
-    arguments[17]["value"] = boss_trigger.size[1]
-    arguments[18]["value"] = boss_trigger.size[2]
+    actor.set_argument(16, boss_trigger.size[0])
+    actor.set_argument(17, boss_trigger.size[1])
+    actor.set_argument(18, boss_trigger.size[2])
 
     for entity_group in boss_trigger.entity_groups:
         scenario_file.add_actor_to_entity_groups(entity_group, boss_trigger.name, True)
@@ -70,35 +71,34 @@ def patch_final_boss(editor: PatcherEditor, configuration: dict) -> None:
             # Disable Power Bombs because of the instant kill
             bmsad_life["bShouldDieWithPowerBomb"] = Container({"type": "bool", "value": False})
 
-            '''All beams (except Ice) will use the same factor of 0.33 for balancing with the new health
+            """All beams (except Ice) will use the same factor of 0.33 for balancing with the new health
             Power Beam: 25 -> 8.25
             Ice: 10
             Wave: 50 -> 16.5
             Spazer: 210 -> 69.3
             Plasma: 300 -> 99
-            '''
+            """
             bmsad_life["fPowerBeamFactor"]["value"] = 0.33
             # 1000 -> 500
             bmsad_life["fScrewAttackFactor"]["value"] = 0.5
 
             tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
-            damage = tunables.raw["classes"]["Damage|CTunableCharClassAttackComponent"]["tunables"]
-            # 50 -> 150
-            damage["fDamageArachnusDefault"]["value"] *= 3
-            damage["fDamageArachnusEnergyWave"]["value"] *= 3
-            damage["fDamageArachnusFireSplash"]["value"] *= 3
+            attack_tunables = ["fDamageArachnusDefault", "fDamageArachnusEnergyWave", "fDamageArachnusFireSplash"]
+            for tunable in attack_tunables:
+                # Increase damage from Arachnus by 3x (50 -> 150)
+                tunables.set_tunable("Damage|CTunableCharClassAttackComponent", tunable, 150)
 
-            tunables_life = tunables.raw["classes"]["Life|CTunableCharClassAIComponent"]["tunables"]
-            # Original health is 3000
-            tunables_life["fLifeArachnus"]["value"] = 10000
+            # Increase Arachnus' health to match new damage output (Original health is 3000)
+            tunables.set_tunable("Life|CTunableCharClassAIComponent", "fLifeArachnus", 10000)
         elif final_boss == "Diggernaut":
             # Move the grapple block by the elevator regardless if the grapple config is set
             if not game_patches["remove_elevator_grapple_blocks"]:
-                scenario = editor.get_scenario("s070_area7")
-                scenario.raw.actors[9]["LE_GrappleMov_001"]["position"][0] = -15250.0
+                editor.get_scenario("s070_area7").get_actor(
+                    ActorLayer.PASSIVE, "LE_GrappleMov_001"
+                ).position.x = -15250.0
             # Remove the breakable Grapple block to allow access to Diggernaut backwards
-            editor.remove_entity({"scenario": "s070_area7", "layer": 9, "actor": "LE_GrappleDest_012"})
+            editor.get_scenario("s070_area7").remove_actor(ActorLayer.PASSIVE, "LE_GrappleDest_012")
         elif final_boss == "Queen":
             # Remove the Queen wall regardless if the config is set
             if not game_patches["reverse_area8"]:
-                editor.remove_entity({"scenario": "s100_area10", "layer": 9, "actor": "LE_ValveQueen"})
+                editor.get_scenario("s100_area10").remove_actor(ActorLayer.PASSIVE, "LE_ValveQueen")

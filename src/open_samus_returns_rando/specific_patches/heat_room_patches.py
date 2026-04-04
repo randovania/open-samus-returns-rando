@@ -2,15 +2,15 @@ import copy
 import typing
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
+from mercury_engine_data_structures.formats.bmsld import ActorLayer
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
 def _patch_area_2b(editor: PatcherEditor) -> None:
     # area2b => shape is already correct but ms forgot to add one room
-    heat_trigger_2b = {"scenario": "s025_area2b", "layer": "2", "actor": "TG_SP_Heat_001"}
-    scenario_2b = editor.get_scenario(heat_trigger_2b["scenario"])
-    scenario_2b.add_actor_to_entity_groups("collision_camera013", heat_trigger_2b["actor"])
+    scenario_2b = editor.get_scenario("s025_area2b")
+    scenario_2b.add_actor_to_entity_groups("collision_camera013", "TG_SP_Heat_001")
 
 
 class NewHeatActor(typing.NamedTuple):
@@ -64,9 +64,12 @@ new_heat_actors = [
 
 def _get_new_logic_shape(editor: PatcherEditor, new_actor: NewHeatActor) -> Container:
     scenario_2b = editor.get_scenario("s025_area2b")
-    ls_copy = copy.deepcopy(scenario_2b.raw["objects_c"]["LS_Heat_001"])
-    example_point = ls_copy["data"]["polys"][0]["points"][0]
-    ls_copy["data"]["polys"][0]["points"].clear()
+    template_ls = scenario_2b.get_logic_shape("LS_Heat_001")
+
+    ls_copy = copy.deepcopy(template_ls)
+    example_point = template_ls.get_point(0, 0)
+
+    ls_copy.get_poly(0)["points"].clear()
     for point in new_actor.points:
         new_point = copy.deepcopy(example_point)
         new_point["x"] = point[0]
@@ -77,7 +80,7 @@ def _get_new_logic_shape(editor: PatcherEditor, new_actor: NewHeatActor) -> Cont
 
 
 def add_heat_actors(editor: PatcherEditor, new_heat_actor: NewHeatActor)-> None:
-    template_ht = editor.get_scenario("s010_area1").raw.actors[2]["TG_Heat_001"]
+    template_ht = editor.get_scenario("s010_area1").get_actor(ActorLayer.ENV_TRIGGER, "TG_Heat_001")
 
     scenario_name = new_heat_actor.scenario
     scenario_file = editor.get_scenario(scenario_name)
@@ -87,10 +90,12 @@ def add_heat_actors(editor: PatcherEditor, new_heat_actor: NewHeatActor)-> None:
     new_logic_shape["data"]["total_boundings"] = total_boundings
     new_logic_shape["data"]["polys"][0]["boundings"] = total_boundings
 
-    scenario_file.raw["objects_c"][new_heat_actor.logic_shape_name] = new_logic_shape
+    scenario_file.get_logic_shape(new_heat_actor.logic_shape_name) == new_logic_shape
 
-    new_actor = editor.copy_actor(scenario_name, new_heat_actor.position, template_ht, new_heat_actor.trigger_name, 2)
-    new_actor["components"][0]["arguments"][16]["value"] = new_heat_actor.logic_shape_name
+    scenario_file.copy_actor(new_heat_actor.position, template_ht, new_heat_actor.trigger_name, ActorLayer.ENV_TRIGGER)
+    scenario_file.get_actor(ActorLayer.ENV_TRIGGER, new_heat_actor.trigger_name).get_component_function().set_argument(
+        16, new_heat_actor.logic_shape_name
+    )
 
     for entity_group in new_heat_actor.entity_groups:
         scenario_file.add_actor_to_entity_groups(entity_group, new_heat_actor.trigger_name, True)

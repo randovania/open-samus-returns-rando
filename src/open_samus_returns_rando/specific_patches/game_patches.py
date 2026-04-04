@@ -1,5 +1,6 @@
 from construct import Container  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsbk
+from mercury_engine_data_structures.formats.bmsld import ActorLayer
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -64,19 +65,14 @@ def _remove_grapple_blocks(editor: PatcherEditor, configuration: dict) -> None:
     }
     if configuration["remove_elevator_grapple_blocks"]:
         # Area 5 to Area 6
-        editor.remove_entity(
-            {"scenario": "s060_area6", "layer": 9, "actor": "LE_GrappleMov_004"}
-        )
+        editor.get_scenario("s060_area6").remove_actor(ActorLayer.PASSIVE, "LE_GrappleMov_004")
         for scenario_name, blocks in ELEVATOR_GRAPPLE_BLOCKS.items():
-            scenario = editor.get_scenario(scenario_name)
             for block in blocks:
-                actor = scenario.raw.actors[9][block]
-                actor["position"][0] -= 100.0
+                actor = editor.get_scenario(scenario_name).get_actor(ActorLayer.PASSIVE, block)
+                actor.position.x -= 100.0
 
     if configuration["remove_grapple_block_area3_interior_shortcut"]:
-        editor.remove_entity(
-            {"scenario": "s036_area3c", "layer": 9, "actor": "LE_GrappleDest_004"}
-        )
+        editor.get_scenario("s036_area3c").remove_actor(ActorLayer.PASSIVE, "LE_GrappleDest_004")
 
 
 def _remove_super_missile_weakness(editor: PatcherEditor) -> None:
@@ -116,6 +112,4 @@ def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict) -> None:
 
 def _patch_reverse_area8(editor: PatcherEditor, configuration: dict) -> None:
     if configuration["reverse_area8"]:
-        editor.remove_entity(
-            {"scenario": "s100_area10", "layer": 9, "actor": "LE_ValveQueen"}
-        )
+        editor.get_scenario("s100_area10").remove_actor(ActorLayer.PASSIVE, "LE_ValveQueen")

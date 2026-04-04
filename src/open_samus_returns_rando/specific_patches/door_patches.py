@@ -5,6 +5,7 @@ from enum import Enum
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsld, Bmsmsd, Lua
+from mercury_engine_data_structures.formats.bmsld import ActorLayer
 from mercury_engine_data_structures.formats.bmsmsd import IconPriority, TileBorders
 
 from open_samus_returns_rando.files import files_path
@@ -67,9 +68,8 @@ def _patch_missile_covers(editor: PatcherEditor) -> None:
     }
 
     for scenario_name, shield in ALL_MISSILE_SHIELDS.items():
-        scenario = editor.get_scenario(scenario_name)
         for door in shield:
-            actor = scenario.raw.actors[9][door]
+            actor = editor.get_scenario(scenario_name).get_actor(9, door)
             actor["rotation"][1] = 90
 
 
@@ -123,13 +123,13 @@ def _patch_beam_covers(editor: PatcherEditor) -> None:
     for scenario_name, beam_covers in ALL_BEAM_COVERS.items():
         scenario = editor.get_scenario(scenario_name)
         for door_name in beam_covers:
-            door_actor = scenario.raw.actors[15].get(door_name, None)
+            door_actor = scenario.get_actor(ActorLayer.DOOR, door_name)
             cover_name =  door_actor.components[0]["arguments"][3]["value"]
-            cover_actor = scenario.raw.actors[9][cover_name]
+            cover_actor = scenario.get_actor(9, cover_name)
 
             new_actor_name = f"{cover_name}_o"
-            new_actor = editor.copy_actor(
-                scenario_name, [cover_actor["position"][0], cover_actor["position"][1], cover_actor["position"][2]],
+            new_actor = scenario.copy_actor(
+                [cover_actor["position"][0], cover_actor["position"][1], cover_actor["position"][2]],
                 cover_actor, new_actor_name, 9
             )
             new_actor["rotation"][0] = 0
@@ -158,9 +158,8 @@ def _patch_charge_doors(editor: PatcherEditor) -> None:
     }
 
     for scenario_name, doors in CHARGE_DOORS.items():
-        scenario = editor.get_scenario(scenario_name)
         for door in doors:
-            scenario.raw.actors[15][door].type = "doorpowerpower"
+            editor.get_scenario(scenario_name).get_actor(15, door).type = "doorpowerpower"
 
 
 def _patch_one_way_doors(editor: PatcherEditor) -> None:
@@ -180,9 +179,8 @@ def _patch_one_way_doors(editor: PatcherEditor) -> None:
     }
 
     for scenario_name, doors in ONE_WAY_DOORS.items():
-        scenario = editor.get_scenario(scenario_name)
         for door in doors:
-            properties = scenario.raw.actors[15][door]
+            properties = editor.get_scenario(scenario_name).get_actor(15, door)
             properties.type = "doorpowerpower"
             properties.components[0]["arguments"][2]["value"] = False
 
@@ -340,15 +338,14 @@ class DoorType(Enum):
 class DoorPatcher:
     def __init__(self, editor: PatcherEditor):
         self.editor = editor
-        self._example_shield = editor.get_scenario("s000_surface").raw.actors[9]["LE_PlasmaShield_Door_008"]
+        self._example_shield = editor.get_scenario("s000_surface").get_actor(9, "LE_PlasmaShield_Door_008")
         self._index_per_scenario: dict[str, int] = {}
 
     def _patch_to_power(self, door_actor: Container, scenario: Bmsld) -> None:
         for life_component in door_actor.components:
             shield = life_component["arguments"][3]["value"]
             if shield != "":
-                scenario.remove_actor_from_all_groups(shield)
-                scenario.raw.actors[9].pop(shield)
+                scenario.remove_actor(ActorLayer.PASSIVE, shield)
         # pop a life component from our static door patches
         if len(door_actor.components) > 1:
             door_actor.components.pop()
@@ -368,39 +365,31 @@ class DoorPatcher:
         return new_actor
 
     def _fix_surfaceb_door012(
-                self,
-                door_actor: Container,
-                left_shield_name: str, left_shield_actor: Container,
-                right_shield_name: str, right_shield_actor: Container,
-                new_door: DoorType
-            ) -> None:
+        self,
+        editor: PatcherEditor,
+        door_actor: Container,
+        left_shield_name: str,
+        left_shield_actor: Container,
+        right_shield_name: str,
+        right_shield_actor: Container,
+        new_door: DoorType,
+    ) -> None:
         scenario_name = "s110_surfaceb"
-        scenario = self.editor.get_scenario(scenario_name)
+        scenario = editor.get_scenario(scenario_name)
 
         # remove door and shield
-        scenario.raw.actors[15].pop("Door012")
-        self.editor.remove_entity({
-            "scenario": scenario_name, "layer": 9, "actor": "LE_SpazerShield_Door_012"
-        })
+        editor.get_layer(scenario_name, 15).pop("Door012")
+        editor.remove_actor({"scenario": scenario_name, "layer": 9, "actor": "LE_SpazerShield_Door_012"})
 
         # copy door
-        self.editor.copy_actor(
-            scenario_name, door_actor.position,
-            door_actor, "Door012", 15
-        )
+        editor.copy_actor(scenario_name, door_actor.position, door_actor, "Door012", 15)
 
         # if shield exists
         if left_shield_actor is not None and right_shield_actor is not None:
             # copy left
-            self.editor.copy_actor(
-                scenario_name, left_shield_actor.position,
-                left_shield_actor, left_shield_name, 9
-            )
+            editor.copy_actor(scenario_name, left_shield_actor.position, left_shield_actor, left_shield_name, 9)
             # copy right
-            self.editor.copy_actor(
-                scenario_name, right_shield_actor.position,
-                right_shield_actor, right_shield_name, 9
-            )
+            editor.copy_actor(scenario_name, right_shield_actor.position, right_shield_actor, right_shield_name, 9)
 
             # add to entity groups
             entity_groups = [group for group_name, group in scenario.all_actor_groups()
@@ -417,8 +406,8 @@ class DoorPatcher:
     def patch_door(self, editor: PatcherEditor, actor_ref: dict, door_type_str: str) -> None:
         scenario_name = actor_ref["scenario"]
         actor_name = actor_ref["actor"]
-        scenario = self.editor.get_scenario(scenario_name)
-        door_actor = scenario.raw.actors[15].get(actor_name, None)
+        scenario = editor.get_scenario(scenario_name)
+        door_actor = editor.get_layer(scenario_name, 15).get(actor_name, None)
         index = self._index_per_scenario.get(scenario_name, 0)
         left_shield_name = f"Shield_{index}"
         right_shield_name = f"Shield_{index}_o"
@@ -427,8 +416,8 @@ class DoorPatcher:
             new_door, scenario_name, actor_name, scenario, door_actor, index, left_shield_name, right_shield_name
         )
         if scenario_name == "s000_surface" and actor_name == "Door012":
-            left_shield_actor = scenario.raw.actors[9].get(left_shield_name, None)
-            right_shield_actor = scenario.raw.actors[9].get(right_shield_name, None)
+            left_shield_actor = editor.get_layer(scenario_name, 9).get(left_shield_name, None)
+            right_shield_actor = editor.get_layer(scenario_name, 9).get(right_shield_name, None)
             self._fix_surfaceb_door012(
                 door_actor, left_shield_name, left_shield_actor, right_shield_name, right_shield_actor, new_door
             )
@@ -565,7 +554,7 @@ class DoorPatcher:
 
 
 def add_custom_doors(editor: PatcherEditor, custom_doors: list[dict]) -> None:
-    template_door = editor.get_scenario("s000_surface").raw.actors[15]["Door001"]
+    template_door = editor.get_scenario("s000_surface").get_actor(15, "Door001")
 
     for door in custom_doors:
         scenario_name = door["door_actor"]["scenario"]
@@ -575,7 +564,7 @@ def add_custom_doors(editor: PatcherEditor, custom_doors: list[dict]) -> None:
         door_name = door["door_actor"]["actor"]
         door_position = [door["position"]["x"], door["position"]["y"], door["position"]["z"]]
 
-        editor.copy_actor(scenario_name, door_position, template_door, door_name, 15)
+        scenario_file.copy_actor(door_position, template_door, door_name, 15)
 
         direction = ["left", "right"]
         border = [TileBorders.RIGHT, TileBorders.LEFT]

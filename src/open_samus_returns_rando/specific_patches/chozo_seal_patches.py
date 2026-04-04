@@ -2,6 +2,8 @@ import typing
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsmsd
+from mercury_engine_data_structures.formats.bmsld import ActorLayer
+from mercury_engine_data_structures.formats.bmsmsd import IconPriority
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -112,23 +114,28 @@ new_seals = [
 ]
 
 def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal) -> None:
-    template_ap = editor.get_scenario("s000_surface").raw.actors[16]["LE_ChozoUnlockAreaDNA"]
-    template_platform = editor.get_scenario("s000_surface").raw.actors[10]["LE_Platform_ChozoUnlockAreaDNA"]
+    template_scenario = editor.get_scenario("s000_surface")
+    template_ap = template_scenario.get_actor(ActorLayer.CHOZO_SEAL, "LE_ChozoUnlockAreaDNA")
+    template_platform = template_scenario.get_actor(ActorLayer.PLATFORM, "LE_Platform_ChozoUnlockAreaDNA")
 
     CHOZO_SEAL_ICON = Container({
         "actor_name": new_seal.ap_name,
         "clear_condition": "",
         "icon": "systemmechdna",
-        "icon_priority": 4,
+        "icon_priority": IconPriority.CHOZO_SEAL,
         "coordinates": ListContainer(new_seal.ap_coordinates),
     })
 
     scenario_name = new_seal.scenario
     scenario_file = editor.get_scenario(scenario_name)
 
-    editor.copy_actor(scenario_name, new_seal.ap_coordinates, template_ap, new_seal.ap_name, 16)
-    editor.copy_actor(scenario_name, new_seal.platform_coordinates, template_platform, new_seal.platform_name, 10)
-    scenario_file.raw.actors[10][new_seal.platform_name]["components"][0]["arguments"][4]["value"] = new_seal.ap_name
+    scenario_file.copy_actor(new_seal.ap_coordinates, template_ap, new_seal.ap_name, ActorLayer.CHOZO_SEAL)
+    scenario_file.copy_actor(
+        new_seal.platform_coordinates, template_platform, new_seal.platform_name, ActorLayer.PLATFORM
+    )
+    scenario_file.get_actor(ActorLayer.PLATFORM, new_seal.platform_name).get_component_function().set_argument(
+        4, new_seal.ap_name
+    )
 
     if scenario_name == "s110_surfaceb":
         scenario_map = editor.get_file("gui/minimaps/c10_samus/s000_surface.bmsmsd", Bmsmsd)
@@ -160,9 +167,8 @@ def update_item_seals(editor:PatcherEditor) -> None:
     }
 
     for scenario_name, chozo_seal in CHOZO_SEALS.items():
-        scenario = editor.get_scenario(scenario_name)
         for seal in chozo_seal:
-            scenario.raw.actors[16][seal]["type"] = "chozoseal"
+            editor.get_scenario(scenario_name).get_actor(ActorLayer.CHOZO_SEAL, seal).actor_type = "chozoseal"
 
         # Dependencies
         for asset in editor.get_asset_names_in_folder("actors/props/chozoseal"):

@@ -1,4 +1,5 @@
 from construct import Container  # type: ignore[import-untyped]
+from mercury_engine_data_structures.formats.bmsld import ActorLayer
 from mercury_engine_data_structures.formats.lua import Lua
 
 from open_samus_returns_rando.misc_patches import lua_util
@@ -20,8 +21,8 @@ def update_elevators(editor: PatcherEditor, configuration: dict) -> None:
     for scenario_name, elevators in configuration["elevators"].items():
         scenario = editor.get_scenario(scenario_name)
         for elevator in elevators:
-            platform = scenario.raw.actors[10][elevator]["components"][0]
-            platform["arguments"][1]["value"] = "Scenario.RandoOnElevatorUse"
+            actor = scenario.get_actor(ActorLayer.PLATFORM, elevator)
+            actor.get_component_function().set_argument(1, "Scenario.RandoOnElevatorUse")
 
 
 def patch_elevators(editor: PatcherEditor, configuration: dict) -> None:

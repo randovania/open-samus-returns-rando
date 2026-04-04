@@ -5,6 +5,7 @@ from enum import Enum
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsmsd, Lua
+from mercury_engine_data_structures.formats.bmsld import ActorLayer
 from mercury_engine_data_structures.formats.bmsmsd import TileType
 
 from open_samus_returns_rando.constants import get_package_name
@@ -154,7 +155,7 @@ class ActorPickup(BasePickup):
 
         pkgs_for_level = set(editor.find_pkgs(path_for_level(self.pickup["pickup_actor"]["scenario"]) + ".bmsld"))
         scenario = editor.get_scenario(scenario_name)
-        actor = next((layer[actor_name] for layer in scenario.raw.actors if actor_name in layer), None)
+        actor = next((layer[actor_name] for layer in scenario.raw.actor_layers if actor_name in layer), None)
         if actor is None:
             raise KeyError(f"No actor named '{actor_name}' found in {scenario_name}")
 
@@ -181,9 +182,11 @@ class ActorPickup(BasePickup):
         ):
             surfaceb_name = "s110_surfaceb"
             surface_b = editor.get_scenario(surfaceb_name)
-            mirrored_actor = next((layer[actor_name] for layer in surface_b.raw.actors if actor_name in layer), None)
+            mirrored_actor = next(
+                (layer[actor_name] for layer in surface_b.raw.actor_layers if actor_name in layer), None
+            )
             assert mirrored_actor is not None
-            mirrored_actor.type = actordef_id
+            surface_b.get_actor(ActorLayer.PASSIVE, mirrored_actor).actor_type = actordef_id
             path = script_class.get_bmsad_path()
             editor.ensure_present_in_scenario(surfaceb_name, path)
             pkgs_for_level.update(set(editor.find_pkgs(path_for_level(surfaceb_name) + ".bmsld")))

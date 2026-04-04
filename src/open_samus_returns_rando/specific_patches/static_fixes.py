@@ -3,54 +3,56 @@ import typing
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmscc, Bmssd, Bmtun
+from mercury_engine_data_structures.formats.bmsld import ActorLayer
 from mercury_engine_data_structures.formats.bmssd import ItemType
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 MULTI_ROOM_GAMMAS = [
-    {"scenario": "s030_area3", "layer": 0, "actor": "TG_Gamma_005_A"},
-    {"scenario": "s030_area3", "layer": 3, "actor": "SG_Gamma_005_A"},
-    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_A"},
-    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_Intro_A"},
-    {"scenario": "s030_area3", "layer": 0, "actor": "TG_Gamma_005_B"},
-    {"scenario": "s030_area3", "layer": 3, "actor": "SG_Gamma_005_B"},
-    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_B"},
-    {"scenario": "s030_area3", "layer": 4, "actor": "SP_Gamma_005_Intro_B"},
-    {"scenario": "s033_area3b", "layer": 0, "actor": "TG_Gamma_004_A"},
-    {"scenario": "s033_area3b", "layer": 3, "actor": "SG_Gamma_004_A"},
-    {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_A"},
-    {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_Intro_A"},
-    {"scenario": "s033_area3b", "layer": 0, "actor": "TG_Gamma_004_C"},
-    {"scenario": "s033_area3b", "layer": 3, "actor": "SG_Gamma_004_C"},
-    {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_C"},
-    {"scenario": "s033_area3b", "layer": 4, "actor": "Gamma_004_Intro_C"},
-    {"scenario": "s036_area3c", "layer": 0, "actor": "TG_Gamma_006_Dead_003"},
-    {"scenario": "s036_area3c", "layer": 0, "actor": "TG_Gamma_007_B"},
-    {"scenario": "s036_area3c", "layer": 3, "actor": "SG_Gamma_007_B"},
-    {"scenario": "s036_area3c", "layer": 4, "actor": "SP_Gamma_007_B"},
-    {"scenario": "s036_area3c", "layer": 4, "actor": "SP_Gamma_007_Intro_B"},
-    {"scenario": "s040_area4", "layer": 0, "actor": "TG_Gamma_001_B"},
-    {"scenario": "s040_area4", "layer": 3, "actor": "SG_Gamma_001_B"},
-    {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_B"},
-    {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_Intro_B"},
-    {"scenario": "s040_area4", "layer": 0, "actor": "TG_Gamma_001_C"},
-    {"scenario": "s040_area4", "layer": 3, "actor": "SG_Gamma_001_C"},
-    {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_C"},
-    {"scenario": "s040_area4", "layer": 4, "actor": "SP_Gamma_001_Intro_C"},
-    {"scenario": "s050_area5", "layer": 0, "actor": "TG_Gamma_002_B"},
-    {"scenario": "s050_area5", "layer": 3, "actor": "SG_Gamma_002_B"},
-    {"scenario": "s050_area5", "layer": 4, "actor": "Gamma_002_B"},
-    {"scenario": "s050_area5", "layer": 4, "actor": "Gamma_002_Intro_B"},
-    {"scenario": "s050_area5", "layer": 0, "actor": "TG_Gamma_002_C"},
-    {"scenario": "s050_area5", "layer": 3, "actor": "SG_Gamma_002_C"},
-    {"scenario": "s050_area5", "layer": 4, "actor": "Gamma_002_C"},
-    {"scenario": "s050_area5", "layer": 4, "actor": "Gamma_002_Intro_C"},
+    ("s030_area3", ActorLayer.TRIGGER, "TG_Gamma_005_A"),
+    ("s030_area3", ActorLayer.SPAWNGROUP, "SG_Gamma_005_A"),
+    ("s030_area3", ActorLayer.SPAWNPOINT, "SP_Gamma_005_A"),
+    ("s030_area3", ActorLayer.SPAWNPOINT, "SP_Gamma_005_Intro_A"),
+    ("s030_area3", ActorLayer.TRIGGER, "TG_Gamma_005_B"),
+    ("s030_area3", ActorLayer.SPAWNGROUP, "SG_Gamma_005_B"),
+    ("s030_area3", ActorLayer.SPAWNPOINT, "SP_Gamma_005_B"),
+    ("s030_area3", ActorLayer.SPAWNPOINT, "SP_Gamma_005_Intro_B"),
+    ("s033_area3b", ActorLayer.TRIGGER, "TG_Gamma_004_A"),
+    ("s033_area3b", ActorLayer.SPAWNGROUP, "SG_Gamma_004_A"),
+    ("s033_area3b", ActorLayer.SPAWNPOINT, "Gamma_004_A"),
+    ("s033_area3b", ActorLayer.SPAWNPOINT, "Gamma_004_Intro_A"),
+    ("s033_area3b", ActorLayer.TRIGGER, "TG_Gamma_004_C"),
+    ("s033_area3b", ActorLayer.SPAWNGROUP, "SG_Gamma_004_C"),
+    ("s033_area3b", ActorLayer.SPAWNPOINT, "Gamma_004_C"),
+    ("s033_area3b", ActorLayer.SPAWNPOINT, "Gamma_004_Intro_C"),
+    ("s036_area3c", ActorLayer.TRIGGER, "TG_Gamma_006_Dead_003"),
+    ("s036_area3c", ActorLayer.TRIGGER, "TG_Gamma_007_B"),
+    ("s036_area3c", ActorLayer.SPAWNGROUP, "SG_Gamma_007_B"),
+    ("s036_area3c", ActorLayer.SPAWNPOINT, "SP_Gamma_007_B"),
+    ("s036_area3c", ActorLayer.SPAWNPOINT, "SP_Gamma_007_Intro_B"),
+    ("s040_area4", ActorLayer.TRIGGER, "TG_Gamma_001_B"),
+    ("s040_area4", ActorLayer.SPAWNGROUP, "SG_Gamma_001_B"),
+    ("s040_area4", ActorLayer.SPAWNPOINT, "SP_Gamma_001_B"),
+    ("s040_area4", ActorLayer.SPAWNPOINT, "SP_Gamma_001_Intro_B"),
+    ("s040_area4", ActorLayer.TRIGGER, "TG_Gamma_001_C"),
+    ("s040_area4", ActorLayer.SPAWNGROUP, "SG_Gamma_001_C"),
+    ("s040_area4", ActorLayer.SPAWNPOINT, "SP_Gamma_001_C"),
+    ("s040_area4", ActorLayer.SPAWNPOINT, "SP_Gamma_001_Intro_C"),
+    ("s050_area5", ActorLayer.TRIGGER, "TG_Gamma_002_B"),
+    ("s050_area5", ActorLayer.SPAWNGROUP, "SG_Gamma_002_B"),
+    ("s050_area5", ActorLayer.SPAWNPOINT, "Gamma_002_B"),
+    ("s050_area5", ActorLayer.SPAWNPOINT, "Gamma_002_Intro_B"),
+    ("s050_area5", ActorLayer.TRIGGER, "TG_Gamma_002_C"),
+    ("s050_area5", ActorLayer.SPAWNGROUP, "SG_Gamma_002_C"),
+    ("s050_area5", ActorLayer.SPAWNPOINT, "Gamma_002_C"),
+    ("s050_area5", ActorLayer.SPAWNPOINT, "Gamma_002_Intro_C"),
 ]
 
 
 def patch_multi_room_gammas(editor: PatcherEditor) -> None:
-    for reference in MULTI_ROOM_GAMMAS:
-        editor.remove_entity(reference)
+    for scenario_name, layer, actor in MULTI_ROOM_GAMMAS:
+        scenario = editor.get_scenario(scenario_name)
+        scenario.remove_actor(layer, actor)
 
     gamma_actors = [
         ("s030_area3", "SG_Gamma_005_C", "SP_Gamma_005_C", "TG_Gamma_005_C"),
@@ -62,15 +64,15 @@ def patch_multi_room_gammas(editor: PatcherEditor) -> None:
 
     for scenario_name, spawngroup, spawnpoint, trigger in gamma_actors:
         scenario = editor.get_scenario(scenario_name)
+
         # remove the gamma name ¯\_(ツ)_/¯
-        scenario.raw["actors"][3][spawngroup]["components"][0]["arguments"][27]["value"] = ""
+        scenario.get_actor(ActorLayer.SPAWNGROUP, spawngroup).get_component_function().set_argument(27, "")
         # ¯\_(ツ)_/¯
-        scenario.raw["actors"][4][spawnpoint]["components"][0]["arguments"][11]["value"] = True
-        # make the trigger active
-        scenario.raw["actors"][0][trigger]["components"][0]["arguments"][0]["value"] = True
-        # move Gamma_002_A so it doesn't just poof into existence when it spawns
-        if scenario_name == "s050_area5":
-            scenario.raw["actors"][4]["Gamma_002_A"]["position"][0] = 17100.0
+        scenario.get_actor(ActorLayer.SPAWNPOINT, spawnpoint).get_component_function().set_argument(11, True)
+        # # make the trigger active
+        scenario.get_actor(ActorLayer.TRIGGER, trigger).get_component_function().set_argument(0, True)
+    # move Gamma_002_A so it doesn't just poof into existence when it spawns
+    editor.get_scenario("s050_area5").get_actor(ActorLayer.SPAWNPOINT, "Gamma_002_A").position.x = 17100.0
 
 
 def patch_pickup_rotation(editor: PatcherEditor) -> None:
@@ -81,8 +83,8 @@ def patch_pickup_rotation(editor: PatcherEditor) -> None:
     for scenario_name, pickups in PICKUPS.items():
         scenario = editor.get_scenario(scenario_name)
         for pickup in pickups:
-            actor = scenario.raw.actors[9][pickup]
-            actor["rotation"][1] = 0.0
+            actor = scenario.get_actor(ActorLayer.PASSIVE, pickup)
+            actor.rotation.y = 0.0
 
 
 def patch_pickup_position(editor: PatcherEditor) -> None:
@@ -96,17 +98,16 @@ def patch_pickup_position(editor: PatcherEditor) -> None:
     for scenario_name, pickups in PICKUPS.items():
         scenario = editor.get_scenario(scenario_name)
         for pickup in pickups:
-            actor = scenario.raw.actors[9][pickup]
+            actor = scenario.get_actor(ActorLayer.PASSIVE, pickup)
             if pickup != "LE_PowerUp_SpiderBall":
-                actor["position"][1] -= 55.0
+                actor.position.y -= 55.0
             else:
-                actor["position"][1] -= 49.0
+                actor.position.y -= 49.0
 
 
 def remove_area7_grapple_block(editor: PatcherEditor) -> None:
-    editor.remove_entity(
-        {"scenario": "s090_area9", "layer": 9, "actor": "LE_GrappleDest_007"}
-    )
+    scenario = editor.get_scenario("s090_area9")
+    scenario.remove_actor(ActorLayer.PASSIVE, "LE_GrappleDest_007")
 
 
 def patch_a7_save_screw_blocks(editor: PatcherEditor) -> None:
@@ -283,7 +284,7 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
                 actor for layer, actor_name, actor in scenario.all_actors() if actor_name == powerup_name
             )
             # Make actor freestanding
-            powerup_actor["components"][0]["arguments"][0]["value"] = ""
+            powerup_actor["component_functions"][0]["arguments"][0]["value"] = ""
 
             # Add block on top of item
             bmsbk = editor.get_file(
@@ -316,7 +317,7 @@ def patch_area7_item(editor: PatcherEditor) -> None:
 def patch_a4_collision(editor: PatcherEditor) -> None:
     # Extends the collision cc11 -> cc1 to allow for the upper path to be included in DLR
     area4 = editor.get_file("maps/levels/c10_samus/s050_area5/s050_area5.bmscd", Bmscc)
-    area4.raw["layers"][0]["entries"][0]["data"]["polys"][0]["points"][327]["x"] = 750.0
+    area4.get_entry().get_point(0, 327)["x"] = 750.0
 
 
 def patch_a1_teleporter_crumbles(editor: PatcherEditor) -> None:
@@ -384,7 +385,8 @@ def disable_vignettes(editor: PatcherEditor) -> None:
 
 def remove_a6_lower_dna_seal_gullugg(editor: PatcherEditor) -> None:
     # Just causes issues when going for the dna hint and also adds nothing of value
-    editor.remove_entity({"scenario": "s070_area7", "layer": 4, "actor": "GulluggStr_057"})
+    scenario = editor.get_scenario("s070_area7")
+    scenario.remove_actor(ActorLayer.SPAWNPOINT, "GulluggStr_057")
 
 
 def apply_static_fixes(editor: PatcherEditor) -> None:
