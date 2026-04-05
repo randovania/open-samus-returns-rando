@@ -5,7 +5,7 @@ from enum import Enum
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
 from mercury_engine_data_structures.formats import Bmsad, Bmsld, Bmsmsd, Lua
-from mercury_engine_data_structures.formats.bmsmsd import IconPriority, TileBorders
+from mercury_engine_data_structures.formats.bmsmsd import IconPriority, TileBorder
 
 from open_samus_returns_rando.files import files_path
 from open_samus_returns_rando.patcher_editor import PatcherEditor
@@ -578,7 +578,7 @@ def add_custom_doors(editor: PatcherEditor, custom_doors: list[dict]) -> None:
         editor.copy_actor(scenario_name, door_position, template_door, door_name, 15)
 
         direction = ["left", "right"]
-        border = [TileBorders.RIGHT, TileBorders.LEFT]
+        border = [TileBorder.RIGHT, TileBorder.LEFT]
 
         for i in range(2):
             actor_name = door_name + direction[i]
