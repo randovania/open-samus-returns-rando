@@ -22,11 +22,7 @@ With a JSON file:
 `python -m open_samus_returns_rando --input-path path/to/samus-returns/file.3ds --output-path path/to/the/output/mod --input-json path/to/patcher-config.json`
 
 ## Development
-This repository uses [pre-commit](https://pre-commit.com/). 
-```
-pip install pre-commit
-pre-commit install
-```
+This repository uses [pre-commit](https://pre-commit.com/).
 
 ## Native code patch development
 
