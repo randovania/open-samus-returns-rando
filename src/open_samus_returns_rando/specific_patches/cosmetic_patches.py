@@ -1,3 +1,4 @@
+from mercury_engine_data_structures.common_types import Vec3
 from mercury_engine_data_structures.formats import Bmdefs, Bmses, Bmtun
 
 from open_samus_returns_rando.constants import ALL_SCENARIOS
@@ -14,10 +15,10 @@ def patch_cosmetics(editor: PatcherEditor, configuration: dict) -> None:
 
 def tunable_cosmetics(tunables: Bmtun, configuration: dict) -> None:
     aim = tunables.raw["classes"]["CTunableAim"]["tunables"]
-    aim["vLaserLockedColor0"]["value"] = configuration["laser_locked_color"]
-    aim["vLaserUnlockedColor0"]["value"] = configuration["laser_unlocked_color"]
-    aim["vGrappleLaserLockedColor0"]["value"] = configuration["grapple_laser_locked_color"]
-    aim["vGrappleLaserUnlockedColor0"]["value"] = configuration["grapple_laser_unlocked_color"]
+    aim["vLaserLockedColor0"]["value"] = Vec3(*configuration["laser_locked_color"])
+    aim["vLaserUnlockedColor0"]["value"] = Vec3(*configuration["laser_unlocked_color"])
+    aim["vGrappleLaserLockedColor0"]["value"] = Vec3(*configuration["grapple_laser_locked_color"])
+    aim["vGrappleLaserUnlockedColor0"]["value"] = Vec3(*configuration["grapple_laser_unlocked_color"])
 
 
 def lua_cosmetics(configuration: dict) -> str:

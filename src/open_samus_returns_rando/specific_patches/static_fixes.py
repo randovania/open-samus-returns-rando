@@ -2,7 +2,9 @@ import copy
 import typing
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
-from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmscc, Bmssd, Bmtun
+from mercury_engine_data_structures.common_types import Vec3
+from mercury_engine_data_structures.formats import Bmsad, Bmscc, Bmssd, Bmtun
+from mercury_engine_data_structures.formats.bmsbk import BlockType, Bmsbk
 from mercury_engine_data_structures.formats.bmssd import ItemType
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
@@ -113,7 +115,7 @@ def patch_a7_save_screw_blocks(editor: PatcherEditor) -> None:
     area7 = editor.get_file(
         "maps/levels/c10_samus/s090_area9/s090_area9.bmsbk", Bmsbk
     )
-    area7.raw["block_groups"][56]["types"][0]["block_type"] = "power_beam"
+    area7.raw["block_groups"][56]["types"][0]["block_type"] = BlockType.POWER_BEAM
 
 
 def shoot_supers_without_missiles(editor: PatcherEditor) -> None:
@@ -228,11 +230,11 @@ def increase_pb_drop_chance(editor: PatcherEditor) -> None:
 def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
     # Prevents hidden item actors from being deleted when its block is broken from an adjacent cc
     CUSTOM_BLOCK = Container({
-        "pos": ListContainer([
+        "position": Vec3(
             -10350.0,
             -1850.0,
             0.0,
-        ]),
+        ),
         "unk2": 0,
         "unk3": 0,
         "respawn_time": 0.0,
@@ -240,15 +242,12 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
         "vignette_name": ""
     })
     BOMB_GROUP = Container(
-        unk_bool=True,
-        types=ListContainer([Container(block_type='bomb', blocks=ListContainer([]))])
+        is_enabled=True,
+        types=ListContainer([Container(block_type=BlockType.BOMB, blocks=ListContainer([]))])
     )
     BEAM_GROUP = Container(
-        unk_bool=True,
-        types=ListContainer([Container(block_type='powerbeam', blocks=ListContainer([]))])
-    )
-    BMSBK_GROUP = Container(
-        name="bg_SubArea_collision_camera_023", entries=ListContainer([])
+        is_enabled=True,
+        types=ListContainer([Container(block_type=BlockType.POWER_BEAM, blocks=ListContainer([]))])
     )
 
     scenario_powerup_eg = {
@@ -295,7 +294,7 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
             if scenario_name == "s000_surface":
                 new_group = copy.deepcopy(BEAM_GROUP)
                 # Add the missing collision_camera entry
-                bmsbk.raw.collision_cameras.append(BMSBK_GROUP)
+                bmsbk.collision_cameras["bg_SubArea_collision_camera_023"] = ListContainer([])
             else:
                 new_group = copy.deepcopy(BOMB_GROUP)
             new_block = copy.deepcopy(CUSTOM_BLOCK)
@@ -304,8 +303,8 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
             types: ListContainer = typing.cast("ListContainer", new_group["types"])
             types[0]["blocks"].append(new_block)
             bmsbk.raw.block_groups.append(new_group)
-            bmsbk_cc_obj = next(cc_obj for cc_obj in bmsbk.raw.collision_cameras if cc_name in cc_obj.name)
-            bmsbk_cc_obj.entries.append(len(bmsbk.raw.block_groups) - 1)
+            bmsbk_cc_obj = next(entries for key, entries in bmsbk.collision_cameras.items() if cc_name in key)
+            bmsbk_cc_obj.append(len(bmsbk.raw.block_groups) - 1)
 
 
 def patch_area7_item(editor: PatcherEditor) -> None:

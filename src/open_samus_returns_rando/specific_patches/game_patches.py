@@ -1,5 +1,6 @@
 from construct import Container  # type: ignore[import-untyped]
-from mercury_engine_data_structures.formats import Bmsad, Bmsbk
+from mercury_engine_data_structures.formats import Bmsad
+from mercury_engine_data_structures.formats.bmsbk import BlockType, Bmsbk
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -95,7 +96,7 @@ def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict) -> None:
             "maps/levels/c10_samus/s000_surface/s000_surface.bmsbk", Bmsbk
         )
         post_scan_pulse_crumbles = surface.raw["block_groups"][37]
-        post_scan_pulse_crumbles["types"][0]["block_type"] = "power_beam"
+        post_scan_pulse_crumbles["types"][0]["block_type"] = BlockType.POWER_BEAM
         post_scan_pulse_crumbles["types"][0]["blocks"][0]["respawn_time"] = 0.0
         post_scan_pulse_crumbles["types"][0]["blocks"][1]["respawn_time"] = 0.0
         post_scan_pulse_crumbles["types"][0]["blocks"][2]["respawn_time"] = 0.0
@@ -106,7 +107,7 @@ def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict) -> None:
             "maps/levels/c10_samus/s010_area1/s010_area1.bmsbk", Bmsbk
         )
         area1_chozo_seal_crumbles = area1.raw["block_groups"][19]
-        area1_chozo_seal_crumbles["types"][0]["block_type"] = "power_beam"
+        area1_chozo_seal_crumbles["types"][0]["block_type"] = BlockType.POWER_BEAM
         area1_chozo_seal_crumbles["types"][0]["blocks"][0]["respawn_time"] = 0.0
         area1_chozo_seal_crumbles["types"][0]["blocks"][1]["respawn_time"] = 0.0
         area1_chozo_seal_crumbles["types"][0]["blocks"][2]["respawn_time"] = 0.0
