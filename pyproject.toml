@@ -14,7 +14,7 @@ classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3.10",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 dependencies = [
     "mercury-engine-data-structures>=0.35.0",
     "jsonschema>=4.0.0",
@@ -71,14 +71,15 @@ target-version = "py312"
 max-complexity = 25
 
 [project.optional-dependencies]
-typing = [
+dev = [
     "types-jsonschema",
     "types-pyinstaller",
-    "mypy"
-]
-
-test = [
-    "pytest"
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "pytest-xdist",
 ]
 
 [tool.mypy]
