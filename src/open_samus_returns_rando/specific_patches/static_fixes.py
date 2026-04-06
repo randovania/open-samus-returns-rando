@@ -145,11 +145,20 @@ def rebalance_bosses(editor: PatcherEditor) -> None:
     Spazer: 210 -> 39.9
     Plasma: 57 (default from diggernaut tunable)
     '''
-    diggernaut = tunables.raw["classes"]["ManicMinerBot|CTunableCharClassManicMinerBotAIComponent"]["tunables"]
-    diggernaut["fHeadPlasmaBeamDamageFactor"]["value"] = 1.0
-    diggernaut["fHeadPlasmaBeamChargeDamageFactor"]["value"] = 0.6
-    diggernaut["fHeadPlasmaBeamWeaponBoostDamageFactor"]["value"] = 0.8
-    diggernaut["fHeadPlasmaBeamWeaponBoostPhaseDisplacementDamageFactor"]["value"] = 1.0
+    tunables.set_tunable(
+        "ManicMinerBot|CTunableCharClassManicMinerBotAIComponent", "fHeadPlasmaBeamDamageFactor", 1.0
+    )
+    tunables.set_tunable(
+        "ManicMinerBot|CTunableCharClassManicMinerBotAIComponent", "fHeadPlasmaBeamChargeDamageFactor", 0.6
+    )
+    tunables.set_tunable(
+        "ManicMinerBot|CTunableCharClassManicMinerBotAIComponent", "fHeadPlasmaBeamWeaponBoostDamageFactor", 0.8
+    )
+    tunables.set_tunable(
+        "ManicMinerBot|CTunableCharClassManicMinerBotAIComponent",
+        "fHeadPlasmaBeamWeaponBoostPhaseDisplacementDamageFactor",
+        1.0
+    )
 
     '''
     Ridley
@@ -161,15 +170,46 @@ def rebalance_bosses(editor: PatcherEditor) -> None:
     Spazer: 210 -> 25.2
     Plasma: 36 (default from ridley tunable)
     '''
-    ridley = tunables.raw["classes"]["Ridley|CTunableCharClassRidleyAIComponent"]["tunables"]
-    ridley["fPlasmaBeam"]["value"] = 1.0
-    ridley["fPlasmaBeamCharge"]["value"] = 1.0
-    ridley["fPlasmaBeamWeaponBoost"]["value"] = 1.1
-    ridley["fPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
-    ridley["fGrabPlasmaBeam"]["value"] = 1.0
-    ridley["fGrabPlasmaBeamCharge"]["value"] = 1.0
-    ridley["fGrabPlasmaBeamWeaponBoost"]["value"] = 1.1
-    ridley["fGrabPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fPlasmaBeam",
+        1.0
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fPlasmaBeamCharge",
+        1.0
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fPlasmaBeamWeaponBoost",
+        1.1
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fPlasmaBeamWeaponBoostPhaseDisplacement",
+        1.1
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fGrabPlasmaBeam",
+        1.0
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fGrabPlasmaBeamCharge",
+        1.0
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fGrabPlasmaBeamWeaponBoost",
+        1.1
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fGrabPlasmaBeamWeaponBoostPhaseDisplacement",
+        1.1
+    )
 
 
 def increase_pb_drop_chance(editor: PatcherEditor) -> None:

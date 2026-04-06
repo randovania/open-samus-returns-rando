@@ -82,15 +82,32 @@ def patch_final_boss(editor: PatcherEditor, configuration: dict) -> None:
             bmsad_life["fScrewAttackFactor"]["value"] = 0.5
 
             tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
-            damage = tunables.raw["classes"]["Damage|CTunableCharClassAttackComponent"]["tunables"]
             # 50 -> 150
-            damage["fDamageArachnusDefault"]["value"] *= 3
-            damage["fDamageArachnusEnergyWave"]["value"] *= 3
-            damage["fDamageArachnusFireSplash"]["value"] *= 3
+            fDamageArachnusDefault = tunables.get_tunable(
+                "Damage|CTunableCharClassAttackComponent", "fDamageArachnusDefault"
+            )
+            tunables.set_tunable(
+                "Damage|CTunableCharClassAttackComponent", "fDamageArachnusDefault", fDamageArachnusDefault * 3
+            )
 
-            tunables_life = tunables.raw["classes"]["Life|CTunableCharClassAIComponent"]["tunables"]
+            fDamageArachnusEnergyWave = tunables.get_tunable(
+                "Damage|CTunableCharClassAttackComponent", "fDamageArachnusEnergyWave"
+            )
+            tunables.set_tunable(
+                "Damage|CTunableCharClassAttackComponent", "fDamageArachnusEnergyWave", fDamageArachnusEnergyWave * 3
+            )
+
+            fDamageArachnusFireSplash = tunables.get_tunable(
+                "Damage|CTunableCharClassAttackComponent", "fDamageArachnusFireSplash"
+            )
+            tunables.set_tunable(
+                "Damage|CTunableCharClassAttackComponent", "fDamageArachnusFireSplash", fDamageArachnusFireSplash * 3
+            )
+
             # Original health is 3000
-            tunables_life["fLifeArachnus"]["value"] = 10000
+            tunables.set_tunable(
+                "Life|CTunableCharClassAIComponent", "fLifeArachnus", 10000
+            )
         elif final_boss == "Diggernaut":
             # Move the grapple block by the elevator regardless if the grapple config is set
             if not game_patches["remove_elevator_grapple_blocks"]:
