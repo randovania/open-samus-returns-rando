@@ -1,3 +1,4 @@
+from mercury_engine_data_structures.common_types import Vec3
 from mercury_engine_data_structures.formats import Bmdefs, Bmses, Bmtun
 
 from open_samus_returns_rando.constants import ALL_SCENARIOS
@@ -6,18 +7,19 @@ from open_samus_returns_rando.patcher_editor import PatcherEditor
 
 
 def patch_cosmetics(editor: PatcherEditor, configuration: dict) -> None:
-    tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
-    tunable_cosmetics(tunables, configuration)
+    tunable_cosmetics(editor, configuration)
     music_shuffle(editor, configuration)
     volume_patches(editor, configuration)
 
 
-def tunable_cosmetics(tunables: Bmtun, configuration: dict) -> None:
-    aim = tunables.raw["classes"]["CTunableAim"]["tunables"]
-    aim["vLaserLockedColor0"]["value"] = configuration["laser_locked_color"]
-    aim["vLaserUnlockedColor0"]["value"] = configuration["laser_unlocked_color"]
-    aim["vGrappleLaserLockedColor0"]["value"] = configuration["grapple_laser_locked_color"]
-    aim["vGrappleLaserUnlockedColor0"]["value"] = configuration["grapple_laser_unlocked_color"]
+def tunable_cosmetics(editor: PatcherEditor, configuration: dict) -> None:
+    tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
+    tunables.set_tunable("CTunableAim", "vLaserLockedColor0", Vec3(*configuration["laser_locked_color"]))
+    tunables.set_tunable("CTunableAim", "vLaserUnlockedColor0", Vec3(*configuration["laser_unlocked_color"]))
+    tunables.set_tunable("CTunableAim", "vGrappleLaserLockedColor0", Vec3(*configuration["grapple_laser_locked_color"]))
+    tunables.set_tunable(
+        "CTunableAim", "vGrappleLaserUnlockedColor0", Vec3(*configuration["grapple_laser_unlocked_color"])
+    )
 
 
 def lua_cosmetics(configuration: dict) -> str:

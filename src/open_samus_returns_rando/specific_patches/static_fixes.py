@@ -1,8 +1,7 @@
-import copy
 import typing
 
-from construct import Container, ListContainer  # type: ignore[import-untyped]
-from mercury_engine_data_structures.formats import Bmsad, Bmsbk, Bmscc, Bmssd, Bmtun
+from mercury_engine_data_structures.formats import Bmsad, Bmscc, Bmssd, Bmtun
+from mercury_engine_data_structures.formats.bmsbk import BlockData, BlockType, Bmsbk
 from mercury_engine_data_structures.formats.bmssd import ItemType
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
@@ -113,7 +112,7 @@ def patch_a7_save_screw_blocks(editor: PatcherEditor) -> None:
     area7 = editor.get_file(
         "maps/levels/c10_samus/s090_area9/s090_area9.bmsbk", Bmsbk
     )
-    area7.raw["block_groups"][56]["types"][0]["block_type"] = "power_beam"
+    area7.get_block_group(56).block_type = BlockType.POWER_BEAM
 
 
 def shoot_supers_without_missiles(editor: PatcherEditor) -> None:
@@ -143,11 +142,20 @@ def rebalance_bosses(editor: PatcherEditor) -> None:
     Spazer: 210 -> 39.9
     Plasma: 57 (default from diggernaut tunable)
     '''
-    diggernaut = tunables.raw["classes"]["ManicMinerBot|CTunableCharClassManicMinerBotAIComponent"]["tunables"]
-    diggernaut["fHeadPlasmaBeamDamageFactor"]["value"] = 1.0
-    diggernaut["fHeadPlasmaBeamChargeDamageFactor"]["value"] = 0.6
-    diggernaut["fHeadPlasmaBeamWeaponBoostDamageFactor"]["value"] = 0.8
-    diggernaut["fHeadPlasmaBeamWeaponBoostPhaseDisplacementDamageFactor"]["value"] = 1.0
+    tunables.set_tunable(
+        "ManicMinerBot|CTunableCharClassManicMinerBotAIComponent", "fHeadPlasmaBeamDamageFactor", 1.0
+    )
+    tunables.set_tunable(
+        "ManicMinerBot|CTunableCharClassManicMinerBotAIComponent", "fHeadPlasmaBeamChargeDamageFactor", 0.6
+    )
+    tunables.set_tunable(
+        "ManicMinerBot|CTunableCharClassManicMinerBotAIComponent", "fHeadPlasmaBeamWeaponBoostDamageFactor", 0.8
+    )
+    tunables.set_tunable(
+        "ManicMinerBot|CTunableCharClassManicMinerBotAIComponent",
+        "fHeadPlasmaBeamWeaponBoostPhaseDisplacementDamageFactor",
+        1.0
+    )
 
     '''
     Ridley
@@ -159,15 +167,46 @@ def rebalance_bosses(editor: PatcherEditor) -> None:
     Spazer: 210 -> 25.2
     Plasma: 36 (default from ridley tunable)
     '''
-    ridley = tunables.raw["classes"]["Ridley|CTunableCharClassRidleyAIComponent"]["tunables"]
-    ridley["fPlasmaBeam"]["value"] = 1.0
-    ridley["fPlasmaBeamCharge"]["value"] = 1.0
-    ridley["fPlasmaBeamWeaponBoost"]["value"] = 1.1
-    ridley["fPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
-    ridley["fGrabPlasmaBeam"]["value"] = 1.0
-    ridley["fGrabPlasmaBeamCharge"]["value"] = 1.0
-    ridley["fGrabPlasmaBeamWeaponBoost"]["value"] = 1.1
-    ridley["fGrabPlasmaBeamWeaponBoostPhaseDisplacement"]["value"] = 1.1
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fPlasmaBeam",
+        1.0
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fPlasmaBeamCharge",
+        1.0
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fPlasmaBeamWeaponBoost",
+        1.1
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fPlasmaBeamWeaponBoostPhaseDisplacement",
+        1.1
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fGrabPlasmaBeam",
+        1.0
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fGrabPlasmaBeamCharge",
+        1.0
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fGrabPlasmaBeamWeaponBoost",
+        1.1
+    )
+    tunables.set_tunable(
+        "Ridley|CTunableCharClassRidleyAIComponent",
+        "fGrabPlasmaBeamWeaponBoostPhaseDisplacement",
+        1.1
+    )
 
 
 def increase_pb_drop_chance(editor: PatcherEditor) -> None:
@@ -227,30 +266,6 @@ def increase_pb_drop_chance(editor: PatcherEditor) -> None:
 
 def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
     # Prevents hidden item actors from being deleted when its block is broken from an adjacent cc
-    CUSTOM_BLOCK = Container({
-        "pos": ListContainer([
-            -10350.0,
-            -1850.0,
-            0.0,
-        ]),
-        "unk2": 0,
-        "unk3": 0,
-        "respawn_time": 0.0,
-        "model_name": "sg_casca38",
-        "vignette_name": ""
-    })
-    BOMB_GROUP = Container(
-        unk_bool=True,
-        types=ListContainer([Container(block_type='bomb', blocks=ListContainer([]))])
-    )
-    BEAM_GROUP = Container(
-        unk_bool=True,
-        types=ListContainer([Container(block_type='powerbeam', blocks=ListContainer([]))])
-    )
-    BMSBK_GROUP = Container(
-        name="bg_SubArea_collision_camera_023", entries=ListContainer([])
-    )
-
     scenario_powerup_eg = {
         "s000_surface": [
             {"powerup_name": "HiddenPowerup001", "cc": "collision_camera_023"},
@@ -293,19 +308,23 @@ def fix_wrong_cc_actor_deletions(editor: PatcherEditor) -> None:
             pos = powerup_actor.position
             # Edge case for the beam block in Surface
             if scenario_name == "s000_surface":
-                new_group = copy.deepcopy(BEAM_GROUP)
+                new_type = BlockType.POWER_BEAM
                 # Add the missing collision_camera entry
-                bmsbk.raw.collision_cameras.append(BMSBK_GROUP)
+                bmsbk.set_collision_camera("bg_SubArea_collision_camera_023", [])
             else:
-                new_group = copy.deepcopy(BOMB_GROUP)
-            new_block = copy.deepcopy(CUSTOM_BLOCK)
-            new_block["pos"] = pos
-            new_block["model_name"] = sg_casca
-            types: ListContainer = typing.cast("ListContainer", new_group["types"])
-            types[0]["blocks"].append(new_block)
-            bmsbk.raw.block_groups.append(new_group)
-            bmsbk_cc_obj = next(cc_obj for cc_obj in bmsbk.raw.collision_cameras if cc_name in cc_obj.name)
-            bmsbk_cc_obj.entries.append(len(bmsbk.raw.block_groups) - 1)
+                new_type = BlockType.BOMB
+
+            new_block = BlockData.create(
+                pos,
+                0.0,
+                sg_casca,
+                ""
+            )
+            cc_key = next(key for key, entries in bmsbk.collision_cameras.items() if cc_name in key)
+            bmsbk.add_block_group(cc_key, new_type)
+            # FIXME: add_block takes a BlockData object and adds it to the raw data but the raw
+            #  data expects a Container. using BlockData fails on building the bmsbk
+            bmsbk.get_block_group(-1).add_block(new_block._raw)
 
 
 def patch_area7_item(editor: PatcherEditor) -> None:
@@ -322,7 +341,7 @@ def patch_a4_collision(editor: PatcherEditor) -> None:
 def patch_a1_teleporter_crumbles(editor: PatcherEditor) -> None:
     # Prevents a possible softlock in DLR if a door is added to the teleporter room
     area1 = editor.get_file("maps/levels/c10_samus/s010_area1/s010_area1.bmsbk", Bmsbk)
-    area1.raw["block_groups"][15]["types"][0]["blocks"][0]["respawn_time"] = 0.0
+    area1.get_block_group(15).get_block(0).respawn_time = 0.0
 
 
 def disable_vignettes(editor: PatcherEditor) -> None:
@@ -367,6 +386,8 @@ def disable_vignettes(editor: PatcherEditor) -> None:
         for scene_block_obj in scene_block_objs:
             block_group = scene_block_obj["block_group"]
             bmsbk = editor.get_file(f"maps/levels/c10_samus/{scenario_name}/{scenario_name}.bmsbk", Bmsbk)
+            # FIXME: This could use bmsbk.get_block_group(block_group) but how do you iterate
+            # over all the blocks then? maybe add a length method?
             blocks = bmsbk.raw["block_groups"][block_group]["types"][0]["blocks"]
             for block in blocks:
                 # Separate the vignette from the block
