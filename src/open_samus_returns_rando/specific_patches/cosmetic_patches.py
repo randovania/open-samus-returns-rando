@@ -13,13 +13,12 @@ def patch_cosmetics(editor: PatcherEditor, configuration: dict) -> None:
 
 
 def tunable_cosmetics(editor: PatcherEditor, configuration: dict) -> None:
-    # FIXME: Bug in MEDS: It does not accept a list[float] only a Vec3
     tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
-    tunables.set_tunable("CTunableAim", "vLaserLockedColor0", Vec3(*configuration["laser_locked_color"])) # type: ignore
-    tunables.set_tunable("CTunableAim", "vLaserUnlockedColor0", Vec3(*configuration["laser_unlocked_color"])) # type: ignore
-    tunables.set_tunable("CTunableAim", "vGrappleLaserLockedColor0", Vec3(*configuration["grapple_laser_locked_color"])) # type: ignore
+    tunables.set_tunable("CTunableAim", "vLaserLockedColor0", Vec3(*configuration["laser_locked_color"]))
+    tunables.set_tunable("CTunableAim", "vLaserUnlockedColor0", Vec3(*configuration["laser_unlocked_color"]))
+    tunables.set_tunable("CTunableAim", "vGrappleLaserLockedColor0", Vec3(*configuration["grapple_laser_locked_color"]))
     tunables.set_tunable(
-        "CTunableAim", "vGrappleLaserUnlockedColor0", Vec3(*configuration["grapple_laser_unlocked_color"]) # type: ignore
+        "CTunableAim", "vGrappleLaserUnlockedColor0", Vec3(*configuration["grapple_laser_unlocked_color"])
     )
 
 

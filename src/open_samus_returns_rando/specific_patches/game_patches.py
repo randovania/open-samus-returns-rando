@@ -95,24 +95,24 @@ def _patch_crumble_blocks(editor: PatcherEditor, configuration: dict) -> None:
         surface = editor.get_file(
             "maps/levels/c10_samus/s000_surface/s000_surface.bmsbk", Bmsbk
         )
-        post_scan_pulse_crumbles = surface.raw["block_groups"][37]
-        post_scan_pulse_crumbles["types"][0]["block_type"] = BlockType.POWER_BEAM
-        post_scan_pulse_crumbles["types"][0]["blocks"][0]["respawn_time"] = 0.0
-        post_scan_pulse_crumbles["types"][0]["blocks"][1]["respawn_time"] = 0.0
-        post_scan_pulse_crumbles["types"][0]["blocks"][2]["respawn_time"] = 0.0
+        post_scan_pulse_crumbles = surface.get_block_group(37)
+        post_scan_pulse_crumbles.block_type = BlockType.POWER_BEAM
+        post_scan_pulse_crumbles.get_block(0).respawn_time = 0.0
+        post_scan_pulse_crumbles.get_block(1).respawn_time = 0.0
+        post_scan_pulse_crumbles.get_block(2).respawn_time = 0.0
 
     # Crumble blocks leaving Area 1
     if configuration["patch_area1_crumbles"]:
         area1 = editor.get_file(
             "maps/levels/c10_samus/s010_area1/s010_area1.bmsbk", Bmsbk
         )
-        area1_chozo_seal_crumbles = area1.raw["block_groups"][19]
-        area1_chozo_seal_crumbles["types"][0]["block_type"] = BlockType.POWER_BEAM
-        area1_chozo_seal_crumbles["types"][0]["blocks"][0]["respawn_time"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][1]["respawn_time"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][2]["respawn_time"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][3]["respawn_time"] = 0.0
-        area1_chozo_seal_crumbles["types"][0]["blocks"][4]["respawn_time"] = 0.0
+        area1_chozo_seal_crumbles = area1.get_block_group(19)
+        area1_chozo_seal_crumbles.block_type = BlockType.POWER_BEAM
+        area1_chozo_seal_crumbles.get_block(0).respawn_time = 0.0
+        area1_chozo_seal_crumbles.get_block(1).respawn_time = 0.0
+        area1_chozo_seal_crumbles.get_block(2).respawn_time = 0.0
+        area1_chozo_seal_crumbles.get_block(3).respawn_time = 0.0
+        area1_chozo_seal_crumbles.get_block(4).respawn_time = 0.0
 
 
 def _patch_reverse_area8(editor: PatcherEditor, configuration: dict) -> None:
