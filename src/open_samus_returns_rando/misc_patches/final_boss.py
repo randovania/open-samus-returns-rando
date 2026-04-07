@@ -83,23 +83,23 @@ def patch_final_boss(editor: PatcherEditor, configuration: dict) -> None:
 
             tunables = editor.get_file("system/tunables/tunables.bmtun", Bmtun)
             # 50 -> 150
-            fDamageArachnusDefault = tunables.get_tunable(
+            fDamageArachnusDefault = typing.cast("float", tunables.get_tunable(
                 "Damage|CTunableCharClassAttackComponent", "fDamageArachnusDefault"
-            )
+            ))
             tunables.set_tunable(
                 "Damage|CTunableCharClassAttackComponent", "fDamageArachnusDefault", fDamageArachnusDefault * 3
             )
 
-            fDamageArachnusEnergyWave = tunables.get_tunable(
+            fDamageArachnusEnergyWave = typing.cast("float", tunables.get_tunable(
                 "Damage|CTunableCharClassAttackComponent", "fDamageArachnusEnergyWave"
-            )
+            ))
             tunables.set_tunable(
                 "Damage|CTunableCharClassAttackComponent", "fDamageArachnusEnergyWave", fDamageArachnusEnergyWave * 3
             )
 
-            fDamageArachnusFireSplash = tunables.get_tunable(
+            fDamageArachnusFireSplash = typing.cast("float", tunables.get_tunable(
                 "Damage|CTunableCharClassAttackComponent", "fDamageArachnusFireSplash"
-            )
+            ))
             tunables.set_tunable(
                 "Damage|CTunableCharClassAttackComponent", "fDamageArachnusFireSplash", fDamageArachnusFireSplash * 3
             )
