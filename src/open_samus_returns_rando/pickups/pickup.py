@@ -4,8 +4,8 @@ import json
 from enum import Enum
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
-from mercury_engine_data_structures.formats import Bmsad, Bmsmsd, Lua
-from mercury_engine_data_structures.formats.bmsmsd import TileType
+from mercury_engine_data_structures.formats import Bmsad, Lua
+from mercury_engine_data_structures.formats.bmsmsd import Bmsmsd, IconPriority, TileType
 
 from open_samus_returns_rando.constants import get_package_name
 from open_samus_returns_rando.files import templates_path
@@ -218,7 +218,7 @@ class ActorPickup(BasePickup):
                 raise ValueError("No icon found")
 
             # Custom blocks are no longer attached to the pickup, so make all hidden pickups consistent and generic
-            if pickup_tile_icon.icon_priority == "HIDDEN_ITEM" or (
+            if pickup_tile_icon.icon_priority == IconPriority.HIDDEN_ITEM or (
                 # Boss pickups are now always visible on the map without fighting them, so make icons generic
                 actor_name in {"LE_PowerUp_Springball", "LE_PowerUp_Powerbomb", "LE_Baby_Hatchling", "LE_Item_Ridley"}
             ):

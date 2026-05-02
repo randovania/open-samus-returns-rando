@@ -1,7 +1,9 @@
 import typing
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
-from mercury_engine_data_structures.formats import Bmsad, Bmsmsd
+from mercury_engine_data_structures.common_types import Vec3
+from mercury_engine_data_structures.formats import Bmsad
+from mercury_engine_data_structures.formats.bmsmsd import Bmsmsd, IconPriority
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -119,8 +121,8 @@ def add_chozo_seals(editor: PatcherEditor, new_seal: NewChozoSeal) -> None:
         "actor_name": new_seal.ap_name,
         "clear_condition": "",
         "icon": "systemmechdna",
-        "icon_priority": 4,
-        "coordinates": ListContainer(new_seal.ap_coordinates),
+        "icon_priority": IconPriority.CHOZO_SEAL,
+        "coordinates": Vec3(*new_seal.ap_coordinates),
     })
 
     scenario_name = new_seal.scenario
