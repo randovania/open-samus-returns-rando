@@ -1,7 +1,8 @@
 import typing
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
-from mercury_engine_data_structures.formats import Bmsmsd
+from mercury_engine_data_structures.common_types import Vec3
+from mercury_engine_data_structures.formats.bmsmsd import Bmsmsd, IconPriority
 
 from open_samus_returns_rando.patcher_editor import PatcherEditor
 
@@ -31,8 +32,8 @@ def add_pickups(editor: PatcherEditor, new_pickup: NewPickups) -> None:
         "actor_name": new_pickup.name,
         "clear_condition": "",
         "icon": "itemenabled",
-        "icon_priority": 0,
-        "coordinates": ListContainer(new_pickup.position),
+        "icon_priority": IconPriority.ACTOR,
+        "coordinates": Vec3(*new_pickup.position),
     })
 
     scenario_name = new_pickup.scenario
