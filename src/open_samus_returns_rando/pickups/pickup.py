@@ -28,6 +28,10 @@ def _read_template_powerup() -> dict:
         return json.load(f)
 
 
+def _bmsad_path_for(actordef_id: str) -> str:
+    return f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
+
+
 class PickupType(Enum):
     ACTOR = "actor"
     METROID = "metroid"
@@ -71,7 +75,7 @@ class ActorPickup(BasePickup):
         # Update given item
         new_template, script_class = self.patch_item_pickup(new_template)
 
-        new_path = script_class.get_bmsad_path()
+        new_path = _bmsad_path_for(actordef_id)
         editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)  # type: ignore
         return script_class
 
@@ -170,7 +174,7 @@ class ActorPickup(BasePickup):
         else:
             actordef_id = cached_bmsad[0]
             script_class = cached_bmsad[1]
-            bmsad_path = script_class.get_bmsad_path()
+            bmsad_path = _bmsad_path_for(actordef_id)
             editor.ensure_present_in_scenario(scenario_name, bmsad_path)
 
         actor.type = actordef_id
@@ -184,7 +188,7 @@ class ActorPickup(BasePickup):
             mirrored_actor = next((layer[actor_name] for layer in surface_b.raw.actors if actor_name in layer), None)
             assert mirrored_actor is not None
             mirrored_actor.type = actordef_id
-            path = script_class.get_bmsad_path()
+            path = _bmsad_path_for(actordef_id)
             editor.ensure_present_in_scenario(surfaceb_name, path)
             pkgs_for_level.update(set(editor.find_pkgs(path_for_level(surfaceb_name) + ".bmsld")))
 

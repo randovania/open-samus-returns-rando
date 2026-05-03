@@ -79,9 +79,6 @@ class ScriptClass:
         parent_lower = self.lua_parent.lower()
         return f"actors/items/{parent_lower}/scripts/{parent_lower}.lc"
 
-    def get_bmsad_path(self) -> str:
-        return f"actors/items/{self.actor_def_name}/charclasses/{self.actor_def_name}.bmsad"
-
     def ensure_files(self, editor: PatcherEditor) -> None:
         # ensure file itself
         lua_file_name = self.get_lua_file_name()
