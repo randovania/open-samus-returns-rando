@@ -4,8 +4,8 @@ import json
 from enum import Enum
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
-from mercury_engine_data_structures.formats import Bmsad, Bmsmsd, Lua
-from mercury_engine_data_structures.formats.bmsmsd import TileType
+from mercury_engine_data_structures.formats import Bmsad, Lua
+from mercury_engine_data_structures.formats.bmsmsd import Bmsmsd, IconPriority, TileType
 
 from open_samus_returns_rando.constants import get_package_name
 from open_samus_returns_rando.files import templates_path
@@ -26,6 +26,10 @@ RESERVE_TANK_ITEMS = {
 def _read_template_powerup() -> dict:
     with templates_path().joinpath("template_powerup_bmsad.json").open() as f:
         return json.load(f)
+
+
+def _bmsad_path_for(actordef_id: str) -> str:
+    return f"actors/items/{actordef_id}/charclasses/{actordef_id}.bmsad"
 
 
 class PickupType(Enum):
@@ -71,7 +75,7 @@ class ActorPickup(BasePickup):
         # Update given item
         new_template, script_class = self.patch_item_pickup(new_template)
 
-        new_path = script_class.get_bmsad_path()
+        new_path = _bmsad_path_for(actordef_id)
         editor.add_new_asset(new_path, Bmsad(new_template, editor.target_game), in_pkgs=pkgs_for_level)  # type: ignore
         return script_class
 
@@ -170,7 +174,7 @@ class ActorPickup(BasePickup):
         else:
             actordef_id = cached_bmsad[0]
             script_class = cached_bmsad[1]
-            bmsad_path = script_class.get_bmsad_path()
+            bmsad_path = _bmsad_path_for(actordef_id)
             editor.ensure_present_in_scenario(scenario_name, bmsad_path)
 
         actor.type = actordef_id
@@ -184,7 +188,7 @@ class ActorPickup(BasePickup):
             mirrored_actor = next((layer[actor_name] for layer in surface_b.raw.actors if actor_name in layer), None)
             assert mirrored_actor is not None
             mirrored_actor.type = actordef_id
-            path = script_class.get_bmsad_path()
+            path = _bmsad_path_for(actordef_id)
             editor.ensure_present_in_scenario(surfaceb_name, path)
             pkgs_for_level.update(set(editor.find_pkgs(path_for_level(surfaceb_name) + ".bmsld")))
 
@@ -218,7 +222,7 @@ class ActorPickup(BasePickup):
                 raise ValueError("No icon found")
 
             # Custom blocks are no longer attached to the pickup, so make all hidden pickups consistent and generic
-            if pickup_tile_icon.icon_priority == "HIDDEN_ITEM" or (
+            if pickup_tile_icon.icon_priority == IconPriority.HIDDEN_ITEM or (
                 # Boss pickups are now always visible on the map without fighting them, so make icons generic
                 actor_name in {"LE_PowerUp_Springball", "LE_PowerUp_Powerbomb", "LE_Baby_Hatchling", "LE_Item_Ridley"}
             ):
