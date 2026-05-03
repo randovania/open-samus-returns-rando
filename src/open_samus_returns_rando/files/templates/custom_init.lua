@@ -110,7 +110,7 @@ function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
     if Init.bRevealMap then
       Game.AddGUISF(0.0, Game.ScanVisitDiscoverEverything, "", "")
     end
-    Game.SaveGame("savedata", "", Init.sStartingActor, true)
+    Game.AddGUISF(1.0 , Game.SaveGame, "sssb", "savedata", "[MANTAIN]", "[MANTAIN]", true)
   end
 
 Game.SetForceSkipCutscenes(true)
