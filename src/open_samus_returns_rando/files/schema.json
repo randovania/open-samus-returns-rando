@@ -282,7 +282,7 @@
         },
         "reveal_map_on_start": {
             "type": "boolean",
-            "default": false,
+            "default": true,
             "description": "When true, the game will start with the whole map revealed"
         },
         "objective": {
@@ -621,6 +621,16 @@
                         "music": 1,
                         "environment_sfx": 1
                     }
+                },
+                "skip_opening": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "If this option is set to true, the opening storyboard cutscene is skipped"
+                },
+                "use_fusion_models": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "If this option is set to true, the fusion suit models are used"
                 }
             },
             "default": {}

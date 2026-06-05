@@ -38,6 +38,8 @@ Init.bTanksRefillAmmo = TEMPLATE("tanks_refill_ammo")
 Init.iRequiredDNA = TEMPLATE("required_dna")
 Init.sFinalBoss = TEMPLATE("final_boss")
 Init.bBeatenSinceLastReboot = false
+Init.bSkipOpening = TEMPLATE("skip_opening")
+Init.bUseFusionModels = TEMPLATE("use_fusion_models")
 
 local orig_log = Game.LogWarn
 if TEMPLATE("enable_remote_lua") then
