@@ -208,6 +208,8 @@ class LuaEditor:
         cosmetic_options: dict = configuration["cosmetic_patches"]
         configuration_identifier: str = configuration["configuration_identifier"]
         enable_remote_lua: bool = configuration.get("enable_remote_lua", False)
+        skip_opening: bool = cosmetic_options.get("skip_opening", False)
+        use_fusion_models: bool = cosmetic_options.get("use_fusion_models", False)
 
         starting_scenario = starting_location["scenario"]
         starting_actor = starting_location["actor"]
@@ -299,7 +301,9 @@ class LuaEditor:
             "final_boss_hint": final_boss_hint,
             "tanks_refill_ammo": game_patches["tanks_refill_ammo"],
             "required_dna": required_dna,
-            "final_boss": lua_util.wrap_string(objective["final_boss"])
+            "final_boss": lua_util.wrap_string(objective["final_boss"]),
+            "skip_opening": skip_opening,
+            "use_fusion_models": use_fusion_models,
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)

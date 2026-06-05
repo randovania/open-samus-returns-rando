@@ -2,8 +2,11 @@ Game.ImportLibrary("actors/items/randomizerpowerup/scripts/randomizerpowerup.lc"
 
 RandoApi = RandoApi or {
     ChangeSuitValues = function(hasVaria, hasGravity) end,
-    ChangeBeams = function(hasWave, hasSpazer, hasPlasma, dmgSpazer, dmgPlasma, dmgPlasmaWave, dmgPlasmaSpazer) end
+    ChangeBeams = function(hasWave, hasSpazer, hasPlasma, dmgSpazer, dmgPlasma, dmgPlasmaWave, dmgPlasmaSpazer) end,
+    SavePatcherOptions = function(skipOpening, useFusionModel) end
 }
+
+RandoApi.SavePatcherOptions(Init.bSkipOpening, Init.bUseFusionModels)
 
 function RandoApi.main()
 end
