@@ -375,6 +375,11 @@
                     "type": "boolean",
                     "description": "If enabled, collecting a tank refills that ammo to max capacity. In vanilla, only Energy and Aeion get fully refilled to max capacity.",
                     "default": true
+                },
+                "skip_opening": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "If this option is set to true, the opening storyboard cutscene is skipped"
                 }
             },
             "additionalProperties": false
@@ -621,11 +626,6 @@
                         "music": 1,
                         "environment_sfx": 1
                     }
-                },
-                "skip_opening": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "If this option is set to true, the opening storyboard cutscene is skipped"
                 },
                 "use_fusion_models": {
                     "type": "boolean",

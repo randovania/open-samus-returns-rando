@@ -208,7 +208,7 @@ class LuaEditor:
         cosmetic_options: dict = configuration["cosmetic_patches"]
         configuration_identifier: str = configuration["configuration_identifier"]
         enable_remote_lua: bool = configuration.get("enable_remote_lua", False)
-        skip_opening: bool = cosmetic_options.get("skip_opening", False)
+        skip_opening: bool = game_patches.get("skip_opening", False)
         use_fusion_models: bool = cosmetic_options.get("use_fusion_models", False)
 
         starting_scenario = starting_location["scenario"]
