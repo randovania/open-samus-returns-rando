@@ -331,6 +331,11 @@
                     "description": "Remove the Power Bomb weakness from Charge Beam Doors to make Power Bombs less overpowered.",
                     "default": true
                 },
+                "charge_door_burst_buff": {
+                    "type": "boolean",
+                    "description": "Remove the Beam Burst weakness from Charge Beam Doors.",
+                    "default": false
+                },
                 "beam_door_buff": {
                     "type": "boolean",
                     "description": "Remove the Power Bomb weakness from Beam Doors to make Power Bombs less overpowered.",

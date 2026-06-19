@@ -40,6 +40,7 @@ Init.sFinalBoss = TEMPLATE("final_boss")
 Init.bBeatenSinceLastReboot = false
 Init.bSkipOpening = TEMPLATE("skip_opening")
 Init.bUseFusionModels = TEMPLATE("use_fusion_models")
+Init.bChargeDoorBurstBuff = TEMPLATE("charge_door_burst_buff")
 
 local orig_log = Game.LogWarn
 if TEMPLATE("enable_remote_lua") then
@@ -106,12 +107,30 @@ function Init.InitGameBlackboard()
   Game.UnlockAmiiboMenu()
 end
 
+function Init.GameProgress()
+      local locations = {
+        ["s000_surface"] = 18,
+        ["s010_area1"]   = 21,
+        ["s020_area2"]   = 31,
+        ["s030_area3"]   = 33,
+        ["s040_area4"]   = 28,
+        ["s060_area6"]   = 34,
+        ["s070_area7"]   = 15,
+        ["s090_area9"]   = 16,
+        ["s100_area10"]  = 15,
+    }
+    for base, total in pairs(locations) do
+      Blackboard.SetProp("GAME_PROGRESS", base .. "_PROGRESS", "i", total)
+    end
+end
+
 function Init.InitNewGame(arg1, arg2, arg3, arg4, arg4)
     Init.tBoxesSeen = 0
     Game.LoadScenario("c10_samus", Init.sStartingScenario, Init.sStartingActor, "samus", 1)
     if Init.bRevealMap then
       Game.AddGUISF(0.0, Game.ScanVisitDiscoverEverything, "", "")
     end
+    Game.AddGUISF(0.5 , Init.GameProgress, "", "")
     Game.AddGUISF(1.0 , Game.SaveGame, "sssb", "savedata", "[MANTAIN]", "[MANTAIN]", true)
   end
 

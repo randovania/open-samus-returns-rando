@@ -210,6 +210,7 @@ class LuaEditor:
         enable_remote_lua: bool = configuration.get("enable_remote_lua", False)
         skip_opening: bool = game_patches.get("skip_opening", False)
         use_fusion_models: bool = cosmetic_options.get("use_fusion_models", False)
+        charge_door_burst_buff: bool = game_patches.get("charge_door_burst_buff", False)
 
         starting_scenario = starting_location["scenario"]
         starting_actor = starting_location["actor"]
@@ -304,6 +305,7 @@ class LuaEditor:
             "final_boss": lua_util.wrap_string(objective["final_boss"]),
             "skip_opening": skip_opening,
             "use_fusion_models": use_fusion_models,
+            "charge_door_burst_buff": charge_door_burst_buff,
         }
 
         return lua_util.replace_lua_template("custom_init.lua", replacement)
