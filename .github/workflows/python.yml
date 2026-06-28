@@ -75,7 +75,7 @@ jobs:
         run: uv run pytest --cov open_samus_returns_rando --cov-report=xml tests
 
       - name: codecov
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: randovania/open-prime-hunters-rando
