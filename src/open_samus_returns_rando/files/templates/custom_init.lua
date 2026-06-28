@@ -119,6 +119,18 @@ function Init.GameProgress()
         ["s090_area9"]   = 16,
         ["s100_area10"]  = 15,
     }
+    if Init.sFinalBoss ~= "Ridley" then
+      locations["s000_surface"] = locations["s000_surface"] + 1
+    end
+    if Init.sFinalBoss == "Diggernaut" then
+      locations["s070_area7"] = locations["s070_area7"] - 1
+    end
+    if Init.sFinalBoss == "Queen" then
+      locations["s100_area10"] = locations["s100_area10"] - 1
+    end
+    if Init.sFinalBoss == "Arachnus" then
+      locations["s020_area2"] = locations["s020_area2"] - 1
+    end
     for base, total in pairs(locations) do
       Blackboard.SetProp("GAME_PROGRESS", base .. "_PROGRESS", "i", total)
     end
