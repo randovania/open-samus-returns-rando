@@ -12,9 +12,10 @@ classifiers = [
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "mercury-engine-data-structures>=0.36.2",
     "jsonschema>=4.0.0",
@@ -63,7 +64,7 @@ lint.extend-ignore = [
 ]
 
 # Version to target for generated code.
-target-version = "py312"
+target-version = "py311"
 
 [tool.ruff.lint.mccabe]
 # Flag errors (`C901`) whenever the complexity level exceeds 25.
