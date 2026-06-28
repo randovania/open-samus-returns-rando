@@ -80,6 +80,27 @@ function RandomizerPowerup.PropertyForLocation(actorOrName)
     return "c_" .. actorOrName
 end
 
+function RandomizerPowerup.IncrementAreaProgress(delta)
+    local tAreaProgressBase = {
+        ["s110_surfaceb"] = "s000_surface",
+        ["s025_area2b"]  = "s020_area2",
+        ["s028_area2c"]  = "s020_area2",
+        ["s033_area3b"]  = "s030_area3",
+        ["s036_area3c"]  = "s030_area3",
+        ["s050_area5"]   = "s040_area4",
+        ["s065_area6b"]  = "s060_area6",
+        ["s067_area6c"]  = "s060_area6",
+    }
+    local scenario = Scenario.CurrentScenarioID
+    if scenario == nil then
+        return
+    end
+    local base = tAreaProgressBase[scenario] or scenario
+    local key = base .. "_PROGRESS"
+    local current = Blackboard.GetProp("GAME", key) or 0
+    Blackboard.SetProp("GAME", key, "i", current + (delta or 1))
+end
+
 function RandomizerPowerup.PostCollectionAdjustments(actorOrName)
     local name
     -- normal pickups
@@ -88,6 +109,7 @@ function RandomizerPowerup.PostCollectionAdjustments(actorOrName)
     -- metroids
     else
         name = actorOrName
+        RandomizerPowerup.IncrementAreaProgress(1)
     end
     -- remote pickups from other worlds
     if name == nil then

@@ -3,10 +3,10 @@ Game.ImportLibrary("actors/items/randomizerpowerup/scripts/randomizerpowerup.lc"
 RandoApi = RandoApi or {
     ChangeSuitValues = function(hasVaria, hasGravity) end,
     ChangeBeams = function(hasWave, hasSpazer, hasPlasma, dmgSpazer, dmgPlasma, dmgPlasmaWave, dmgPlasmaSpazer) end,
-    SavePatcherOptions = function(skipOpening, useFusionModel) end
+    SavePatcherOptions = function(skipOpening, useFusionModel, chargeDoorBurstBuff) end
 }
 
-RandoApi.SavePatcherOptions(Init.bSkipOpening, Init.bUseFusionModels)
+RandoApi.SavePatcherOptions(Init.bSkipOpening, Init.bUseFusionModels, Init.bChargeDoorBurstBuff)
 
 function RandoApi.main()
 end
