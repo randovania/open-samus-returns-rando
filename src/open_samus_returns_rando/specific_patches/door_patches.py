@@ -4,6 +4,7 @@ import typing
 from enum import Enum
 
 from construct import Container, ListContainer  # type: ignore[import-untyped]
+from mercury_engine_data_structures.common_types import Vec3
 from mercury_engine_data_structures.formats import Bmsad, Bmsld, Bmsmsd, Lua
 from mercury_engine_data_structures.formats.bmsmsd import IconPriority, TileBorder
 
@@ -589,7 +590,7 @@ def add_custom_doors(editor: PatcherEditor, custom_doors: list[dict]) -> None:
                 "clear_condition": "",
                 "icon": icon,
                 "icon_priority": IconPriority.DOOR,
-                "coordinates": ListContainer(door_position),
+                "coordinates": Vec3(*door_position),
             })
 
             tile_idx = scenario_map.raw["tiles"][door["tile_indices"][i]]
