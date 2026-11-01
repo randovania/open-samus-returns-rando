@@ -941,14 +941,14 @@ wheels = [
 
 [[package]]
 name = "types-jsonschema"
-version = "4.26.0.20260402"
+version = "4.26.0.20261006"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "referencing" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/98/d3/026e247db60c9cb7db2dee659793ca46fe33bcac53f00f318a688fb176a3/types_jsonschema-4.26.0.20260402.tar.gz", hash = "sha256:03d0f697a9930970033e29e91da45accf287ee44d5eed6f7a238b99e608b23f4", size = 16520, upload-time = "2026-04-02T04:20:19.135Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/29/d2/1f742605f5a6d39f993134885b8de41c98af606871d3ebddaf3e776bd1eb/types_jsonschema-4.26.0.20261006.tar.gz", hash = "sha256:3eb7db61b6819d40addfdaac7173e749071a7d4a9a4394f0c844598ec84b2500", size = 16843, upload-time = "2026-10-06T08:16:07.318Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ca/5e/02f58a194ffe7ac02657ca590c46348220c04a76a62e2ceb45a5ac0cd666/types_jsonschema-4.26.0.20260402-py3-none-any.whl", hash = "sha256:0e8ebd94b257fc978b41b89c7b9bc76232e104e5125ec19009c4f60844c96e0a", size = 16082, upload-time = "2026-04-02T04:20:17.922Z" },
+    { url = "https://files.pythonhosted.org/packages/8b/a0/4f2e3c0dc3d5cad958006f2e0307065cc8fe4fbf0393ff0b69d55ee9bbe5/types_jsonschema-4.26.0.20261006-py3-none-any.whl", hash = "sha256:29301f4e65e3928540cdf5e23ad716e38bb0c0b416a48dada213edd3d70206ec", size = 16113, upload-time = "2026-10-06T08:16:06.355Z" },
 ]
 
 [[package]]
