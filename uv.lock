@@ -953,11 +953,11 @@ wheels = [
 
 [[package]]
 name = "types-pyinstaller"
-version = "6.22.1.20260827"
+version = "6.22.1.20261122"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/a7/f9/0caa588274b36bd09bbc3409c2f50a325e2d2036ff45ec9059ecdcf8e06d/types_pyinstaller-6.22.1.20260827.tar.gz", hash = "sha256:899af198f206e4692891c1139cc5d0ec6ab2142ba3835243cb0e8c0e9920cd72", size = 21094, upload-time = "2026-08-27T12:06:45.361Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/e2/10/2331ffc67c0a3d5b72d1730385fa0dbec28647a2e146a7d4da440c969878/types_pyinstaller-6.22.1.20261122.tar.gz", hash = "sha256:64bf0844eafd581091f5079546d7e1f59937edf450a2f74c128497ee4e57e4bd", size = 21114, upload-time = "2026-11-22T08:58:19.887Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/52/53/30c90bb3869fd36534e23a3b94eb132ade1940c7db40f811698b6dc7f251/types_pyinstaller-6.22.1.20260827-py3-none-any.whl", hash = "sha256:51e6828ac5aea1aaa3e4d4b398705b3a14813fabd5ea4cd53e638688ec604d04", size = 22893, upload-time = "2026-08-27T12:06:44.436Z" },
+    { url = "https://files.pythonhosted.org/packages/d2/3c/9d7c485cc4fc1b7924e3336b04d64afba15fc236a7d1b5946d47ddd4fb71/types_pyinstaller-6.22.1.20261122-py3-none-any.whl", hash = "sha256:1b59ff14ffdf36c5c727b5308c22aa6eef86599e9be60e9e282f7508d9d5e8bc", size = 22901, upload-time = "2026-11-22T08:58:19.14Z" },
 ]
 
 [[package]]
